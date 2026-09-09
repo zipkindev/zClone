@@ -5,15 +5,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/walk"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/lib/random"
 	"github.com/spf13/pflag"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
+	"zclone/fs/walk"
+	"zclone/fstest"
+	"zclone/lib/random"
 )
 
 // Check flag satisfies the interface

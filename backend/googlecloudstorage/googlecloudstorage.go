@@ -27,32 +27,32 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/lib/bucket"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/env"
-	"github.com/rclone/rclone/lib/oauthutil"
-	"github.com/rclone/rclone/lib/pacer"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"google.golang.org/api/googleapi"
 	option "google.golang.org/api/option"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/lib/bucket"
+	"zclone/lib/encoder"
+	"zclone/lib/env"
+	"zclone/lib/oauthutil"
+	"zclone/lib/pacer"
 
 	// NOTE: This API is deprecated
 	storage "google.golang.org/api/storage/v1"
 )
 
 const (
-	rcloneClientID              = "202264815644.apps.googleusercontent.com"
-	rcloneEncryptedClientSecret = "Uj7C9jGfb9gmeaV70Lh058cNkWvepr-Es9sBm0zdgil7JaOWF1VySw"
+	zcloneClientID              = "202264815644.apps.googleusercontent.com"
+	zcloneEncryptedClientSecret = "Uj7C9jGfb9gmeaV70Lh058cNkWvepr-Es9sBm0zdgil7JaOWF1VySw"
 	timeFormat                  = time.RFC3339Nano
 	metaMtime                   = "mtime"                    // key to store mtime in metadata
 	metaMtimeGsutil             = "goog-reserved-file-mtime" // key used by GSUtil to store mtime in metadata
@@ -66,8 +66,8 @@ var (
 		Scopes:       []string{storage.DevstorageReadWriteScope},
 		AuthURL:      google.Endpoint.AuthURL,
 		TokenURL:     google.Endpoint.TokenURL,
-		ClientID:     rcloneClientID,
-		ClientSecret: obscure.MustReveal(rcloneEncryptedClientSecret),
+		ClientID:     zcloneClientID,
+		ClientSecret: obscure.MustReveal(zcloneEncryptedClientSecret),
 		RedirectURL:  oauthutil.RedirectURL,
 	}
 )
@@ -165,7 +165,7 @@ func init() {
 If you want to upload objects to a bucket with Bucket Policy Only set
 then you will need to set this.
 
-When it is set, rclone:
+When it is set, zclone:
 
 - ignores ACLs set on buckets
 - ignores ACLs set on objects
@@ -328,7 +328,7 @@ object ending with "/", to persist the folder.
 			Help: `If set, don't attempt to check the bucket exists or create it.
 
 This can be useful when trying to minimise the number of transactions
-rclone does if you know the bucket exists already.
+zclone does if you know the bucket exists already.
 `,
 			Default:  false,
 			Advanced: true,
@@ -337,10 +337,10 @@ rclone does if you know the bucket exists already.
 			Help: `If set this will decompress gzip encoded objects.
 
 It is possible to upload objects to GCS with "Content-Encoding: gzip"
-set. Normally rclone will download these files as compressed objects.
+set. Normally zclone will download these files as compressed objects.
 
-If this flag is set then rclone will decompress these files with
-"Content-Encoding: gzip" as they are received. This means that rclone
+If this flag is set then zclone will decompress these files with
+"Content-Encoding: gzip" as they are received. This means that zclone
 can't check the size and hash but the file contents will be decompressed.
 `,
 			Advanced: true,

@@ -6,14 +6,14 @@ import (
 	"path/filepath"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configfile"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/rc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configfile"
+	"zclone/fs/config/obscure"
+	"zclone/fs/rc"
 )
 
 const testName = "configTestNameForRc"
@@ -25,7 +25,7 @@ func TestRc(t *testing.T) {
 		require.NoError(t, config.SetConfigPath(oldConfigFile))
 	}()
 	// Set a temporary config file
-	require.NoError(t, config.SetConfigPath(filepath.Join(t.TempDir(), "rclone.conf")))
+	require.NoError(t, config.SetConfigPath(filepath.Join(t.TempDir(), "zclone.conf")))
 	configfile.Install()
 	// Create the test remote
 	call := rc.Calls.Get("config/create")
@@ -76,9 +76,9 @@ func TestRc(t *testing.T) {
 	})
 
 	t.Run("ListRemotes", func(t *testing.T) {
-		assert.NoError(t, os.Setenv("RCLONE_CONFIG_MY-LOCAL_TYPE", "local"))
+		assert.NoError(t, os.Setenv("ZCLONE_CONFIG_MY-LOCAL_TYPE", "local"))
 		defer func() {
-			assert.NoError(t, os.Unsetenv("RCLONE_CONFIG_MY-LOCAL_TYPE"))
+			assert.NoError(t, os.Unsetenv("ZCLONE_CONFIG_MY-LOCAL_TYPE"))
 		}()
 		call := rc.Calls.Get("config/listremotes")
 		assert.NotNil(t, call)

@@ -11,11 +11,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fstest/mockdir"
-	"github.com/rclone/rclone/fstest/mockobject"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fstest/mockdir"
+	"zclone/fstest/mockobject"
 )
 
 func TestSorter(t *testing.T) {
@@ -236,7 +236,7 @@ func TestSorterExt(t *testing.T) {
 
 // Test that startExtSort returns an error instead of panicking when
 // temp file creation fails (e.g. due to permissions or apparmor).
-// See: https://github.com/rclone/rclone/issues/9244
+// See: https://zclone/issues/9244
 func TestSorterExtTempFileError(t *testing.T) {
 	ctx := context.Background()
 	ctx, ci := fs.AddConfig(ctx)

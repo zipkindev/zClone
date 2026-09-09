@@ -18,9 +18,9 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
-	"github.com/rclone/rclone/backend/azureblob/arrowlist"
-	"github.com/rclone/rclone/fs"
 	"golang.org/x/sync/errgroup"
+	"zclone/backend/azureblob/arrowlist"
+	"zclone/fs"
 )
 
 // listArrowParallel lists (containerName, directory) by splitting the blob name

@@ -22,13 +22,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/lib/structs"
 	"github.com/youmark/pkcs8"
 	"golang.org/x/net/publicsuffix"
 	"moul.io/http2curl/v2"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/config/obscure"
+	"zclone/lib/structs"
 )
 
 const (
@@ -439,6 +439,44 @@ var authBufs = [][]byte{
 	[]byte("X-Auth-Token: "),
 }
 
+// isSensitiveQueryKey reports whether a URL parameter can contain a secret.
+func isSensitiveQueryKey(key string) bool {
+	key = strings.ToLower(key)
+	if key == "sig" || key == "key" {
+		return true
+	}
+	for _, term := range []string{"token", "secret", "password", "credential", "signature", "authorization", "api_key"} {
+		if strings.Contains(key, term) {
+			return true
+		}
+	}
+	return false
+}
+
+// cleanURL redacts credentials in URL query parameters before diagnostic output.
+func cleanURL(u *url.URL) {
+	query := u.Query()
+	changed := false
+	for key := range query {
+		if isSensitiveQueryKey(key) {
+			query[key] = []string{"XXXX"}
+			changed = true
+		}
+	}
+	if changed {
+		u.RawQuery = query.Encode()
+	}
+}
+
+// cleanRequest returns a copy suitable for diagnostic output.
+func cleanRequest(req *http.Request) *http.Request {
+	copy := req.Clone(req.Context())
+	urlCopy := *req.URL
+	cleanURL(&urlCopy)
+	copy.URL = &urlCopy
+	return copy
+}
+
 // cleanAuths gets rid of all the possible Auth headers
 func cleanAuths(buf []byte) []byte {
 	for _, authBuf := range authBufs {
@@ -623,7 +661,11 @@ func (t *Transport) RoundTrip(req *http.Request) (resp *http.Response, err error
 	}
 	// Dump request
 	if wantDump {
-		reqDump, _ = httputil.DumpRequestOut(req, t.dump&(fs.DumpBodies|fs.DumpRequests) != 0)
+		requestForDump := req
+		if t.dump&fs.DumpAuth == 0 {
+			requestForDump = cleanRequest(req)
+		}
+		reqDump, _ = httputil.DumpRequestOut(requestForDump, t.dump&(fs.DumpBodies|fs.DumpRequests) != 0)
 		if t.dump&fs.DumpAuth == 0 {
 			reqDump = cleanAuths(reqDump)
 		}
@@ -640,7 +682,11 @@ func (t *Transport) RoundTrip(req *http.Request) (resp *http.Response, err error
 		fs.Debugf(nil, "HTTP REQUEST: %v", curlCmd)
 	}
 	if t.dump&fs.DumpCurl != 0 {
-		cmd, err := http2curl.GetCurlCommand(req)
+		dumpReq := req
+		if t.dump&fs.DumpAuth == 0 {
+			dumpReq = cleanRequest(req)
+		}
+		cmd, err := http2curl.GetCurlCommand(dumpReq)
 		if err != nil {
 			fs.Debugf(nil, "Failed to create curl command: %v", err)
 		} else {

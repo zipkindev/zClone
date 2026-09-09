@@ -17,12 +17,12 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configfile"
-	"github.com/rclone/rclone/fs/rc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	"zclone/fs"
+	"zclone/fs/config/configfile"
+	"zclone/fs/rc"
 )
 
 const (
@@ -32,15 +32,24 @@ const (
 	remoteURL           = "[" + testFs + "]/" // initial URL path to fetch from that remote
 )
 
+func TestSafeBrowserURL(t *testing.T) {
+	got, err := safeBrowserURL("http://user:password@localhost:5572/path?login_token=dXNlcjpwYXNzd29yZA&keep=value")
+	require.NoError(t, err)
+	assert.Equal(t, "http://localhost:5572/path?keep=value", got)
+	assert.NotContains(t, got, "user")
+	assert.NotContains(t, got, "password")
+	assert.NotContains(t, got, "login_token")
+}
+
 func TestMain(m *testing.M) {
-	// Pretend to be rclone version if we have a version string parameter
+	// Pretend to be zclone version if we have a version string parameter
 	if os.Args[len(os.Args)-1] == "version" {
-		fmt.Printf("rclone %s\n", fs.Version)
+		fmt.Printf("zclone %s\n", fs.Version)
 		os.Exit(0)
 	}
 	// Pretend to error if we have an unknown command
 	if os.Args[len(os.Args)-1] == "unknown_command" {
-		fmt.Printf("rclone %s\n", fs.Version)
+		fmt.Printf("zclone %s\n", fs.Version)
 		fmt.Fprintf(os.Stderr, "Unknown command\n")
 		os.Exit(1)
 	}
@@ -718,7 +727,7 @@ func TestRCWithAuth(t *testing.T) {
 		Status:      http.StatusOK,
 		Expected: fmt.Sprintf(`{
 	"error": false,
-	"result": "rclone %s\n"
+	"result": "zclone %s\n"
 }
 `, fs.Version),
 	}, {
@@ -745,7 +754,7 @@ func TestRCWithAuth(t *testing.T) {
 		Body:        `command=version&returnType=STREAM`,
 		ContentType: "application/x-www-form-urlencoded",
 		Status:      http.StatusOK,
-		Expected: fmt.Sprintf(`rclone %s
+		Expected: fmt.Sprintf(`zclone %s
 {}
 `, fs.Version),
 	}, {
@@ -755,7 +764,7 @@ func TestRCWithAuth(t *testing.T) {
 		Body:        `command=unknown_command&returnType=STREAM`,
 		ContentType: "application/x-www-form-urlencoded",
 		Status:      http.StatusOK,
-		Expected: fmt.Sprintf(`rclone %s
+		Expected: fmt.Sprintf(`zclone %s
 Unknown command
 {
 	"error": "exit status 1",

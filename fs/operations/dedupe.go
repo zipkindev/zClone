@@ -9,11 +9,11 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/walk"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/config"
+	"zclone/fs/hash"
+	"zclone/fs/walk"
 )
 
 // dedupeRename renames the objs slice to different names

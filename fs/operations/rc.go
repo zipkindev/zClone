@@ -12,11 +12,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/lib/diskusage"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/hash"
+	"zclone/fs/rc"
+	"zclone/lib/diskusage"
 )
 
 func init() {
@@ -45,7 +45,7 @@ Returns:
 - list
     - This is an array of objects as described in the lsjson command
 
-See the [lsjson](/commands/rclone_lsjson/) command for more information on the above and examples.
+See the [lsjson](/commands/zclone_lsjson/) command for more information on the above and examples.
 `,
 	})
 }
@@ -93,7 +93,7 @@ The result is
 Note that if you are only interested in files then it is much more
 efficient to set the filesOnly flag in the options.
 
-See the [lsjson](/commands/rclone_lsjson/) command for more information on the above and examples.
+See the [lsjson](/commands/zclone_lsjson/) command for more information on the above and examples.
 `,
 	})
 }
@@ -127,9 +127,9 @@ func init() {
 
 - fs - a remote name string e.g. "drive:"
 
-The result is as returned from rclone about --json
+The result is as returned from zclone about --json
 
-See the [about](/commands/rclone_about/) command for more information on the above.
+See the [about](/commands/zclone_about/) command for more information on the above.
 `,
 	})
 }
@@ -217,7 +217,7 @@ func init() {
 			remote = "- remote - a path within that remote e.g. \"dir\"\n"
 		}
 		if !op.noCommand {
-			command = "See the [" + op.name + "](/commands/rclone_" + op.name + "/) command for more information on the above.\n"
+			command = "See the [" + op.name + "](/commands/zclone_" + op.name + "/) command for more information on the above.\n"
 		}
 		rc.Add(rc.Call{
 			Path:         "operations/" + op.name,
@@ -356,7 +356,7 @@ Returns:
 - count - number of files
 - bytes - number of bytes in those files
 
-See the [size](/commands/rclone_size/) command for more information on the above.
+See the [size](/commands/zclone_size/) command for more information on the above.
 `,
 	})
 }
@@ -394,7 +394,7 @@ Returns:
 
 - url - URL of the resource
 
-See the [link](/commands/rclone_link/) command for more information on the above.
+See the [link](/commands/zclone_link/) command for more information on the above.
 `,
 	})
 }
@@ -536,7 +536,7 @@ This returns info about the remote passed in;
 
 This command does not have a command line equivalent so use this instead:
 
-    rclone rc --loopback operations/fsinfo fs=remote:
+    zclone rc --loopback operations/fsinfo fs=remote:
 
 `,
 	})
@@ -574,7 +574,7 @@ Returns:
 
 Example:
 
-    rclone rc backend/command command=noop fs=. -o echo=yes -o blue -a path1 -a path2
+    zclone rc backend/command command=noop fs=. -o echo=yes -o blue -a path1 -a path2
 
 Returns
 
@@ -597,11 +597,11 @@ Returns
 Note that this is the direct equivalent of using this "backend"
 command:
 
-    rclone backend noop . -o echo=yes -o blue path1 path2
+    zclone backend noop . -o echo=yes -o blue path1 path2
 
 Note that arguments must be preceded by the "-a" flag
 
-See the [backend](/commands/rclone_backend/) command for more information.
+See the [backend](/commands/zclone_backend/) command for more information.
 `,
 	})
 }
@@ -897,17 +897,17 @@ Returns:
 
 Example:
 
-    $ rclone rc --loopback operations/hashsum fs=bin hashType=MD5 download=true base64=true
+    $ zclone rc --loopback operations/hashsum fs=bin hashType=MD5 download=true base64=true
     {
         "hashType": "md5",
         "hashsum": [
             "WTSVLpuiXyJO_kGzJerRLg==  backend-versions.sh",
-            "v1b_OlWCJO9LtNq3EIKkNQ==  bisect-go-rclone.sh",
-            "VHbmHzHh4taXzgag8BAIKQ==  bisect-rclone.sh",
+            "v1b_OlWCJO9LtNq3EIKkNQ==  bisect-go-zclone.sh",
+            "VHbmHzHh4taXzgag8BAIKQ==  bisect-zclone.sh",
         ]
     }
 
-See the [hashsum](/commands/rclone_hashsum/) command for more information on the above.
+See the [hashsum](/commands/zclone_hashsum/) command for more information on the above.
 `,
 	})
 }
@@ -972,13 +972,13 @@ Returns:
 
 Example:
 
-    $ rclone rc --loopback operations/hashsumfile fs=/ remote=/bin/bash hashType=MD5 download=true base64=true
+    $ zclone rc --loopback operations/hashsumfile fs=/ remote=/bin/bash hashType=MD5 download=true base64=true
     {
         "hashType": "md5",
         "hash": "MDMw-fG2YXs7Uz5Nz-H68A=="
     }
 
-See the [hashsum](/commands/rclone_hashsum/) command for more information on the above.
+See the [hashsum](/commands/zclone_hashsum/) command for more information on the above.
 `,
 	})
 }

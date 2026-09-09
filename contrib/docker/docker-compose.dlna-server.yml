@@ -1,11 +1,11 @@
-rclone-dlna-server:
-  container_name: rclone-dlna-server
+zclone-dlna-server:
+  container_name: zclone-dlna-server
 
-  image: rclone/rclone
+  image: zclone/zclone
   command:
-# Tweak here rclone's command line switches:
+# Tweak here zclone's command line switches:
 #    - "--config"
-#    - "/path/to/mounted/rclone.conf"
+#    - "/path/to/mounted/zclone.conf"
     - "--verbose"
     - "serve"
     - "dlna"
@@ -22,9 +22,9 @@ rclone-dlna-server:
   # and to avoid having to do port mapping.
   net: host
 
-  # Here you have to map your host's rclone.conf directory to
-  # container's /root/.config/rclone/ dir (R/O).
+  # Here you have to map your host's zclone.conf directory to
+  # container's /root/.config/zclone/ dir (R/O).
   # If you have any remote referencing local files, you have to
   # map them here, too.
   volumes:
-    - ~/.config/rclone/:/root/.config/rclone/:ro
+    - ~/.config/zclone/:/root/.config/zclone/:ro

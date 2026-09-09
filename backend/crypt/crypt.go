@@ -10,15 +10,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/cache"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fspath"
+	"zclone/fs/hash"
+	"zclone/fs/list"
 )
 
 // Globals
@@ -90,7 +90,7 @@ pointing to the same backend you can use it.
 This can be used, for example, to change file name encryption type
 without re-uploading all the data. Just make two crypt backends
 pointing to two different directories with the single changed
-parameter and use rclone move to move the files between the crypt
+parameter and use zclone move to move the files between the crypt
 remotes.`,
 			Advanced: true,
 		}, {
@@ -135,7 +135,7 @@ recover as much of the file as possible.`,
 			Name: "strict_names",
 			Help: `If set, this will raise an error when crypt comes across a filename that can't be decrypted.
 
-(By default, rclone will just log a NOTICE and continue as normal.)
+(By default, zclone will just log a NOTICE and continue as normal.)
 This can happen if encrypted and unencrypted files are stored in the same
 directory (which is not recommended.) It may also indicate a more serious
 problem that should be investigated.`,
@@ -930,8 +930,8 @@ strings of the encoded results.
 Usage examples:
 
 ` + "```console" + `
-rclone backend encode crypt: file1 [file2...]
-rclone rc backend/command command=encode fs=crypt: file1 [file2...]
+zclone backend encode crypt: file1 [file2...]
+zclone rc backend/command command=encode fs=crypt: file1 [file2...]
 ` + "```",
 	},
 	{
@@ -944,8 +944,8 @@ inputs are invalid.
 Usage examples:
 
 ` + "```console" + `
-rclone backend decode crypt: encryptedfile1 [encryptedfile2...]
-rclone rc backend/command command=decode fs=crypt: encryptedfile1 [encryptedfile2...]
+zclone backend decode crypt: encryptedfile1 [encryptedfile2...]
+zclone rc backend/command command=decode fs=crypt: encryptedfile1 [encryptedfile2...]
 ` + "```",
 	},
 }

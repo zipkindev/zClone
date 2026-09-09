@@ -13,11 +13,11 @@ import (
 	"os/exec"
 	"runtime"
 
-	"github.com/rclone/rclone/cmd/mountlib"
-	"github.com/rclone/rclone/cmd/serve/nfs"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/vfs"
+	"zclone/cmd/mountlib"
+	"zclone/cmd/serve/nfs"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/vfs"
 )
 
 var (

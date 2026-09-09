@@ -20,21 +20,21 @@ import (
 	"github.com/cloudinary/cloudinary-go/v2/api/admin"
 	"github.com/cloudinary/cloudinary-go/v2/api/admin/search"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
-	"github.com/rclone/rclone/backend/cloudinary/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
 	"github.com/zeebo/blake3"
+	"zclone/backend/cloudinary/api"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
-// Pacer settings - tuned to match other rclone backends
+// Pacer settings - tuned to match other zclone backends
 const (
 	minSleep      = 10 * time.Millisecond
 	maxSleep      = 2 * time.Second
@@ -486,9 +486,9 @@ func (f *Fs) Put(ctx context.Context, in io.Reader, src fs.ObjectInfo, options .
 	if !updateObject {
 		params.AssetFolder = f.FromStandardFullPath(cldPathDir(src.Remote()))
 		params.DisplayName = api.CloudinaryEncoder.FromStandardName(f, path.Base(src.Remote()))
-		// We want to conform to the unique asset ID of rclone, which is (asset_folder,display_name,last_modified).
+		// We want to conform to the unique asset ID of zclone, which is (asset_folder,display_name,last_modified).
 		// We also want to enable customers to choose their own public_id, in case duplicate names are not a crucial use case.
-		// Upload_presets that apply randomness to the public ID would not work well with rclone duplicate assets support.
+		// Upload_presets that apply randomness to the public ID would not work well with zclone duplicate assets support.
 		params.FilenameOverride = f.getSuggestedPublicID(params.AssetFolder, params.DisplayName, src.ModTime(ctx))
 	}
 	uploadResult, err := f.cld.Upload.Upload(ctx, in, params)

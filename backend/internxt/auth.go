@@ -11,16 +11,16 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	internxtauth "github.com/internxt/rclone-adapter/auth"
-	internxtconfig "github.com/internxt/rclone-adapter/config"
-	sdkerrors "github.com/internxt/rclone-adapter/errors"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/lib/oauthutil"
+	internxtauth "zclone/lib/internxtadapter/auth"
+	internxtconfig "zclone/lib/internxtadapter/config"
+	sdkerrors "zclone/lib/internxtadapter/errors"
 	"golang.org/x/oauth2"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/lib/oauthutil"
 )
 
 type userInfo struct {
@@ -167,7 +167,7 @@ func (f *Fs) reLogin(ctx context.Context) (*internxtauth.AccessResponse, error) 
 	}
 
 	if loginResp.TFA {
-		return nil, errors.New("account requires 2FA - please run: rclone config reconnect " + f.name + ":")
+		return nil, errors.New("account requires 2FA - please run: zclone config reconnect " + f.name + ":")
 	}
 
 	resp, err := internxtauth.DoLogin(ctx, cfg, f.opt.Email, password, "")

@@ -33,26 +33,26 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
-	"github.com/rclone/rclone/backend/azureblob/arrowlist"
-	"github.com/rclone/rclone/backend/azureblob/auth"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/chunksize"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/bucket"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/multipart"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/pool"
-	"github.com/rclone/rclone/lib/readers"
-	"github.com/rclone/rclone/lib/rest"
-	"github.com/rclone/rclone/lib/transferaccounter"
 	"golang.org/x/sync/errgroup"
+	"zclone/backend/azureblob/arrowlist"
+	"zclone/backend/azureblob/auth"
+	"zclone/fs"
+	"zclone/fs/chunksize"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/lib/atexit"
+	"zclone/lib/bucket"
+	"zclone/lib/encoder"
+	"zclone/lib/multipart"
+	"zclone/lib/pacer"
+	"zclone/lib/pool"
+	"zclone/lib/readers"
+	"zclone/lib/rest"
+	"zclone/lib/transferaccounter"
 )
 
 const (
@@ -126,7 +126,7 @@ var systemMetadataInfo = map[string]fs.MetadataHelp{
 		ReadOnly: true,
 	},
 	"mtime": {
-		Help:    "Time of last modification, read from rclone metadata",
+		Help:    "Time of last modification, read from zclone metadata",
 		Type:    "RFC 3339",
 		Example: "2006-01-02T15:04:05.999999999Z07:00",
 	},
@@ -215,11 +215,11 @@ Set to 0 to disable this limiter.`,
 			Name: "use_copy_blob",
 			Help: `Whether to use the Copy Blob API when copying to the same storage account.
 
-If true (the default) then rclone will use the Copy Blob API for
+If true (the default) then zclone will use the Copy Blob API for
 copies to the same storage account even when the size is above the
 copy_cutoff.
 
-Rclone assumes that the same storage account means the same config
+Zclone assumes that the same storage account means the same config
 and does not check for the same storage account in different configs.
 
 There should be no need to change this value.
@@ -283,8 +283,8 @@ Archived blobs can be restored by setting access tier to hot, cool or
 cold. Leave blank if you intend to use default access tier, which is
 set at account level
 
-If there is no "access tier" specified, rclone doesn't apply any tier.
-rclone performs "Set Tier" operation on blobs while uploading, if objects
+If there is no "access tier" specified, zclone doesn't apply any tier.
+zclone performs "Set Tier" operation on blobs while uploading, if objects
 are not modified, specifying "access tier" to new one will have no effect.
 If blobs are in "archive tier" at remote, trying to perform data transfer
 operations from remote will not be allowed. User should first restore by
@@ -296,12 +296,12 @@ tiering blob to "Hot", "Cool" or "Cold".`,
 			Help: fmt.Sprintf(`Delete archive tier blobs before overwriting.
 
 Archive tier blobs cannot be updated. So without this flag, if you
-attempt to update an archive tier blob, then rclone will produce the
+attempt to update an archive tier blob, then zclone will produce the
 error:
 
     %v
 
-With this flag set then before rclone attempts to overwrite an archive
+With this flag set then before zclone attempts to overwrite an archive
 tier blob, it will delete the existing blob before uploading its
 replacement.  This has the potential for data loss if the upload fails
 (unlike updating a normal blob) and also may cost more since deleting
@@ -312,7 +312,7 @@ archive tier blobs early may be chargable.
 			Name: "disable_checksum",
 			Help: `Don't store MD5 checksum with object metadata.
 
-Normally rclone will calculate the MD5 checksum of the input before
+Normally zclone will calculate the MD5 checksum of the input before
 uploading it so it can add it to metadata on the object. This is great
 for data integrity checking but can cause long delays for large files
 to start uploading.`,
@@ -374,7 +374,7 @@ the Microsoft standard.
 			Help: `If set, don't attempt to check the container exists or create it.
 
 This can be useful when trying to minimise the number of transactions
-rclone does if you know the container exists already.
+zclone does if you know the container exists already.
 `,
 			Default:  false,
 			Advanced: true,
@@ -406,10 +406,10 @@ rclone does if you know the container exists already.
 			Help: `If set this will decompress gzip encoded objects.
 
 It is possible to upload objects to Azure Blob Storage with "Content-Encoding: gzip"
-set. Normally rclone will download these files as compressed objects.
+set. Normally zclone will download these files as compressed objects.
 
-If this flag is set then rclone will decompress these files with
-"Content-Encoding: gzip" as they are received. This means that rclone
+If this flag is set then zclone will decompress these files with
+"Content-Encoding: gzip" as they are received. This means that zclone
 can't check the size and hash but the file contents will be decompressed.
 `,
 			Advanced: true,
@@ -967,7 +967,7 @@ func toAzureMetaPtr(in map[string]string) map[string]*string {
 // assembleCopyParams prepares headers, metadata and tags for copy operations.
 //
 // It starts from the source properties, optionally overlays mapped metadata
-// from rclone's metadata options, ensures mtime presence when mapping is
+// from zclone's metadata options, ensures mtime presence when mapping is
 // enabled, and returns whether mapping was actually requested (hadMapping).
 // assembleCopyParams prepares headers, metadata and tags for copy operations.
 //
@@ -1007,7 +1007,7 @@ func assembleCopyParams(ctx context.Context, f *Fs, src fs.Object, srcProps *blo
 			return headers, meta, nil, false, fmt.Errorf("failed to map metadata: %w", mapErr)
 		}
 		if mapped != nil {
-			// Map rclone metadata to Azure shapes
+			// Map zclone metadata to Azure shapes
 			mappedHeaders, userMeta, mappedTags, mappedModTime, herr := mapMetadataToAzure(mapped, func(format string, args ...any) { fs.Debugf(f, format, args...) })
 			if herr != nil {
 				return headers, meta, nil, false, fmt.Errorf("metadata mapping: %w", herr)

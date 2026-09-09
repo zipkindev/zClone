@@ -11,17 +11,17 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
-	"github.com/rclone/rclone/lib/random"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/fspath"
+	"zclone/fs/hash"
+	"zclone/fs/object"
+	"zclone/fs/operations"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
+	"zclone/lib/random"
 )
 
 // Command line flags
@@ -118,8 +118,8 @@ func testChunkNameFormat(t *testing.T, f *Fs) {
 	const newFormatSupported = false // support for patterns not starting with base name (*)
 
 	// valid formats
-	assertFormat(`*.rclone_chunk.###`, `%s.rclone_chunk.%03d`, `%s.rclone_chunk._%s`, `^(.+?)\.rclone_chunk\.(?:([0-9]{3,})|_([a-z][a-z0-9]{2,6}))(?:_([0-9a-z]{4,9})|\.\.tmp_([0-9]{10,13}))?$`)
-	assertFormat(`*.rclone_chunk.#`, `%s.rclone_chunk.%d`, `%s.rclone_chunk._%s`, `^(.+?)\.rclone_chunk\.(?:([0-9]+)|_([a-z][a-z0-9]{2,6}))(?:_([0-9a-z]{4,9})|\.\.tmp_([0-9]{10,13}))?$`)
+	assertFormat(`*.zclone_chunk.###`, `%s.zclone_chunk.%03d`, `%s.zclone_chunk._%s`, `^(.+?)\.zclone_chunk\.(?:([0-9]{3,})|_([a-z][a-z0-9]{2,6}))(?:_([0-9a-z]{4,9})|\.\.tmp_([0-9]{10,13}))?$`)
+	assertFormat(`*.zclone_chunk.#`, `%s.zclone_chunk.%d`, `%s.zclone_chunk._%s`, `^(.+?)\.zclone_chunk\.(?:([0-9]+)|_([a-z][a-z0-9]{2,6}))(?:_([0-9a-z]{4,9})|\.\.tmp_([0-9]{10,13}))?$`)
 	assertFormat(`*_chunk_#####`, `%s_chunk_%05d`, `%s_chunk__%s`, `^(.+?)_chunk_(?:([0-9]{5,})|_([a-z][a-z0-9]{2,6}))(?:_([0-9a-z]{4,9})|\.\.tmp_([0-9]{10,13}))?$`)
 	assertFormat(`*-chunk-#`, `%s-chunk-%d`, `%s-chunk-_%s`, `^(.+?)-chunk-(?:([0-9]+)|_([a-z][a-z0-9]{2,6}))(?:_([0-9a-z]{4,9})|\.\.tmp_([0-9]{10,13}))?$`)
 	assertFormat(`*-chunk-#-%^$()[]{}.+-!?:\`, `%s-chunk-%d-%%^$()[]{}.+-!?:\`, `%s-chunk-_%s-%%^$()[]{}.+-!?:\`, `^(.+?)-chunk-(?:([0-9]+)|_([a-z][a-z0-9]{2,6}))-%\^\$\(\)\[\]\{\}\.\+-!\?:\\(?:_([0-9a-z]{4,9})|\.\.tmp_([0-9]{10,13}))?$`)
@@ -748,7 +748,7 @@ func testFutureProof(t *testing.T, f *Fs) {
 	assert.Nil(t, mobj)
 	assert.Error(t, err)
 	if err != nil {
-		assert.Contains(t, err.Error(), "please upgrade rclone")
+		assert.Contains(t, err.Error(), "please upgrade zclone")
 	}
 
 	// Put must fail
@@ -763,7 +763,7 @@ func testFutureProof(t *testing.T, f *Fs) {
 	assert.Nil(t, robj)
 	assert.NotNil(t, err)
 	if err != nil {
-		assert.Contains(t, err.Error(), "please upgrade rclone")
+		assert.Contains(t, err.Error(), "please upgrade zclone")
 	}
 }
 

@@ -10,8 +10,8 @@ import (
 
 // We use a special environment variable to let the child process know its role.
 const (
-	DaemonMarkVar   = "_RCLONE_DAEMON_"
-	DaemonMarkChild = "_rclone_daemon_"
+	DaemonMarkVar   = "_ZCLONE_DAEMON_"
+	DaemonMarkChild = "_zclone_daemon_"
 )
 
 // IsDaemon returns true if this process runs in background

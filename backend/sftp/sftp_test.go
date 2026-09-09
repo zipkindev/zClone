@@ -7,9 +7,9 @@ package sftp_test
 import (
 	"testing"
 
-	"github.com/rclone/rclone/backend/sftp"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
+	"zclone/backend/sftp"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
 )
 
 // TestIntegration runs integration tests against the remote
@@ -25,7 +25,7 @@ func TestIntegration2(t *testing.T) {
 		t.Skip("skipping as -remote is set")
 	}
 	fstests.Run(t, &fstests.Opt{
-		RemoteName: "TestSFTPRclone:",
+		RemoteName: "TestSFTPZclone:",
 		NilObject:  (*sftp.Object)(nil),
 	})
 }
@@ -35,7 +35,7 @@ func TestIntegration3(t *testing.T) {
 		t.Skip("skipping as -remote is set")
 	}
 	fstests.Run(t, &fstests.Opt{
-		RemoteName: "TestSFTPRcloneSSH:",
+		RemoteName: "TestSFTPZcloneSSH:",
 		NilObject:  (*sftp.Object)(nil),
 	})
 }

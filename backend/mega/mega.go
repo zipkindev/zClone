@@ -27,18 +27,18 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/readers"
 	mega "github.com/t3rm1n4l/go-mega"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
+	"zclone/lib/readers"
 )
 
 const (
@@ -103,7 +103,7 @@ information from the mega backend.`,
 			Help: `Delete files permanently rather than putting them into the trash.
 
 Normally the mega backend will put all deletions into the trash rather
-than permanently deleting them.  If you specify this then rclone will
+than permanently deleting them.  If you specify this then zclone will
 permanently delete objects instead.`,
 			Default:  false,
 			Advanced: true,
@@ -159,7 +159,7 @@ type Fs struct {
 //
 // Will definitely have info but maybe not meta.
 //
-// Normally rclone would just store an ID here but go-mega and mega.nz
+// Normally zclone would just store an ID here but go-mega and mega.nz
 // expect you to build an entire tree of all the objects in memory.
 // In this case we just store a pointer to the object.
 type Object struct {

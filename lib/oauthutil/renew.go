@@ -4,7 +4,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 // Renew allows tokens to be renewed on expiry if uploads are in progress.

@@ -13,27 +13,27 @@ import (
 	"sync"
 	"time"
 
-	"github.com/internxt/rclone-adapter/auth"
-	"github.com/internxt/rclone-adapter/buckets"
-	config "github.com/internxt/rclone-adapter/config"
-	sdkerrors "github.com/internxt/rclone-adapter/errors"
-	"github.com/internxt/rclone-adapter/files"
-	"github.com/internxt/rclone-adapter/folders"
-	"github.com/internxt/rclone-adapter/users"
-	"github.com/rclone/rclone/fs"
-	rclone_config "github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/multipart"
-	"github.com/rclone/rclone/lib/oauthutil"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/random"
+	"zclone/lib/internxtadapter/auth"
+	"zclone/lib/internxtadapter/buckets"
+	config "zclone/lib/internxtadapter/config"
+	sdkerrors "zclone/lib/internxtadapter/errors"
+	"zclone/lib/internxtadapter/files"
+	"zclone/lib/internxtadapter/folders"
+	"zclone/lib/internxtadapter/users"
+	"zclone/fs"
+	zclone_config "zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/dircache"
+	"zclone/lib/encoder"
+	"zclone/lib/multipart"
+	"zclone/lib/oauthutil"
+	"zclone/lib/pacer"
+	"zclone/lib/random"
 )
 
 const (
@@ -122,8 +122,8 @@ func init() {
 			Default:  fs.SizeSuffix(30 * 1024 * 1024),
 			Advanced: true,
 		}, {
-			Name:     rclone_config.ConfigEncoding,
-			Help:     rclone_config.ConfigEncodingHelp,
+			Name:     zclone_config.ConfigEncoding,
+			Help:     zclone_config.ConfigEncodingHelp,
 			Advanced: true,
 			Default: encoder.EncodeInvalidUtf8 |
 				encoder.EncodeSlash |
@@ -291,7 +291,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 	}
 
 	if opt.Mnemonic == "" {
-		return nil, errors.New("mnemonic is required - please run: rclone config reconnect " + name + ":")
+		return nil, errors.New("mnemonic is required - please run: zclone config reconnect " + name + ":")
 	}
 
 	var err error
@@ -302,7 +302,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 
 	oauthToken, err := oauthutil.GetToken(name, m)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get token - please run: rclone config reconnect %s: - %w", name, err)
+		return nil, fmt.Errorf("failed to get token - please run: zclone config reconnect %s: - %w", name, err)
 	}
 
 	oauthConfig := &oauthutil.Config{
@@ -988,7 +988,7 @@ func (o *Object) Update(ctx context.Context, in io.Reader, src fs.ObjectInfo, op
 		name := strings.TrimSuffix(baseName, path.Ext(baseName))
 		ext := strings.TrimPrefix(path.Ext(baseName), ".")
 
-		backupSuffix := fmt.Sprintf(".rclone-backup-%s", random.String(8))
+		backupSuffix := fmt.Sprintf(".zclone-backup-%s", random.String(8))
 		backupName = o.f.opt.Encoding.FromStandardName(name + backupSuffix)
 		backupType = ext
 

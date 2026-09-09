@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/rclone/rclone/backend/dropbox/dbhash"
 	"github.com/stretchr/testify/assert"
+	"zclone/backend/dropbox/dbhash"
 )
 
 func testChunk(t *testing.T, chunk int) {

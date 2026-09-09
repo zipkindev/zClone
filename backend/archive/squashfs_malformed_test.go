@@ -9,11 +9,11 @@ import (
 	"path/filepath"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fstest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	"zclone/fs/cache"
+	"zclone/fstest"
 )
 
 // squashfsSuperblock builds a minimal 96-byte squashfs superblock with the

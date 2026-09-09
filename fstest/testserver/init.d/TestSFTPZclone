@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -e
+
+NAME=zclone-serve-sftp
+USER=zclone
+PASS=CranesBallotDorsey5
+IP=127.0.0.1
+PORT=28621
+
+start() {
+    run zclone serve sftp --user $USER --pass $PASS --addr ${IP}:${PORT} ${DATADIR}
+    
+    echo type=sftp
+    echo host=${IP}
+    echo port=$PORT
+    echo user=$USER
+    echo pass=$(zclone obscure $PASS)
+    echo _connect=${IP}:${PORT}
+}
+
+. $(dirname "$0")/zclone-serve.bash

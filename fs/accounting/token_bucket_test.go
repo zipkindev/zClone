@@ -5,11 +5,11 @@ import (
 	"math"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/rc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/time/rate"
+	"zclone/fs"
+	"zclone/fs/rc"
 )
 
 func TestTokenBucketBurstScalesLargeBandwidthWithoutOverflow(t *testing.T) {

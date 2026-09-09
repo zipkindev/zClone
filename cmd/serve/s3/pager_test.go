@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/gofakes3"
+	"zclone/lib/gofakes3"
 )
 
 func TestPagerSortsContentsByKey(t *testing.T) {

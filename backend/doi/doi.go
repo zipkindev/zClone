@@ -14,16 +14,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/backend/doi/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/cache"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/doi/api"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/cache"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
 const (
@@ -55,7 +55,7 @@ func init() {
 			Name: fs.ConfigProvider,
 			Help: `DOI provider.
 
-The DOI provider can be set when rclone does not automatically recognize a supported DOI provider.`,
+The DOI provider can be set when zclone does not automatically recognize a supported DOI provider.`,
 			Examples: []fs.OptionExample{
 				{
 					Value: "auto",
@@ -566,7 +566,7 @@ var commandHelp = []fs.CommandHelp{{
 Usage example:
 
 ` + "```console" + `
-rclone backend metadata doi:
+zclone backend metadata doi:
 ` + "```" + `
 
 It returns a JSON object representing metadata about the DOI.`,
@@ -579,9 +579,9 @@ for a running doi backend.
 Usage examples:
 
 ` + "```console" + `
-rclone backend set doi: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
-rclone rc backend/command command=set fs=doi: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
-rclone rc backend/command command=set fs=doi: -o doi=NEW_DOI
+zclone backend set doi: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
+zclone rc backend/command command=set fs=doi: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
+zclone rc backend/command command=set fs=doi: -o doi=NEW_DOI
 ` + "```" + `
 
 The option keys are named as they are in the config file.

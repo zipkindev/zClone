@@ -15,21 +15,21 @@ import (
 	"time"
 
 	"github.com/coreos/go-semver/semver"
-	"github.com/rclone/rclone/backend/seafile/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/bucket"
-	"github.com/rclone/rclone/lib/cache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/seafile/api"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/bucket"
+	"zclone/lib/cache"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
+	"zclone/lib/random"
+	"zclone/lib/rest"
 )
 
 const (
@@ -93,7 +93,7 @@ func init() {
 			Sensitive:  true,
 		}, {
 			Name:     configCreateLibrary,
-			Help:     "Should rclone create a library if it doesn't exist.",
+			Help:     "Should zclone create a library if it doesn't exist.",
 			Advanced: true,
 			Default:  false,
 		}, {
@@ -317,8 +317,8 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 func Config(ctx context.Context, name string, m configmap.Mapper, config fs.ConfigIn) (*fs.ConfigOut, error) {
 	serverURL, ok := m.Get(configURL)
 	if !ok || serverURL == "" {
-		// If there's no server URL, it means we're trying an operation at the backend level, like a "rclone authorize seafile"
-		return nil, errors.New("operation not supported on this remote. If you need a 2FA code on your account, use the command: rclone config reconnect <remote name>: ")
+		// If there's no server URL, it means we're trying an operation at the backend level, like a "zclone authorize seafile"
+		return nil, errors.New("operation not supported on this remote. If you need a 2FA code on your account, use the command: zclone config reconnect <remote name>: ")
 	}
 
 	u, err := url.Parse(serverURL)
@@ -560,7 +560,7 @@ func (f *Fs) NewObject(ctx context.Context, remote string) (fs.Object, error) {
 
 // Put in to the remote path with the modTime given of the given size
 //
-// When called from outside an Fs by rclone, src.Size() will always be >= 0.
+// When called from outside an Fs by zclone, src.Size() will always be >= 0.
 // But for unknown-sized objects (indicated by src.Size() == -1), Put should either
 // return an error or upload it properly (rather than e.g. calling panic).
 //
@@ -907,7 +907,7 @@ func (f *Fs) DirMove(ctx context.Context, src fs.Fs, srcRemote, dstRemote string
 	// So the trick is to rename the directory to something random before moving it
 	// After the move we rename the random name back to the expected one
 	// Hopefully there won't be anything with the same name existing at destination ;)
-	tempName := ".rclone-move-" + random.String(32)
+	tempName := ".zclone-move-" + random.String(32)
 
 	// 1- rename source
 	err = srcFs.renameDir(ctx, srcLibraryID, srcPath, tempName)

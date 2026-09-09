@@ -8,9 +8,9 @@ import (
 	"path"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
+	"zclone/fs"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
 )
 
 // obtain hash for an object
@@ -114,7 +114,7 @@ func (o *Object) Hash(ctx context.Context, hashType hash.Type) (hashVal string, 
 	return hashVal, err
 }
 
-// updateHashes performs implicit "rclone hashsum --download" and updates cache.
+// updateHashes performs implicit "zclone hashsum --download" and updates cache.
 func (o *Object) updateHashes(ctx context.Context) error {
 	r, err := o.Open(ctx)
 	if err != nil {

@@ -15,10 +15,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/walk"
 	bolt "go.etcd.io/bbolt"
 	"go.etcd.io/bbolt/errors"
+	"zclone/fs"
+	"zclone/fs/walk"
 )
 
 // Constants
@@ -99,7 +99,7 @@ func newPersistent(dbPath, chunkPath string, f *Features) (*Persistent, error) {
 
 	err := b.connect()
 	if err != nil {
-		fs.Errorf(dbPath, "Error opening storage cache. Is there another rclone running on the same remote? %v", err)
+		fs.Errorf(dbPath, "Error opening storage cache. Is there another zclone running on the same remote? %v", err)
 		return nil, err
 	}
 
@@ -146,7 +146,7 @@ func (b *Persistent) getBucket(dir string, createIfMissing bool, tx *bolt.Tx) *b
 	cleanPath(dir)
 
 	entries := strings.FieldsFunc(dir, func(c rune) bool {
-		// cover Windows where rclone still uses '/' as path separator
+		// cover Windows where zclone still uses '/' as path separator
 		// this should be safe as '/' is not a valid Windows character
 		return (os.PathSeparator == c || c == rune('/'))
 	})

@@ -6,10 +6,10 @@ package archive_test
 import (
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/local"
-	_ "github.com/rclone/rclone/backend/memory"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
+	_ "zclone/backend/local"
+	_ "zclone/backend/memory"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
 )
 
 var (

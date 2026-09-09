@@ -1,7 +1,7 @@
 ### VFS - Virtual File System
 
 This command uses the VFS layer. This adapts the cloud storage objects
-that rclone uses into something which looks much more like a disk
+that zclone uses into something which looks much more like a disk
 filing system.
 
 Cloud storage objects have lots of properties which aren't like disk
@@ -25,30 +25,30 @@ invalidate the cache.
 ```
 
 However, changes made directly on the cloud storage by the web
-interface or a different copy of rclone will only be picked up once
+interface or a different copy of zclone will only be picked up once
 the directory cache expires if the backend configured does not support
 polling for changes. If the backend supports polling, changes will be
 picked up within the polling interval.
 
-You can send a `SIGHUP` signal to rclone for it to flush all
+You can send a `SIGHUP` signal to zclone for it to flush all
 directory caches, regardless of how old they are.  Assuming only one
-rclone instance is running, you can reset the cache like this:
+zclone instance is running, you can reset the cache like this:
 
 ```console
-kill -SIGHUP $(pidof rclone)
+kill -SIGHUP $(pidof zclone)
 ```
 
-If you configure rclone with a [remote control](/rc) then you can use
-rclone rc to flush the whole directory cache:
+If you configure zclone with a [remote control](/rc) then you can use
+zclone rc to flush the whole directory cache:
 
 ```console
-rclone rc vfs/forget
+zclone rc vfs/forget
 ```
 
 Or individual files or directories:
 
 ```console
-rclone rc vfs/forget file=path/to/file dir=path/to/dir
+zclone rc vfs/forget file=path/to/file dir=path/to/dir
 ```
 
 ### VFS File Buffering
@@ -65,7 +65,7 @@ buffer will only use memory for data that is downloaded but not
 yet read. If the buffer is empty, only a small amount of memory will
 be used.
 
-The maximum memory used by rclone for buffering can be up to
+The maximum memory used by zclone for buffering can be up to
 `--buffer-size * open files`.
 
 ### VFS File Caching
@@ -81,7 +81,7 @@ Note that the VFS cache is separate from the cache backend and you may
 find that you need one or the other or both.
 
 ```text
-    --cache-dir string                     Directory rclone will use for caching.
+    --cache-dir string                     Directory zclone will use for caching.
     --vfs-cache-mode CacheMode             Cache mode off|minimal|writes|full (default off)
     --vfs-cache-max-age duration           Max time since last access of objects in the cache (default 1h0m0s)
     --vfs-cache-max-size SizeSuffix        Max total size of objects in the cache (default off)
@@ -90,19 +90,19 @@ find that you need one or the other or both.
     --vfs-write-back duration              Time to writeback files after last use when using cache (default 5s)
 ```
 
-If run with `-vv` rclone will print the location of the file cache.  The
+If run with `-vv` zclone will print the location of the file cache.  The
 files are stored in the user cache file area which is OS dependent but
 can be controlled with `--cache-dir` or setting the appropriate
 environment variable.
 
 The cache has 4 different modes selected by `--vfs-cache-mode`.
-The higher the cache mode the more compatible rclone becomes at the
+The higher the cache mode the more compatible zclone becomes at the
 cost of using disk space.
 
 Note that files are written back to the remote only when they are
 closed and if they haven't been accessed for `--vfs-write-back`
-seconds. If rclone is quit or dies with files that haven't been
-uploaded, these will be uploaded next time rclone is run with the same
+seconds. If zclone is quit or dies with files that haven't been
+uploaded, these will be uploaded next time zclone is run with the same
 flags.
 
 If using `--vfs-cache-max-size` or `--vfs-cache-min-free-space` note
@@ -110,8 +110,8 @@ that the cache may exceed these quotas for two reasons. Firstly
 because it is only checked every `--vfs-cache-poll-interval`. Secondly
 because open files cannot be evicted from the cache. When
 `--vfs-cache-max-size` or `--vfs-cache-min-free-space` is exceeded,
-rclone will attempt to evict the least accessed files from the cache
-first. rclone will start with files that haven't been accessed for the
+zclone will attempt to evict the least accessed files from the cache
+first. zclone will start with files that haven't been accessed for the
 longest. This cache flushing strategy is efficient and more relevant
 files are likely to remain cached.
 
@@ -123,10 +123,10 @@ for 1 hour. When a cached file is accessed the 1 hour timer is reset to 0
 and will wait for 1 more hour before evicting. Specify the time with
 standard notation, s, m, h, d, w .
 
-You **should not** run two copies of rclone using the same VFS cache
+You **should not** run two copies of zclone using the same VFS cache
 with the same or overlapping remotes if using `--vfs-cache-mode > off`.
 This can potentially cause data corruption if you do. You can work
-around this by giving each rclone its own cache hierarchy with
+around this by giving each zclone its own cache hierarchy with
 `--cache-dir`. You don't need to worry about this if the remotes in
 use don't overlap.
 
@@ -174,10 +174,10 @@ intervals up to 1 minute.
 In this mode all reads and writes are buffered to and from disk. When
 data is read from the remote this is buffered to disk as well.
 
-In this mode the files in the cache will be sparse files and rclone
+In this mode the files in the cache will be sparse files and zclone
 will keep track of which bits of the files it has downloaded.
 
-So if an application only reads the starts of each file, then rclone
+So if an application only reads the starts of each file, then zclone
 will only buffer the start of the file. These files will appear to be
 their full size in the cache, but they will be sparse files with only
 the data that has been downloaded present in them.
@@ -185,7 +185,7 @@ the data that has been downloaded present in them.
 This mode should support all normal file system operations and is
 otherwise identical to `--vfs-cache-mode` writes.
 
-When reading a file rclone will read `--buffer-size` plus
+When reading a file zclone will read `--buffer-size` plus
 `--vfs-read-ahead` bytes ahead.  The `--buffer-size` is buffered in memory
 whereas the `--vfs-read-ahead` is buffered on disk.
 
@@ -193,7 +193,7 @@ When using this mode it is recommended that `--buffer-size` is not set
 too large and `--vfs-read-ahead` is set large if required.
 
 **IMPORTANT** not all file systems support sparse files. In particular
-FAT/exFAT do not. Rclone will perform very badly if the cache
+FAT/exFAT do not. Zclone will perform very badly if the cache
 directory is on a filesystem which doesn't support sparse files and it
 will log an ERROR message if one is detected.
 
@@ -217,7 +217,7 @@ they have to read the entire file and hash it, and `modtime` is slow
 with the `s3`, `swift`, `ftp` and `qinqstor` backends because they
 need to do an extra API call to fetch it.
 
-If you use the `--vfs-fast-fingerprint` flag then rclone will not
+If you use the `--vfs-fast-fingerprint` flag then zclone will not
 include the slow operations in the fingerprint. This makes the
 fingerprinting less accurate but much faster and will improve the
 opening time of cached files.
@@ -231,8 +231,8 @@ be downloaded again.
 
 ### VFS Chunked Reading
 
-When rclone reads files from a remote it reads them in chunks. This
-means that rather than requesting the whole file rclone reads the
+When zclone reads files from a remote it reads them in chunks. This
+means that rather than requesting the whole file zclone reads the
 chunk specified.  This can reduce the used download quota for some
 remotes by requesting only chunks from the remote that are actually
 read, at the cost of an increased number of requests.
@@ -249,7 +249,7 @@ The chunking behaves differently depending on the `--vfs-read-chunk-streams` par
 
 #### `--vfs-read-chunk-streams` == 0
 
-Rclone will start reading a chunk of size `--vfs-read-chunk-size`,
+Zclone will start reading a chunk of size `--vfs-read-chunk-size`,
 and then double the size for each read. When `--vfs-read-chunk-size-limit` is
 specified, and greater than `--vfs-read-chunk-size`, the chunk size for each
 open file will get doubled only until the specified value is reached. If the
@@ -267,7 +267,7 @@ The chunks will not be buffered in memory.
 
 #### `--vfs-read-chunk-streams` > 0
 
-Rclone reads `--vfs-read-chunk-streams` chunks of size
+Zclone reads `--vfs-read-chunk-streams` chunks of size
 `--vfs-read-chunk-size` concurrently. The size for each read will stay
 constant.
 
@@ -304,8 +304,8 @@ read of the modification time takes a transaction.
     --read-only       Only allow read-only access.
 ```
 
-Sometimes rclone is delivered reads or writes out of order. Rather
-than seeking rclone will wait a short time for the in sequence read or
+Sometimes zclone is delivered reads or writes out of order. Rather
+than seeking zclone will wait a short time for the in sequence read or
 write to come in. These flags only come into effect when not using an
 on disk cache file.
 
@@ -329,27 +329,27 @@ By default the VFS does not support symlinks. However this may be
 enabled with either of the following flags:
 
 ```text
-    --links      Translate symlinks to/from regular files with a '.rclonelink' extension.
-    --vfs-links  Translate symlinks to/from regular files with a '.rclonelink' extension for the VFS
+    --links      Translate symlinks to/from regular files with a '.zclonelink' extension.
+    --vfs-links  Translate symlinks to/from regular files with a '.zclonelink' extension for the VFS
 ```
 
-As most cloud storage systems do not support symlinks directly, rclone
+As most cloud storage systems do not support symlinks directly, zclone
 stores the symlink as a normal file with a special extension. So a
 file which appears as a symlink `link-to-file.txt` would be stored on
-cloud storage as `link-to-file.txt.rclonelink` and the contents would
+cloud storage as `link-to-file.txt.zclonelink` and the contents would
 be the path to the symlink destination.
 
-Note that `--links` enables symlink translation globally in rclone -
+Note that `--links` enables symlink translation globally in zclone -
 this includes any backend which supports the concept (for example the
 local backend). `--vfs-links` just enables it for the VFS layer.
 
 This scheme is compatible with that used by the
 [local backend with the --local-links flag](/local/#symlinks-junction-points).
 
-The `--vfs-links` flag has been designed for `rclone mount`, `rclone
-nfsmount` and `rclone serve nfs`.
+The `--vfs-links` flag has been designed for `zclone mount`, `zclone
+nfsmount` and `zclone serve nfs`.
 
-It hasn't been tested with the other `rclone serve` commands yet.
+It hasn't been tested with the other `zclone serve` commands yet.
 
 A limitation of the current implementation is that it expects the
 caller to resolve sub-symlinks. For example given this directory tree
@@ -366,7 +366,7 @@ The VFS will correctly resolve `linked-dir` but not
 but may be for other commands.
 
 **Note** that there is an outstanding issue with symlink support
-[issue #8245](https://github.com/rclone/rclone/issues/8245) with duplicate
+[issue #8245](/) with duplicate
 files being created when symlinks are moved into directories where
 there is a file of the same name (or vice versa).
 
@@ -383,26 +383,26 @@ It is not allowed for two files in the same directory to differ only by case.
 Usually file systems on macOS are case-insensitive. It is possible to make macOS
 file systems case-sensitive but that is not the default.
 
-The `--vfs-case-insensitive` VFS flag controls how rclone handles these
-two cases. If its value is "false", rclone passes file names to the remote
+The `--vfs-case-insensitive` VFS flag controls how zclone handles these
+two cases. If its value is "false", zclone passes file names to the remote
 as-is. If the flag is "true" (or appears without a value on the
-command line), rclone may perform a "fixup" as explained below.
+command line), zclone may perform a "fixup" as explained below.
 
 The user may specify a file name to open/delete/rename/etc with a case
 different than what is stored on the remote. If an argument refers
 to an existing file with exactly the same name, then the case of the existing
 file on the disk will be used. However, if a file name with exactly the same
-name is not found but a name differing only by case exists, rclone will
+name is not found but a name differing only by case exists, zclone will
 transparently fixup the name. This fixup happens only when an existing file
-is requested. Case sensitivity of file names created anew by rclone is
+is requested. Case sensitivity of file names created anew by zclone is
 controlled by the underlying remote.
 
-Note that case sensitivity of the operating system running rclone (the target)
-may differ from case sensitivity of a file system presented by rclone (the source).
+Note that case sensitivity of the operating system running zclone (the target)
+may differ from case sensitivity of a file system presented by zclone (the source).
 The flag controls whether "fixup" is performed to satisfy the target.
 
 If the flag is not provided on the command line, then its default value depends
-on the operating system where rclone runs: "true" on Windows and macOS, "false"
+on the operating system where zclone runs: "true" on Windows and macOS, "false"
 otherwise. If the flag is provided without a value, then it is "true".
 
 The `--no-unicode-normalization` flag controls whether a similar "fixup" is
@@ -416,7 +416,7 @@ encoding compatibility issues.
 In the (probably unlikely) event that a directory has multiple duplicate
 filenames after applying case and unicode normalization, the `--vfs-block-norm-dupes`
 flag allows hiding these duplicates. This comes with a performance tradeoff, as
-rclone will have to scan the entire directory for duplicates when listing a
+zclone will have to scan the entire directory for duplicates when listing a
 directory. For this reason, it is recommended to leave this disabled if not
 needed. However, macOS users may wish to consider using it, as otherwise, if a
 remote directory contains both NFC and NFD versions of the same filename, an odd
@@ -424,7 +424,7 @@ situation will occur: both versions of the file will be visible in the mount,
 and both will appear to be editable, however, editing either version will
 actually result in only the NFD version getting edited under the hood. `--vfs-block-
 norm-dupes` prevents this confusion by detecting this scenario, hiding the
-duplicates, and logging an error, similar to how this is handled in `rclone
+duplicates, and logging an error, similar to how this is handled in `zclone
 sync`.
 
 ### VFS Disk Options
@@ -440,12 +440,12 @@ It can be useful when those statistics cannot be read correctly automatically.
 
 Some backends, most notably S3, do not report the amount of bytes used.
 If you need this information to be available when running `df` on the
-filesystem, then pass the flag `--vfs-used-is-size` to rclone.
+filesystem, then pass the flag `--vfs-used-is-size` to zclone.
 With this flag set, instead of relying on the backend to report this
-information, rclone will scan the whole remote similar to `rclone size`
+information, zclone will scan the whole remote similar to `zclone size`
 and compute the total used space itself.
 
-**WARNING**: Contrary to `rclone size`, this flag ignores filters so that the
+**WARNING**: Contrary to `zclone size`, this flag ignores filters so that the
 result is accurate. However, this is very inefficient and may cost lots of API
 calls resulting in extra charges. Use it as a last resort and only with caching.
 
@@ -460,7 +460,7 @@ directory listings until the directory cache expires.
 Note that some backends won't create metadata unless you pass in the
 `--metadata` flag.
 
-For example, using `rclone mount` with `--metadata --vfs-metadata-extension .metadata`
+For example, using `zclone mount` with `--metadata --vfs-metadata-extension .metadata`
 we get
 
 ```console

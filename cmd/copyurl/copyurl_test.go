@@ -9,11 +9,11 @@ import (
 	"sync/atomic"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	"zclone/fs"
+	"zclone/fs/operations"
 )
 
 func resetGlobals() {

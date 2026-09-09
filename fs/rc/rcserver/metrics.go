@@ -8,11 +8,11 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/fs/rc/jobs"
-	libhttp "github.com/rclone/rclone/lib/http"
+	"zclone/fs/accounting"
+	"zclone/fs/fshttp"
+	"zclone/fs/rc"
+	"zclone/fs/rc/jobs"
+	libhttp "zclone/lib/http"
 )
 
 const path = "/metrics"
@@ -20,10 +20,10 @@ const path = "/metrics"
 var promHandlerFunc http.HandlerFunc
 
 func init() {
-	rcloneCollector := accounting.NewRcloneCollector(context.Background())
-	prometheus.MustRegister(rcloneCollector)
+	zcloneCollector := accounting.NewZcloneCollector(context.Background())
+	prometheus.MustRegister(zcloneCollector)
 
-	m := fshttp.NewMetrics("rclone")
+	m := fshttp.NewMetrics("zclone")
 	for _, c := range m.Collectors() {
 		prometheus.MustRegister(c)
 	}

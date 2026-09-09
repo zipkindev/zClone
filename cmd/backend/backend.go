@@ -8,12 +8,12 @@ import (
 	"os"
 	"sort"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/rc"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/cmd/rc"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/operations"
 )
 
 var (
@@ -38,8 +38,8 @@ see the backend docs for definitions.
 You can discover what commands a backend implements by using
 
 ` + "```console" + `
-rclone backend help remote:
-rclone backend help <backendname>
+zclone backend help remote:
+zclone backend help <backendname>
 ` + "```" + `
 
 You can also discover information about the backend using (see
@@ -47,19 +47,19 @@ You can also discover information about the backend using (see
 for more info).
 
 ` + "```console" + `
-rclone backend features remote:
+zclone backend features remote:
 ` + "```" + `
 
 Pass options to the backend command with -o. This should be key=value or key, e.g.:
 
 ` + "```console" + `
-rclone backend stats remote:path stats -o format=json -o long
+zclone backend stats remote:path stats -o format=json -o long
 ` + "```" + `
 
 Pass arguments to the backend by placing them on the end of the line
 
 ` + "```console" + `
-rclone backend cleanup remote:path file1 file2 file3
+zclone backend cleanup remote:path file1 file2 file3
 ` + "```" + `
 
 Note to run these commands on a running backend then see
@@ -159,12 +159,12 @@ func showHelp(fsInfo *fs.RegInfo) error {
 Run them with:
 
 `+"```console"+`
-rclone backend COMMAND remote:
+zclone backend COMMAND remote:
 `+"```"+`
 
 The help below will explain what arguments each command takes.
 
-See the [backend](/commands/rclone_backend/) command for more
+See the [backend](/commands/zclone_backend/) command for more
 info on how to pass options and arguments.
 
 These can be run on a running backend using the rc command
@@ -174,7 +174,7 @@ These can be run on a running backend using the rc command
 	for _, cmd := range cmds {
 		fmt.Printf("### %s\n\n", cmd.Name)
 		fmt.Printf("%s\n\n", cmd.Short)
-		fmt.Printf("```console\nrclone backend %s remote: [options] [<arguments>+]\n```\n\n", cmd.Name)
+		fmt.Printf("```console\nzclone backend %s remote: [options] [<arguments>+]\n```\n\n", cmd.Name)
 		if cmd.Long != "" {
 			fmt.Printf("%s\n\n", cmd.Long)
 		}

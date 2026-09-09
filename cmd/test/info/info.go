@@ -19,16 +19,16 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/test"
-	"github.com/rclone/rclone/cmd/test/info/internal"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/random"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/cmd/test"
+	"zclone/cmd/test/info/internal"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/hash"
+	"zclone/fs/object"
+	"zclone/fs/operations"
+	"zclone/lib/random"
 )
 
 var (
@@ -85,7 +85,7 @@ code for each one.
 			checkBase32768 = true
 		}
 		for i := range args {
-			tempDirName := "rclone-test-info-" + random.String(8)
+			tempDirName := "zclone-test-info-" + random.String(8)
 			tempDirPath := path.Join(args[i], tempDirName)
 			f := cmd.NewFsDir([]string{tempDirPath})
 			fs.Infof(f, "Created temporary directory for test files: %s", tempDirPath)

@@ -23,16 +23,16 @@ def find_backends():
 def output_docs(backend, out, cwd):
     """Output documentation for backend options to out"""
     out.flush()
-    subprocess.check_call(["./rclone", "--config=/notfound", "help", "backend", backend], stdout=out)
+    subprocess.check_call(["./build/zclone", "--config=/notfound", "help", "backend", backend], stdout=out)
 
 def output_backend_tool_docs(backend, out, cwd):
     """Output documentation for backend tool to out"""
     out.flush()
-    subprocess.call(["./rclone", "--config=/notfound", "backend", "help", backend], stdout=out, stderr=subprocess.DEVNULL)
+    subprocess.call(["./build/zclone", "--config=/notfound", "backend", "help", backend], stdout=out, stderr=subprocess.DEVNULL)
 
 def alter_doc(backend):
     """Alter the documentation for backend"""
-    rclone_bin_dir = Path(sys.path[0]).parent.absolute()
+    zclone_bin_dir = Path(sys.path[0]).parent.absolute()
     doc_file = "docs/content/"+backend+".md"
     doc_file2 = "docs/content/"+backend+"/_index.md"
     if not os.path.exists(doc_file) and os.path.exists(doc_file2):
@@ -49,8 +49,8 @@ def alter_doc(backend):
                     in_docs = True
                     line_marker_start = (line_marker_start_prefix + "- DO NOT EDIT - instead edit fs.RegInfo in backend/%s/%s.go and run make backenddocs to verify" + end) % (backend, backend)
                     out_file.write(line_marker_start + " " + markdownlint_disable + "\n")
-                    output_docs(backend, out_file, rclone_bin_dir)
-                    output_backend_tool_docs(backend, out_file, rclone_bin_dir)
+                    output_docs(backend, out_file, zclone_bin_dir)
+                    output_backend_tool_docs(backend, out_file, zclone_bin_dir)
                     out_file.write(line_marker_stop + "\n")
                     altered = True
             if not in_docs:

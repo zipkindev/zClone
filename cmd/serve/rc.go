@@ -13,10 +13,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/lib/errcount"
+	"zclone/fs"
+	"zclone/fs/filter"
+	"zclone/fs/rc"
+	"zclone/lib/errcount"
 )
 
 // Handle describes what a server can do
@@ -40,7 +40,7 @@ type server struct {
 	errChan chan error `json:"-"`      // receive errors from the server process
 }
 
-// Fn starts an rclone serve command
+// Fn starts an zclone serve command
 type Fn func(ctx context.Context, f fs.Fs, in rc.Params) (Handle, error)
 
 // Globals
@@ -79,7 +79,7 @@ This takes the following parameters:
 - |addr| - the ip:port to run the server on, eg ":1234" or "localhost:1234"
 
 Other parameters are as described in the documentation for the
-relevant [rclone serve](/commands/rclone_serve/) command line options.
+relevant [zclone serve](/commands/zclone_serve/) command line options.
 To translate a command line option to an rc parameter, remove the
 leading |--| and replace |-| with |_|, so |--vfs-cache-mode| becomes
 |vfs_cache_mode|.
@@ -88,9 +88,9 @@ Option parameters (such as VFS, proxy, and protocol-specific options) can be pas
 
 Examples:
 
-    rclone rc serve/start type=nfs fs=remote: addr=:4321 vfs_cache_mode=full
-    rclone rc serve/start --json '{"type":"nfs","fs":"remote:","addr":":1234","vfs_cache_mode":"full"}'
-    rclone rc serve/start type=webdav fs=remote: vfsOpt='{"CacheMode": 2}' proxyOpt='{"AuthProxy": "http://127.0.0.1:8080"}'
+    zclone rc serve/start type=nfs fs=remote: addr=:4321 vfs_cache_mode=full
+    zclone rc serve/start --json '{"type":"nfs","fs":"remote:","addr":":1234","vfs_cache_mode":"full"}'
+    zclone rc serve/start type=webdav fs=remote: vfsOpt='{"CacheMode": 2}' proxyOpt='{"AuthProxy": "http://127.0.0.1:8080"}'
 
 This will give the reply
 
@@ -202,7 +202,7 @@ This will give an empty response if successful or an error if not.
 
 Example:
 
-    rclone rc serve/stop id=12345
+    zclone rc serve/stop id=12345
 `),
 	})
 }
@@ -241,7 +241,7 @@ be passed to serve/start as the serveType parameter.
 
 Eg
 
-    rclone rc serve/types
+    zclone rc serve/types
 
 Returns
 
@@ -291,7 +291,7 @@ Each list element will have
 
 Eg
 
-    rclone rc serve/list
+    zclone rc serve/list
 
 Returns
 
@@ -344,7 +344,7 @@ func init() {
 
 This will stop all active servers.
 
-    rclone rc serve/stopall
+    zclone rc serve/stopall
 `),
 	})
 }

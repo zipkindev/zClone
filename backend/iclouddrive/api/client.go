@@ -13,10 +13,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/fshttp"
+	"zclone/lib/rest"
 )
 
 const (
@@ -38,7 +38,7 @@ type sessionSave func(*Session)
 type Client struct {
 	appleID             string
 	password            string
-	remoteName          string // rclone remote name, used for cache namespacing
+	remoteName          string // zclone remote name, used for cache namespacing
 	pcsWSKey            string // webservice key for PCS cookie scoping (e.g. WsDrive, WsPhotos)
 	srv                 *rest.Client
 	Session             *Session

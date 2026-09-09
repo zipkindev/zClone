@@ -4,9 +4,9 @@ package cleanup
 import (
 	"context"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs/operations"
 )
 
 func init() {

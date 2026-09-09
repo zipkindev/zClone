@@ -14,7 +14,7 @@ script.onload = function () {
     };
   }
   const go = new Go();
-  WebAssembly.instantiateStreaming(fetch("rclone.wasm"), go.importObject).then((result) => {
+  WebAssembly.instantiateStreaming(fetch("zclone.wasm"), go.importObject).then((result) => {
     go.run(result.instance);
   });
   

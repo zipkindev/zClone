@@ -6,13 +6,13 @@ import (
 	"strings"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fstest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	"zclone/fs"
+	"zclone/fs/list"
+	"zclone/fs/operations"
+	"zclone/fstest"
 )
 
 func TestDefaultLsf(t *testing.T) {

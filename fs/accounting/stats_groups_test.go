@@ -8,13 +8,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/fstest/mockobject"
-	"github.com/rclone/rclone/fstest/testy"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/fserrors"
+	"zclone/fs/rc"
+	"zclone/fstest/mockobject"
+	"zclone/fstest/testy"
 )
 
 func TestStatsGroupOperations(t *testing.T) {

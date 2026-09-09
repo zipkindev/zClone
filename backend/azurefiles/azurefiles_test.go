@@ -5,7 +5,7 @@ package azurefiles
 import (
 	"testing"
 
-	"github.com/rclone/rclone/fstest/fstests"
+	"zclone/fstest/fstests"
 )
 
 func TestIntegration(t *testing.T) {

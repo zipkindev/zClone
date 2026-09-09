@@ -14,13 +14,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/rclone/rclone/backend/iclouddrive/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/lib/encoder"
+	"zclone/backend/iclouddrive/api"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/lib/encoder"
 )
 
 const configAuthSession = "_auth_session"
@@ -161,7 +161,7 @@ type ServiceOptions struct {
 	Service string `config:"service"`
 }
 
-// Register with rclone
+// Register with zclone
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "iclouddrive",
@@ -426,7 +426,7 @@ func newICloudClient(ctx context.Context, name string, m configmap.Mapper, pcsWS
 	}
 
 	if opt.TrustToken == "" {
-		return nil, nil, fmt.Errorf("missing icloud trust token: try refreshing it with \"rclone config reconnect %s:\"", name)
+		return nil, nil, fmt.Errorf("missing icloud trust token: try refreshing it with \"zclone config reconnect %s:\"", name)
 	}
 
 	cookies := ReadCookies(opt.Cookies)

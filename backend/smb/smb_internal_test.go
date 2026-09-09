@@ -11,11 +11,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fstest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/object"
+	"zclone/fstest"
 )
 
 func TestDialClosesConnectionOnSetupError(t *testing.T) {
@@ -63,7 +63,7 @@ func TestUploadConnectionReuse(t *testing.T) {
 	fstest.Initialise()
 	remoteName := *fstest.RemoteName
 	if remoteName == "" {
-		remoteName = "TestSMB:rclone"
+		remoteName = "TestSMB:zclone"
 	}
 	remote, err := fs.NewFs(ctx, remoteName)
 	if errors.Is(err, fs.ErrorNotFoundInConfigFile) {
@@ -81,7 +81,7 @@ func TestUploadConnectionReuse(t *testing.T) {
 	require.NoError(t, f.drainPool(ctx))
 
 	const contents = "connection reuse test"
-	remotePath := fmt.Sprintf("rclone-test-connection-reuse-%d.txt", time.Now().UnixNano())
+	remotePath := fmt.Sprintf("zclone-test-connection-reuse-%d.txt", time.Now().UnixNano())
 	src := object.NewStaticObjectInfo(remotePath, time.Now(), int64(len(contents)), true, nil, nil)
 	o, err := f.Put(ctx, strings.NewReader(contents), src)
 	require.NoError(t, err)

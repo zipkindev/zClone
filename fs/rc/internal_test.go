@@ -13,19 +13,19 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/obscure"
+	"zclone/fs"
+	"zclone/fs/config/obscure"
 )
 
 func TestMain(m *testing.M) {
-	// Pretend to be rclone version if we have a version string parameter
+	// Pretend to be zclone version if we have a version string parameter
 	if os.Args[len(os.Args)-1] == "version" {
-		fmt.Printf("rclone %s\n", fs.Version)
+		fmt.Printf("zclone %s\n", fs.Version)
 		os.Exit(0)
 	}
 	// Pretend to error if we have an unknown command
 	if os.Args[len(os.Args)-1] == "unknown_command" {
-		fmt.Printf("rclone %s\n", fs.Version)
+		fmt.Printf("zclone %s\n", fs.Version)
 		fmt.Fprintf(os.Stderr, "Unknown command\n")
 		os.Exit(1)
 	}
@@ -142,7 +142,7 @@ func TestCoreQuit(t *testing.T) {
 	require.Error(t, err)
 }
 
-// core/command: Runs a raw rclone command
+// core/command: Runs a raw zclone command
 func TestCoreCommand(t *testing.T) {
 	call := Calls.Get("core/command")
 
@@ -178,7 +178,7 @@ func TestCoreCommand(t *testing.T) {
 		assert.Equal(t, http.StatusOK, rec.Result().StatusCode)
 	}
 
-	version := fmt.Sprintf("rclone %s\n", fs.Version)
+	version := fmt.Sprintf("zclone %s\n", fs.Version)
 	errorString := "Unknown command\n"
 	t.Run("OK", func(t *testing.T) {
 		test("version", "", version, false)

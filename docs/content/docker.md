@@ -28,7 +28,7 @@ volumes shared across containers and hosts. Unlike local volumes, your
 data will *not* be deleted when such volume is removed. Plugins can run
 managed by the docker daemon, as a native system service
 (under systemd, *sysv* or *upstart*) or as a standalone executable.
-Rclone can run as docker volume plugin in all these modes.
+Zclone can run as docker volume plugin in all these modes.
 It interacts with the local docker daemon
 via [plugin API](https://docs.docker.com/engine/extend/plugin_api/) and
 handles mounting of remote file systems into docker containers so it must
@@ -37,40 +37,40 @@ run on the same host as the docker daemon or on every Swarm node.
 ## Getting started
 
 In the first example we will use the [SFTP](/sftp/)
-rclone volume with Docker engine on a standalone Ubuntu machine.
+zclone volume with Docker engine on a standalone Ubuntu machine.
 
 Start from [installing Docker](https://docs.docker.com/engine/install/)
 on the host.
 
-The *FUSE* driver is a prerequisite for rclone mounting and should be
+The *FUSE* driver is a prerequisite for zclone mounting and should be
 installed on host:
 
 ```console
 sudo apt-get -y install fuse3
 ```
 
-Create two directories required by rclone docker plugin:
+Create two directories required by zclone docker plugin:
 
 ```console
-sudo mkdir -p /var/lib/docker-plugins/rclone/config
-sudo mkdir -p /var/lib/docker-plugins/rclone/cache
+sudo mkdir -p /var/lib/docker-plugins/zclone/config
+sudo mkdir -p /var/lib/docker-plugins/zclone/cache
 ```
 
-Install the managed rclone docker plugin for your architecture (here `amd64`):
+Install the managed zclone docker plugin for your architecture (here `amd64`):
 
 ```console
-docker plugin install rclone/docker-volume-rclone:amd64 args="-v" --alias rclone --grant-all-permissions
+docker plugin install zclone/docker-volume-zclone:amd64 args="-v" --alias zclone --grant-all-permissions
 docker plugin list
 ```
 
 Create your [SFTP volume](/sftp/#standard-options):
 
 ```console
-docker volume create firstvolume -d rclone -o type=sftp -o sftp-host=_hostname_ -o sftp-user=_username_ -o sftp-pass=_password_ -o allow-other=true
+docker volume create firstvolume -d zclone -o type=sftp -o sftp-host=_hostname_ -o sftp-user=_username_ -o sftp-pass=_password_ -o allow-other=true
 ```
 
 Note that since all options are static, you don't even have to run
-`rclone config` or create the `rclone.conf` file (but the `config` directory
+`zclone config` or create the `zclone.conf` file (but the `config` directory
 should still be present). In the simplest case you can use `localhost`
 as *hostname* and your SSH credentials as *username* and *password*.
 You can also change the remote path to your home directory on the host,
@@ -97,19 +97,19 @@ Now let us try **something more elaborate**:
 [Google Drive](/drive/) volume on multi-node Docker Swarm.
 
 You should start from installing Docker and FUSE, creating plugin
-directories and installing rclone plugin on *every* swarm node.
+directories and installing zclone plugin on *every* swarm node.
 Then [setup the Swarm](https://docs.docker.com/engine/swarm/swarm-mode/).
 
 Google Drive volumes need an access token which can be setup via web
-browser and will be periodically renewed by rclone. The managed
+browser and will be periodically renewed by zclone. The managed
 plugin cannot run a browser so we will use a technique similar to the
-[rclone setup on a headless box](/remote_setup/).
+[zclone setup on a headless box](/remote_setup/).
 
-Run [rclone config](/commands/rclone_config_create/)
+Run [zclone config](/commands/zclone_config_create/)
 on *another* machine equipped with *web browser* and graphical user interface.
 Create the [Google Drive remote](/drive/#standard-options).
-When done, transfer the resulting `rclone.conf` to the Swarm cluster
-and save as `/var/lib/docker-plugins/rclone/config/rclone.conf`
+When done, transfer the resulting `zclone.conf` to the Swarm cluster
+and save as `/var/lib/docker-plugins/zclone/config/zclone.conf`
 on *every* node. By default this location is accessible only to the
 root user so you will need appropriate privileges. The resulting config
 will look like this:
@@ -135,7 +135,7 @@ services:
     volumes: [configdata:/config]
 volumes:
   configdata:
-    driver: rclone
+    driver: zclone
     driver_opts:
       remote: 'gdrive:heimdall'
       allow_other: 'true'
@@ -152,7 +152,7 @@ docker stack deploy example -c ./example.yml
 After a few seconds docker will spread the parsed stack description
 over cluster, create the `example_heimdall` service on port *8080*,
 run service containers on one or more cluster nodes and request
-the `example_configdata` volume from rclone plugins on the node hosts.
+the `example_configdata` volume from zclone plugins on the node hosts.
 You can use the following commands to confirm results:
 
 ```console
@@ -174,14 +174,14 @@ Volumes can be created with [docker volume create](https://docs.docker.com/engin
 Here are a few examples:
 
 ```console
-docker volume create vol1 -d rclone -o remote=storj: -o vfs-cache-mode=full
-docker volume create vol2 -d rclone -o remote=:storj,access_grant=xxx:heimdall
-docker volume create vol3 -d rclone -o type=storj -o path=heimdall -o storj-access-grant=xxx -o poll-interval=0
+docker volume create vol1 -d zclone -o remote=storj: -o vfs-cache-mode=full
+docker volume create vol2 -d zclone -o remote=:storj,access_grant=xxx:heimdall
+docker volume create vol3 -d zclone -o type=storj -o path=heimdall -o storj-access-grant=xxx -o poll-interval=0
 ```
 
-Note the `-d rclone` flag that tells docker to request volume from the
-rclone driver. This works even if you installed managed driver by its full
-name `rclone/docker-volume-rclone` because you provided the `--alias rclone`
+Note the `-d zclone` flag that tells docker to request volume from the
+zclone driver. This works even if you installed managed driver by its full
+name `zclone/docker-volume-zclone` because you provided the `--alias zclone`
 option.
 
 Volumes can be inspected as follows:
@@ -193,7 +193,7 @@ docker volume inspect vol1
 
 ## Volume Configuration
 
-Rclone flags and volume options are set via the `-o` flag to the
+Zclone flags and volume options are set via the `-o` flag to the
 `docker volume create` command. They include backend-specific parameters
 as well as mount and *VFS* options. Also there are a few
 special `-o` options:
@@ -201,7 +201,7 @@ special `-o` options:
 
 `remote` determines an existing remote name from the config file, with
 trailing colon and optionally with a remote path. See the full syntax in
-the [rclone documentation](/docs/#syntax-of-remote-paths).
+the [zclone documentation](/docs/#syntax-of-remote-paths).
 This option can be aliased as `fs` to prevent confusion with the
 *remote* parameter of such backends as *crypt* or *alias*.
 
@@ -223,7 +223,7 @@ is equivalent to the combined syntax
 but is arguably easier to parameterize in scripts.
 The `path` part is optional.
 
-[Mount and VFS options](/commands/rclone_serve_docker/#options)
+[Mount and VFS options](/commands/zclone_serve_docker/#options)
 as well as [backend parameters](/flags/#backend) are named
 like their twin command-line flags without the `--` CLI prefix.
 Optionally you can use underscores instead of dashes in option names.
@@ -236,21 +236,21 @@ Please note that you can provide parameters only for the backend immediately
 referenced by the backend type of mounted `remote`.
 If this is a wrapping backend like *alias, chunker or crypt*, you cannot
 provide options for the referred to remote or backend. This limitation is
-imposed by the rclone connection string parser. The only workaround is to
-feed plugin with `rclone.conf` or configure plugin arguments (see below).
+imposed by the zclone connection string parser. The only workaround is to
+feed plugin with `zclone.conf` or configure plugin arguments (see below).
 
 ## Special Volume Options
 
 `mount-type` determines the mount method and in general can be one of:
 `mount`, `cmount`, or `mount2`. This can be aliased as `mount_type`.
-It should be noted that the managed rclone docker plugin currently does
+It should be noted that the managed zclone docker plugin currently does
 not support the `cmount` method and `mount2` is rarely needed.
 This option defaults to the first found method, which is usually `mount`
 so you generally won't need it.
 
 `persist` is a reserved boolean (true/false) option.
 In future it will allow to persist on-the-fly remotes in the plugin
-`rclone.conf` file.
+`zclone.conf` file.
 
 ## Connection Strings
 
@@ -292,13 +292,13 @@ They are mostly similar, differences are explained in the
 
 Volumes are described by the children of the top-level `volumes:` node.
 Each of them should be named after its volume and have at least two
-elements, the self-explanatory `driver: rclone` value and the
+elements, the self-explanatory `driver: zclone` value and the
 `driver_opts:` structure playing the same role as `-o key=val` CLI flags:
 
 ```yaml
 volumes:
   volume_name_1:
-    driver: rclone
+    driver: zclone
     driver_opts:
       remote: 'gdrive:'
       allow_other: 'true'
@@ -326,27 +326,27 @@ Notice a few important details:
 
 Docker daemon can install plugins from an image registry and run them managed.
 We maintain the
-[docker-volume-rclone](https://hub.docker.com/p/rclone/docker-volume-rclone/)
+[docker-volume-zclone](https://hub.docker.com/p/zclone/docker-volume-zclone/)
 plugin image on [Docker Hub](https://hub.docker.com).
 
-Rclone volume plugin requires **Docker Engine >= 19.03.15**
+Zclone volume plugin requires **Docker Engine >= 19.03.15**
 
 The plugin requires presence of two directories on the host before it can
 be installed. Note that plugin will **not** create them automatically.
 By default they must exist on host at the following locations
 (though you can tweak the paths):
 
-- `/var/lib/docker-plugins/rclone/config`
-  is reserved for the `rclone.conf` config file and **must** exist
+- `/var/lib/docker-plugins/zclone/config`
+  is reserved for the `zclone.conf` config file and **must** exist
   even if it's empty and the config file is not present.
-- `/var/lib/docker-plugins/rclone/cache`
+- `/var/lib/docker-plugins/zclone/cache`
   holds the plugin state file as well as optional VFS caches.
 
 You can [install managed plugin](https://docs.docker.com/engine/reference/commandline/plugin_install/)
 with default settings as follows:
 
 ```console
-docker plugin install rclone/docker-volume-rclone:amd64 --grant-all-permissions --alias rclone
+docker plugin install zclone/docker-volume-zclone:amd64 --grant-all-permissions --alias zclone
 ```
 
 The `:amd64` part of the image specification after colon is called a *tag*.
@@ -362,23 +362,23 @@ Sometimes you might want a concrete plugin version, not the latest one.
 Then you should use image tag in the form `:ARCHITECTURE-VERSION`.
 For example, to install plugin version `v1.56.2` on architecture `arm64`
 you will use tag `arm64-1.56.2` (note the removed `v`) so the full image
-specification becomes `rclone/docker-volume-rclone:arm64-1.56.2`.
+specification becomes `zclone/docker-volume-zclone:arm64-1.56.2`.
 
 We also provide the `latest` plugin tag, but since docker does not support
 multi-architecture plugins as of the time of this writing, this tag is
 currently an **alias for `amd64`**.
 By convention the `latest` tag is the default one and can be omitted, thus
-both `rclone/docker-volume-rclone:latest` and just `rclone/docker-volume-rclone`
+both `zclone/docker-volume-zclone:latest` and just `zclone/docker-volume-zclone`
 will refer to the latest plugin release for the `amd64` platform.
 
-Also the `amd64` part can be omitted from the versioned rclone plugin tags.
-For example, rclone image reference `rclone/docker-volume-rclone:amd64-1.56.2`
-can be abbreviated as `rclone/docker-volume-rclone:1.56.2` for convenience.
+Also the `amd64` part can be omitted from the versioned zclone plugin tags.
+For example, zclone image reference `zclone/docker-volume-zclone:amd64-1.56.2`
+can be abbreviated as `zclone/docker-volume-zclone:1.56.2` for convenience.
 However, for non-intel architectures you still have to use the full tag as
 `amd64` or `latest` will fail to start.
 
 Managed plugin is in fact a special container running in a namespace separate
-from normal docker containers. Inside it runs the `rclone serve docker`
+from normal docker containers. Inside it runs the `zclone serve docker`
 command. The config and cache directories are bind-mounted into the
 container at start. The docker daemon connects to a unix socket created
 by the command inside the container. The command creates on-demand remote
@@ -389,10 +389,10 @@ You can tweak a few plugin settings after installation when it's disabled
 (not in use), for instance:
 
 ```console
-docker plugin disable rclone
-docker plugin set rclone RCLONE_VERBOSE=2 config=/etc/rclone args="--vfs-cache-mode=writes --allow-other"
-docker plugin enable rclone
-docker plugin inspect rclone
+docker plugin disable zclone
+docker plugin set zclone ZCLONE_VERBOSE=2 config=/etc/zclone args="--vfs-cache-mode=writes --allow-other"
+docker plugin enable zclone
+docker plugin inspect zclone
 ```
 
 Note that if docker refuses to disable the plugin, you should find and
@@ -402,26 +402,26 @@ plan in advance.
 
 You can tweak the following settings:
 `args`, `config`, `cache`, `HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY`
-and `RCLONE_VERBOSE`.
+and `ZCLONE_VERBOSE`.
 It's *your* task to keep plugin settings in sync across swarm cluster nodes.
 
-`args` sets command-line arguments for the `rclone serve docker` command
+`args` sets command-line arguments for the `zclone serve docker` command
 (*none* by default). Arguments should be separated by space so you will
 normally want to put them in quotes on the
 [docker plugin set](https://docs.docker.com/engine/reference/commandline/plugin_set/)
-command line. Both [serve docker flags](/commands/rclone_serve_docker/#options)
-and [generic rclone flags](/flags/) are supported, including backend
+command line. Both [serve docker flags](/commands/zclone_serve_docker/#options)
+and [generic zclone flags](/flags/) are supported, including backend
 parameters that will be used as defaults for volume creation.
 Note that plugin will fail (due to [this docker bug](https://github.com/moby/moby/blob/v20.10.7/plugin/v2/plugin.go#L195))
 if the `args` value is empty. Use e.g. `args="-v"` as a workaround.
 
 `config=/host/dir` sets alternative host location for the config directory.
-Plugin will look for `rclone.conf` here. It's not an error if the config
+Plugin will look for `zclone.conf` here. It's not an error if the config
 file is not present but the directory must exist. Please note that plugin
 can periodically rewrite the config file, for example when it renews
 storage access tokens. Keep this in mind and try to avoid races between
-the plugin and other instances of rclone on the host that might try to
-change the config simultaneously resulting in corrupted `rclone.conf`.
+the plugin and other instances of zclone on the host that might try to
+change the config simultaneously resulting in corrupted `zclone.conf`.
 You can also put stuff like private key files for SFTP remotes in this
 directory. Just note that it's bind-mounted inside the plugin container
 at the predefined path `/data/config`. For example, if your key file is
@@ -437,23 +437,23 @@ consuming containers after restart. Usually this is not a problem as
 the docker daemon normally will restart affected user containers after
 failures, daemon restarts or host reboots.
 
-`RCLONE_VERBOSE` sets plugin verbosity from `0` (errors only, by default)
+`ZCLONE_VERBOSE` sets plugin verbosity from `0` (errors only, by default)
 to `2` (debugging). Verbosity can be also tweaked via `args="-v [-v] ..."`.
 Since arguments are more generic, you will rarely need this setting.
 The plugin output by default feeds the docker daemon log on local host.
 Log entries are reflected as *errors* in the docker log but retain their
-actual level assigned by rclone in the encapsulated message string.
+actual level assigned by zclone in the encapsulated message string.
 
 `HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY` customize the plugin proxy settings.
 
 You can set custom plugin options right when you install it, *in one go*:
 
 ```console
-docker plugin remove rclone
-docker plugin install rclone/docker-volume-rclone:amd64 \
-       --alias rclone --grant-all-permissions \
-       args="-v --allow-other" config=/etc/rclone
-docker plugin inspect rclone
+docker plugin remove zclone
+docker plugin install zclone/docker-volume-zclone:amd64 \
+       --alias zclone --grant-all-permissions \
+       args="-v --allow-other" config=/etc/zclone
+docker plugin inspect zclone
 ```
 
 ## Healthchecks
@@ -468,7 +468,7 @@ services:
   my_service:
     image: my_image
     healthcheck:
-      test: ls /path/to/rclone/mount || exit 1
+      test: ls /path/to/zclone/mount || exit 1
       interval: 1m
       timeout: 15s
       retries: 3
@@ -481,24 +481,16 @@ In most cases you should prefer managed mode. Moreover, MacOS and Windows
 do not support native Docker plugins. Please use managed mode on these
 systems. Proceed further only if you are on Linux.
 
-First, [install rclone](/install/).
-You can just run it (type `rclone serve docker` and hit enter) for the test.
+First, [install zclone](/install/).
+You can just run it (type `zclone serve docker` and hit enter) for the test.
 
-Install *FUSE*:
-
-```console
-sudo apt-get -y install fuse
-```
-
-Download two systemd configuration files:
-[docker-volume-rclone.service](https://raw.githubusercontent.com/rclone/rclone/master/contrib/docker-plugin/systemd/docker-volume-rclone.service)
-and [docker-volume-rclone.socket](https://raw.githubusercontent.com/rclone/rclone/master/contrib/docker-plugin/systemd/docker-volume-rclone.socket).
-
-Put them to the `/etc/systemd/system/` directory:
+Install FUSE from an approved local package source. The two required systemd
+configuration files are included in this checkout under
+`contrib/docker-plugin/systemd/`. Copy them to `/etc/systemd/system/`:
 
 ```console
-cp docker-volume-plugin.service /etc/systemd/system/
-cp docker-volume-plugin.socket  /etc/systemd/system/
+cp contrib/docker-plugin/systemd/docker-volume-zclone.service /etc/systemd/system/
+cp contrib/docker-plugin/systemd/docker-volume-zclone.socket /etc/systemd/system/
 ```
 
 Please note that all commands in this section must be run as *root* but
@@ -506,27 +498,27 @@ we omit `sudo` prefix for brevity.
 Now create directories required by the service:
 
 ```console
-mkdir -p /var/lib/docker-volumes/rclone
-mkdir -p /var/lib/docker-plugins/rclone/config
-mkdir -p /var/lib/docker-plugins/rclone/cache
+mkdir -p /var/lib/docker-volumes/zclone
+mkdir -p /var/lib/docker-plugins/zclone/config
+mkdir -p /var/lib/docker-plugins/zclone/cache
 ```
 
 Run the docker plugin service in the socket activated mode:
 
 ```console
 systemctl daemon-reload
-systemctl start docker-volume-rclone.service
-systemctl enable docker-volume-rclone.socket
-systemctl start docker-volume-rclone.socket
+systemctl start docker-volume-zclone.service
+systemctl enable docker-volume-zclone.socket
+systemctl start docker-volume-zclone.socket
 systemctl restart docker
 ```
 
 Or run the service directly:
 
 - run `systemctl daemon-reload` to let systemd pick up new config
-- run `systemctl enable docker-volume-rclone.service` to make the new
+- run `systemctl enable docker-volume-zclone.service` to make the new
   service start automatically when you power on your machine.
-- run `systemctl start docker-volume-rclone.service`
+- run `systemctl start docker-volume-zclone.service`
   to start the service now.
 - run `systemctl restart docker` to restart docker daemon and let it
   detect the new plugin socket. Note that this step is not needed in
@@ -542,7 +534,7 @@ with
 
 ```console
 docker plugin list
-docker plugin inspect rclone
+docker plugin inspect zclone
 ```
 
 Note that docker (including latest 20.10.7) will not show actual values
@@ -556,8 +548,8 @@ You will usually install the latest version of managed plugin for your platform.
 Use the following commands to print the actual installed version:
 
 ```console
-PLUGID=$(docker plugin list --no-trunc | awk '/rclone/{print$1}')
-sudo runc --root /run/docker/runtime-runc/plugins.moby exec $PLUGID rclone version
+PLUGID=$(docker plugin list --no-trunc | awk '/zclone/{print$1}')
+sudo runc --root /run/docker/runtime-runc/plugins.moby exec $PLUGID zclone version
 ```
 
 You can even use `runc` to run shell inside the plugin container:
@@ -571,21 +563,21 @@ Also you can use curl to check the plugin socket connectivity:
 ```console
 docker plugin list --no-trunc
 PLUGID=123abc...
-sudo curl -H Content-Type:application/json -XPOST -d {} --unix-socket /run/docker/plugins/$PLUGID/rclone.sock http://localhost/Plugin.Activate
+sudo curl -H Content-Type:application/json -XPOST -d {} --unix-socket /run/docker/plugins/$PLUGID/zclone.sock http://localhost/Plugin.Activate
 ```
 
 though this is rarely needed.
 
 If the plugin fails to work properly, and only as a last resort after you tried
 diagnosing with the above methods, you can try clearing the state of the plugin.
-**Note that all existing rclone docker volumes will probably have to be recreated.**
+**Note that all existing zclone docker volumes will probably have to be recreated.**
 This might be needed because a reinstall don't cleanup existing state files to
 allow for easy restoration, as stated above.
 
 ```console
-docker plugin disable rclone # disable the plugin to ensure no interference
-sudo rm /var/lib/docker-plugins/rclone/cache/docker-plugin.state # removing the plugin state
-docker plugin enable rclone # re-enable the plugin afterward
+docker plugin disable zclone # disable the plugin to ensure no interference
+sudo rm /var/lib/docker-plugins/zclone/cache/docker-plugin.state # removing the plugin state
+docker plugin enable zclone # re-enable the plugin afterward
 ```
 
 ## Caveats
@@ -600,7 +592,7 @@ before recreating it with new settings:
 
 ```console
 docker volume remove my_vol
-docker volume create my_vol -d rclone -o opt1=new_val1 ...
+docker volume create my_vol -d zclone -o opt1=new_val1 ...
 ```
 
 and verify that settings did update:

@@ -21,15 +21,15 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/encoder"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/cache"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fspath"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
+	"zclone/lib/encoder"
 )
 
 // Chunker's composite files have one or more chunks
@@ -41,7 +41,7 @@ import (
 // used mostly for consistency checks (lazily for performance reasons).
 // Other formats can be developed that use an external meta store
 // free of these limitations, but this needs some support from
-// rclone core (e.g. metadata store interfaces).
+// zclone core (e.g. metadata store interfaces).
 //
 // The following types of chunks are supported:
 // data and control, active and temporary.
@@ -95,7 +95,7 @@ var (
 // The size of valid metadata must never exceed this limit.
 // Current maximum provides a reasonable room for future extensions.
 //
-// Please refrain from increasing it, this can cause old rclone versions
+// Please refrain from increasing it, this can cause old zclone versions
 // to fail, or worse, treat meta object as a normal file (see NewObject).
 // If more room is needed please bump metadata version forcing previous
 // releases to ask for upgrade, and offload extra info to a control chunk.
@@ -130,7 +130,7 @@ const maxTransactionProbes = 100
 var (
 	ErrChunkOverflow = errors.New("chunk number overflow")
 	ErrMetaTooBig    = errors.New("metadata is too big")
-	ErrMetaUnknown   = errors.New("unknown metadata, please upgrade rclone")
+	ErrMetaUnknown   = errors.New("unknown metadata, please upgrade zclone")
 )
 
 // variants of baseMove's parameter delMode
@@ -162,7 +162,7 @@ Normally should contain a ':' and a path, e.g. "myremote:path/to/dir",
 			Name:     "name_format",
 			Advanced: true,
 			Hide:     fs.OptionHideCommandLine,
-			Default:  `*.rclone_chunk.###`,
+			Default:  `*.zclone_chunk.###`,
 			Help: `String format of chunk file names.
 
 The two placeholders are: base file name (*) and chunk number (#...).
@@ -256,8 +256,8 @@ Falling back to SHA1 if unsupported.`,
 					Value: "norename",
 					Help: `Leave temporary file names and write transaction ID to metadata file.
 Metadata is required for no rename transactions (meta format cannot be "none").
-If you are using norename transactions you should be careful not to downgrade Rclone
-as older versions of Rclone don't support this transaction style and will misinterpret
+If you are using norename transactions you should be careful not to downgrade Zclone
+as older versions of Zclone don't support this transaction style and will misinterpret
 files manipulated by norename transactions.
 This method is EXPERIMENTAL, don't use on production systems.`,
 				}, {
@@ -659,7 +659,7 @@ func (f *Fs) forbidChunk(o any, filePath string) error {
 // The maximum length of interval is base-36 "zzzz" ie. 1,679,615 seconds.
 // The function rather takes a maximum prime closest to this number
 // (see https://primes.utm.edu) as the interval length to better safeguard
-// against repeating pseudo-random sequences in cases when rclone is
+// against repeating pseudo-random sequences in cases when zclone is
 // invoked from a periodic scheduler like unix cron.
 // Thus, the interval is slightly more than 19 days 10 hours 33 minutes.
 //
@@ -712,7 +712,7 @@ func (f *Fs) newXactID(ctx context.Context, filePath string) (xactID string, err
 // This should return ErrDirNotFound if the directory isn't found.
 //
 // Commands normally cleanup all temporary chunks in case of a failure.
-// However, if rclone dies unexpectedly, it can leave behind a bunch of
+// However, if zclone dies unexpectedly, it can leave behind a bunch of
 // hidden temporary chunks. List and its underlying chunkEntries()
 // silently skip all temporary chunks in the directory. It's okay if
 // they belong to an unfinished command running in parallel.
@@ -721,7 +721,7 @@ func (f *Fs) newXactID(ctx context.Context, filePath string) (xactID string, err
 // As a workaround users can use `purge` to forcibly remove the whole
 // directory together with dead chunks.
 // In future a flag named like `--chunker-list-hidden` may be added to
-// rclone that will tell List to reveal hidden chunks.
+// zclone that will tell List to reveal hidden chunks.
 func (f *Fs) List(ctx context.Context, dir string) (entries fs.DirEntries, err error) {
 	entries, err = f.base.List(ctx, dir)
 	if err != nil {
@@ -1619,7 +1619,7 @@ func (f *Fs) Purge(ctx context.Context, dir string) error {
 // to another command modifying this composite file in parallel.
 //
 // Commands normally cleanup all temporary chunks in case of a failure.
-// However, if rclone dies unexpectedly, it can leave hidden temporary
+// However, if zclone dies unexpectedly, it can leave hidden temporary
 // chunks, which cannot be discovered using the `list` command.
 // Remove does not try to search for such chunks or to delete them.
 // Sometimes this can lead to strange results e.g. when `list` shows that
@@ -1643,7 +1643,7 @@ func (f *Fs) Purge(ctx context.Context, dir string) error {
 // Disclaimer: corruption can still happen if unsupported file is removed
 // and then recreated with the same name.
 // Unsupported control chunks will get re-picked by a more recent
-// rclone version with unexpected results. This can be helped by
+// zclone version with unexpected results. This can be helped by
 // the `delete hidden` flag above or at least the user has been warned.
 func (o *Object) Remove(ctx context.Context) (err error) {
 	if err := o.f.forbidChunk(o, o.Remote()); err != nil {
@@ -2457,7 +2457,7 @@ func marshalSimpleJSON(ctx context.Context, size int64, nChunks int, md5, sha1, 
 	data, err := json.Marshal(&metadata)
 	if err == nil && data != nil && len(data) >= maxMetadataSizeWritten {
 		// be a nitpicker, never produce something you can't consume
-		return nil, errors.New("metadata can't be this big, please report to rclone developers")
+		return nil, errors.New("metadata can't be this big, please report to zclone developers")
 	}
 	return data, err
 }
@@ -2465,12 +2465,12 @@ func marshalSimpleJSON(ctx context.Context, size int64, nChunks int, md5, sha1, 
 // unmarshalSimpleJSON parses metadata.
 //
 // In case of errors returns a flag telling whether input has been
-// produced by incompatible version of rclone vs wasn't metadata at all.
+// produced by incompatible version of zclone vs wasn't metadata at all.
 // Only metadata format version 1 is supported atm.
 // Future releases will transparently migrate older metadata objects.
 // New format will have a higher version number and cannot be correctly
 // handled by current implementation.
-// The version check below will then explicitly ask user to upgrade rclone.
+// The version check below will then explicitly ask user to upgrade zclone.
 func unmarshalSimpleJSON(ctx context.Context, metaObject fs.Object, data []byte) (info *ObjectInfo, madeByChunker bool, err error) {
 	// Be strict about JSON format
 	// to reduce possibility that a random small file resembles metadata.
@@ -2501,7 +2501,7 @@ func unmarshalSimpleJSON(ctx context.Context, metaObject fs.Object, data []byte)
 		return nil, false, errors.New("negative number of chunks")
 	}
 	if *metadata.ChunkNum > maxSafeChunkNumber {
-		return nil, true, ErrChunkOverflow // produced by incompatible version of rclone
+		return nil, true, ErrChunkOverflow // produced by incompatible version of zclone
 	}
 	if metadata.MD5 != "" {
 		_, err = hex.DecodeString(metadata.MD5)
@@ -2521,7 +2521,7 @@ func unmarshalSimpleJSON(ctx context.Context, metaObject fs.Object, data []byte)
 	}
 	// Non-strict mode also accepts future metadata versions
 	if *metadata.Version > metadataVersion {
-		return nil, true, ErrMetaUnknown // produced by incompatible version of rclone
+		return nil, true, ErrMetaUnknown // produced by incompatible version of zclone
 	}
 
 	var nilFs *Fs // nil object triggers appropriate type method

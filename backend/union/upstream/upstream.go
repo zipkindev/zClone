@@ -12,11 +12,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/rclone/rclone/backend/union/common"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/operations"
+	"zclone/backend/union/common"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/fspath"
+	"zclone/fs/operations"
 )
 
 var (
@@ -251,7 +251,7 @@ func (f *Fs) PutStream(ctx context.Context, in io.Reader, src fs.ObjectInfo, opt
 
 // Update in to the object with the modTime given of the given size
 //
-// When called from outside an Fs by rclone, src.Size() will always be >= 0.
+// When called from outside an Fs by zclone, src.Size() will always be >= 0.
 // But for unknown-sized objects (indicated by src.Size() == -1), Upload should either
 // return an error or update the object properly (rather than e.g. calling panic).
 func (o *Object) Update(ctx context.Context, in io.Reader, src fs.ObjectInfo, options ...fs.OpenOption) error {

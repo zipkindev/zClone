@@ -20,20 +20,20 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/rclone/rclone/backend/crypt"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/fs/walk"
-	"github.com/rclone/rclone/lib/atexit"
 	"golang.org/x/time/rate"
+	"zclone/backend/crypt"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fspath"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/fs/rc"
+	"zclone/fs/walk"
+	"zclone/lib/atexit"
 )
 
 const (
@@ -113,7 +113,7 @@ will need to be cleared or unexpected EOF errors will occur.`,
 			}},
 		}, {
 			Name: "info_age",
-			Help: `How long to cache file structure information (directory listings, file size, times, etc.). 
+			Help: `How long to cache file structure information (directory listings, file size, times, etc.).
 If all write operations are done through the cache then you can safely make
 this value very large as the cache store will also be updated in real time.`,
 			Default: DefCacheInfoAge,
@@ -197,7 +197,7 @@ able to provide data but your experience will be very stuttering.`,
 Higher values will mean more parallel processing (better CPU needed)
 and more concurrent requests on the cloud provider.  This impacts
 several aspects like the cloud provider API limits, more stress on the
-hardware that rclone runs on but it also means that streams will be
+hardware that zclone runs on but it also means that streams will be
 more fluid and data will be available much more faster to readers.
 
 **Note**: If the optional Plex integration is enabled then this
@@ -280,7 +280,7 @@ to start the upload if a queue formed for this purpose.`,
 			Default: DefCacheDbWaitTime,
 			Help: `How long to wait for the DB to be available - 0 is unlimited.
 
-Only one process can have the DB open at any one time, so rclone waits
+Only one process can have the DB open at any one time, so zclone waits
 for this duration for the DB to become available before it gives an
 error.
 
@@ -561,8 +561,8 @@ Params:
 
 Eg
 
-    rclone rc cache/expire remote=path/to/sub/folder/
-    rclone rc cache/expire remote=/ withData=true 
+    zclone rc cache/expire remote=path/to/sub/folder/
+    zclone rc cache/expire remote=/ withData=true
 `,
 	})
 
@@ -601,7 +601,7 @@ Some valid examples are:
 Any parameter with a key that starts with "file" can be used to
 specify files to fetch, e.g.
 
-    rclone rc cache/fetch chunks=0 file=hello file2=home/goodbye
+    zclone rc cache/fetch chunks=0 file=hello file2=home/goodbye
 
 File names will automatically be encrypted when the a crypt remote
 is used on top of the cache.

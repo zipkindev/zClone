@@ -4,11 +4,11 @@ import (
 	"context"
 	"testing"
 
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/fstest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs/cache"
+	"zclone/fs/rc"
+	"zclone/fstest"
 )
 
 func rcNewRun(t *testing.T, method string) (*fstest.Run, *rc.Call) {

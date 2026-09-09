@@ -1,6 +1,6 @@
 //go:build !((linux && cgo && cmount) || (darwin && cgo && cmount) || (freebsd && cgo && cmount) || (openbsd && cgo && cmount) || (windows && cmount))
 
-// Package cmount implements a FUSE mounting system for rclone remotes.
+// Package cmount implements a FUSE mounting system for zclone remotes.
 //
 // Build for cmount for unsupported platforms to stop go complaining
 // about "no buildable Go source files".

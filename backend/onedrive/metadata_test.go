@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/rclone/rclone/backend/onedrive/api"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/backend/onedrive/api"
 )
 
 func TestOrderPermissions(t *testing.T) {

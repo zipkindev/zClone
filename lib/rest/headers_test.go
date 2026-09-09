@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
 	"github.com/stretchr/testify/assert"
+	"zclone/fs"
 )
 
 func TestParseSizeFromHeaders(t *testing.T) {

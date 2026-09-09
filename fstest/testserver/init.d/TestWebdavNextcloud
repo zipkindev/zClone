@@ -3,7 +3,7 @@
 set -e
 
 NAME=nextcloud
-USER=rclone
+USER=zclone
 PASS=ArmorAbleMale6
 PORT=28629
 
@@ -12,7 +12,7 @@ PORT=28629
 start() {
     docker run --rm -d --name $NAME \
            -e "SQLITE_DATABASE=nextcloud.db" \
-           -e "NEXTCLOUD_ADMIN_USER=rclone" \
+           -e "NEXTCLOUD_ADMIN_USER=zclone" \
            -e "NEXTCLOUD_ADMIN_PASSWORD=$PASS" \
            -e "NEXTCLOUD_TRUSTED_DOMAINS=*.*.*.*" \
            -p 127.0.0.1:${PORT}:80 \
@@ -21,7 +21,7 @@ start() {
     echo type=webdav
     echo url=http://127.0.0.1:${PORT}/remote.php/dav/files/$USER/
     echo user=$USER
-    echo pass=$(rclone obscure $PASS)
+    echo pass=$(zclone obscure $PASS)
     echo vendor=nextcloud
     echo _connect=127.0.0.1:${PORT}
 }

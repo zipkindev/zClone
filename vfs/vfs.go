@@ -1,4 +1,4 @@
-// Package vfs provides a virtual filing system layer over rclone's
+// Package vfs provides a virtual filing system layer over zclone's
 // native objects.
 //
 // It attempts to behave in a similar way to Go's filing system
@@ -36,14 +36,14 @@ import (
 	"slices"
 
 	"github.com/go-git/go-billy/v5"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/fs/walk"
-	"github.com/rclone/rclone/vfs/vfscache"
-	"github.com/rclone/rclone/vfs/vfscommon"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/filter"
+	"zclone/fs/log"
+	"zclone/fs/rc"
+	"zclone/fs/walk"
+	"zclone/vfs/vfscache"
+	"zclone/vfs/vfscommon"
 )
 
 //go:embed vfs.md
@@ -684,7 +684,7 @@ func (vfs *VFS) Statfs() (total, used, free int64) {
 		}
 		if vfs.Opt.UsedIsSize {
 			var usedBySizeAlgorithm int64
-			// Algorithm from `rclone size`
+			// Algorithm from `zclone size`
 			err = walk.ListR(ctx, vfs.f, "", true, -1, walk.ListObjects, func(entries fs.DirEntries) error {
 				entries.ForObject(func(o fs.Object) {
 					usedBySizeAlgorithm += o.Size()

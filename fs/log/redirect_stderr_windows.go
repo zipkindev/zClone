@@ -12,7 +12,7 @@ import (
 	"os"
 	"syscall"
 
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 var (

@@ -4,9 +4,9 @@ package webdav
 import (
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
+	"zclone/fs"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
 )
 
 // TestIntegration runs integration tests against the remote
@@ -40,7 +40,7 @@ func TestIntegration3(t *testing.T) {
 		t.Skip("skipping as -remote is set")
 	}
 	fstests.Run(t, &fstests.Opt{
-		RemoteName: "TestWebdavRclone:",
+		RemoteName: "TestWebdavZclone:",
 		NilObject:  (*Object)(nil),
 		ChunkedUpload: fstests.ChunkedUploadConfig{
 			Skip: true,

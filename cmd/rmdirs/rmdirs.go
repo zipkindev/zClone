@@ -4,9 +4,9 @@ package rmdir
 import (
 	"context"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs/operations"
 )
 
 var (
@@ -26,18 +26,18 @@ that only contain empty directories), that it finds under the path.
 The root path itself will also be removed if it is empty, unless
 you supply the ` + "`--leave-root`" + ` flag.
 
-Use command [rmdir](/commands/rclone_rmdir/) to delete just the empty
+Use command [rmdir](/commands/zclone_rmdir/) to delete just the empty
 directory given by path, not recurse.
 
-This is useful for tidying up remotes that rclone has left a lot of
-empty directories in. For example the [delete](/commands/rclone_delete/)
+This is useful for tidying up remotes that zclone has left a lot of
+empty directories in. For example the [delete](/commands/zclone_delete/)
 command will delete files but leave the directory structure (unless
 used with option ` + "`--rmdirs`" + `).
 
 This will delete ` + "`--checkers`" + ` directories concurrently so
 if you have thousands of empty directories consider increasing this number.
 
-To delete a path and any objects in it, use the [purge](/commands/rclone_purge/)
+To delete a path and any objects in it, use the [purge](/commands/zclone_purge/)
 command.`,
 	Annotations: map[string]string{
 		"versionIntroduced": "v1.35",

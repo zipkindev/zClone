@@ -7,10 +7,10 @@ import (
 	"io"
 	"net"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/lib/proxy"
 	"golang.org/x/crypto/ssh"
+	"zclone/fs"
+	"zclone/fs/fshttp"
+	"zclone/lib/proxy"
 )
 
 // Internal ssh connections with "golang.org/x/crypto/ssh"

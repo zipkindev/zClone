@@ -13,7 +13,7 @@ import (
 
 // Global
 var (
-	// globalConfig for rclone
+	// globalConfig for zclone
 	globalConfig = new(ConfigInfo)
 
 	// Read a value from the config file
@@ -37,7 +37,7 @@ var (
 	ConfigFileHasSection = func(section string) bool { return false }
 
 	// CountError counts an error.  If any errors have been
-	// counted then rclone will exit with a non zero error code.
+	// counted then zclone will exit with a non zero error code.
 	//
 	// This is a function pointer to decouple the config
 	// implementation from the fs
@@ -294,7 +294,7 @@ var ConfigOptionsInfo = Options{{
 	Groups:  "Networking",
 }, {
 	Name:    "user_agent",
-	Default: "rclone/" + Version,
+	Default: AppName + "/" + Version,
 	Help:    "Set the user-agent to a specified string",
 	Groups:  "Networking",
 }, {
@@ -360,7 +360,7 @@ var ConfigOptionsInfo = Options{{
 }, {
 	Name:    "max_duration",
 	Default: time.Duration(0),
-	Help:    "Maximum duration rclone will transfer data for",
+	Help:    "Maximum duration zclone will transfer data for",
 	Groups:  "Copy",
 }, {
 	Name:    "cutoff_mode",
@@ -769,7 +769,7 @@ func InitialLogLevel() LogLevel {
 			}
 		}
 	}
-	envValue, found := os.LookupEnv("RCLONE_LOG_LEVEL")
+	envValue, found := os.LookupEnv("ZCLONE_LOG_LEVEL")
 	if found && envValue == "DEBUG" {
 		logLevel = LogLevelDebug
 	}
@@ -831,13 +831,13 @@ func AddConfig(ctx context.Context) (context.Context, *ConfigInfo) {
 
 // ConfigToEnv converts a config section and name, e.g. ("my-remote",
 // "ignore-size") into an environment name
-// "RCLONE_CONFIG_MY-REMOTE_IGNORE_SIZE"
+// "ZCLONE_CONFIG_MY-REMOTE_IGNORE_SIZE"
 func ConfigToEnv(section, name string) string {
-	return "RCLONE_CONFIG_" + strings.ToUpper(section+"_"+strings.ReplaceAll(name, "-", "_"))
+	return "ZCLONE_CONFIG_" + strings.ToUpper(section+"_"+strings.ReplaceAll(name, "-", "_"))
 }
 
 // OptionToEnv converts an option name, e.g. "ignore-size" into an
-// environment name "RCLONE_IGNORE_SIZE"
+// environment name "ZCLONE_IGNORE_SIZE"
 func OptionToEnv(name string) string {
-	return "RCLONE_" + strings.ToUpper(strings.ReplaceAll(name, "-", "_"))
+	return "ZCLONE_" + strings.ToUpper(strings.ReplaceAll(name, "-", "_"))
 }

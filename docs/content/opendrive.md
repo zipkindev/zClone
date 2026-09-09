@@ -1,6 +1,6 @@
 ---
 title: "OpenDrive"
-description: "Rclone docs for OpenDrive"
+description: "Zclone docs for OpenDrive"
 versionIntroduced: "v1.42"
 ---
 
@@ -15,7 +15,7 @@ Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -58,19 +58,19 @@ y/e/d> y
 List directories in top level of your OpenDrive
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your OpenDrive
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 To copy a local directory to an OpenDrive directory called backup
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
 ### Modification times and hashes
@@ -122,7 +122,7 @@ Username.
 Properties:
 
 - Config:      username
-- Env Var:     RCLONE_OPENDRIVE_USERNAME
+- Env Var:     ZCLONE_OPENDRIVE_USERNAME
 - Type:        string
 - Required:    true
 
@@ -130,12 +130,12 @@ Properties:
 
 Password.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      password
-- Env Var:     RCLONE_OPENDRIVE_PASSWORD
+- Env Var:     ZCLONE_OPENDRIVE_PASSWORD
 - Type:        string
 - Required:    true
 
@@ -152,7 +152,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_OPENDRIVE_ENCODING
+- Env Var:     ZCLONE_OPENDRIVE_ENCODING
 - Type:        Encoding
 - Default:     Slash,LtGt,DoubleQuote,Colon,Question,Asterisk,Pipe,BackSlash,LeftSpace,LeftCrLfHtVt,RightSpace,RightCrLfHtVt,InvalidUtf8,Dot
 
@@ -166,7 +166,7 @@ increase memory use.
 Properties:
 
 - Config:      chunk_size
-- Env Var:     RCLONE_OPENDRIVE_CHUNK_SIZE
+- Env Var:     ZCLONE_OPENDRIVE_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     10Mi
 
@@ -177,7 +177,7 @@ Files and folders will be uploaded with this access permission (default private)
 Properties:
 
 - Config:      access
-- Env Var:     RCLONE_OPENDRIVE_ACCESS
+- Env Var:     ZCLONE_OPENDRIVE_ACCESS
 - Type:        string
 - Default:     "private"
 - Examples:
@@ -195,7 +195,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_OPENDRIVE_DESCRIPTION
+- Env Var:     ZCLONE_OPENDRIVE_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -208,14 +208,14 @@ file called "Hello.doc" and one called "hello.doc".
 
 There are quite a few characters that can't be in OpenDrive file
 names.  These can't occur on Windows platforms, but on non-Windows
-platforms they are common.  Rclone will map these names to and from an
+platforms they are common.  Zclone will map these names to and from an
 identical looking unicode equivalent.  For example if a file has a `?`
 in it will be mapped to `？` instead.
 
-`rclone about` is not supported by the OpenDrive backend. Backends without
-this capability cannot determine free space for an rclone mount or
-use policy `mfs` (most free space) as a member of an rclone union
+`zclone about` is not supported by the OpenDrive backend. Backends without
+this capability cannot determine free space for an zclone mount or
+use policy `mfs` (most free space) as a member of an zclone union
 remote.
 
-See [List of backends that do not support rclone about](https://rclone.org/overview/#optional-features)
-and [rclone about](https://rclone.org/commands/rclone_about/).
+See [List of backends that do not support zclone about](//overview/#optional-features)
+and [zclone about](//commands/zclone_about/).

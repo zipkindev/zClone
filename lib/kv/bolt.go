@@ -12,10 +12,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/lib/encoder"
 	"go.etcd.io/bbolt"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/lib/encoder"
 )
 
 const (

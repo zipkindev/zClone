@@ -4,8 +4,8 @@ package serve
 import (
 	"errors"
 
-	"github.com/rclone/rclone/cmd"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
 )
 
 func init() {
@@ -20,7 +20,7 @@ var Command = &cobra.Command{
 subcommand to specify the protocol, e.g.
 
 ` + "```console" + `
-rclone serve http remote:
+zclone serve http remote:
 ` + "```" + `
 
 When the "--metadata" flag is enabled, the following metadata fields will be provided as headers:
@@ -37,7 +37,7 @@ Each subcommand has its own options which you can see in their help.
 	},
 	RunE: func(command *cobra.Command, args []string) error {
 		if len(args) == 0 {
-			return errors.New("serve requires a protocol, e.g. 'rclone serve http remote:'")
+			return errors.New("serve requires a protocol, e.g. 'zclone serve http remote:'")
 		}
 		return errors.New("unknown protocol")
 	},

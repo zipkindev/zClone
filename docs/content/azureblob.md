@@ -1,6 +1,6 @@
 ---
 title: "Microsoft Azure Blob Storage"
-description: "Rclone docs for Microsoft Azure Blob Storage"
+description: "Zclone docs for Microsoft Azure Blob Storage"
 versionIntroduced: "v1.38"
 ---
 
@@ -16,7 +16,7 @@ Here is an example of making a Microsoft Azure Blob Storage
 configuration.  For a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -58,32 +58,32 @@ y/e/d> y
 See all containers
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 Make a new container
 
 ```console
-rclone mkdir remote:container
+zclone mkdir remote:container
 ```
 
 List the contents of a container
 
 ```console
-rclone ls remote:container
+zclone ls remote:container
 ```
 
 Sync `/home/local/directory` to the remote container, deleting any excess
 files in the container.
 
 ```console
-rclone sync --interactive /home/local/directory remote:container
+zclone sync --interactive /home/local/directory remote:container
 ```
 
 ### --fast-list
 
 This remote supports `--fast-list` which allows you to use fewer
-transactions in exchange for more memory. See the [rclone
+transactions in exchange for more memory. See the [zclone
 docs](/docs/#fast-list) for more details.
 
 ### Modification times and hashes
@@ -95,7 +95,7 @@ there is no performance overhead to using it.
 
 If you wish to use the Azure standard `LastModified` time stored on
 the object as the modified time, then use the `--use-server-modtime`
-flag. Note that rclone can't set `LastModified`, so using the
+flag. Note that zclone can't set `LastModified`, so using the
 `--update` flag when syncing is recommended if using
 `--use-server-modtime`.
 
@@ -105,7 +105,7 @@ hashes, e.g. the local disk.
 
 ### Metadata and tags
 
-Rclone can map arbitrary metadata to Azure Blob headers, user metadata, and tags
+Zclone can map arbitrary metadata to Azure Blob headers, user metadata, and tags
 when `--metadata` is enabled (or when using `--metadata-set` / `--metadata-mapper`).
 
 - Headers: Set these keys in metadata to map to the corresponding blob headers:
@@ -117,11 +117,11 @@ when `--metadata` is enabled (or when using `--metadata-set` / `--metadata-mappe
   `x-ms-tags=env=dev,team=sync`. These are applied as blob tags on upload and on
   server-side copies. Whitespace around keys/values is ignored.
 - Modtime override: Provide `mtime` in RFC3339/RFC3339Nano format to override the
-  stored modtime persisted in user metadata. If `mtime` cannot be parsed, rclone
+  stored modtime persisted in user metadata. If `mtime` cannot be parsed, zclone
   logs a debug message and ignores the override.
 
 Notes:
-- Rclone ignores reserved `x-ms-*` keys (except `x-ms-tags`) for user metadata.
+- Zclone ignores reserved `x-ms-*` keys (except `x-ms-tags`) for user metadata.
 
 ### Performance
 
@@ -154,11 +154,11 @@ as they can't be used in JSON strings.
 ### Authentication {#authentication}
 
 There are a number of ways of supplying credentials for Azure Blob
-Storage. Rclone tries them in the order of the sections below.
+Storage. Zclone tries them in the order of the sections below.
 
 #### Env Auth
 
-If the `env_auth` config parameter is `true` then rclone will pull
+If the `env_auth` config parameter is `true` then zclone will pull
 credentials from the environment or runtime.
 
 It tries these authentication methods in this order:
@@ -171,7 +171,7 @@ These are described in the following sections
 
 ##### Env Auth: 1. Environment Variables
 
-If `env_auth` is set and environment variables are present rclone
+If `env_auth` is set and environment variables are present zclone
 authenticates a service principal with a secret or certificate, or a
 user with a password, depending on which environment variable are set.
 It reads configuration from these variables, in the following order:
@@ -221,7 +221,7 @@ section](#use_msi).
 
 If you are operating in disconnected clouds, or private clouds such as
 Azure Stack you may want to set `disable_instance_discovery = true`.
-This determines whether rclone requests Microsoft Entra instance
+This determines whether zclone requests Microsoft Entra instance
 metadata from `https://login.microsoft.com/` before authenticating.
 Setting this to `true` will skip this request, making you responsible
 for ensuring the configured authority is valid and trustworthy.
@@ -236,16 +236,16 @@ For example if you were to login with a service principal like this:
 az login --service-principal -u XXX -p XXX --tenant XXX
 ```
 
-Then you could access rclone resources like this:
+Then you could access zclone resources like this:
 
 ```console
-rclone lsf :azureblob,env_auth,account=ACCOUNT:CONTAINER
+zclone lsf :azureblob,env_auth,account=ACCOUNT:CONTAINER
 ```
 
 Or
 
 ```console
-rclone lsf --azureblob-env-auth --azureblob-account=ACCOUNT :azureblob:CONTAINER
+zclone lsf --azureblob-env-auth --azureblob-account=ACCOUNT :azureblob:CONTAINER
 ```
 
 Which is analogous to using the `az` tool:
@@ -270,18 +270,18 @@ from the Azure portal or the Azure Storage Explorer.  To get a
 container level SAS URL right click on a container in the Azure Blob
 explorer in the Azure portal.
 
-If you use a container level SAS URL, rclone operations are permitted
+If you use a container level SAS URL, zclone operations are permitted
 only on a particular container, e.g.
 
 ```console
-rclone ls azureblob:container
+zclone ls azureblob:container
 ```
 
 You can also list the single container from the root. This will only
 show the container specified by the SAS URL.
 
 ```console
-$ rclone lsd azureblob:
+$ zclone lsd azureblob:
 container/
 ```
 
@@ -289,7 +289,7 @@ Note that you can't see or access any other containers - this will
 fail
 
 ```console
-rclone ls azureblob:othercontainer
+zclone ls azureblob:othercontainer
 ```
 
 Container level SAS URLs are useful for temporarily allowing third
@@ -298,7 +298,7 @@ untrusted environment such as a CI build server.
 
 #### Service principal with client secret
 
-If these variables are set, rclone will authenticate with a service principal
+If these variables are set, zclone will authenticate with a service principal
 with a client secret.
 
 - `tenant`: ID of the service principal's tenant. Also called its "directory" ID.
@@ -310,7 +310,7 @@ The credentials can also be placed in a file using the
 
 #### Service principal with certificate
 
-If these variables are set, rclone will authenticate with a service principal
+If these variables are set, zclone will authenticate with a service principal
 with certificate.
 
 - `tenant`: ID of the service principal's tenant. Also called its "directory" ID.
@@ -323,11 +323,11 @@ with certificate.
   issuer based authentication. When set to "true" or "1", authentication
   requests include the x5c header.
 
-**NB** `client_certificate_password` must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** `client_certificate_password` must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 #### User with username and password
 
-If these variables are set, rclone will authenticate with username and password.
+If these variables are set, zclone will authenticate with username and password.
 
 - `tenant`: (optional) tenant to authenticate in. Defaults to "organizations".
 - `client_id`: client ID of the application the user will authenticate to
@@ -341,7 +341,7 @@ authentication, and the application must already have user or admin
 consent. This credential can only authenticate work and school
 accounts; it can't authenticate Microsoft accounts.
 
-**NB** `password` must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** `password` must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 #### Managed Service Identity Credentials {#use_msi}
 
@@ -358,7 +358,7 @@ set, this is is equivalent to using `env_auth`.
 
 #### Federated Identity Credentials
 
-If these variables are set, rclone will authenticate with federated identity.
+If these variables are set, zclone will authenticate with federated identity.
 
 - `tenant`: tenant ID of of the storage
 - `client_id`: client ID of the application the user will authenticate to storage
@@ -382,10 +382,10 @@ Don't set `env_auth` at the same time.
 #### Anonymous {#anonymous}
 
 If you want to access resources with public anonymous access then set
-`account` only. You can do this without making an rclone config:
+`account` only. You can do this without making an zclone config:
 
 ```console
-rclone lsf :azureblob,account=ACCOUNT:CONTAINER
+zclone lsf :azureblob,account=ACCOUNT:CONTAINER
 ```
 
 <!-- autogenerated options start - DO NOT EDIT - instead edit fs.RegInfo in backend/azureblob/azureblob.go and run make backenddocs to verify --> <!-- markdownlint-disable-line line-length -->
@@ -408,7 +408,7 @@ environment variable `AZURE_STORAGE_ACCOUNT_NAME` if possible.
 Properties:
 
 - Config:      account
-- Env Var:     RCLONE_AZUREBLOB_ACCOUNT
+- Env Var:     ZCLONE_AZUREBLOB_ACCOUNT
 - Type:        string
 - Required:    false
 
@@ -421,7 +421,7 @@ See the [authentication docs](/azureblob#authentication) for full info.
 Properties:
 
 - Config:      env_auth
-- Env Var:     RCLONE_AZUREBLOB_ENV_AUTH
+- Env Var:     ZCLONE_AZUREBLOB_ENV_AUTH
 - Type:        bool
 - Default:     false
 
@@ -434,7 +434,7 @@ Leave blank to use SAS URL or Emulator.
 Properties:
 
 - Config:      key
-- Env Var:     RCLONE_AZUREBLOB_KEY
+- Env Var:     ZCLONE_AZUREBLOB_KEY
 - Type:        string
 - Required:    false
 
@@ -447,7 +447,7 @@ Leave blank if using account/key or Emulator.
 Properties:
 
 - Config:      sas_url
-- Env Var:     RCLONE_AZUREBLOB_SAS_URL
+- Env Var:     ZCLONE_AZUREBLOB_SAS_URL
 - Type:        string
 - Required:    false
 
@@ -461,7 +461,7 @@ Connection string for the storage. Leave blank if using other auth methods.
 Properties:
 
 - Config:      connection_string
-- Env Var:     RCLONE_AZUREBLOB_CONNECTION_STRING
+- Env Var:     ZCLONE_AZUREBLOB_CONNECTION_STRING
 - Type:        string
 - Required:    false
 
@@ -478,7 +478,7 @@ Set this if using
 Properties:
 
 - Config:      tenant
-- Env Var:     RCLONE_AZUREBLOB_TENANT
+- Env Var:     ZCLONE_AZUREBLOB_TENANT
 - Type:        string
 - Required:    false
 
@@ -495,7 +495,7 @@ Set this if using
 Properties:
 
 - Config:      client_id
-- Env Var:     RCLONE_AZUREBLOB_CLIENT_ID
+- Env Var:     ZCLONE_AZUREBLOB_CLIENT_ID
 - Type:        string
 - Required:    false
 
@@ -510,7 +510,7 @@ Set this if using
 Properties:
 
 - Config:      client_secret
-- Env Var:     RCLONE_AZUREBLOB_CLIENT_SECRET
+- Env Var:     ZCLONE_AZUREBLOB_CLIENT_SECRET
 - Type:        string
 - Required:    false
 
@@ -525,7 +525,7 @@ Set this if using
 Properties:
 
 - Config:      client_certificate_path
-- Env Var:     RCLONE_AZUREBLOB_CLIENT_CERTIFICATE_PATH
+- Env Var:     ZCLONE_AZUREBLOB_CLIENT_CERTIFICATE_PATH
 - Type:        string
 - Required:    false
 
@@ -539,12 +539,12 @@ Optionally set this if using
 And the certificate has a password.
 
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      client_certificate_password
-- Env Var:     RCLONE_AZUREBLOB_CLIENT_CERTIFICATE_PASSWORD
+- Env Var:     ZCLONE_AZUREBLOB_CLIENT_CERTIFICATE_PASSWORD
 - Type:        string
 - Required:    false
 
@@ -567,7 +567,7 @@ Optionally set this if using
 Properties:
 
 - Config:      client_send_certificate_chain
-- Env Var:     RCLONE_AZUREBLOB_CLIENT_SEND_CERTIFICATE_CHAIN
+- Env Var:     ZCLONE_AZUREBLOB_CLIENT_SEND_CERTIFICATE_CHAIN
 - Type:        bool
 - Default:     false
 
@@ -582,7 +582,7 @@ Set this if using
 Properties:
 
 - Config:      username
-- Env Var:     RCLONE_AZUREBLOB_USERNAME
+- Env Var:     ZCLONE_AZUREBLOB_USERNAME
 - Type:        string
 - Required:    false
 
@@ -594,12 +594,12 @@ Set this if using
 - User with username and password
 
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      password
-- Env Var:     RCLONE_AZUREBLOB_PASSWORD
+- Env Var:     ZCLONE_AZUREBLOB_PASSWORD
 - Type:        string
 - Required:    false
 
@@ -617,14 +617,14 @@ Leave blank normally. Needed only if you want to use a service principal instead
 See ["Create an Azure service principal"](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) and ["Assign an Azure role for access to blob data"](https://docs.microsoft.com/en-us/azure/storage/common/storage-auth-aad-rbac-cli) pages for more details.
 
 It may be more convenient to put the credentials directly into the
-rclone config file under the `client_id`, `tenant` and `client_secret`
+zclone config file under the `client_id`, `tenant` and `client_secret`
 keys instead of setting `service_principal_file`.
 
 
 Properties:
 
 - Config:      service_principal_file
-- Env Var:     RCLONE_AZUREBLOB_SERVICE_PRINCIPAL_FILE
+- Env Var:     ZCLONE_AZUREBLOB_SERVICE_PRINCIPAL_FILE
 - Type:        string
 - Required:    false
 
@@ -635,7 +635,7 @@ Skip requesting Microsoft Entra instance metadata
 This should be set true only by applications authenticating in
 disconnected clouds, or private clouds such as Azure Stack.
 
-It determines whether rclone requests Microsoft Entra instance
+It determines whether zclone requests Microsoft Entra instance
 metadata from `https://login.microsoft.com/` before
 authenticating.
 
@@ -646,7 +646,7 @@ for ensuring the configured authority is valid and trustworthy.
 Properties:
 
 - Config:      disable_instance_discovery
-- Env Var:     RCLONE_AZUREBLOB_DISABLE_INSTANCE_DISCOVERY
+- Env Var:     ZCLONE_AZUREBLOB_DISABLE_INSTANCE_DISCOVERY
 - Type:        bool
 - Default:     false
 
@@ -666,7 +666,7 @@ msi_client_id, or msi_mi_res_id parameters.
 Properties:
 
 - Config:      use_msi
-- Env Var:     RCLONE_AZUREBLOB_USE_MSI
+- Env Var:     ZCLONE_AZUREBLOB_USE_MSI
 - Type:        bool
 - Default:     false
 
@@ -679,7 +679,7 @@ Leave blank if msi_client_id or msi_mi_res_id specified.
 Properties:
 
 - Config:      msi_object_id
-- Env Var:     RCLONE_AZUREBLOB_MSI_OBJECT_ID
+- Env Var:     ZCLONE_AZUREBLOB_MSI_OBJECT_ID
 - Type:        string
 - Required:    false
 
@@ -692,7 +692,7 @@ Leave blank if msi_object_id or msi_mi_res_id specified.
 Properties:
 
 - Config:      msi_client_id
-- Env Var:     RCLONE_AZUREBLOB_MSI_CLIENT_ID
+- Env Var:     ZCLONE_AZUREBLOB_MSI_CLIENT_ID
 - Type:        string
 - Required:    false
 
@@ -705,7 +705,7 @@ Leave blank if msi_client_id or msi_object_id specified.
 Properties:
 
 - Config:      msi_mi_res_id
-- Env Var:     RCLONE_AZUREBLOB_MSI_MI_RES_ID
+- Env Var:     ZCLONE_AZUREBLOB_MSI_MI_RES_ID
 - Type:        string
 - Required:    false
 
@@ -718,7 +718,7 @@ Leave blank if using real azure storage endpoint.
 Properties:
 
 - Config:      use_emulator
-- Env Var:     RCLONE_AZUREBLOB_USE_EMULATOR
+- Env Var:     ZCLONE_AZUREBLOB_USE_EMULATOR
 - Type:        bool
 - Default:     false
 
@@ -738,7 +738,7 @@ Don't set env_auth at the same time.
 Properties:
 
 - Config:      use_az
-- Env Var:     RCLONE_AZUREBLOB_USE_AZ
+- Env Var:     ZCLONE_AZUREBLOB_USE_AZ
 - Type:        bool
 - Default:     false
 
@@ -751,7 +751,7 @@ Leave blank normally.
 Properties:
 
 - Config:      endpoint
-- Env Var:     RCLONE_AZUREBLOB_ENDPOINT
+- Env Var:     ZCLONE_AZUREBLOB_ENDPOINT
 - Type:        string
 - Required:    false
 
@@ -762,7 +762,7 @@ Cutoff for switching to chunked upload (<= 256 MiB) (deprecated).
 Properties:
 
 - Config:      upload_cutoff
-- Env Var:     RCLONE_AZUREBLOB_UPLOAD_CUTOFF
+- Env Var:     ZCLONE_AZUREBLOB_UPLOAD_CUTOFF
 - Type:        string
 - Required:    false
 
@@ -777,7 +777,7 @@ in memory.
 Properties:
 
 - Config:      chunk_size
-- Env Var:     RCLONE_AZUREBLOB_CHUNK_SIZE
+- Env Var:     ZCLONE_AZUREBLOB_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     4Mi
 
@@ -803,7 +803,7 @@ in memory.
 Properties:
 
 - Config:      upload_concurrency
-- Env Var:     RCLONE_AZUREBLOB_UPLOAD_CONCURRENCY
+- Env Var:     ZCLONE_AZUREBLOB_UPLOAD_CONCURRENCY
 - Type:        int
 - Default:     16
 
@@ -819,7 +819,7 @@ Files smaller than this limit will be copied with the Copy Blob API.
 Properties:
 
 - Config:      copy_cutoff
-- Env Var:     RCLONE_AZUREBLOB_COPY_CUTOFF
+- Env Var:     ZCLONE_AZUREBLOB_COPY_CUTOFF
 - Type:        SizeSuffix
 - Default:     8Mi
 
@@ -841,7 +841,7 @@ concurrency.
 Properties:
 
 - Config:      copy_concurrency
-- Env Var:     RCLONE_AZUREBLOB_COPY_CONCURRENCY
+- Env Var:     ZCLONE_AZUREBLOB_COPY_CONCURRENCY
 - Type:        int
 - Default:     512
 
@@ -857,7 +857,7 @@ Set to 0 to disable this limiter.
 Properties:
 
 - Config:      copy_total_concurrency
-- Env Var:     RCLONE_AZUREBLOB_COPY_TOTAL_CONCURRENCY
+- Env Var:     ZCLONE_AZUREBLOB_COPY_TOTAL_CONCURRENCY
 - Type:        int
 - Default:     0
 
@@ -865,11 +865,11 @@ Properties:
 
 Whether to use the Copy Blob API when copying to the same storage account.
 
-If true (the default) then rclone will use the Copy Blob API for
+If true (the default) then zclone will use the Copy Blob API for
 copies to the same storage account even when the size is above the
 copy_cutoff.
 
-Rclone assumes that the same storage account means the same config
+Zclone assumes that the same storage account means the same config
 and does not check for the same storage account in different configs.
 
 There should be no need to change this value.
@@ -878,7 +878,7 @@ There should be no need to change this value.
 Properties:
 
 - Config:      use_copy_blob
-- Env Var:     RCLONE_AZUREBLOB_USE_COPY_BLOB
+- Env Var:     ZCLONE_AZUREBLOB_USE_COPY_BLOB
 - Type:        bool
 - Default:     true
 
@@ -897,7 +897,7 @@ avoid the time out.
 Properties:
 
 - Config:      list_chunk
-- Env Var:     RCLONE_AZUREBLOB_LIST_CHUNK
+- Env Var:     ZCLONE_AZUREBLOB_LIST_CHUNK
 - Type:        int
 - Default:     5000
 
@@ -909,8 +909,8 @@ Archived blobs can be restored by setting access tier to hot, cool or
 cold. Leave blank if you intend to use default access tier, which is
 set at account level
 
-If there is no "access tier" specified, rclone doesn't apply any tier.
-rclone performs "Set Tier" operation on blobs while uploading, if objects
+If there is no "access tier" specified, zclone doesn't apply any tier.
+zclone performs "Set Tier" operation on blobs while uploading, if objects
 are not modified, specifying "access tier" to new one will have no effect.
 If blobs are in "archive tier" at remote, trying to perform data transfer
 operations from remote will not be allowed. User should first restore by
@@ -919,7 +919,7 @@ tiering blob to "Hot", "Cool" or "Cold".
 Properties:
 
 - Config:      access_tier
-- Env Var:     RCLONE_AZUREBLOB_ACCESS_TIER
+- Env Var:     ZCLONE_AZUREBLOB_ACCESS_TIER
 - Type:        string
 - Required:    false
 
@@ -928,12 +928,12 @@ Properties:
 Delete archive tier blobs before overwriting.
 
 Archive tier blobs cannot be updated. So without this flag, if you
-attempt to update an archive tier blob, then rclone will produce the
+attempt to update an archive tier blob, then zclone will produce the
 error:
 
     can't update archive tier blob without --azureblob-archive-tier-delete
 
-With this flag set then before rclone attempts to overwrite an archive
+With this flag set then before zclone attempts to overwrite an archive
 tier blob, it will delete the existing blob before uploading its
 replacement.  This has the potential for data loss if the upload fails
 (unlike updating a normal blob) and also may cost more since deleting
@@ -943,7 +943,7 @@ archive tier blobs early may be chargable.
 Properties:
 
 - Config:      archive_tier_delete
-- Env Var:     RCLONE_AZUREBLOB_ARCHIVE_TIER_DELETE
+- Env Var:     ZCLONE_AZUREBLOB_ARCHIVE_TIER_DELETE
 - Type:        bool
 - Default:     false
 
@@ -951,7 +951,7 @@ Properties:
 
 Don't store MD5 checksum with object metadata.
 
-Normally rclone will calculate the MD5 checksum of the input before
+Normally zclone will calculate the MD5 checksum of the input before
 uploading it so it can add it to metadata on the object. This is great
 for data integrity checking but can cause long delays for large files
 to start uploading.
@@ -959,7 +959,7 @@ to start uploading.
 Properties:
 
 - Config:      disable_checksum
-- Env Var:     RCLONE_AZUREBLOB_DISABLE_CHECKSUM
+- Env Var:     ZCLONE_AZUREBLOB_DISABLE_CHECKSUM
 - Type:        bool
 - Default:     false
 
@@ -972,7 +972,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_AZUREBLOB_ENCODING
+- Env Var:     ZCLONE_AZUREBLOB_ENCODING
 - Type:        Encoding
 - Default:     Slash,BackSlash,Del,Ctl,RightPeriod,InvalidUtf8
 
@@ -983,7 +983,7 @@ Public access level of a container: blob or container.
 Properties:
 
 - Config:      public_access
-- Env Var:     RCLONE_AZUREBLOB_PUBLIC_ACCESS
+- Env Var:     ZCLONE_AZUREBLOB_PUBLIC_ACCESS
 - Type:        string
 - Required:    false
 - Examples:
@@ -1009,7 +1009,7 @@ the Microsoft standard.
 Properties:
 
 - Config:      directory_markers
-- Env Var:     RCLONE_AZUREBLOB_DIRECTORY_MARKERS
+- Env Var:     ZCLONE_AZUREBLOB_DIRECTORY_MARKERS
 - Type:        bool
 - Default:     false
 
@@ -1018,13 +1018,13 @@ Properties:
 If set, don't attempt to check the container exists or create it.
 
 This can be useful when trying to minimise the number of transactions
-rclone does if you know the container exists already.
+zclone does if you know the container exists already.
 
 
 Properties:
 
 - Config:      no_check_container
-- Env Var:     RCLONE_AZUREBLOB_NO_CHECK_CONTAINER
+- Env Var:     ZCLONE_AZUREBLOB_NO_CHECK_CONTAINER
 - Type:        bool
 - Default:     false
 
@@ -1035,7 +1035,7 @@ If set, do not do HEAD before GET when getting objects.
 Properties:
 
 - Config:      no_head_object
-- Env Var:     RCLONE_AZUREBLOB_NO_HEAD_OBJECT
+- Env Var:     ZCLONE_AZUREBLOB_NO_HEAD_OBJECT
 - Type:        bool
 - Default:     false
 
@@ -1046,7 +1046,7 @@ Set to specify how to deal with snapshots on blob deletion.
 Properties:
 
 - Config:      delete_snapshots
-- Env Var:     RCLONE_AZUREBLOB_DELETE_SNAPSHOTS
+- Env Var:     ZCLONE_AZUREBLOB_DELETE_SNAPSHOTS
 - Type:        string
 - Required:    false
 - Choices:
@@ -1062,17 +1062,17 @@ Properties:
 If set this will decompress gzip encoded objects.
 
 It is possible to upload objects to Azure Blob Storage with "Content-Encoding: gzip"
-set. Normally rclone will download these files as compressed objects.
+set. Normally zclone will download these files as compressed objects.
 
-If this flag is set then rclone will decompress these files with
-"Content-Encoding: gzip" as they are received. This means that rclone
+If this flag is set then zclone will decompress these files with
+"Content-Encoding: gzip" as they are received. This means that zclone
 can't check the size and hash but the file contents will be decompressed.
 
 
 Properties:
 
 - Config:      decompress
-- Env Var:     RCLONE_AZUREBLOB_DECOMPRESS
+- Env Var:     ZCLONE_AZUREBLOB_DECOMPRESS
 - Type:        bool
 - Default:     false
 
@@ -1083,7 +1083,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_AZUREBLOB_DESCRIPTION
+- Env Var:     ZCLONE_AZUREBLOB_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -1100,7 +1100,7 @@ Here are the possible system metadata items for the azureblob backend.
 | content-encoding | Content-Encoding header | string | gzip | N |
 | content-language | Content-Language header | string | en-US | N |
 | content-type | Content-Type header | string | text/plain | N |
-| mtime | Time of last modification, read from rclone metadata | RFC 3339 | 2006-01-02T15:04:05.999999999Z07:00 | N |
+| mtime | Time of last modification, read from zclone metadata | RFC 3339 | 2006-01-02T15:04:05.999999999Z07:00 | N |
 | tier | Tier of the object | string | Hot | **Y** |
 
 See the [metadata](/docs/#metadata) docs for more info.
@@ -1126,19 +1126,19 @@ Eg `--header-upload "Content-Type: text/potato"` or
 MD5 sums are only uploaded with chunked files if the source has an MD5
 sum.  This will always be the case for a local to azure copy.
 
-`rclone about` is not supported by the Microsoft Azure Blob storage backend.
-Backends without this capability cannot determine free space for an rclone
-mount or use policy `mfs` (most free space) as a member of an rclone union
+`zclone about` is not supported by the Microsoft Azure Blob storage backend.
+Backends without this capability cannot determine free space for an zclone
+mount or use policy `mfs` (most free space) as a member of an zclone union
 remote.
 
-See [List of backends that do not support rclone about](https://rclone.org/overview/#optional-features)
-and [rclone about](https://rclone.org/commands/rclone_about/).
+See [List of backends that do not support zclone about](//overview/#optional-features)
+and [zclone about](//commands/zclone_about/).
 
 ## Azure Storage Emulator Support
 
-You can run rclone with the storage emulator (usually _azurite_).
+You can run zclone with the storage emulator (usually _azurite_).
 
-To do this, just set up a new remote with `rclone config` following
+To do this, just set up a new remote with `zclone config` following
 the instructions in the introduction and set `use_emulator` in the
 advanced settings as `true`. You do not need to provide a default
 account name nor an account key. But you can override them in the

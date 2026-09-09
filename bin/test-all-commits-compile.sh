@@ -1,36 +1,34 @@
 #!/bin/sh
-# This tests rclone compiles for all the commits in the branch
-#
-# It assumes that the branch is rebased onto master and checks all the commits from branch root to master
-#
-# Adapted from: https://blog.ploeh.dk/2013/10/07/verifying-every-single-commit-in-a-git-branch/
+# This compile-checks every commit between the current branch and master.
+# It uses disposable worktrees and never changes the caller's checkout or Go bin.
+set -eu
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 if [ "$BRANCH" = "master" ]; then
-    echo "Don't run on master branch"
-    exit 1
+    echo "Don't run on master branch" >&2
+    exit 2
 fi
-COMMITS=$(git log --oneline --reverse master.. | cut -d " " -f 1)
-CODE=0
 
-for COMMIT in $COMMITS
-do
-    git checkout $COMMIT
-    
-    # run-tests
-    echo "------------------------------------------------------------"
-    go install ./...
-    
-    if [ $? -eq 0 ]
-    then
-        echo $COMMIT - passed
-    else
-        echo $COMMIT - failed
-        git checkout ${BRANCH}
-        exit
-    fi
-    echo "------------------------------------------------------------"
+ROOT=$(git rev-parse --show-toplevel)
+COMMITS=$(git -C "$ROOT" rev-list --reverse master.."$BRANCH")
+WORKTREE_BASE=$(mktemp -d)
+WORKTREE="$WORKTREE_BASE/checkout"
+
+cleanup() {
+    git -C "$ROOT" worktree remove --force "$WORKTREE" 2>/dev/null || true
+    rmdir "$WORKTREE_BASE" 2>/dev/null || true
+}
+trap cleanup EXIT INT TERM
+
+for COMMIT in $COMMITS; do
+    git -C "$ROOT" worktree add --detach --quiet "$WORKTREE" "$COMMIT"
+    echo "Checking $COMMIT"
+    (
+        cd "$WORKTREE"
+        GOCACHE="$WORKTREE/.gocache" GOPROXY=off GOSUMDB=off GOFLAGS=-mod=vendor \
+            go test -run '^$' ./...
+    )
+    git -C "$ROOT" worktree remove --force "$WORKTREE"
 done
- 
-git checkout ${BRANCH}
-echo "All OK"
+
+echo "All commits compiled successfully"

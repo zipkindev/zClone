@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/operations"
 )
 
 var (
@@ -30,10 +30,10 @@ var commandDefinition = &cobra.Command{
 	Long: `Create, retrieve or remove a public link to the given file or folder.
 
 ` + "```console" + `
-rclone link remote:path/to/file
-rclone link remote:path/to/folder/
-rclone link --unlink remote:path/to/folder/
-rclone link --expire 1d remote:path/to/file
+zclone link remote:path/to/file
+zclone link remote:path/to/folder/
+zclone link --unlink remote:path/to/folder/
+zclone link --expire 1d remote:path/to/file
 ` + "```" + `
 
 If you supply the --expire flag, it will set the expiration time

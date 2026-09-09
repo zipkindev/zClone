@@ -5,13 +5,13 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rclone/rclone/backend/crypt"
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/check"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/backend/crypt"
+	"zclone/cmd"
+	"zclone/cmd/check"
+	"zclone/fs"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
 )
 
 func init() {
@@ -24,7 +24,7 @@ var commandDefinition = &cobra.Command{
 	Use:   "cryptcheck remote:path cryptedremote:path",
 	Short: `Cryptcheck checks the integrity of an encrypted remote.`,
 	Long: `Checks a remote against an [encrypted](/crypt/) remote. This is the equivalent
-of running rclone [check](/commands/rclone_check/), but able to check the
+of running zclone [check](/commands/zclone_check/), but able to check the
 checksums of the encrypted remote.
 
 For it to work the underlying remote of the cryptedremote must support
@@ -38,14 +38,14 @@ checksum of the file it has just encrypted.
 Use it like this
 
 ` + "```console" + `
-rclone cryptcheck /path/to/files encryptedremote:path
+zclone cryptcheck /path/to/files encryptedremote:path
 ` + "```" + `
 
 You can use it like this also, but that will involve downloading all
 the files in ` + "`remote:path`" + `.
 
 ` + "```console" + `
-rclone cryptcheck remote:path encryptedremote:path
+zclone cryptcheck remote:path encryptedremote:path
 ` + "```" + `
 
 After it has run it will log the status of the ` + "`encryptedremote:`" + `.

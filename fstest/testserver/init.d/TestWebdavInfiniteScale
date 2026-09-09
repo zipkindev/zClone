@@ -37,7 +37,7 @@ start() {
     echo type=webdav
     echo url=https://127.0.0.1:${PORT}/dav/spaces/some-admin-user-id-0000-100000000000
     echo user=$USER
-    echo pass=$(rclone obscure $PASS)
+    echo pass=$(zclone obscure $PASS)
     echo vendor=infinitescale
     echo _connect=127.0.0.1:${PORT}
     echo _connect_delay=5s

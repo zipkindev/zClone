@@ -9,12 +9,12 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/lib/errcount"
 	"golang.org/x/sync/errgroup"
 	drive "google.golang.org/api/drive/v3"
 	"google.golang.org/api/googleapi"
+	"zclone/fs"
+	"zclone/fs/fserrors"
+	"zclone/lib/errcount"
 )
 
 // system metadata keys which this backend owns

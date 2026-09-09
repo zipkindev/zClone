@@ -13,13 +13,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/cmd/mountlib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/lib/file"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
+	"zclone/cmd/mountlib"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fstest"
+	"zclone/lib/file"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
 )
 
 // Functions to run and control the mount subprocess
@@ -98,7 +98,7 @@ func (r *Run) startMountSubProcess() {
 // Find a free path to run the mount on
 func findMountPath() string {
 	if runtime.GOOS != "windows" {
-		mountPath, err := os.MkdirTemp("", "rclonefs-mount")
+		mountPath, err := os.MkdirTemp("", "zclonefs-mount")
 		if err != nil {
 			fs.Fatalf(nil, "Failed to create mount dir: %v", err)
 		}

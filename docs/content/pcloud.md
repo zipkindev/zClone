@@ -1,6 +1,6 @@
 ---
 title: "pCloud"
-description: "Rclone docs for pCloud"
+description: "Zclone docs for pCloud"
 versionIntroduced: "v1.39"
 ---
 
@@ -13,12 +13,12 @@ Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 ## Configuration
 
 The initial setup for pCloud involves getting a token from pCloud which you
-need to do in your browser.  `rclone config` walks you through it.
+need to do in your browser.  `zclone config` walks you through it.
 
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -46,15 +46,15 @@ y) Yes
 n) No (default)
 y/n> n
 Remote config
-Use web browser to automatically authenticate rclone with remote?
- * Say Y if the machine running rclone has a web browser you can use
- * Say N if running rclone on a (remote) machine without web browser access
+Use web browser to automatically authenticate zclone with remote?
+ * Say Y if the machine running zclone has a web browser you can use
+ * Say N if running zclone on a (remote) machine without web browser access
 If not sure try Y. If Y failed, try N.
 y) Yes
 n) No
 y/n> y
 If your browser doesn't open automatically go to the following link: http://127.0.0.1:53682/auth
-Log in and authorize rclone for access
+Log in and authorize zclone for access
 Waiting for code...
 Got code
 Configuration complete.
@@ -73,35 +73,35 @@ y/e/d> y
 See the [remote setup docs](/remote_setup/) for how to set it up on a
 machine without an internet-connected web browser available.
 
-Note if you are using remote config with rclone authorize while your pcloud
+Note if you are using remote config with zclone authorize while your pcloud
 server is the EU region, you will need to set the hostname in 'Edit advanced
 config', otherwise you might get a token error.
 
-Note that rclone runs a webserver on your local machine to collect the
+Note that zclone runs a webserver on your local machine to collect the
 token as returned from pCloud. This only runs from the moment it opens
 your browser to the moment you get back the verification code.  This
 is on `http://127.0.0.1:53682/` and this it may require you to unblock
 it temporarily if you are running a host firewall.
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 List directories in top level of your pCloud
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your pCloud
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 To copy a local directory to a pCloud directory called backup
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
 ### Modification times and hashes
@@ -129,32 +129,32 @@ as they can't be used in JSON strings.
 ### Deleting files
 
 Deleted files will be moved to the trash.  Your subscription level
-will determine how long items stay in the trash.  `rclone cleanup` can
+will determine how long items stay in the trash.  `zclone cleanup` can
 be used to empty the trash.
 
 ### Emptying the trash
 
-Due to an API limitation, the `rclone cleanup` command will only work if you
+Due to an API limitation, the `zclone cleanup` command will only work if you
 set your username and password in the advanced options for this backend.
-Since we generally want to avoid storing user passwords in the rclone config
-file, we advise you to only set this up if you need the `rclone cleanup` command
+Since we generally want to avoid storing user passwords in the zclone config
+file, we advise you to only set this up if you need the `zclone cleanup` command
 to work.
 
 ### Root folder ID
 
-You can set the `root_folder_id` for rclone.  This is the directory
-(identified by its `Folder ID`) that rclone considers to be the root
+You can set the `root_folder_id` for zclone.  This is the directory
+(identified by its `Folder ID`) that zclone considers to be the root
 of your pCloud drive.
 
-Normally you will leave this blank and rclone will determine the
+Normally you will leave this blank and zclone will determine the
 correct root to use itself.
 
-However you can set this to restrict rclone to a specific folder
+However you can set this to restrict zclone to a specific folder
 hierarchy.
 
 In order to do this you will have to find the `Folder ID` of the
-directory you wish rclone to display. This can be accomplished by executing
-the ```rclone lsf``` command using a basic configuration setup that does not
+directory you wish zclone to display. This can be accomplished by executing
+the ```zclone lsf``` command using a basic configuration setup that does not
 include the ```root_folder_id``` parameter.
 
 The command will enumerate available directories, allowing you to locate the
@@ -163,28 +163,28 @@ appropriate Folder ID for subsequent use.
 Example:
 
 ```console
-$ rclone lsf --dirs-only -Fip --csv TestPcloud:
+$ zclone lsf --dirs-only -Fip --csv TestPcloud:
 dxxxxxxxx2,My Music/
 dxxxxxxxx3,My Pictures/
 dxxxxxxxx4,My Videos/
 ```
 
-So if the folder you want rclone to use your is "My Music/", then use the returned
-id from ```rclone lsf``` command (ex. `dxxxxxxxx2`) as the `root_folder_id` variable
+So if the folder you want zclone to use your is "My Music/", then use the returned
+id from ```zclone lsf``` command (ex. `dxxxxxxxx2`) as the `root_folder_id` variable
 value in the config file.
 
 ### Change notifications and mounts
 
-The pCloud backend supports real‑time updates for rclone mounts via change
-notifications. rclone uses pCloud’s diff long‑polling API to detect changes and
+The pCloud backend supports real‑time updates for zclone mounts via change
+notifications. zclone uses pCloud’s diff long‑polling API to detect changes and
 will automatically refresh directory listings in the mounted filesystem when
 changes occur.
 
 Notes and behavior:
 
-- Works automatically when using `rclone mount` and requires no additional
+- Works automatically when using `zclone mount` and requires no additional
   configuration.
-- Notifications are directory‑scoped: when rclone detects a change, it refreshes
+- Notifications are directory‑scoped: when zclone detects a change, it refreshes
   the affected directory so new/removed/renamed files become visible promptly.
 - Updates are near real‑time. The backend uses a long‑poll with short fallback
   polling intervals, so you should see changes appear quickly without manual
@@ -193,7 +193,7 @@ Notes and behavior:
 If you want to debug or verify notifications, you can use the helper command:
 
 ```bash
-rclone test changenotify remote:
+zclone test changenotify remote:
 ```
 
 This will log incoming change notifications for the given remote.
@@ -212,7 +212,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_id
-- Env Var:     RCLONE_PCLOUD_CLIENT_ID
+- Env Var:     ZCLONE_PCLOUD_CLIENT_ID
 - Type:        string
 - Required:    false
 
@@ -225,7 +225,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_secret
-- Env Var:     RCLONE_PCLOUD_CLIENT_SECRET
+- Env Var:     ZCLONE_PCLOUD_CLIENT_SECRET
 - Type:        string
 - Required:    false
 
@@ -240,7 +240,7 @@ OAuth Access Token as a JSON blob.
 Properties:
 
 - Config:      token
-- Env Var:     RCLONE_PCLOUD_TOKEN
+- Env Var:     ZCLONE_PCLOUD_TOKEN
 - Type:        string
 - Required:    false
 
@@ -253,7 +253,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      auth_url
-- Env Var:     RCLONE_PCLOUD_AUTH_URL
+- Env Var:     ZCLONE_PCLOUD_AUTH_URL
 - Type:        string
 - Required:    false
 
@@ -266,7 +266,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      token_url
-- Env Var:     RCLONE_PCLOUD_TOKEN_URL
+- Env Var:     ZCLONE_PCLOUD_TOKEN_URL
 - Type:        string
 - Required:    false
 
@@ -281,7 +281,7 @@ Note that this option is NOT supported by all backends.
 Properties:
 
 - Config:      client_credentials
-- Env Var:     RCLONE_PCLOUD_CLIENT_CREDENTIALS
+- Env Var:     ZCLONE_PCLOUD_CLIENT_CREDENTIALS
 - Type:        bool
 - Default:     false
 
@@ -294,18 +294,18 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_PCLOUD_ENCODING
+- Env Var:     ZCLONE_PCLOUD_ENCODING
 - Type:        Encoding
 - Default:     Slash,BackSlash,Del,Ctl,InvalidUtf8,Dot
 
 #### --pcloud-root-folder-id
 
-Fill in for rclone to use a non root folder as its starting point.
+Fill in for zclone to use a non root folder as its starting point.
 
 Properties:
 
 - Config:      root_folder_id
-- Env Var:     RCLONE_PCLOUD_ROOT_FOLDER_ID
+- Env Var:     ZCLONE_PCLOUD_ROOT_FOLDER_ID
 - Type:        string
 - Default:     "d0"
 
@@ -313,15 +313,15 @@ Properties:
 
 Hostname to connect to.
 
-This is normally set when rclone initially does the oauth connection,
+This is normally set when zclone initially does the oauth connection,
 however you will need to set it by hand if you are using remote config
-with rclone authorize.
+with zclone authorize.
 
 
 Properties:
 
 - Config:      hostname
-- Env Var:     RCLONE_PCLOUD_HOSTNAME
+- Env Var:     ZCLONE_PCLOUD_HOSTNAME
 - Type:        string
 - Default:     "api.pcloud.com"
 - Examples:
@@ -341,7 +341,7 @@ we have to rely on user password authentication for it.
 Properties:
 
 - Config:      username
-- Env Var:     RCLONE_PCLOUD_USERNAME
+- Env Var:     ZCLONE_PCLOUD_USERNAME
 - Type:        string
 - Required:    false
 
@@ -349,12 +349,12 @@ Properties:
 
 Your pcloud password.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      password
-- Env Var:     RCLONE_PCLOUD_PASSWORD
+- Env Var:     ZCLONE_PCLOUD_PASSWORD
 - Type:        string
 - Required:    false
 
@@ -365,7 +365,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_PCLOUD_DESCRIPTION
+- Env Var:     ZCLONE_PCLOUD_DESCRIPTION
 - Type:        string
 - Required:    false
 

@@ -1,6 +1,6 @@
-# Maintainers guide for rclone
+# Maintainers guide for zclone
 
-Current active maintainers of rclone are:
+Current active maintainers of zclone are:
 
 | Name             | GitHub ID         |
 | :--------------- | :---------------- |
@@ -33,7 +33,7 @@ packaging.
 
 ## This is a work in progress draft
 
-This is a guide for how to be an rclone maintainer.  This is mostly a write-up
+This is a guide for how to be an zclone maintainer.  This is mostly a write-up
 of what I (@ncw) attempt to do.
 
 ## Triaging Tickets
@@ -43,16 +43,16 @@ by adding labels and placed into a milestone. Quite a lot of tickets need a bit
 of back and forth to determine whether it is a valid ticket so tickets may
 remain without labels or milestone for a while.
 
-Rclone uses the labels like this:
+Zclone uses the labels like this:
 
 - `bug` - a definitely verified bug
 - `can't reproduce` - a problem which we can't reproduce
 - `doc fix` - a bug in the documentation - if users need help understanding the
   docs add this label
 - `duplicate` - normally close these and ask the user to subscribe to the original
-- `enhancement: new remote` - a new rclone backend
+- `enhancement: new remote` - a new zclone backend
 - `enhancement` - a new feature
-- `FUSE` - to do with `rclone mount` command
+- `FUSE` - to do with `zclone mount` command
 - `good first issue` - mark these if you find a small self-contained issue -
   these get shown to new visitors to the project
 - `help` wanted - mark these if you find a self-contained issue - these get
@@ -61,7 +61,7 @@ Rclone uses the labels like this:
 - `maintenance` - internal enhancement, code re-organisation, etc.
 - `Needs Go 1.XX` - waiting for that version of Go to be released
 - `question` - not a `bug` or `enhancement` - direct to the forum for next time
-- `Remote: XXX` - which rclone backend this affects
+- `Remote: XXX` - which zclone backend this affects
 - `thinking` - not decided on the course of action yet
 
 If it turns out to be a bug or an enhancement it should be tagged as such, with
@@ -82,7 +82,7 @@ The milestones have these meanings:
 - Known bugs - bugs waiting on external factors or we aren't going to fix for
   the moment
 
-Tickets [with no milestone](https://github.com/rclone/rclone/issues?utf8=✓&q=is%3Aissue%20is%3Aopen%20no%3Amile)
+Tickets [with no milestone](/)
 are good candidates for ones that have slipped between the gaps and need
 following up.
 
@@ -96,7 +96,7 @@ Post a link to a beta in the ticket with the fix in, asking for feedback.
 Try to process pull requests promptly!
 
 Merging pull requests on GitHub itself works quite well nowadays so you can
-squash and rebase or rebase pull requests. rclone doesn't use merge commits.
+squash and rebase or rebase pull requests. zclone doesn't use merge commits.
 Use the squash and rebase option if you need to edit the commit message.
 
 After merging the commit, in your local master branch, do `git pull` then run
@@ -112,7 +112,7 @@ avoid a merge commit.  You'll need to rebase the branch if it doesn't merge clea
 
 ## Release cycle
 
-Rclone aims for a 6-8 week release cycle.  Sometimes release cycles take longer
+Zclone aims for a 6-8 week release cycle.  Sometimes release cycles take longer
 if there is something big to merge that didn't stabilize properly or for personal
 reasons.
 
@@ -126,13 +126,13 @@ things settle down.
 
 Follow the instructions in RELEASE.md for making the release. Note that the
 testing part is the most time-consuming often needing several rounds of test
-and fix depending on exactly how many new features rclone has gained.
+and fix depending on exactly how many new features zclone has gained.
 
 ## Mailing list
 
-There is now an invite-only mailing list for rclone developers `rclone-dev` on
+There is now an invite-only mailing list for zclone developers `zclone-dev` on
 google groups.
 
 ## TODO
 
-I should probably make a <dev@rclone.org> to register with cloud providers.
+I should probably make a <dev@zclone.org> to register with cloud providers.

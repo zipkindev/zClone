@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	"zclone/fs/operations"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
 )
 
 var t1 = fstest.Time("2001-02-03T04:05:06.499999999Z")

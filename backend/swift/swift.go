@@ -18,21 +18,21 @@ import (
 	"time"
 
 	"github.com/ncw/swift/v2"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/bucket"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/lib/readers"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/fs/operations"
+	"zclone/lib/atexit"
+	"zclone/lib/bucket"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
+	"zclone/lib/random"
+	"zclone/lib/readers"
 )
 
 // Constants
@@ -59,7 +59,7 @@ or a |`+segmentsDirectory+`| directory. (See the |use_segments_container| option
 for more info). Default for this is 5 GiB which is its maximum value, which
 means only files above this size will be chunked.
 
-Rclone uploads chunked files as dynamic large objects (DLO).
+Zclone uploads chunked files as dynamic large objects (DLO).
 `, "|", "`"),
 	Default:  defaultChunkSize,
 	Advanced: true,
@@ -75,7 +75,7 @@ This will limit the maximum streamed upload size to 5 GiB. This is
 useful because non chunked files are easier to deal with and have an
 MD5SUM.
 
-Rclone will still chunk files bigger than |chunk_size| when doing
+Zclone will still chunk files bigger than |chunk_size| when doing
 normal copy operations.`, "|", "`"),
 	Default:  false,
 	Advanced: true,
@@ -85,13 +85,13 @@ normal copy operations.`, "|", "`"),
 
 Swift cannot transparently store files bigger than 5 GiB. There are
 two schemes for chunking large files, static large objects (SLO) or
-dynamic large objects (DLO), and the API does not allow rclone to
+dynamic large objects (DLO), and the API does not allow zclone to
 determine whether a file is a static or dynamic large object without
 doing a HEAD on the object. Since these need to be treated
-differently, this means rclone has to issue HEAD requests for objects
+differently, this means zclone has to issue HEAD requests for objects
 for example when reading checksums.
 
-When |no_large_objects| is set, rclone will assume that there are no
+When |no_large_objects| is set, zclone will assume that there are no
 static or dynamic large objects stored. This means it can stop doing
 the extra HEAD calls which in turn increases performance greatly
 especially when doing a swift to swift transfer with |--checksum| set.
@@ -110,7 +110,7 @@ but other operations such as Remove and Copy will fail.
 	Name: "use_segments_container",
 	Help: strings.ReplaceAll(`Choose destination for large object segments
 
-Swift cannot transparently store files bigger than 5 GiB and rclone
+Swift cannot transparently store files bigger than 5 GiB and zclone
 will chunk files larger than |chunk_size| (default 5 GiB) in order to
 upload them.
 
@@ -127,8 +127,8 @@ providers (eg Blomp) require this mode as creating additional
 containers isn't allowed. If it is desired to see the |`+segmentsDirectory+`|
 directory in the root then this flag must be set to |true|.
 
-If this value is |unset| (the default), then rclone will choose the value
-to use. It will be |false| unless rclone detects any |auth_url|s that
+If this value is |unset| (the default), then zclone will choose the value
+to use. It will be |false| unless zclone detects any |auth_url|s that
 it knows need it to be |true|. In this case you'll see a message in
 the DEBUG log.
 `, "|", "`"),
@@ -284,10 +284,10 @@ provider.`,
 			Name: "fetch_until_empty_page",
 			Help: `When paginating, always fetch unless we received an empty page.
 
-Consider using this option if rclone listings show fewer objects
+Consider using this option if zclone listings show fewer objects
 than expected, or if repeated syncs copy unchanged objects.
 
-It is safe to enable this, but rclone may make more API calls than
+It is safe to enable this, but zclone may make more API calls than
 necessary.
 
 This is one of a pair of workarounds to handle implementations
@@ -299,10 +299,10 @@ also "partial_page_fetch_threshold".`,
 			Name: "partial_page_fetch_threshold",
 			Help: `When paginating, fetch if the current page is within this percentage of the limit.
 
-Consider using this option if rclone listings show fewer objects
+Consider using this option if zclone listings show fewer objects
 than expected, or if repeated syncs copy unchanged objects.
 
-It is safe to enable this, but rclone may make more API calls than
+It is safe to enable this, but zclone may make more API calls than
 necessary.
 
 This is one of a pair of workarounds to handle implementations

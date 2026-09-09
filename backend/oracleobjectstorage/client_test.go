@@ -17,10 +17,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/hash"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs/config/configmap"
+	"zclone/fs/hash"
 )
 
 // TestGzipEncoding checks the handling of objects stored with

@@ -3,7 +3,7 @@ package sync
 import (
 	"context"
 
-	"github.com/rclone/rclone/fs/rc"
+	"zclone/fs/rc"
 )
 
 func init() {
@@ -25,7 +25,7 @@ func init() {
 - createEmptySrcDirs - create empty src directories on destination if set
 ` + moveHelp + `
 
-See the [` + name + `](/commands/rclone_` + name + `/) command for more information on the above.`,
+See the [` + name + `](/commands/zclone_` + name + `/) command for more information on the above.`,
 		})
 	}
 }

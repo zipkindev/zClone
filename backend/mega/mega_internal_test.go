@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fstest/fstests"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs/object"
+	"zclone/fstest/fstests"
 )
 
 // InternalTestGhostAfterRemove checks that a file removed in a long-running

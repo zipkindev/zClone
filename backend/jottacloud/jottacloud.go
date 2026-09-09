@@ -22,22 +22,22 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/backend/jottacloud/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/oauthutil"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
 	"golang.org/x/oauth2"
+	"zclone/backend/jottacloud/api"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/lib/encoder"
+	"zclone/lib/oauthutil"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
 // Globals
@@ -50,7 +50,7 @@ const (
 	jfsURL             = "https://jfs.jottacloud.com/jfs/"
 	apiURL             = "https://api.jottacloud.com/"
 	wwwURL             = "https://www.jottacloud.com/"
-	cachePrefix        = "rclone-jcmd5-"
+	cachePrefix        = "zclone-jcmd5-"
 	configDevice       = "device"
 	configMountpoint   = "mountpoint"
 	configTokenURL     = "tokenURL"
@@ -110,12 +110,12 @@ func init() {
 			Help: `Jottacloud has limited support for metadata, currently an extended set of timestamps.`,
 			System: map[string]fs.MetadataHelp{
 				"btime": {
-					Help:    "Time of file birth (creation), read from rclone metadata",
+					Help:    "Time of file birth (creation), read from zclone metadata",
 					Type:    "RFC 3339",
 					Example: "2006-01-02T15:04:05.999999999Z07:00",
 				},
 				"mtime": {
-					Help:    "Time of last modification, read from rclone metadata",
+					Help:    "Time of last modification, read from zclone metadata",
 					Type:    "RFC 3339",
 					Example: "2006-01-02T15:04:05.999999999Z07:00",
 				},
@@ -192,7 +192,7 @@ in the web interface of your service.`,
 			Value: "traditional",
 			Help: `Traditional authentication.
 This is supported by the official service and all white-label services
-that rclone knows about. You will be asked which service to connect to.
+that zclone knows about. You will be asked which service to connect to.
 It has a limitation of only a single active authentication at a time. You
 need to be on, or have access to, a machine with an internet-connected
 web browser.`,
@@ -270,8 +270,8 @@ service, for the official service on https://www.jottacloud.com/web/secure.`)
 	case "legacy": // configure a jottacloud backend using legacy authentication
 		m.Set("configVersion", fmt.Sprint(legacyConfigVersion))
 		return fs.ConfigConfirm("legacy_api", false, "config_machine_specific", `Do you want to create a machine specific API key?
-Rclone has it's own Jottacloud API KEY which works fine as long as one
-only uses rclone on a single machine. When you want to use rclone with
+Zclone has it's own Jottacloud API KEY which works fine as long as one
+only uses zclone on a single machine. When you want to use zclone with
 this account on more than one machine it's recommended to create a
 machine specific API key. These keys can NOT be shared between
 machines.`)
@@ -432,7 +432,7 @@ a new by entering a unique name.`, defaultDevice)
 			// we do not want to risk any problems by creating new mountpoints on it.
 			help = fmt.Sprintf(`The mountpoint to use on the built-in device %s.
 The standard setup is to use the %s mountpoint. Most other mountpoints
-have very limited support in rclone and should generally be avoided.`, defaultDevice, defaultMountpoint)
+have very limited support in zclone and should generally be avoided.`, defaultDevice, defaultMountpoint)
 			return fs.ConfigChooseExclusive("choose_device_mountpoint", "config_mountpoint", help, len(dev.MountPoints), func(i int) (string, string) {
 				return dev.MountPoints[i].Name, ""
 			})
@@ -602,7 +602,7 @@ func registerDevice(ctx context.Context, srv *rest.Client) (reg *api.DeviceRegis
 	for i := range randomDeviceNamePart {
 		randomDeviceNamePart[i] = charset[seededRand.Intn(len(charset))]
 	}
-	randomDeviceName := "rclone-" + string(randomDeviceNamePart)
+	randomDeviceName := "zclone-" + string(randomDeviceNamePart)
 	fs.Debugf(nil, "Trying to register device '%s'", randomDeviceName)
 
 	values := url.Values{}

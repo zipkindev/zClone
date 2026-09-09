@@ -1,6 +1,6 @@
 test equal
 # Check that changed files on both sides are renamed ONLY if not-identical
-# See: https://forum.rclone.org/t/bisync-bugs-and-feature-requests/37636#:~:text=1.%20Identical%20files%20should%20be%20left%20alone%2C%20even%20if%20new/newer/changed%20on%20both%20sides
+# See: /
 # - Changed on Path2 and on Path1, and NOT identical       file1 (file1r, file1l)
 # - Changed on Path2 and on Path1, and identical           file2
 

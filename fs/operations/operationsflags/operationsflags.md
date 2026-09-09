@@ -17,8 +17,8 @@ you what happened to it. These are reminiscent of diff files.
 - `! path` means there was an error reading or hashing the source or dest.
 
 The `--dest-after` flag writes a list file using the same format flags
-as [`lsf`](/commands/rclone_lsf/#synopsis) (including [customizable options
-for hash, modtime, etc.](/commands/rclone_lsf/#synopsis))
+as [`lsf`](/commands/zclone_lsf/#synopsis) (including [customizable options
+for hash, modtime, etc.](/commands/zclone_lsf/#synopsis))
 Conceptually it is similar to rsync's `--itemize-changes`, but not identical
 -- it should output an accurate list of what will be on the destination
 after the command is finished.

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs"
 )
 
 func init() {
@@ -15,14 +15,14 @@ func init() {
 
 var zshCommandDefinition = &cobra.Command{
 	Use:   "zsh [output_file]",
-	Short: `Output zsh completion script for rclone.`,
-	Long: `Generates a zsh autocompletion script for rclone.
+	Short: `Output zsh completion script for zclone.`,
+	Long: `Generates a zsh autocompletion script for zclone.
 
-This writes to /usr/share/zsh/vendor-completions/_rclone by default so will
+This writes to /usr/share/zsh/vendor-completions/_zclone by default so will
 probably need to be run with sudo or as root, e.g.
 
 ` + "```console" + `
-sudo rclone completion zsh
+sudo zclone completion zsh
 ` + "```" + `
 
 Logout and login again to use the autocompletion scripts, or source
@@ -38,7 +38,7 @@ there.
 If output_file is "-", then the output will be written to stdout.`,
 	Run: func(command *cobra.Command, args []string) {
 		cmd.CheckArgs(0, 1, command, args)
-		out := "/usr/share/zsh/vendor-completions/_rclone"
+		out := "/usr/share/zsh/vendor-completions/_zclone"
 		if len(args) > 0 {
 			if args[0] == "-" {
 				err := cmd.Root.GenZshCompletion(os.Stdout)

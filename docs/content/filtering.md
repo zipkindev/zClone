@@ -1,12 +1,12 @@
 ---
-title: "Rclone Filtering"
-description: "Rclone filtering, includes and excludes"
+title: "Zclone Filtering"
+description: "Zclone filtering, includes and excludes"
 versionIntroduced: "v1.22"
 ---
 
 # Filtering, includes and excludes
 
-Filter flags determine which files rclone `sync`, `move`, `ls`, `lsl`,
+Filter flags determine which files zclone `sync`, `move`, `ls`, `lsl`,
 `md5sum`, `sha1sum`, `size`, `delete`, `check` and similar commands
 apply to.
 
@@ -15,19 +15,19 @@ lists; file age and size, or presence of a file in a directory. Bucket
 based remotes without the concept of directory apply filters to object
 key, age and size in an analogous way.
 
-Rclone `purge` does not obey filters.
+Zclone `purge` does not obey filters.
 
-To test filters without risk of damage to data, apply them to `rclone
+To test filters without risk of damage to data, apply them to `zclone
 ls`, or with the `--dry-run` and `-vv` flags.
 
-Rclone filter patterns can only be used in filter command line options, not
+Zclone filter patterns can only be used in filter command line options, not
 in the specification of a remote.
 
-E.g. `rclone copy "remote:dir*.jpg" /path/to/dir` does not have a filter effect.
-`rclone copy remote:dir /path/to/dir --include "*.jpg"` does.
+E.g. `zclone copy "remote:dir*.jpg" /path/to/dir` does not have a filter effect.
+`zclone copy remote:dir /path/to/dir --include "*.jpg"` does.
 
 **Important** Avoid mixing any two of `--include...`, `--exclude...` or
-`--filter...` flags in an rclone command. The results might not be what
+`--filter...` flags in an zclone command. The results might not be what
 you expect. Instead use a `--filter...` flag.
 
 ## Patterns for matching path/file names
@@ -37,7 +37,7 @@ you expect. Instead use a `--filter...` flag.
 Here is a formal definition of the pattern syntax,
 [examples](#examples) are below.
 
-Rclone matching rules follow a glob style:
+Zclone matching rules follow a glob style:
 
 ```text
 *         matches any sequence of non-separator (/) characters
@@ -121,7 +121,7 @@ To copy the contents of folder `data` into folder `bkp` excluding the contents
 of subfolder `excl`the following command treats `F:\data` and `F:\bkp` as top
 level for filtering.
 
-`rclone copy F:\data\ F:\bkp\ --exclude=/excl/**`
+`zclone copy F:\data\ F:\bkp\ --exclude=/excl/**`
 
 **Important** Use `/` in path/file name patterns and not `\` even if
 running on Microsoft Windows.
@@ -146,16 +146,16 @@ potato - matches "potato"
 
 The syntax of filter patterns is glob style matching (like `bash`
 uses) to make things easy for users. However this does not provide
-absolute control over the matching, so for advanced users rclone also
+absolute control over the matching, so for advanced users zclone also
 provides a regular expression syntax.
 
-Rclone generally accepts Perl-style regular expressions, the exact syntax
+Zclone generally accepts Perl-style regular expressions, the exact syntax
 is defined in the [Go regular expression reference](https://golang.org/pkg/regexp/syntax/).
 Regular expressions should be enclosed in `{{` `}}`. They will match only the
 last path segment if the glob doesn't start with `/` or the whole path
-name if it does. Note that rclone does not attempt to parse the
+name if it does. Note that zclone does not attempt to parse the
 supplied regular expression, meaning that using any regular expression
-filter will prevent rclone from using [directory filter rules](#directory_filter),
+filter will prevent zclone from using [directory filter rules](#directory_filter),
 as it will instead check every path against
 the supplied regular expression(s).
 
@@ -197,7 +197,7 @@ Which will match a directory called `start` with a file called
 `end.jpg` in it as the `.*` will match `/` characters.
 
 Note that you can use `-vv --dump filters` to show the filter patterns
-in regexp format - rclone implements the glob patterns by transforming
+in regexp format - zclone implements the glob patterns by transforming
 them into regular expressions.
 
 ## Filter pattern examples {#examples}
@@ -227,7 +227,7 @@ them into regular expressions.
 
 ## How filter rules are applied to files {#how-filter-rules-work}
 
-Rclone path/file name filters are made up of one or more of the following flags:
+Zclone path/file name filters are made up of one or more of the following flags:
 
 - `--include`
 - `--include-from`
@@ -238,7 +238,7 @@ Rclone path/file name filters are made up of one or more of the following flags:
 
 There can be more than one instance of individual flags.
 
-Rclone internally uses a combined list of all the include and exclude
+Zclone internally uses a combined list of all the include and exclude
 rules. The order in which rules are processed can influence the result
 of the filter.
 
@@ -255,69 +255,69 @@ flags.
 Within `--include-from`, `--exclude-from` and `--filter-from` flags
 rules are processed from top to bottom of the referenced file.
 
-If there is an `--include` or `--include-from` flag specified, rclone
+If there is an `--include` or `--include-from` flag specified, zclone
 implies a `- **` rule which it adds to the bottom of the internal rule
 list. Specifying a `+` rule with a `--filter...` flag does not imply
 that rule.
 
-Each path/file name passed through rclone is matched against the
+Each path/file name passed through zclone is matched against the
 combined filter list. At first match to a rule the path/file name
 is included or excluded and no further filter rules are processed for
 that path/file.
 
-If rclone does not find a match, after testing against all rules
+If zclone does not find a match, after testing against all rules
 (including the implied rule if appropriate), the path/file name
 is included.
 
-Any path/file included at that stage is processed by the rclone
+Any path/file included at that stage is processed by the zclone
 command.
 
 `--files-from`, `--files-from-raw` and `--files-from0` flags
 over-ride and cannot be combined with other filter options.
 
 To see the internal combined rule list, in regular expression form,
-for a command add the `--dump filters` flag. Running an rclone command
+for a command add the `--dump filters` flag. Running an zclone command
 with `--dump filters` and `-vv` flags lists the internal filter elements
 and shows how they are applied to each source path/file. There is not
 currently a means provided to pass regular expression filter options into
-rclone directly though character class filter rules contain character
+zclone directly though character class filter rules contain character
 classes. [Go regular expression reference](https://golang.org/pkg/regexp/syntax/)
 
 ### How filter rules are applied to directories {#directory_filter}
 
-Rclone commands are applied to path/file names not
+Zclone commands are applied to path/file names not
 directories. The entire contents of a directory can be matched
 to a filter by the pattern `directory/*` or recursively by
 `directory/**`.
 
 Directory filter rules are defined with a closing `/` separator.
 
-E.g. `/directory/subdirectory/` is an rclone directory filter rule.
+E.g. `/directory/subdirectory/` is an zclone directory filter rule.
 
-Rclone commands can use directory filter rules to determine whether they
+Zclone commands can use directory filter rules to determine whether they
 recurse into subdirectories. This potentially optimises access to a remote
 by avoiding listing unnecessary directories. Whether optimisation is
 desirable depends on the specific filter rules and source remote content.
 
 If any [regular expression filters](#regexp) are in use, then no
-directory recursion optimisation is possible, as rclone must check
+directory recursion optimisation is possible, as zclone must check
 every path against the supplied regular expression(s).
 
 Directory recursion optimisation occurs if either:
 
-- A source remote does not support the rclone `ListR` primitive. local,
+- A source remote does not support the zclone `ListR` primitive. local,
 sftp, Microsoft OneDrive and WebDAV do not support `ListR`. Google
-Drive and most bucket type storage do. [Full list](https://rclone.org/overview/#optional-features)
+Drive and most bucket type storage do. [Full list](//overview/#optional-features)
 
-- On other remotes (those that support `ListR`), if the rclone command is not
+- On other remotes (those that support `ListR`), if the zclone command is not
 naturally recursive, and provided it is not run with the `--fast-list` flag.
 `ls`, `lsf -R` and `size` are naturally recursive but `sync`, `copy` and `move`
 are not.
 
-- Whenever the `--disable ListR` flag is applied to an rclone command.
+- Whenever the `--disable ListR` flag is applied to an zclone command.
 
-Rclone commands imply directory filter rules from path/file filter
-rules. To view the directory filter rules rclone has implied for a
+Zclone commands imply directory filter rules from path/file filter
+rules. To view the directory filter rules zclone has implied for a
 command specify the `--dump filters` flag.
 
 E.g. for an include rule
@@ -326,22 +326,22 @@ E.g. for an include rule
 /a/*.jpg
 ```
 
-Rclone implies the directory include rule
+Zclone implies the directory include rule
 
 ```text
 /a/
 ```
 
-Directory filter rules specified in an rclone command can limit
-the scope of an rclone command but path/file filters still have
+Directory filter rules specified in an zclone command can limit
+the scope of an zclone command but path/file filters still have
 to be specified.
 
-E.g. `rclone ls remote: --include /directory/` will not match any
+E.g. `zclone ls remote: --include /directory/` will not match any
 files. Because it is an `--include` option the `--exclude **` rule
 is implied, and the `/directory/` pattern serves only to optimise
 access to the remote by ignoring everything outside of that directory.
 
-E.g. `rclone ls remote: --filter-from filter-list.txt` with a file
+E.g. `zclone ls remote: --filter-from filter-list.txt` with a file
 `filter-list.txt`:
 
 ```text
@@ -359,10 +359,10 @@ matched by the rules above.
 
 Option `exclude-if-present` creates a directory exclude rule based
 on the presence of a file in a directory and takes precedence over
-other rclone directory filter rules.
+other zclone directory filter rules.
 
 When using pattern list syntax, if a pattern item contains either
-`/` or `**`, then rclone will not able to imply a directory filter rule
+`/` or `**`, then zclone will not able to imply a directory filter rule
 from this pattern list.
 
 E.g. for an include rule
@@ -371,7 +371,7 @@ E.g. for an include rule
 {dir1/**,dir2/**}
 ```
 
-Rclone will match files below directories `dir1` or `dir2` only,
+Zclone will match files below directories `dir1` or `dir2` only,
 but will not be able to use this filter to exclude a directory `dir3`
 from being traversed.
 
@@ -387,7 +387,7 @@ directory `dir3` will no longer be created.
 
 ### `--exclude` - Exclude files matching pattern
 
-Excludes path/file names from an rclone command based on a single exclude
+Excludes path/file names from an zclone command based on a single exclude
 rule.
 
 This flag can be repeated. See above for the order filter flags are
@@ -399,24 +399,24 @@ processed in.
 `--exclude` has no effect when combined with `--files-from`,
 `--files-from-raw` or `--files-from0` flags.
 
-E.g. `rclone ls remote: --exclude *.bak` excludes all .bak files
+E.g. `zclone ls remote: --exclude *.bak` excludes all .bak files
 from listing.
 
-E.g. `rclone size remote: --exclude "/dir/**"` returns the total size of
+E.g. `zclone size remote: --exclude "/dir/**"` returns the total size of
 all files on `remote:` excluding those in root directory `dir` and sub
 directories.
 
-E.g. on Microsoft Windows `rclone ls remote: --exclude "*\[{JP,KR,HK}\]*"`
+E.g. on Microsoft Windows `zclone ls remote: --exclude "*\[{JP,KR,HK}\]*"`
 lists the files in `remote:` without `[JP]` or `[KR]` or `[HK]` in
 their name. Quotes prevent the shell from interpreting the `\`
-characters.`\` characters escape the `[` and `]` so an rclone filter
+characters.`\` characters escape the `[` and `]` so an zclone filter
 treats them literally rather than as a character-range. The `{` and `}`
-define an rclone pattern list. For other operating systems single quotes are
-required ie `rclone ls remote: --exclude '*\[{JP,KR,HK}\]*'`
+define an zclone pattern list. For other operating systems single quotes are
+required ie `zclone ls remote: --exclude '*\[{JP,KR,HK}\]*'`
 
 ### `--exclude-from` - Read exclude patterns from file
 
-Excludes path/file names from an rclone command based on rules in a
+Excludes path/file names from an zclone command based on rules in a
 named file. The file contains a list of remarks and pattern rules.
 
 For an example `exclude-file.txt`:
@@ -427,15 +427,15 @@ For an example `exclude-file.txt`:
 file2.jpg
 ```
 
-`rclone ls remote: --exclude-from exclude-file.txt` lists the files on
+`zclone ls remote: --exclude-from exclude-file.txt` lists the files on
 `remote:` except those named `file2.jpg` or with a suffix `.bak`. That is
-equivalent to `rclone ls remote: --exclude file2.jpg --exclude "*.bak"`.
+equivalent to `zclone ls remote: --exclude file2.jpg --exclude "*.bak"`.
 
 This flag can be repeated. See above for the order filter flags are
 processed in.
 
 The `--exclude-from` flag is useful where multiple exclude filter rules
-are applied to an rclone command.
+are applied to an zclone command.
 
 `--exclude-from` should not be used with `--include`, `--include-from`,
 `--filter` or `--filter-from` flags.
@@ -447,7 +447,7 @@ are applied to an rclone command.
 
 ### `--include` - Include files matching pattern
 
-Adds a single include rule based on path/file names to an rclone
+Adds a single include rule based on path/file names to an zclone
 command.
 
 This flag can be repeated. See above for the order filter flags are
@@ -456,37 +456,37 @@ processed in.
 `--include` has no effect when combined with `--files-from`,
 `--files-from-raw` or `--files-from0` flags.
 
-`--include` implies `--exclude **` at the end of an rclone internal
+`--include` implies `--exclude **` at the end of an zclone internal
 filter list. Therefore if you mix `--include` and `--include-from`
 flags with `--exclude`, `--exclude-from`, `--filter` or `--filter-from`,
 you must use include rules for all the files you want in the include
 statement. For more flexibility use the `--filter-from` flag.
 
-E.g. `rclone ls remote: --include "*.{png,jpg}"` lists the files on
+E.g. `zclone ls remote: --include "*.{png,jpg}"` lists the files on
 `remote:` with suffix `.png` and `.jpg`. All other files are excluded.
 
-E.g. multiple rclone copy commands can be combined with `--include` and a
+E.g. multiple zclone copy commands can be combined with `--include` and a
 pattern-list.
 
 ```console
-rclone copy /vol1/A remote:A
-rclone copy /vol1/B remote:B
+zclone copy /vol1/A remote:A
+zclone copy /vol1/B remote:B
 ```
 
 is equivalent to:
 
 ```console
-rclone copy /vol1 remote: --include "{A,B}/**"
+zclone copy /vol1 remote: --include "{A,B}/**"
 ```
 
-E.g. `rclone ls remote:/wheat --include "??[^[:punct:]]*"` lists the
+E.g. `zclone ls remote:/wheat --include "??[^[:punct:]]*"` lists the
 files `remote:` directory `wheat` (and subdirectories) whose third
 character is not punctuation. This example uses
 an [ASCII character class](https://golang.org/pkg/regexp/syntax/).
 
 ### `--include-from` - Read include patterns from file
 
-Adds path/file names to an rclone command based on rules in a
+Adds path/file names to an zclone command based on rules in a
 named file. The file contains a list of remarks and pattern rules.
 
 For an example `include-file.txt`:
@@ -497,17 +497,17 @@ For an example `include-file.txt`:
 file2.avi
 ```
 
-`rclone ls remote: --include-from include-file.txt` lists the files on
+`zclone ls remote: --include-from include-file.txt` lists the files on
 `remote:` with name `file2.avi` or suffix `.jpg`. That is equivalent to
-`rclone ls remote: --include file2.avi --include "*.jpg"`.
+`zclone ls remote: --include file2.avi --include "*.jpg"`.
 
 This flag can be repeated. See above for the order filter flags are
 processed in.
 
 The `--include-from` flag is useful where multiple include filter rules
-are applied to an rclone command.
+are applied to an zclone command.
 
-`--include-from` implies `--exclude **` at the end of an rclone internal
+`--include-from` implies `--exclude **` at the end of an zclone internal
 filter list. Therefore if you mix `--include` and `--include-from`
 flags with `--exclude`, `--exclude-from`, `--filter` or `--filter-from`,
 you must use include rules for all the files you want in the include
@@ -520,13 +520,13 @@ statement. For more flexibility use the `--filter-from` flag.
 
 ### `--filter` - Add a file-filtering rule
 
-Specifies path/file names to an rclone command, based on a single
+Specifies path/file names to an zclone command, based on a single
 include or exclude rule, in `+` or `-` format.
 
 This flag can be repeated. See above for the order filter flags are
 processed in.
 
-`--filter +` differs from `--include`. In the case of `--include` rclone
+`--filter +` differs from `--include`. In the case of `--include` zclone
 implies an `--exclude *` rule which it adds to the bottom of the internal rule
 list. `--filter...+` does not imply
 that rule.
@@ -537,12 +537,12 @@ that rule.
 `--filter` should not be used with `--include`, `--include-from`,
 `--exclude` or `--exclude-from` flags.
 
-E.g. `rclone ls remote: --filter "- *.bak"` excludes all `.bak` files
+E.g. `zclone ls remote: --filter "- *.bak"` excludes all `.bak` files
 from a list of `remote:`.
 
 ### `--filter-from` - Read filtering patterns from a file
 
-Adds path/file names to an rclone command based on rules in a
+Adds path/file names to an zclone command based on rules in a
 named file. The file contains a list of remarks and pattern rules. Include
 <!-- markdownlint-disable-next-line no-space-in-code -->
 rules start with `+ ` and exclude rules with `- `. `!` clears existing
@@ -573,7 +573,7 @@ E.g. for `filter-file.txt`:
 - *
 ```
 
-`rclone ls remote: --filter-from filter-file.txt` lists the path/files on
+`zclone ls remote: --filter-from filter-file.txt` lists the path/files on
 `remote:` including all `jpg` and `png` files, excluding any
 matching `secret*.jpg` and including `file2.avi`.  It also includes
 everything in the directory `dir` at the root of `remote`, except
@@ -606,8 +606,8 @@ Only file 42.doc is listed. Prior rules are cleared by the `!`.
 
 ### `--files-from` - Read list of source-file names
 
-Adds path/files to an rclone command from a list in a named file.
-Rclone processes the path/file names in the order of the list, and
+Adds path/files to an zclone command from a list in a named file.
+Zclone processes the path/file names in the order of the list, and
 no others.
 
 Other filter flags (`--include`, `--include-from`, `--exclude`,
@@ -620,24 +620,24 @@ with `#` or `;` are ignored.
 
 `--files-from` followed by `-` reads the list of files from standard input.
 
-Rclone commands with a `--files-from` flag traverse the remote,
+Zclone commands with a `--files-from` flag traverse the remote,
 treating the names in `--files-from` as a set of filters.
 
 If the `--no-traverse` and `--files-from` flags are used together
-an rclone command does not traverse the remote. Instead it addresses
+an zclone command does not traverse the remote. Instead it addresses
 each path/file named in the file individually. For each path/file name, that
 requires typically 1 API call. This can be efficient for a short `--files-from`
 list and a remote containing many files.
 
-Rclone commands do not error if any names in the `--files-from` file are
+Zclone commands do not error if any names in the `--files-from` file are
 missing from the source remote.
 
-The `--files-from` flag can be repeated in a single rclone command to
+The `--files-from` flag can be repeated in a single zclone command to
 read path/file names from more than one file. The files are read from left
 to right along the command line.
 
 Paths within the `--files-from` file are interpreted as starting
-with the root specified in the rclone command.  Leading `/` separators are
+with the root specified in the zclone command.  Leading `/` separators are
 ignored. See [--files-from-raw](#files-from-raw-read-list-of-source-file-names-without-any-processing)
 if you need the input to be processed in a raw manner.
 
@@ -649,7 +649,7 @@ file1.jpg
 subdir/file2.jpg
 ```
 
-`rclone copy --files-from files-from.txt /home/me/pics remote:pics`
+`zclone copy --files-from files-from.txt /home/me/pics remote:pics`
 copies the following, if they exist, and only those files.
 
 ```text
@@ -678,7 +678,7 @@ user2/prefect
 Then copy these to a remote:
 
 ```console
-rclone copy --files-from files-from.txt /home remote:backup
+zclone copy --files-from files-from.txt /home remote:backup
 ```
 
 The three files are transferred as follows:
@@ -700,7 +700,7 @@ Alternatively if `/` is chosen as root `files-from.txt` will be:
 The copy command will be:
 
 ```console
-rclone copy --files-from files-from.txt / remote:backup
+zclone copy --files-from files-from.txt / remote:backup
 ```
 
 Then there will be an extra `home` directory on the remote:
@@ -715,7 +715,7 @@ Then there will be an extra `home` directory on the remote:
 
 This flag is the same as `--files-from` except that input is read in a
 raw manner. Lines with leading / trailing whitespace, and lines starting
-with `;` or `#` are read without any processing. [rclone lsf](/commands/rclone_lsf/)
+with `;` or `#` are read without any processing. [zclone lsf](/commands/zclone_lsf/)
 has a compatible format that can be used to export file lists from remotes for
 input to `--files-from-raw`.
 
@@ -731,12 +731,12 @@ option of `xargs`.
 E.g. to copy files listed by `find`:
 
 ```console
-find /path -print0 | rclone copy --files-from0 - / remote:path
+find /path -print0 | zclone copy --files-from0 - / remote:path
 ```
 
 ### `--ignore-case` - make searches case insensitive
 
-By default, rclone filter patterns are case sensitive. The `--ignore-case`
+By default, zclone filter patterns are case sensitive. The `--ignore-case`
 flag makes all of the filters patterns on the command line case
 insensitive.
 
@@ -745,7 +745,7 @@ E.g. `--include "zaphod.txt"` does not match a file `Zaphod.txt`. With
 
 ## Quoting shell metacharacters
 
-Rclone commands with filter patterns containing shell metacharacters may
+Zclone commands with filter patterns containing shell metacharacters may
 not as work as expected in your shell and may require quoting.
 
 E.g. linux, OSX (`*` metacharacter)
@@ -757,7 +757,7 @@ E.g. linux, OSX (`*` metacharacter)
 Microsoft Windows expansion is done by the command, not shell, so
 `--include *.jpg` does not require quoting.
 
-If the rclone error
+If the zclone error
 `Command .... needs .... arguments maximum: you provided .... non flag arguments:`
 is encountered, the cause is commonly spaces within the name of a
 remote or flag value. The fix then is to quote values containing spaces.
@@ -766,43 +766,43 @@ remote or flag value. The fix then is to quote values containing spaces.
 
 ### `--min-size` - Don't transfer any file smaller than this
 
-Controls the minimum size file within the scope of an rclone command.
+Controls the minimum size file within the scope of an zclone command.
 Default units are `KiB` but abbreviations `B`, `K`, `M`, `G`, `T` or `P` are valid.
 
-E.g. `rclone ls remote: --min-size 50k` lists files on `remote:` of 50 KiB
+E.g. `zclone ls remote: --min-size 50k` lists files on `remote:` of 50 KiB
 size or larger.
 
 See [the size option docs](/docs/#size-options) for more info.
 
 ### `--max-size` - Don't transfer any file larger than this
 
-Controls the maximum size file within the scope of an rclone command.
+Controls the maximum size file within the scope of an zclone command.
 Default units are `KiB` but abbreviations `B`, `K`, `M`, `G`, `T` or `P` are valid.
 
-E.g. `rclone ls remote: --max-size 1G` lists files on `remote:` of 1 GiB
+E.g. `zclone ls remote: --max-size 1G` lists files on `remote:` of 1 GiB
 size or smaller.
 
 See [the size option docs](/docs/#size-options) for more info.
 
 ### `--max-age` - Don't transfer any file older than this
 
-Controls the maximum age of files within the scope of an rclone command.
+Controls the maximum age of files within the scope of an zclone command.
 
 `--max-age` applies only to files and not to directories.
 
-E.g. `rclone ls remote: --max-age 2d` lists files on `remote:` of 2 days
+E.g. `zclone ls remote: --max-age 2d` lists files on `remote:` of 2 days
 old or less.
 
 See [the time option docs](/docs/#time-options) for valid formats.
 
 ### `--min-age` - Don't transfer any file younger than this
 
-Controls the minimum age of files within the scope of an rclone command.
+Controls the minimum age of files within the scope of an zclone command.
 (see `--max-age` for valid formats)
 
 `--min-age` applies only to files and not to directories.
 
-E.g. `rclone ls remote: --min-age 2d` lists files on `remote:` of 2 days
+E.g. `zclone ls remote: --min-age 2d` lists files on `remote:` of 2 days
 old or more.
 
 See [the time option docs](/docs/#time-options) for valid formats.
@@ -848,18 +848,18 @@ This will stay constant across retries.
 
 #### How It Works
 
-- Rclone takes each file's full path, normalizes it to lowercase, and applies
+- Zclone takes each file's full path, normalizes it to lowercase, and applies
   Unicode normalization.
 - It then hashes the normalized path into a 64 bit number.
 - The hash result is reduced modulo `N` to assign the file to a partition.
 - If the calculated partition does not match `K` the file is excluded.
 - Other filters may apply if the file is not excluded.
 
-**Important:** Rclone will traverse all directories to apply the filter.
+**Important:** Zclone will traverse all directories to apply the filter.
 
 #### Usage Notes
 
-- Safe to use with `rclone sync`; source and destination selections will match.
+- Safe to use with `zclone sync`; source and destination selections will match.
 - **Do not** use with `--delete-excluded`, as this could delete unselected files.
 - Ignored if `--files-from`, `--files-from-raw` or `--files-from0` is used.
 
@@ -870,24 +870,24 @@ This will stay constant across retries.
 Assuming the current directory contains `file1.jpg` through `file9.jpg`:
 
 ```console
-$ rclone lsf --hash-filter 0/4 .
+$ zclone lsf --hash-filter 0/4 .
 file1.jpg
 file5.jpg
 
-$ rclone lsf --hash-filter 1/4 .
+$ zclone lsf --hash-filter 1/4 .
 file3.jpg
 file6.jpg
 file9.jpg
 
-$ rclone lsf --hash-filter 2/4 .
+$ zclone lsf --hash-filter 2/4 .
 file2.jpg
 file4.jpg
 
-$ rclone lsf --hash-filter 3/4 .
+$ zclone lsf --hash-filter 3/4 .
 file7.jpg
 file8.jpg
 
-$ rclone lsf --hash-filter 4/4 . # the same as --hash-filter 0/4
+$ zclone lsf --hash-filter 4/4 . # the same as --hash-filter 0/4
 file1.jpg
 file5.jpg
 ```
@@ -895,13 +895,13 @@ file5.jpg
 ##### Syncing the first quarter of files
 
 ```console
-rclone sync --hash-filter 1/4 source:path destination:path
+zclone sync --hash-filter 1/4 source:path destination:path
 ```
 
 ##### Checking a random 1% of files for integrity
 
 ```console
-rclone check --download --hash-filter @/100 source:path destination:path
+zclone check --download --hash-filter @/100 source:path destination:path
 ```
 
 ## Other flags
@@ -911,17 +911,17 @@ rclone check --download --hash-filter @/100 source:path destination:path
 **Important** this flag is dangerous to your data - use with `--dry-run`
 and `-v` first.
 
-In conjunction with `rclone sync`, `--delete-excluded` deletes any files
+In conjunction with `zclone sync`, `--delete-excluded` deletes any files
 on the destination which are excluded from the command.
 
-E.g. the scope of `rclone sync --interactive A: B:` can be restricted:
+E.g. the scope of `zclone sync --interactive A: B:` can be restricted:
 
 ```console
-rclone --min-size 50k --delete-excluded sync A: B:
+zclone --min-size 50k --delete-excluded sync A: B:
 ```
 
 All files on `B:` which are less than 50 KiB are deleted
-because they are excluded from the rclone sync command.
+because they are excluded from the zclone sync command.
 
 ### `--dump filters` - dump the filters to the output
 
@@ -933,7 +933,7 @@ Useful for debugging.
 ## Exclude directory based on a file
 
 The `--exclude-if-present` flag controls whether a directory is
-within the scope of an rclone command based on the presence of a
+within the scope of an zclone command based on the presence of a
 named file within it. The flag can be repeated to check for
 multiple file names, presence of any of them will exclude the
 directory.
@@ -949,7 +949,7 @@ dir1/dir2/dir3/file3
 dir1/dir2/dir3/.ignore
 ```
 
-The command `rclone ls --exclude-if-present .ignore dir1` does
+The command `zclone ls --exclude-if-present .ignore dir1` does
 not list `dir3`, `file3` or `.ignore`.
 
 ## Metadata filters {#metadata}
@@ -966,13 +966,13 @@ For example if you wished to list only local files with a mode of
 `100664` you could do that with:
 
 ```console
-rclone lsf -M --files-only --metadata-include "mode=100664" .
+zclone lsf -M --files-only --metadata-include "mode=100664" .
 ```
 
 Or if you wished to show files with an `atime`, `mtime` or `btime` at a given date:
 
 ```console
-rclone lsf -M --files-only --metadata-include "[abm]time=2022-12-16*" .
+zclone lsf -M --files-only --metadata-include "[abm]time=2022-12-16*" .
 ```
 
 Like file filtering, metadata filtering only applies to files not to
@@ -998,7 +998,7 @@ file name patterns have metadata patterns.
 ## Common pitfalls
 
 The most frequent filter support issues on
-the [rclone forum](https://forum.rclone.org/) are:
+the [zclone forum](/) are:
 
 - Not using paths relative to the root of the remote
 - Not using `/` to match from the root of a remote

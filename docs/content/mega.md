@@ -1,6 +1,6 @@
 ---
 title: "Mega"
-description: "Rclone docs for Mega"
+description: "Zclone docs for Mega"
 versionIntroduced: "v1.41"
 ---
 
@@ -12,11 +12,11 @@ before they are uploaded. This prevents anyone (including employees of
 Mega) from accessing the files without knowledge of the key used for
 encryption.
 
-This is an rclone backend for Mega which supports the file transfer
+This is an zclone backend for Mega which supports the file transfer
 features of Mega using the same client side encryption.
 
 **Note** [MEGA S4 Object Storage](/s3#mega), an S3 compatible object
-store, also works with rclone and this is recommended for new projects.
+store, also works with zclone and this is recommended for new projects.
 
 Paths are specified as `remote:path`
 
@@ -28,7 +28,7 @@ Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -72,28 +72,28 @@ y/e/d> y
 ```
 
 **NOTE:** The encryption keys need to have been already generated after a regular
-login via the browser, otherwise attempting to use the credentials in `rclone`
+login via the browser, otherwise attempting to use the credentials in `zclone`
 will fail.
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 List directories in top level of your Mega
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your Mega
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 To copy a local directory to an Mega directory called backup
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
 ### Modification times and hashes
@@ -118,7 +118,7 @@ normal file system).
 Duplicated files cause problems with the syncing and you will see
 messages in the log about duplicates.
 
-Use `rclone dedupe` to fix duplicated files.
+Use `zclone dedupe` to fix duplicated files.
 
 ### Failure to log-in
 
@@ -132,7 +132,7 @@ Failed to create file system for "my-mega-remote:":
 couldn't login: Object (typically, node or user) not found
 ```
 
-The diagnostic steps often recommended in the [rclone forum](https://forum.rclone.org/search?q=mega)
+The diagnostic steps often recommended in the [zclone forum](/)
 start with the **MEGAcmd** utility. Note that this refers to
 the official C++ command from <https://github.com/meganz/MEGAcmd>
 and not the go language built command from t3rm1n4l/megacmd
@@ -153,7 +153,7 @@ me@example.com:/$
 ```
 
 Note that some have found issues with passwords containing special
-characters. If you can not log on with rclone, but MEGAcmd logs on
+characters. If you can not log on with zclone, but MEGAcmd logs on
 just fine, then consider changing your password temporarily to
 pure alphanumeric characters, in case that helps.
 
@@ -161,23 +161,23 @@ pure alphanumeric characters, in case that helps.
 
 Mega remotes seem to get blocked (reject logins) under "heavy use".
 We haven't worked out the exact blocking rules but it seems to be
-related to fast paced, successive rclone commands.
+related to fast paced, successive zclone commands.
 
-For example, executing this command 90 times in a row `rclone link
+For example, executing this command 90 times in a row `zclone link
 remote:file` will cause the remote to become "blocked". This is not an
 abnormal situation, for example if you wish to get the public links of
 a directory with hundred of files...  After more or less a week, the
-remote will remote accept rclone logins normally again.
+remote will remote accept zclone logins normally again.
 
-You can mitigate this issue by mounting the remote it with `rclone
+You can mitigate this issue by mounting the remote it with `zclone
 mount`. This will log-in when mounting and a log-out when unmounting
-only. You can also run `rclone rcd` and then use `rclone rc` to run
+only. You can also run `zclone rcd` and then use `zclone rc` to run
 the commands over the API to avoid logging in each time.
 
-Rclone does not currently close mega sessions (you can see them in the
+Zclone does not currently close mega sessions (you can see them in the
 web interface), however closing the sessions does not solve the issue.
 
-If you space rclone commands by 3 seconds it will avoid blocking the
+If you space zclone commands by 3 seconds it will avoid blocking the
 remote. We haven't identified the exact blocking rules, so perhaps one
 could execute the command 80 times without waiting and avoid blocking
 by waiting 3 seconds, then continuing...
@@ -187,7 +187,7 @@ set in stone.
 
 Other tools seem not to produce this blocking effect, as they use a
 different working approach (state-based, using sessionIDs instead of
-log-in) which isn't compatible with the current stateless rclone
+log-in) which isn't compatible with the current stateless zclone
 approach.
 
 Note that once blocked, the use of other tools (such as megacmd) is
@@ -199,7 +199,7 @@ Investigation is continuing in relation to workarounds based on
 timeouts, pacers, retrials and tpslimits - if you discover something
 relevant, please post on the forum.
 
-So, if rclone was working nicely and suddenly you are unable to log-in
+So, if zclone was working nicely and suddenly you are unable to log-in
 and you are sure the user and the password are correct, likely you
 have got the remote blocked for a while.
 
@@ -215,7 +215,7 @@ User name.
 Properties:
 
 - Config:      user
-- Env Var:     RCLONE_MEGA_USER
+- Env Var:     ZCLONE_MEGA_USER
 - Type:        string
 - Required:    true
 
@@ -223,12 +223,12 @@ Properties:
 
 Password.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      pass
-- Env Var:     RCLONE_MEGA_PASS
+- Env Var:     ZCLONE_MEGA_PASS
 - Type:        string
 - Required:    true
 
@@ -239,7 +239,7 @@ The 2FA code of your MEGA account if the account is set up with one
 Properties:
 
 - Config:      2fa
-- Env Var:     RCLONE_MEGA_2FA
+- Env Var:     ZCLONE_MEGA_2FA
 - Type:        string
 - Required:    false
 
@@ -257,7 +257,7 @@ information from the mega backend.
 Properties:
 
 - Config:      debug
-- Env Var:     RCLONE_MEGA_DEBUG
+- Env Var:     ZCLONE_MEGA_DEBUG
 - Type:        bool
 - Default:     false
 
@@ -266,13 +266,13 @@ Properties:
 Delete files permanently rather than putting them into the trash.
 
 Normally the mega backend will put all deletions into the trash rather
-than permanently deleting them.  If you specify this then rclone will
+than permanently deleting them.  If you specify this then zclone will
 permanently delete objects instead.
 
 Properties:
 
 - Config:      hard_delete
-- Env Var:     RCLONE_MEGA_HARD_DELETE
+- Env Var:     ZCLONE_MEGA_HARD_DELETE
 - Type:        bool
 - Default:     false
 
@@ -289,7 +289,7 @@ Enabling it will increase CPU usage and add network overhead.
 Properties:
 
 - Config:      use_https
-- Env Var:     RCLONE_MEGA_USE_HTTPS
+- Env Var:     ZCLONE_MEGA_USE_HTTPS
 - Type:        bool
 - Default:     false
 
@@ -302,7 +302,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_MEGA_ENCODING
+- Env Var:     ZCLONE_MEGA_ENCODING
 - Type:        Encoding
 - Default:     Slash,InvalidUtf8,Dot
 
@@ -313,7 +313,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_MEGA_DESCRIPTION
+- Env Var:     ZCLONE_MEGA_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -325,7 +325,7 @@ On accounts with large files or something else, memory usage can significantly
 increase when executing list/sync instructions. When running on cloud providers
 (like AWS with EC2), check if the instance type has sufficient memory/CPU to
 execute the commands. Use the resource monitoring tools to inspect after sending
-the commands. Look [at this issue](https://forum.rclone.org/t/rclone-with-mega-appears-to-work-only-in-some-accounts/40233/4).
+the commands. Look [at this issue](/).
 
 ## Limitations
 
@@ -335,4 +335,4 @@ go library implementing the Mega API. There doesn't appear to be any
 documentation for the mega protocol beyond the [mega C++ SDK](https://github.com/meganz/sdk)
 source code so there are likely quite a few errors still remaining in this library.
 
-Mega allows duplicate files which may confuse rclone.
+Mega allows duplicate files which may confuse zclone.

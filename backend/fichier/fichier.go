@@ -11,16 +11,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/dircache"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
 const (
@@ -246,7 +246,7 @@ func NewFs(ctx context.Context, name string, root string, config configmap.Mappe
 		f.features.Fill(ctx, &tempF)
 		// XXX: update the old f here instead of returning tempF, since
 		// `features` were already filled with functions having *f as a receiver.
-		// See https://github.com/rclone/rclone/issues/2182
+		// See /
 		f.dirCache = tempF.dirCache
 		f.root = tempF.root
 		// return an error with an fs which points to the parent
@@ -314,7 +314,7 @@ func (f *Fs) NewObject(ctx context.Context, remote string) (fs.Object, error) {
 
 // Put in to the remote path with the modTime given of the given size
 //
-// When called from outside an Fs by rclone, src.Size() will always be >= 0.
+// When called from outside an Fs by zclone, src.Size() will always be >= 0.
 // But for unknown-sized objects (indicated by src.Size() == -1), Put should either
 // return an error or upload it properly (rather than e.g. calling panic).
 //

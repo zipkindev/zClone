@@ -28,7 +28,7 @@ Now proceed to interactive or manual configuration.
 
 ### Interactive configuration
 
-Run `rclone config`:
+Run `zclone config`:
 
 ```text
 No remotes found, make a new one\?
@@ -72,8 +72,8 @@ y/e/d> y
 
 ### Manual configuration
 
-Run `rclone config path` to see the path of current active config file,
-usually `YOURHOME/.config/rclone/rclone.conf`.
+Run `zclone config path` to see the path of current active config file,
+usually `YOURHOME/.config/zclone/zclone.conf`.
 Open it in your favorite text editor, find section for the base remote
 and create new section for hasher like in the following examples:
 
@@ -101,9 +101,9 @@ Hasher takes basically the following parameters:
    `off` will cache "forever" (that is until the files get changed)
 
 Make sure the `remote` has `:` (colon) in. If you specify the remote without
-a colon then rclone will use a local directory of that name. So if you use
-a remote of `/local/path` then rclone will handle hashes for that directory.
-If you use `remote = name` literally then rclone will put files
+a colon then zclone will use a local directory of that name. So if you use
+a remote of `/local/path` then zclone will handle hashes for that directory.
+If you use `remote = name` literally then zclone will put files
 **in a directory called `name` located under current directory**.
 
 ## Usage
@@ -115,8 +115,8 @@ Hasher will transparently update cache with new checksums when a file
 is fully read or overwritten, like:
 
 ```console
-rclone copy External:path/file Hasher:dest/path
-rclone cat Hasher:path/to/file > /dev/null
+zclone copy External:path/file Hasher:dest/path
+zclone cat Hasher:path/to/file > /dev/null
 ```
 
 The way to refresh **all** cached checksums (even unsupported by the base backend)
@@ -125,15 +125,15 @@ use `hashsum --download` using **any** supported hashsum on the command line
 (we just care to re-read):
 
 ```console
-rclone hashsum MD5 --download Hasher:path/to/subtree > /dev/null
-rclone backend dump Hasher:path/to/subtree
+zclone hashsum MD5 --download Hasher:path/to/subtree > /dev/null
+zclone backend dump Hasher:path/to/subtree
 ```
 
 You can print or drop hashsum cache using custom backend commands:
 
 ```console
-rclone backend dump Hasher:dir/subdir
-rclone backend drop Hasher:
+zclone backend dump Hasher:dir/subdir
+zclone backend drop Hasher:
 ```
 
 ### Pre-Seed from a SUM File
@@ -142,7 +142,7 @@ Hasher supports two backend commands: generic SUM file `import` and faster
 but less consistent `stickyimport`.
 
 ```console
-rclone backend import Hasher:dir/subdir SHA1 /path/to/SHA1SUM [--checkers 4]
+zclone backend import Hasher:dir/subdir SHA1 /path/to/SHA1SUM [--checkers 4]
 ```
 
 Instead of SHA1 it can be any hash supported by the remote. The last argument
@@ -162,7 +162,7 @@ correspondingly.
   about fingerprints and consistency.
 
 ```console
-rclone backend stickyimport hasher:path/to/data sha1 remote:/path/to/sum.sha1
+zclone backend stickyimport hasher:path/to/data sha1 remote:/path/to/sum.sha1
 ```
 
 `stickyimport` is similar to `import` but works much faster because it
@@ -186,7 +186,7 @@ Remote to cache checksums for (e.g. myRemote:path).
 Properties:
 
 - Config:      remote
-- Env Var:     RCLONE_HASHER_REMOTE
+- Env Var:     ZCLONE_HASHER_REMOTE
 - Type:        string
 - Required:    true
 
@@ -197,7 +197,7 @@ Comma separated list of supported checksum types.
 Properties:
 
 - Config:      hashes
-- Env Var:     RCLONE_HASHER_HASHES
+- Env Var:     ZCLONE_HASHER_HASHES
 - Type:        CommaSepList
 - Default:     md5,sha1
 
@@ -208,7 +208,7 @@ Maximum time to keep checksums in cache (0 = no cache, off = cache forever).
 Properties:
 
 - Config:      max_age
-- Env Var:     RCLONE_HASHER_MAX_AGE
+- Env Var:     ZCLONE_HASHER_MAX_AGE
 - Type:        Duration
 - Default:     off
 
@@ -223,7 +223,7 @@ Auto-update checksum for files smaller than this size (disabled by default).
 Properties:
 
 - Config:      auto_size
-- Env Var:     RCLONE_HASHER_AUTO_SIZE
+- Env Var:     ZCLONE_HASHER_AUTO_SIZE
 - Type:        SizeSuffix
 - Default:     0
 
@@ -234,7 +234,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_HASHER_DESCRIPTION
+- Env Var:     ZCLONE_HASHER_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -251,12 +251,12 @@ Here are the commands specific to the hasher backend.
 Run them with:
 
 ```console
-rclone backend COMMAND remote:
+zclone backend COMMAND remote:
 ```
 
 The help below will explain what arguments each command takes.
 
-See the [backend](/commands/rclone_backend/) command for more
+See the [backend](/commands/zclone_backend/) command for more
 info on how to pass options and arguments.
 
 These can be run on a running backend using the rc command
@@ -267,7 +267,7 @@ These can be run on a running backend using the rc command
 Drop cache.
 
 ```console
-rclone backend drop remote: [options] [<arguments>+]
+zclone backend drop remote: [options] [<arguments>+]
 ```
 
 Completely drop checksum cache.
@@ -275,7 +275,7 @@ Completely drop checksum cache.
 Usage example:
 
 ```console
-rclone backend drop hasher:
+zclone backend drop hasher:
 ```
 
 ### dump
@@ -283,7 +283,7 @@ rclone backend drop hasher:
 Dump the database.
 
 ```console
-rclone backend dump remote: [options] [<arguments>+]
+zclone backend dump remote: [options] [<arguments>+]
 ```
 
 Dump cache records covered by the current remote.
@@ -293,7 +293,7 @@ Dump cache records covered by the current remote.
 Full dump of the database.
 
 ```console
-rclone backend fulldump remote: [options] [<arguments>+]
+zclone backend fulldump remote: [options] [<arguments>+]
 ```
 
 Dump all cache records in the database.
@@ -303,7 +303,7 @@ Dump all cache records in the database.
 Import a SUM file.
 
 ```console
-rclone backend import remote: [options] [<arguments>+]
+zclone backend import remote: [options] [<arguments>+]
 ```
 
 Amend hash cache from a SUM file and bind checksums to files by size/time.
@@ -311,7 +311,7 @@ Amend hash cache from a SUM file and bind checksums to files by size/time.
 Usage example:
 
 ```console
-rclone backend import hasher:subdir md5 /path/to/sum.md5
+zclone backend import hasher:subdir md5 /path/to/sum.md5
 ```
 
 ### stickyimport
@@ -319,7 +319,7 @@ rclone backend import hasher:subdir md5 /path/to/sum.md5
 Perform fast import of a SUM file.
 
 ```console
-rclone backend stickyimport remote: [options] [<arguments>+]
+zclone backend stickyimport remote: [options] [<arguments>+]
 ```
 
 Fill hash cache from a SUM file without verifying file fingerprints.
@@ -327,21 +327,21 @@ Fill hash cache from a SUM file without verifying file fingerprints.
 Usage example:
 
 ```console
-rclone backend stickyimport hasher:subdir md5 remote:path/to/sum.md5
+zclone backend stickyimport hasher:subdir md5 remote:path/to/sum.md5
 ```
 
 <!-- autogenerated options stop -->
 
 ## Implementation details (advanced)
 
-This section explains how various rclone operations work on a hasher remote.
+This section explains how various zclone operations work on a hasher remote.
 
 **Disclaimer. This section describes current implementation which can
-change in future rclone versions!.**
+change in future zclone versions!.**
 
 ### Hashsum command
 
-The `rclone hashsum` (or `md5sum` or `sha1sum`) command will:
+The `zclone hashsum` (or `md5sum` or `sha1sum`) command will:
 
 1. if requested hash is supported by lower level, just pass it.
 2. if object size is below `auto_size` then download object and calculate
@@ -372,11 +372,11 @@ fully rewrite or delete the file.
 
 ### Cache storage
 
-Cached checksums are stored as `bolt` database files under rclone cache
-directory, usually `~/.cache/rclone/kv/`. Databases are maintained
+Cached checksums are stored as `bolt` database files under zclone cache
+directory, usually `~/.cache/zclone/kv/`. Databases are maintained
 one per _base_ backend, named like `BaseRemote~hasher.bolt`.
 Checksums for multiple `alias`-es into a single base backend
 will be stored in the single database. All local paths are treated as
 aliases into the `local` backend (unless encrypted or chunked) and stored
-in `~/.cache/rclone/kv/local~hasher.bolt`.
-Databases can be shared between multiple rclone processes.
+in `~/.cache/zclone/kv/local~hasher.bolt`.
+Databases can be shared between multiple zclone processes.

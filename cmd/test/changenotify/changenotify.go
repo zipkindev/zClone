@@ -1,4 +1,4 @@
-// Package changenotify tests rclone's changenotify support
+// Package changenotify tests zclone's changenotify support
 package changenotify
 
 import (
@@ -6,11 +6,11 @@ import (
 	"errors"
 	"time"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/test"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/cmd/test"
+	"zclone/fs"
+	"zclone/fs/config/flags"
 )
 
 var (

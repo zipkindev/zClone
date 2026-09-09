@@ -5,12 +5,12 @@ import (
 	"context"
 	"strings"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/operations/operationsflags"
-	"github.com/rclone/rclone/fs/sync"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs/config/flags"
+	"zclone/fs/operations"
+	"zclone/fs/operations/operationsflags"
+	"zclone/fs/sync"
 )
 
 // Globals
@@ -35,10 +35,10 @@ var commandDefinition = &cobra.Command{
 	Short: `Move files from source to dest.`,
 	// Warning! "|" will be replaced by backticks below
 	Long: strings.ReplaceAll(`Moves the contents of the source directory to the destination
-directory. Rclone will error if the source and destination overlap and
+directory. Zclone will error if the source and destination overlap and
 the remote does not support a server-side directory move operation.
 
-To move single files, use the [moveto](/commands/rclone_moveto/)
+To move single files, use the [moveto](/commands/zclone_moveto/)
 command instead.
 
 If no filters are in use and if possible this will server-side move
@@ -55,16 +55,16 @@ If you want to delete empty source directories after move, use the
 |--delete-empty-src-dirs| flag.
 
 See the [--no-traverse](/docs/#no-traverse) option for controlling
-whether rclone lists the destination directory or not.  Supplying this
+whether zclone lists the destination directory or not.  Supplying this
 option when moving a small number of files into a large destination
 can speed transfers up greatly.
 
-Rclone will sync the modification times of files and directories if
+Zclone will sync the modification times of files and directories if
 the backend supports it. If metadata syncing is required then use the
 |--metadata| flag.
 
 Note that the modification time and metadata for the root directory
-will **not** be synced. See <https://github.com/rclone/rclone/issues/7652>
+will **not** be synced. See </>
 for more info.
 
 **Important**: Since this can cause data loss, test first with the

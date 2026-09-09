@@ -7,11 +7,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/fstest/mockfs"
-	"github.com/rclone/rclone/fstest/mockobject"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs/rc"
+	"zclone/fstest/mockfs"
+	"zclone/fstest/mockobject"
 )
 
 func TestTransfer(t *testing.T) {

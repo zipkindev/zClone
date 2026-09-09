@@ -80,7 +80,7 @@ ERROR : [31mBisync critical error: cannot find prior Path1 or Path2 listings, l
 [0m[36mPath1: [94m{workdir/}{session}.path1.lst[0m
 [0m[36mPath2: [94m{workdir/}{session}.path2.lst[0m
 [0m[35mTry running this command to inspect the work dir:
-[0m[96mrclone lsl "{workdir}"[0m[0m
+[0m[96mzclone lsl "{workdir}"[0m[0m
 ERROR : [31mBisync aborted. Must run --resync to recover.[0m
 Bisync error: bisync aborted
 

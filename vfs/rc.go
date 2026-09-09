@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/vfs/vfscache/writeback"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/rc"
+	"zclone/vfs/vfscache/writeback"
 )
 
 const getVFSHelp = ` 
@@ -64,12 +64,12 @@ directory cache.
 
 If no paths are passed in then it will refresh the root directory.
 
-    rclone rc vfs/refresh
+    zclone rc vfs/refresh
 
 Otherwise pass directories in as dir=path. Any parameter key
 starting with dir will refresh that directory, e.g.
 
-    rclone rc vfs/refresh dir=home/junk dir2=data/misc
+    zclone rc vfs/refresh dir=home/junk dir2=data/misc
 
 If the parameter recursive=true is given the whole directory tree
 will get refreshed. This refresh will use --fast-list if enabled.
@@ -180,13 +180,13 @@ re-read from the remote when needed.
 If no paths are passed in then it will forget all the paths in the
 directory cache.
 
-    rclone rc vfs/forget
+    zclone rc vfs/forget
 
 Otherwise pass files or dirs in as file=path or dir=path.  Any
 parameter key starting with file will forget that file and any
 starting with dir will forget that dir, e.g.
 
-    rclone rc vfs/forget file=hello file2=goodbye dir=home/junk
+    zclone rc vfs/forget file=hello file2=goodbye dir=home/junk
 ` + getVFSHelp,
 	})
 }
@@ -327,7 +327,7 @@ When the interval=duration parameter is set, the poll-interval value
 is updated and the polling function is notified.
 Setting interval=0 disables poll-interval.
 
-    rclone rc vfs/poll-interval interval=5m
+    zclone rc vfs/poll-interval interval=5m
 
 The timeout=duration parameter can be used to specify a time to wait
 for the current poll function to apply the new value.
@@ -429,8 +429,8 @@ This returns stats for the selected VFS.
             "files": 0,
             "hashType": 1,
             "outOfSpace": false,
-            "path": "/home/user/.cache/rclone/vfs/local/mnt/a",
-            "pathMeta": "/home/user/.cache/rclone/vfsMeta/local/mnt/a",
+            "path": "/home/user/.cache/zclone/vfs/local/mnt/a",
+            "pathMeta": "/home/user/.cache/zclone/vfsMeta/local/mnt/a",
             "uploadsInProgress": 0,
             "uploadsQueued": 0
         },
@@ -489,7 +489,7 @@ the |--vfs-cache-mode| is off, it will return an empty result.
     }
 
 The |expiry| time is the time until the file is eligible for being
-uploaded in floating point seconds. This may go negative. As rclone
+uploaded in floating point seconds. This may go negative. As zclone
 only transfers |--transfers| files at once, only the lowest
 |--transfers| expiry times will have |uploading| as |true|. So there
 may be files with negative expiry times for which |uploading| is

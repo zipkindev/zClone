@@ -1,6 +1,6 @@
 ---
 title: "Jottacloud"
-description: "Rclone docs for Jottacloud"
+description: "Zclone docs for Jottacloud"
 versionIntroduced: "v1.43"
 ---
 
@@ -49,7 +49,7 @@ Jottacloud uses two optional OAuth security mechanisms, referred to as "Refresh
 Token Rotation" and "Automatic Reuse Detection", which has some implications.
 Access tokens normally have one hour expiry, after which they need to be
 refreshed (rotated), an operation that requires the refresh token to be
-supplied. Rclone does this automatically. This is standard OAuth. But in
+supplied. Zclone does this automatically. This is standard OAuth. But in
 Jottacloud, such a refresh operation not only creates a new access token, but
 also refresh token, and invalidates the existing refresh token, the one that
 was supplied. It keeps track of the history of refresh tokens, sometimes
@@ -58,15 +58,15 @@ was issued after the initial authentication. This is used to detect any
 attempts at reusing old refresh tokens, and trigger an immedate invalidation of
 the current refresh token, and effectively the entire refresh token family.
 
-When the current refresh token has been invalidated, next time rclone tries to
+When the current refresh token has been invalidated, next time zclone tries to
 perform a token refresh, it will fail with an error message something along the
 lines of:
 
 ```text
-CRITICAL: Failed to create file system for "remote:": (...): couldn't fetch token: invalid_grant: maybe token expired? - try refreshing with "rclone config reconnect remote:"
+CRITICAL: Failed to create file system for "remote:": (...): couldn't fetch token: invalid_grant: maybe token expired? - try refreshing with "zclone config reconnect remote:"
 ```
 
-If you run rclone with verbosity level 2 (`-vv`), you will see a debug message
+If you run zclone with verbosity level 2 (`-vv`), you will see a debug message
 with an additional error description from the OAuth response:
 
 ```text
@@ -78,18 +78,18 @@ have required client", so you may see references to that in older descriptions
 of this situation.)
 
 When this happens, you need to re-authenticate to be able to use your remote
-again, e.g. using the [config reconnect](/commands/rclone_config_reconnect/)
+again, e.g. using the [config reconnect](/commands/zclone_config_reconnect/)
 command as suggested in the error message. This will create an entirely new
 refresh token (family).
 
 A typical example of how you may end up in this situation, is if you create
-a Jottacloud remote with rclone in one location, and then copy the
-configuration file to a second location where you start using rclone to access
+a Jottacloud remote with zclone in one location, and then copy the
+configuration file to a second location where you start using zclone to access
 the same remote. Eventually there will now be a token refresh attempt with an
 invalidated token, i.e. refresh token reuse, resulting in both instances
 starting to fail with the "invalid_grant" error. It is possible to copy remote
 configurations, but you must then replace the token for one of them using the
-[config reconnect](https://rclone.org/commands/rclone_config_reconnect/)
+[config reconnect](//commands/zclone_config_reconnect/)
 command.
 
 You can get some overview of your active tokens in your service's web user
@@ -117,12 +117,12 @@ When configuring a remote, you are asked to enter a single-use personal login
 token, which you must manually generate from the account security settings in
 the service's web interface. You do not need a web browser on the same machine
 like with traditional OAuth, but need to use a web browser somewhere, and be
-able to be copy the generated string into your rclone configuration session.
+able to be copy the generated string into your zclone configuration session.
 Log in to your service's web user interface, navigate to "Settings" and then
 "Security", or, for the official service, use the direct link presented to you
-by rclone when configuring the remote: <https://www.jottacloud.com/web/secure>.
+by zclone when configuring the remote: <https://www.jottacloud.com/web/secure>.
 Scroll down to the section "Personal login token", and click the "Generate"
-button. Copy the presented string and paste it where rclone asks for it. Rclone
+button. Copy the presented string and paste it where zclone asks for it. Zclone
 will then use this to perform an initial token request, and receive a regular
 OAuth token which it stores in your remote configuration. There will then also
 be a new entry in the "My logged in devices" list in the web interface, with
@@ -131,7 +131,7 @@ device name and application name "Jottacloud CLI".
 Each time a new token is created this way, i.e. a new personal login token is
 generated and traded in for an OAuth token, you get an entirely new refresh
 token family, with a new entry in the "My logged in devices". You can create as
-many remotes as you want, and use multiple instances of rclone on same or
+many remotes as you want, and use multiple instances of zclone on same or
 different machine, as long as you configure them separately like this, and not
 get your self into the refresh token reuse issue described above.
 
@@ -140,26 +140,26 @@ get your self into the refresh token reuse issue described above.
 Jottacloud also supports a more traditional OAuth variant. Most of the
 white-label services support this, and for many of them this is the only
 alternative because they do not support personal login tokens. This method
-relies on pre-defined service-specific domain names and endpoints, and rclone
+relies on pre-defined service-specific domain names and endpoints, and zclone
 need you to specify which service to configure. This also means that any
 changes to existing or additions of new white-label services needs an update
-in the rclone backend implementation.
+in the zclone backend implementation.
 
 When configuring a remote, you must interactively login to an OAuth
 authorization web site, and a one-time authorization code is sent back to
-rclone behind the scene, which it uses to request an OAuth token. This means
+zclone behind the scene, which it uses to request an OAuth token. This means
 that you need to be on a machine with an internet-connected web browser. If you
 need it on a machine where this is not the case, then you will have to create
 the configuration on a different machine and copy it from there. The Jottacloud
-backend does not support the `rclone authorize` command. See the
+backend does not support the `zclone authorize` command. See the
 [remote setup docs](/remote_setup) for details.
 
 Jottacloud exerts some form of strict session management when authenticating
 using this method. This leads to some unexpected cases of the "invalid_grant"
 error described above, and effectively limits you to only use of a single
 active authentication on the same machine. I.e. you can only create a single
-rclone remote, and you can't even log in with the service's official desktop
-client while having a rclone remote configured, or else you will eventually get
+zclone remote, and you can't even log in with the service's official desktop
+client while having a zclone remote configured, or else you will eventually get
 all sessions invalidated and are forced to re-authenticate.
 
 When you have successfully authenticated, there will be an entry in the
@@ -173,7 +173,7 @@ Originally Jottacloud used an OAuth variant which required your account's
 username and password to be specified. When Jottacloud migrated to the newer
 methods, some white-label versions (those from Elkjøp) still used this legacy
 method for a long time. Currently there are no known uses of this, it is still
-supported by rclone, but the support will be removed in a future version.
+supported by zclone, but the support will be removed in a future version.
 
 ## Configuration
 
@@ -181,7 +181,7 @@ Here is an example of how to make a remote called `remote` with the default setu
 First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -235,7 +235,7 @@ Press Enter for the default (standard).
    \ (standard)
    / Traditional authentication.
    | This is supported by the official service and all white-label services
-   | that rclone knows about. You will be asked which service to connect to.
+   | that zclone knows about. You will be asked which service to connect to.
  2 | It has a limitation of only a single active authentication at a time. You
    | need to be on, or have access to, a machine with an internet-connected
    | web browser.
@@ -279,25 +279,25 @@ d) Delete this remote
 y/e/d> y
 ```
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 List directories in top level of your Jottacloud
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your Jottacloud
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 To copy a local directory to an Jottacloud directory called backup
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
 ### Devices and Mountpoints
@@ -308,9 +308,9 @@ folder you select for backup it will create a mountpoint within this device.
 A built-in device called Jotta is special, and contains mountpoints Archive,
 Sync and some others, used for corresponding features in official clients.
 
-With rclone you'll want to use the standard Jotta/Archive device/mountpoint in
+With zclone you'll want to use the standard Jotta/Archive device/mountpoint in
 most cases. However, you may for example want to access files from the sync or
-backup functionality provided by the official clients, and rclone therefore
+backup functionality provided by the official clients, and zclone therefore
 provides the option to select other devices and mountpoints during config.
 
 You are allowed to create new devices and mountpoints. All devices except the
@@ -321,20 +321,20 @@ With the built-in Jotta device, only existing, built-in, mountpoints can be
 selected. In addition to the mentioned Archive and Sync, it may contain
 several other mountpoints such as: Latest, Links, Shared and Trash. All of
 these are special mountpoints with a different internal representation than
-the "regular" mountpoints. Rclone will only to a very limited degree support
+the "regular" mountpoints. Zclone will only to a very limited degree support
 them. Generally you should avoid these, unless you know what you are doing.
 
 ### --fast-list
 
 This backend supports `--fast-list` which allows you to use fewer
-transactions in exchange for more memory. See the [rclone
+transactions in exchange for more memory. See the [zclone
 docs](/docs/#fast-list) for more details.
 
 Note that the implementation in Jottacloud always uses only a single
 API request to get the entire list, so for large folders this could
 lead to long wait time before the first results are shown.
 
-Note also that with rclone version 1.58 and newer, information about
+Note also that with zclone version 1.58 and newer, information about
 [MIME types](/overview/#mime-type) and metadata item [utime](#metadata)
 are not available when using `--fast-list`.
 
@@ -354,7 +354,7 @@ temporarily on disk (in location given by
 Small files will be cached in memory - see the
 [--jottacloud-md5-memory-limit](#jottacloud-md5-memory-limit) flag.
 When uploading from local disk the source checksum is always available,
-so this does not apply. Starting with rclone version 1.52 the same is
+so this does not apply. Starting with zclone version 1.52 the same is
 true for encrypted remotes (in older versions the crypt backend would not
 calculate hashes for uploads from local disk, so the Jottacloud
 backend had to do it as described above).
@@ -380,16 +380,16 @@ as they can't be used in XML strings.
 
 ### Deleting files
 
-By default, rclone will send all files to the trash when deleting files. They
+By default, zclone will send all files to the trash when deleting files. They
 will be permanently deleted automatically after 30 days. You may bypass the
 trash and permanently delete files immediately by using the [--jottacloud-hard-delete](#jottacloud-hard-delete)
 flag, or set the equivalent environment variable. Emptying the trash is
-supported by the [cleanup](/commands/rclone_cleanup/) command.
+supported by the [cleanup](/commands/zclone_cleanup/) command.
 
 ### Versions
 
-Jottacloud supports file versioning. When rclone uploads a new version of a
-file it creates a new version of it. Currently rclone only supports retrieving
+Jottacloud supports file versioning. When zclone uploads a new version of a
+file it creates a new version of it. Currently zclone only supports retrieving
 the current version but older versions can be accessed via the Jottacloud Website.
 
 Versioning can be disabled by `--jottacloud-no-versions` option. This is
@@ -398,7 +398,7 @@ upload the fails no version of the file will be available in the remote.
 
 ### Quota information
 
-To view your current quota you can use the `rclone about remote:`
+To view your current quota you can use the `zclone about remote:`
 command which will display your usage limit (unless it is unlimited)
 and the current usage.
 
@@ -416,7 +416,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_id
-- Env Var:     RCLONE_JOTTACLOUD_CLIENT_ID
+- Env Var:     ZCLONE_JOTTACLOUD_CLIENT_ID
 - Type:        string
 - Required:    false
 
@@ -429,7 +429,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_secret
-- Env Var:     RCLONE_JOTTACLOUD_CLIENT_SECRET
+- Env Var:     ZCLONE_JOTTACLOUD_CLIENT_SECRET
 - Type:        string
 - Required:    false
 
@@ -444,7 +444,7 @@ OAuth Access Token as a JSON blob.
 Properties:
 
 - Config:      token
-- Env Var:     RCLONE_JOTTACLOUD_TOKEN
+- Env Var:     ZCLONE_JOTTACLOUD_TOKEN
 - Type:        string
 - Required:    false
 
@@ -457,7 +457,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      auth_url
-- Env Var:     RCLONE_JOTTACLOUD_AUTH_URL
+- Env Var:     ZCLONE_JOTTACLOUD_AUTH_URL
 - Type:        string
 - Required:    false
 
@@ -470,7 +470,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      token_url
-- Env Var:     RCLONE_JOTTACLOUD_TOKEN_URL
+- Env Var:     ZCLONE_JOTTACLOUD_TOKEN_URL
 - Type:        string
 - Required:    false
 
@@ -485,7 +485,7 @@ Note that this option is NOT supported by all backends.
 Properties:
 
 - Config:      client_credentials
-- Env Var:     RCLONE_JOTTACLOUD_CLIENT_CREDENTIALS
+- Env Var:     ZCLONE_JOTTACLOUD_CLIENT_CREDENTIALS
 - Type:        bool
 - Default:     false
 
@@ -496,7 +496,7 @@ Files bigger than this will be cached on disk to calculate the MD5 if required.
 Properties:
 
 - Config:      md5_memory_limit
-- Env Var:     RCLONE_JOTTACLOUD_MD5_MEMORY_LIMIT
+- Env Var:     ZCLONE_JOTTACLOUD_MD5_MEMORY_LIMIT
 - Type:        SizeSuffix
 - Default:     10Mi
 
@@ -509,7 +509,7 @@ This will show trashed files in their original directory structure.
 Properties:
 
 - Config:      trashed_only
-- Env Var:     RCLONE_JOTTACLOUD_TRASHED_ONLY
+- Env Var:     ZCLONE_JOTTACLOUD_TRASHED_ONLY
 - Type:        bool
 - Default:     false
 
@@ -520,7 +520,7 @@ Delete files permanently rather than putting them into the trash.
 Properties:
 
 - Config:      hard_delete
-- Env Var:     RCLONE_JOTTACLOUD_HARD_DELETE
+- Env Var:     ZCLONE_JOTTACLOUD_HARD_DELETE
 - Type:        bool
 - Default:     false
 
@@ -531,7 +531,7 @@ Files bigger than this can be resumed if the upload fail's.
 Properties:
 
 - Config:      upload_resume_limit
-- Env Var:     RCLONE_JOTTACLOUD_UPLOAD_RESUME_LIMIT
+- Env Var:     ZCLONE_JOTTACLOUD_UPLOAD_RESUME_LIMIT
 - Type:        SizeSuffix
 - Default:     10Mi
 
@@ -542,7 +542,7 @@ Avoid server side versioning by deleting files and recreating files instead of o
 Properties:
 
 - Config:      no_versions
-- Env Var:     RCLONE_JOTTACLOUD_NO_VERSIONS
+- Env Var:     ZCLONE_JOTTACLOUD_NO_VERSIONS
 - Type:        bool
 - Default:     false
 
@@ -555,7 +555,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_JOTTACLOUD_ENCODING
+- Env Var:     ZCLONE_JOTTACLOUD_ENCODING
 - Type:        Encoding
 - Default:     Slash,LtGt,DoubleQuote,Colon,Question,Asterisk,Pipe,Percent,Del,Ctl,InvalidUtf8,Dot
 
@@ -566,7 +566,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_JOTTACLOUD_DESCRIPTION
+- Env Var:     ZCLONE_JOTTACLOUD_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -578,9 +578,9 @@ Here are the possible system metadata items for the jottacloud backend.
 
 | Name | Help | Type | Example | Read Only |
 |------|------|------|---------|-----------|
-| btime | Time of file birth (creation), read from rclone metadata | RFC 3339 | 2006-01-02T15:04:05.999999999Z07:00 | N |
+| btime | Time of file birth (creation), read from zclone metadata | RFC 3339 | 2006-01-02T15:04:05.999999999Z07:00 | N |
 | content-type | MIME type, also known as media type | string | text/plain | **Y** |
-| mtime | Time of last modification, read from rclone metadata | RFC 3339 | 2006-01-02T15:04:05.999999999Z07:00 | N |
+| mtime | Time of last modification, read from zclone metadata | RFC 3339 | 2006-01-02T15:04:05.999999999Z07:00 | N |
 | utime | Time of last upload, when current revision was created, generated by backend | RFC 3339 | 2006-01-02T15:04:05.999999999Z07:00 | **Y** |
 
 See the [metadata](/docs/#metadata) docs for more info.
@@ -593,7 +593,7 @@ Note that Jottacloud is case insensitive so you can't have a file called
 "Hello.doc" and one called "hello.doc".
 
 There are quite a few characters that can't be in Jottacloud file names.
-Rclone will map these names to and from an identical looking unicode
+Zclone will map these names to and from an identical looking unicode
 equivalent. For example if a file has a ? in it will be mapped to ？ instead.
 
 Jottacloud only supports filenames up to 255 characters in length.

@@ -13,7 +13,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/rclone/rclone/fs/config/configmap"
+	"zclone/fs/config/configmap"
 )
 
 const (
@@ -548,7 +548,7 @@ func backendConfigStep(ctx context.Context, name string, m configmap.Mapper, ri 
 	case out.OAuth != nil:
 		// If this is an OAuth state the deal with it here
 		returnState := out.State
-		// If rclone authorize, stop after doing oauth
+		// If zclone authorize, stop after doing oauth
 		if isConfigOAuthOnly(ctx) {
 			Debugf(nil, "OAuth only is set - overriding return state")
 			returnState = ""

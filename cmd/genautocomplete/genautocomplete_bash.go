@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs"
 )
 
 func init() {
@@ -15,22 +15,22 @@ func init() {
 
 var bashCommandDefinition = &cobra.Command{
 	Use:   "bash [output_file]",
-	Short: `Output bash completion script for rclone.`,
-	Long: `Generates a bash shell autocompletion script for rclone.
+	Short: `Output bash completion script for zclone.`,
+	Long: `Generates a bash shell autocompletion script for zclone.
 
 By default, when run without any arguments,
 
 ` + "```console" + `
-rclone completion bash
+zclone completion bash
 ` + "```" + `
 
 the generated script will be written to
 
 ` + "```console" + `
-/etc/bash_completion.d/rclone
+/etc/bash_completion.d/zclone
 ` + "```" + `
 
-and so rclone will probably need to be run as root, or with sudo.
+and so zclone will probably need to be run as root, or with sudo.
 
 If you supply a path to a file as the command line argument, then
 the generated script will be written to that file, in which case
@@ -44,14 +44,14 @@ can logout and login again to use the autocompletion script.
 Alternatively, you can source the script directly
 
 ` + "```console" + `
-. /path/to/my_bash_completion_scripts/rclone
+. /path/to/my_bash_completion_scripts/zclone
 ` + "```" + `
 
 and the autocompletion functionality will be added to your
 current shell.`,
 	Run: func(command *cobra.Command, args []string) {
 		cmd.CheckArgs(0, 1, command, args)
-		out := "/etc/bash_completion.d/rclone"
+		out := "/etc/bash_completion.d/zclone"
 		if len(args) > 0 {
 			if args[0] == "-" {
 				err := cmd.Root.GenBashCompletionV2(os.Stdout, false)

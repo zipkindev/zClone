@@ -7,13 +7,13 @@ if [ $KERBEROS = "true" ]; then
     ADMIN_PASSWORD="kerberos"
     USER_PASSWORD="user"
 
-    echo -e "$ADMIN_PASSWORD\n$ADMIN_PASSWORD" | kdb5_util -r "KERBEROS.RCLONE" create -s
+    echo -e "$ADMIN_PASSWORD\n$ADMIN_PASSWORD" | kdb5_util -r "KERBEROS.ZCLONE" create -s
     echo -e "$ADMIN_PASSWORD\n$ADMIN_PASSWORD" | kadmin.local -q "addprinc hadoop/admin"
     echo -e "$USER_PASSWORD\n$USER_PASSWORD"   | kadmin.local -q "addprinc user"
     kadmin.local -q 'addprinc -randkey hdfs/localhost'
-    kadmin.local -q 'addprinc -randkey hdfs/rclone-hdfs'
+    kadmin.local -q 'addprinc -randkey hdfs/zclone-hdfs'
     kadmin.local -q 'addprinc -randkey HTTP/localhost'
-    kadmin.local -p hadoop/admin -q "ktadd -k /etc/hadoop/kerberos.key hdfs/localhost hdfs/rclone-hdfs HTTP/localhost"
+    kadmin.local -p hadoop/admin -q "ktadd -k /etc/hadoop/kerberos.key hdfs/localhost hdfs/zclone-hdfs HTTP/localhost"
     service krb5-kdc restart
     echo -e "$USER_PASSWORD\n" | kinit user
     klist

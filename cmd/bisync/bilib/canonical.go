@@ -9,11 +9,11 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/operations"
+	"zclone/fs"
+	"zclone/fs/operations"
 )
 
-// FsPath converts Fs to a suitable rclone argument
+// FsPath converts Fs to a suitable zclone argument
 func FsPath(f fs.Info) string {
 	name, path, slash := f.Name(), f.Root(), "/"
 	if name == "local" {

@@ -19,8 +19,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fstest/testserver"
+	"zclone/fs"
+	"zclone/fstest/testserver"
 )
 
 // Control concurrency per backend if required
@@ -45,7 +45,7 @@ type RunOpt struct {
 	EmailReport  string        // Set to email the report to the address supplied
 	DryRun       bool          // Print commands which would be executed only
 	URLBase      string        // Base for the online version
-	UploadPath   string        // Set this to an rclone path to upload the results here
+	UploadPath   string        // Set this to an zclone path to upload the results here
 	Verbose      bool          // Set to enable verbose logging in the tests
 	ListRetries  int           // Number or times to retry listing - set to override the default
 }

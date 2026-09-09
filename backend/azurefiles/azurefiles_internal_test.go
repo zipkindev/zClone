@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rclone/rclone/backend/azureblob/auth"
-	"github.com/rclone/rclone/fstest/fstests"
 	"github.com/stretchr/testify/assert"
+	"zclone/backend/azureblob/auth"
+	"zclone/fstest/fstests"
 )
 
 func (f *Fs) InternalTest(t *testing.T) {
@@ -21,7 +21,7 @@ var _ fstests.InternalTester = (*Fs)(nil)
 
 func (f *Fs) InternalTestAuth(t *testing.T) {
 	t.Skip("skipping since this requires authentication credentials which are not part of repo")
-	shareName := "test-rclone-oct-2023"
+	shareName := "test-zclone-oct-2023"
 	testCases := []struct {
 		name    string
 		options *Options

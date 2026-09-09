@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 var refreshGracePeriod = 30 * time.Second

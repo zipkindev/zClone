@@ -4,10 +4,10 @@ import (
 	"context"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fstest"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	"zclone/fs"
+	"zclone/fstest"
 )
 
 var (

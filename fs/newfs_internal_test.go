@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/rclone/rclone/fs/config/configmap"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs/config/configmap"
 )
 
 // When no override/global keys exist, ctx must be returned unchanged.

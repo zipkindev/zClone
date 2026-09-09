@@ -1,6 +1,6 @@
 ---
 title: "Google drive"
-description: "Rclone docs for Google drive"
+description: "Zclone docs for Google drive"
 versionIntroduced: "v0.91"
 ---
 
@@ -13,13 +13,13 @@ Drive paths may be as deep as required, e.g. `drive:directory/subdirectory`.
 ## Configuration
 
 The initial setup for drive involves getting a token from Google drive
-which you need to do in your browser.  `rclone config` walks you
+which you need to do in your browser.  `zclone config` walks you
 through it.
 
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -41,21 +41,21 @@ XX / Google Drive
 [snip]
 Storage> drive
 Google Application Client Id
-Leave blank to use rclone's shared client_id, or if you are using a service account.
+Leave blank to use zclone's shared client_id, or if you are using a service account.
 The shared client_id is being retired and will stop working during 2026, so creating your own is now strongly recommended.
-See https://rclone.org/drive/#making-your-own-client-id for how to create your own.
+See //drive/#making-your-own-client-id for how to create your own.
 client_id>
 Google Application Client Secret
-Leave blank to use rclone's shared client_id, or if you are using a service account.
+Leave blank to use zclone's shared client_id, or if you are using a service account.
 If you created your own client_id then enter its client secret here.
 client_secret>
-Scope that rclone should use when requesting access from drive.
+Scope that zclone should use when requesting access from drive.
 Choose a number from below, or type in your own value
  1 / Full access all files, excluding Application Data Folder.
    \ "drive"
  2 / Read-only access to file metadata and file contents.
    \ "drive.readonly"
-   / Access to files created by rclone only.
+   / Access to files created by zclone only.
  3 | These are visible in the drive website.
    | File authorization is revoked when the user deauthorizes the app.
    \ "drive.file"
@@ -69,8 +69,8 @@ scope> 1
 Service Account Credentials JSON file path - needed only if you want use SA instead of interactive login.
 service_account_file>
 Remote config
-rclone's shared Google Drive client_id is being retired and will stop working during 2026.
-Create your own to avoid interruption: https://rclone.org/drive/#making-your-own-client-id
+zclone's shared Google Drive client_id is being retired and will stop working during 2026.
+Create your own to avoid interruption: //drive/#making-your-own-client-id
 
 Continue using the shared client_id anyway?
 y) Yes
@@ -80,15 +80,15 @@ Google Application Client Id
 client_id> 1234567890-abcdefghijklmnop.apps.googleusercontent.com
 Google Application Client Secret
 client_secret> GOCSPX-your-client-secret
-Use web browser to automatically authenticate rclone with remote?
- * Say Y if the machine running rclone has a web browser you can use
- * Say N if running rclone on a (remote) machine without web browser access
+Use web browser to automatically authenticate zclone with remote?
+ * Say Y if the machine running zclone has a web browser you can use
+ * Say N if running zclone on a (remote) machine without web browser access
 If not sure try Y. If Y failed, try N.
 y) Yes
 n) No
 y/n> y
 If your browser doesn't open automatically go to the following link: http://127.0.0.1:53682/auth
-Log in and authorize rclone for access
+Log in and authorize zclone for access
 Waiting for code...
 Got code
 Configure this as a Shared Drive (Team Drive)?
@@ -114,7 +114,7 @@ y/e/d> y
 See the [remote setup docs](/remote_setup/) for how to set it up on a
 machine without an internet-connected web browser available.
 
-Note that rclone runs a webserver on your local machine to collect the
+Note that zclone runs a webserver on your local machine to collect the
 token as returned from Google if using web browser to automatically
 authenticate. This only
 runs from the moment it opens your browser to the moment you get back
@@ -127,25 +127,25 @@ You can then use it like this,
 List directories in top level of your drive
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your drive
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 To copy a local directory to a drive directory called backup
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
 ### Scopes
 
-Rclone allows you to select which scope you would like for rclone to
-use.  This changes what type of token is granted to rclone.  [The
+Zclone allows you to select which scope you would like for zclone to
+use.  This changes what type of token is granted to zclone.  [The
 scopes are defined
 here](https://developers.google.com/drive/v3/web/about-auth).
 
@@ -167,83 +167,83 @@ downloaded but not uploaded, renamed or deleted.
 
 #### drive.file
 
-With this scope rclone can read/view/modify only those files and
+With this scope zclone can read/view/modify only those files and
 folders it creates.
 
 So if you uploaded files to drive via the web interface (or any other
-means) they will not be visible to rclone.
+means) they will not be visible to zclone.
 
-This can be useful if you are using rclone to backup data and you want
-to be sure confidential data on your drive is not visible to rclone.
+This can be useful if you are using zclone to backup data and you want
+to be sure confidential data on your drive is not visible to zclone.
 
 Files created with this scope are visible in the web interface.
 
 #### drive.appfolder
 
-This gives rclone its own private area to store files.  Rclone will
+This gives zclone its own private area to store files.  Zclone will
 not be able to see any other files on your drive and you won't be able
-to see rclone's files from the web interface either.
+to see zclone's files from the web interface either.
 
 #### drive.metadata.readonly
 
 This allows read only access to file names only.  It does not allow
-rclone to download or upload data, or rename or delete files or
+zclone to download or upload data, or rename or delete files or
 directories.
 
 ### Root folder ID
 
 This option has been moved to the advanced section. You can set the
-`root_folder_id` for rclone.  This is the directory (identified by its
-`Folder ID`) that rclone considers to be the root of your drive.
+`root_folder_id` for zclone.  This is the directory (identified by its
+`Folder ID`) that zclone considers to be the root of your drive.
 
-Normally you will leave this blank and rclone will determine the
+Normally you will leave this blank and zclone will determine the
 correct root to use itself.
 
-However you can set this to restrict rclone to a specific folder
+However you can set this to restrict zclone to a specific folder
 hierarchy or to access data within the "Computers" tab on the drive
 web interface (where files from Google's Backup and Sync desktop
-program go). However, this is not the easiest method. 
-Instead, you can create a shortcut to a folder in "Computers" and 
-place it in "My Drive." To do so, right-click the folder, select 
-"Organize", and then choose "Add shortcut" in the Google Drive web interface. 
-Once you add the shortcut to "My Drive," rclone will display the folder, allowing you to interact with it.
-See also [Shortcuts](#shortcuts). 
+program go). However, this is not the easiest method.
+Instead, you can create a shortcut to a folder in "Computers" and
+place it in "My Drive." To do so, right-click the folder, select
+"Organize", and then choose "Add shortcut" in the Google Drive web interface.
+Once you add the shortcut to "My Drive," zclone will display the folder, allowing you to interact with it.
+See also [Shortcuts](#shortcuts).
 
 If, however, you choose to change your root folder, you will have to find the `Folder ID` of the
-directory you wish rclone to display.  This will be the last segment
+directory you wish zclone to display.  This will be the last segment
 of the URL when you open the relevant folder in the drive web
 interface.
 
-So if the folder you want rclone to use has a URL which looks like
+So if the folder you want zclone to use has a URL which looks like
 `https://drive.google.com/drive/folders/1XyfxxxxxxxxxxxxxxxxxxxxxxxxxKHCh`
 in the browser, then you use `1XyfxxxxxxxxxxxxxxxxxxxxxxxxxKHCh` as
 the `root_folder_id` in the config.
 
 **NB** folders under the "Computers" tab seem to be read only (drive
-gives a 500 error) when using rclone, but they are also read-only in the Google Drive web interface, 
+gives a 500 error) when using zclone, but they are also read-only in the Google Drive web interface,
 likely because this folder is managed by the Google Drive Desktop tool.
-Top-level folders in "Computers" are read-only, but you can interact 
-with folders contained within them using rclone.
+Top-level folders in "Computers" are read-only, but you can interact
+with folders contained within them using zclone.
 These are the folders for which you can create a shortcut as well, as described above.
 
 There doesn't appear to be an API to discover the folder IDs of the
 "Computers" tab - please contact us if you know otherwise!
 
-Note also that rclone can't access any data under the "Backups" tab on
+Note also that zclone can't access any data under the "Backups" tab on
 the google drive web interface yet.
 
 ### Service Account support
 
-You can set up rclone with Google Drive in an unattended mode,
+You can set up zclone with Google Drive in an unattended mode,
 i.e. not tied to a specific end-user Google account. This is useful
 when you want to synchronise files onto machines that don't have
 actively logged-in users, for example build machines.
 
 To use a Service Account instead of OAuth2 token flow, enter the path
 to your Service Account credentials at the `service_account_file`
-prompt during `rclone config` and rclone won't use the browser based
+prompt during `zclone config` and zclone won't use the browser based
 authentication flow. If you'd rather stuff the contents of the
-credentials file into the rclone config file, you can set
+credentials file into the zclone config file, you can set
 `service_account_credentials` with the actual contents of the file
 instead, or set the equivalent environment variable.
 
@@ -269,7 +269,7 @@ There's a few steps we need to go through to accomplish this:
 - Click on the newly created service account
 - Click "Keys" and then "Add Key" and then "Create new key"
 - Choose type "JSON" and click create
-- This will download a small JSON file that rclone will use for authentication.
+- This will download a small JSON file that zclone will use for authentication.
 
 If you ever need to remove access, press the "Delete service
 account key" button.
@@ -293,10 +293,10 @@ account key" button.
   only access with `--drive-scope=drive.readonly`.
 - Click "Authorise"
 
-##### 3. Configure rclone, assuming a new install
+##### 3. Configure zclone, assuming a new install
 
 ```text
-rclone config
+zclone config
 
 n/s/q> n         # New
 name>gdrive      # Gdrive is an example name
@@ -312,7 +312,7 @@ y/n>             # Auto config, n
 
 ##### 4. Verify that it's working
 
-- `rclone -v --drive-impersonate foo@example.com lsf gdrive:backup`
+- `zclone -v --drive-impersonate foo@example.com lsf gdrive:backup`
 - The arguments do:
   - `-v` - verbose logging
   - `--drive-impersonate foo@example.com` - this is what does
@@ -321,14 +321,14 @@ the magic, pretending to be user foo.
   - `gdrive:backup` - use the remote called gdrive, work in
 the folder named backup.
 
-Note: in case you configured a specific root folder on gdrive and rclone is
+Note: in case you configured a specific root folder on gdrive and zclone is
 unable to access the contents of that folder when using `--drive-impersonate`,
 do this instead:
 
 - in the gdrive web interface, share your root folder with the user/email of the
   new Service Account you created/selected at step 1
-- use rclone without specifying the `--drive-impersonate` option, like this:
-  `rclone -v lsf gdrive:backup`
+- use zclone without specifying the `--drive-impersonate` option, like this:
+  `zclone -v lsf gdrive:backup`
 
 ### Shared drives (team drives)
 
@@ -349,11 +349,11 @@ n) No
 y/n> y
 Fetching Shared Drive list...
 Choose a number from below, or type in your own value
- 1 / Rclone Test
+ 1 / Zclone Test
    \ "xxxxxxxxxxxxxxxxxxxx"
- 2 / Rclone Test 2
+ 2 / Zclone Test 2
    \ "yyyyyyyyyyyyyyyyyyyy"
- 3 / Rclone Test 3
+ 3 / Zclone Test 3
    \ "zzzzzzzzzzzzzzzzzzzz"
 Enter a Shared Drive ID> 1
 Configuration complete.
@@ -373,7 +373,7 @@ y/e/d> y
 ### --fast-list
 
 This remote supports `--fast-list` which allows you to use fewer
-transactions in exchange for more memory. See the [rclone
+transactions in exchange for more memory. See the [zclone
 docs](/docs/#fast-list) for more details.
 
 It does this by combining multiple `list` calls into a single API request.
@@ -401,7 +401,7 @@ In tests, these batch requests were up to 20x faster than the regular method.
 Running the following command against different sized folders gives:
 
 ```console
-rclone lsjson -vv -R --checkers=6 gdrive:folder
+zclone lsjson -vv -R --checkers=6 gdrive:folder
 ```
 
 small folder (220 directories, 700 files):
@@ -433,7 +433,7 @@ or `..` are valid names.
 ### Revisions
 
 Google drive stores revisions of files.  When you upload a change to
-an existing file to google drive using rclone it will create a new
+an existing file to google drive using zclone it will create a new
 revision of that file.
 
 Revisions follow the standard google policy which at time of writing
@@ -444,7 +444,7 @@ was
 
 ### Deleting files
 
-By default rclone will send all files to the trash when deleting
+By default zclone will send all files to the trash when deleting
 files.  If deleting them permanently is required then use the
 `--drive-use-trash=false` flag, or set the equivalent environment
 variable.
@@ -462,7 +462,7 @@ like a symlink in unix, except they point to the underlying file data
 (e.g. the inode in unix terms) so they don't break if the source is
 renamed or moved about.
 
-By default rclone treats these as follows.
+By default zclone treats these as follows.
 
 For shortcuts pointing to files:
 
@@ -488,29 +488,29 @@ For shortcuts pointing to folders:
 - When server-side moving (renaming) the shortcut is renamed, not the destination
   folder
 - When server-side copying the contents of the linked folder is copied, not the shortcut.
-- When deleting with `rclone rmdir` or `rclone purge` the shortcut is deleted not
+- When deleting with `zclone rmdir` or `zclone purge` the shortcut is deleted not
   the linked folder.
-- **NB** When deleting with `rclone remove` or `rclone mount` the contents of the
+- **NB** When deleting with `zclone remove` or `zclone mount` the contents of the
   linked folder will be deleted.
 
-The [rclone backend](https://rclone.org/commands/rclone_backend/) command can be
+The [zclone backend](//commands/zclone_backend/) command can be
 used to create shortcuts.
 
 Shortcuts can be completely ignored with the `--drive-skip-shortcuts` flag
 or the corresponding `skip_shortcuts` configuration setting.
 
-When `rclone lsf --format i` lists a file shortcut, the ID field contains the
+When `zclone lsf --format i` lists a file shortcut, the ID field contains the
 target file ID followed by the shortcut ID, separated by a tab. This internal
 tab is not changed by `--separator`.
 
 If you have a folder shortcut that points at one of its own parent folders it
-would lead to an infinite recursion. Rclone detects this, leaves the offending
+would lead to an infinite recursion. Zclone detects this, leaves the offending
 shortcut out of the listing and logs an ERROR, so the rest of the drive can
 still be copied.
 
 ### Emptying trash
 
-If you wish to empty your trash you can use the `rclone cleanup remote:`
+If you wish to empty your trash you can use the `zclone cleanup remote:`
 command which will permanently delete all your trashed files. This command
 does not take any path arguments.
 
@@ -520,7 +520,7 @@ is echoed, so there will be no confirmation even using -v or -vv.
 
 ### Quota information
 
-To view your current quota you can use the `rclone about remote:`
+To view your current quota you can use the `zclone about remote:`
 command which will display your usage limit (quota), the usage in Google
 Drive, the size of all files in the Trash and the space used by other
 Google services such as Gmail. This command does not take any path
@@ -530,28 +530,28 @@ arguments.
 
 Google documents can be exported from and uploaded to Google Drive.
 
-When rclone downloads a Google doc it chooses a format to download
+When zclone downloads a Google doc it chooses a format to download
 depending upon the `--drive-export-formats` setting.
 By default the export formats are `docx,xlsx,pptx,svg` which are a
 sensible default for an editable document.
 
-When choosing a format, rclone runs down the list provided in order
+When choosing a format, zclone runs down the list provided in order
 and chooses the first file format the doc can be exported as from the
 list. If the file can't be exported to a format on the formats list,
-then rclone will choose a format from the default list.
+then zclone will choose a format from the default list.
 
 If you prefer an archive copy then you might use `--drive-export-formats
 pdf`, or if you prefer openoffice/libreoffice formats you might use
 `--drive-export-formats ods,odt,odp`.
 
-Note that rclone adds the extension to the google doc, so if it is
+Note that zclone adds the extension to the google doc, so if it is
 called `My Spreadsheet` on google docs, it will be exported as `My
 Spreadsheet.xlsx` or `My Spreadsheet.pdf` etc.
 
-When importing files into Google Drive, rclone will convert all
+When importing files into Google Drive, zclone will convert all
 files with an extension in `--drive-import-formats` to their
 associated document type.
-rclone will not convert any files by default, since the conversion
+zclone will not convert any files by default, since the conversion
 is lossy process.
 
 The conversion must result in a file with the same extension when
@@ -570,12 +570,12 @@ Here are some examples for allowed and prohibited conversions.
 | docx,odt | docx,odt | odt | docx | No |
 
 This limitation can be disabled by specifying `--drive-allow-import-name-change`.
-When using this flag, rclone can convert multiple files types resulting
+When using this flag, zclone can convert multiple files types resulting
 in the same document type at once, e.g. with `--drive-import-formats docx,odt,txt`,
 all files having these extension would result in a document represented as a
 docx file.
 This brings the additional risk of overwriting a document, if multiple files
-have the same stem. Many rclone operations will not handle this name change
+have the same stem. Many zclone operations will not handle this name change
 in any way. They assume an equal name when copying files and might copy the
 file again or delete them when the name changes.
 
@@ -636,38 +636,38 @@ Here are the Standard options specific to drive (Google Drive).
 #### --drive-client-id
 
 Google Application Client Id
-Leave blank to use rclone's shared client_id, or if you are using a service account.
+Leave blank to use zclone's shared client_id, or if you are using a service account.
 The shared client_id is being retired and will stop working during 2026, so creating your own is now strongly recommended.
-See https://rclone.org/drive/#making-your-own-client-id for how to create your own.
+See //drive/#making-your-own-client-id for how to create your own.
 
 Properties:
 
 - Config:      client_id
-- Env Var:     RCLONE_DRIVE_CLIENT_ID
+- Env Var:     ZCLONE_DRIVE_CLIENT_ID
 - Type:        string
 - Required:    false
 
 #### --drive-client-secret
 
 Google Application Client Secret
-Leave blank to use rclone's shared client_id, or if you are using a service account.
+Leave blank to use zclone's shared client_id, or if you are using a service account.
 If you created your own client_id then enter its client secret here.
 
 Properties:
 
 - Config:      client_secret
-- Env Var:     RCLONE_DRIVE_CLIENT_SECRET
+- Env Var:     ZCLONE_DRIVE_CLIENT_SECRET
 - Type:        string
 - Required:    false
 
 #### --drive-scope
 
-Comma separated list of scopes that rclone should use when requesting access from drive.
+Comma separated list of scopes that zclone should use when requesting access from drive.
 
 Properties:
 
 - Config:      scope
-- Env Var:     RCLONE_DRIVE_SCOPE
+- Env Var:     ZCLONE_DRIVE_SCOPE
 - Type:        string
 - Required:    false
 - Examples:
@@ -676,7 +676,7 @@ Properties:
   - "drive.readonly"
     - Read-only access to file metadata and file contents.
   - "drive.file"
-    - Access to files created by rclone only.
+    - Access to files created by zclone only.
     - These are visible in the drive website.
     - File authorization is revoked when the user deauthorizes the app.
   - "drive.appfolder"
@@ -693,12 +693,12 @@ Service Account Credentials JSON file path.
 Leave blank normally.
 Needed only if you want use SA instead of interactive login.
 
-Leading `~` will be expanded in the file name as will environment variables such as `${RCLONE_CONFIG_DIR}`.
+Leading `~` will be expanded in the file name as will environment variables such as `${ZCLONE_CONFIG_DIR}`.
 
 Properties:
 
 - Config:      service_account_file
-- Env Var:     RCLONE_DRIVE_SERVICE_ACCOUNT_FILE
+- Env Var:     ZCLONE_DRIVE_SERVICE_ACCOUNT_FILE
 - Type:        string
 - Required:    false
 
@@ -713,7 +713,7 @@ OAuth Access Token as a JSON blob.
 Properties:
 
 - Config:      token
-- Env Var:     RCLONE_DRIVE_TOKEN
+- Env Var:     ZCLONE_DRIVE_TOKEN
 - Type:        string
 - Required:    false
 
@@ -726,7 +726,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      auth_url
-- Env Var:     RCLONE_DRIVE_AUTH_URL
+- Env Var:     ZCLONE_DRIVE_AUTH_URL
 - Type:        string
 - Required:    false
 
@@ -739,7 +739,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      token_url
-- Env Var:     RCLONE_DRIVE_TOKEN_URL
+- Env Var:     ZCLONE_DRIVE_TOKEN_URL
 - Type:        string
 - Required:    false
 
@@ -754,7 +754,7 @@ Note that this option is NOT supported by all backends.
 Properties:
 
 - Config:      client_credentials
-- Env Var:     RCLONE_DRIVE_CLIENT_CREDENTIALS
+- Env Var:     ZCLONE_DRIVE_CLIENT_CREDENTIALS
 - Type:        bool
 - Default:     false
 
@@ -763,14 +763,14 @@ Properties:
 ID of the root folder.
 Leave blank normally.
 
-Fill in to access "Computers" folders (see docs), or for rclone to use
+Fill in to access "Computers" folders (see docs), or for zclone to use
 a non root folder as its starting point.
 
 
 Properties:
 
 - Config:      root_folder_id
-- Env Var:     RCLONE_DRIVE_ROOT_FOLDER_ID
+- Env Var:     ZCLONE_DRIVE_ROOT_FOLDER_ID
 - Type:        string
 - Required:    false
 
@@ -784,7 +784,7 @@ Needed only if you want use SA instead of interactive login.
 Properties:
 
 - Config:      service_account_credentials
-- Env Var:     RCLONE_DRIVE_SERVICE_ACCOUNT_CREDENTIALS
+- Env Var:     ZCLONE_DRIVE_SERVICE_ACCOUNT_CREDENTIALS
 - Type:        string
 - Required:    false
 
@@ -795,7 +795,7 @@ ID of the Shared Drive (Team Drive).
 Properties:
 
 - Config:      team_drive
-- Env Var:     RCLONE_DRIVE_TEAM_DRIVE
+- Env Var:     ZCLONE_DRIVE_TEAM_DRIVE
 - Type:        string
 - Required:    false
 
@@ -806,7 +806,7 @@ Only consider files owned by the authenticated user.
 Properties:
 
 - Config:      auth_owner_only
-- Env Var:     RCLONE_DRIVE_AUTH_OWNER_ONLY
+- Env Var:     ZCLONE_DRIVE_AUTH_OWNER_ONLY
 - Type:        bool
 - Default:     false
 
@@ -820,7 +820,7 @@ Use `--drive-use-trash=false` to delete files permanently instead.
 Properties:
 
 - Config:      use_trash
-- Env Var:     RCLONE_DRIVE_USE_TRASH
+- Env Var:     ZCLONE_DRIVE_USE_TRASH
 - Type:        bool
 - Default:     true
 
@@ -828,16 +828,16 @@ Properties:
 
 Server side copy contents of shortcuts instead of the shortcut.
 
-When doing server side copies, normally rclone will copy shortcuts as
+When doing server side copies, normally zclone will copy shortcuts as
 shortcuts.
 
-If this flag is used then rclone will copy the contents of shortcuts
+If this flag is used then zclone will copy the contents of shortcuts
 rather than shortcuts themselves when doing server side copies.
 
 Properties:
 
 - Config:      copy_shortcut_content
-- Env Var:     RCLONE_DRIVE_COPY_SHORTCUT_CONTENT
+- Env Var:     ZCLONE_DRIVE_COPY_SHORTCUT_CONTENT
 - Type:        bool
 - Default:     false
 
@@ -845,12 +845,12 @@ Properties:
 
 Skip google documents in all listings.
 
-If given, gdocs practically become invisible to rclone.
+If given, gdocs practically become invisible to zclone.
 
 Properties:
 
 - Config:      skip_gdocs
-- Env Var:     RCLONE_DRIVE_SKIP_GDOCS
+- Env Var:     ZCLONE_DRIVE_SKIP_GDOCS
 - Type:        bool
 - Default:     false
 
@@ -865,17 +865,17 @@ will get this error:
 
 However adding this flag will allow the form to be server side copied.
 
-Note that rclone doesn't add extensions to the Google Docs file names
+Note that zclone doesn't add extensions to the Google Docs file names
 in this mode.
 
-Do **not** use this flag when trying to download Google Docs - rclone
+Do **not** use this flag when trying to download Google Docs - zclone
 will fail to download them.
 
 
 Properties:
 
 - Config:      show_all_gdocs
-- Env Var:     RCLONE_DRIVE_SHOW_ALL_GDOCS
+- Env Var:     ZCLONE_DRIVE_SHOW_ALL_GDOCS
 - Type:        bool
 - Default:     false
 
@@ -897,7 +897,7 @@ not updating the checksum.
 Properties:
 
 - Config:      skip_checksum_gphotos
-- Env Var:     RCLONE_DRIVE_SKIP_CHECKSUM_GPHOTOS
+- Env Var:     ZCLONE_DRIVE_SKIP_CHECKSUM_GPHOTOS
 - Type:        bool
 - Default:     false
 
@@ -905,7 +905,7 @@ Properties:
 
 Only show files that are shared with me.
 
-Instructs rclone to operate on your "Shared with me" folder (where
+Instructs zclone to operate on your "Shared with me" folder (where
 Google Drive lets you access the files and folders others have shared
 with you).
 
@@ -915,7 +915,7 @@ commands (copy, sync, etc.), and with all other commands too.
 Properties:
 
 - Config:      shared_with_me
-- Env Var:     RCLONE_DRIVE_SHARED_WITH_ME
+- Env Var:     ZCLONE_DRIVE_SHARED_WITH_ME
 - Type:        bool
 - Default:     false
 
@@ -928,7 +928,7 @@ This will show trashed files in their original directory structure.
 Properties:
 
 - Config:      trashed_only
-- Env Var:     RCLONE_DRIVE_TRASHED_ONLY
+- Env Var:     ZCLONE_DRIVE_TRASHED_ONLY
 - Type:        bool
 - Default:     false
 
@@ -939,7 +939,7 @@ Only show files that are starred.
 Properties:
 
 - Config:      starred_only
-- Env Var:     RCLONE_DRIVE_STARRED_ONLY
+- Env Var:     ZCLONE_DRIVE_STARRED_ONLY
 - Type:        bool
 - Default:     false
 
@@ -950,7 +950,7 @@ Deprecated: See export_formats.
 Properties:
 
 - Config:      formats
-- Env Var:     RCLONE_DRIVE_FORMATS
+- Env Var:     ZCLONE_DRIVE_FORMATS
 - Type:        string
 - Required:    false
 
@@ -961,7 +961,7 @@ Comma separated list of preferred formats for downloading Google docs.
 Properties:
 
 - Config:      export_formats
-- Env Var:     RCLONE_DRIVE_EXPORT_FORMATS
+- Env Var:     ZCLONE_DRIVE_EXPORT_FORMATS
 - Type:        string
 - Default:     "docx,xlsx,pptx,svg"
 
@@ -972,7 +972,7 @@ Comma separated list of preferred formats for uploading Google docs.
 Properties:
 
 - Config:      import_formats
-- Env Var:     RCLONE_DRIVE_IMPORT_FORMATS
+- Env Var:     ZCLONE_DRIVE_IMPORT_FORMATS
 - Type:        string
 - Required:    false
 
@@ -985,7 +985,7 @@ E.g. file.doc to file.docx. This will confuse sync and reupload every time.
 Properties:
 
 - Config:      allow_import_name_change
-- Env Var:     RCLONE_DRIVE_ALLOW_IMPORT_NAME_CHANGE
+- Env Var:     ZCLONE_DRIVE_ALLOW_IMPORT_NAME_CHANGE
 - Type:        bool
 - Default:     false
 
@@ -1012,7 +1012,7 @@ or move the photos locally and use the date the image was taken
 Properties:
 
 - Config:      use_created_date
-- Env Var:     RCLONE_DRIVE_USE_CREATED_DATE
+- Env Var:     ZCLONE_DRIVE_USE_CREATED_DATE
 - Type:        bool
 - Default:     false
 
@@ -1029,7 +1029,7 @@ date is used.
 Properties:
 
 - Config:      use_shared_date
-- Env Var:     RCLONE_DRIVE_USE_SHARED_DATE
+- Env Var:     ZCLONE_DRIVE_USE_SHARED_DATE
 - Type:        bool
 - Default:     false
 
@@ -1040,7 +1040,7 @@ Size of listing chunk 100-1000, 0 to disable.
 Properties:
 
 - Config:      list_chunk
-- Env Var:     RCLONE_DRIVE_LIST_CHUNK
+- Env Var:     ZCLONE_DRIVE_LIST_CHUNK
 - Type:        int
 - Default:     1000
 
@@ -1051,7 +1051,7 @@ Impersonate this user when using a service account.
 Properties:
 
 - Config:      impersonate
-- Env Var:     RCLONE_DRIVE_IMPERSONATE
+- Env Var:     ZCLONE_DRIVE_IMPERSONATE
 - Type:        string
 - Required:    false
 
@@ -1062,7 +1062,7 @@ Cutoff for switching to chunked upload.
 Properties:
 
 - Config:      upload_cutoff
-- Env Var:     RCLONE_DRIVE_UPLOAD_CUTOFF
+- Env Var:     ZCLONE_DRIVE_UPLOAD_CUTOFF
 - Type:        SizeSuffix
 - Default:     8Mi
 
@@ -1080,7 +1080,7 @@ Reducing this will reduce memory usage but decrease performance.
 Properties:
 
 - Config:      chunk_size
-- Env Var:     RCLONE_DRIVE_CHUNK_SIZE
+- Env Var:     ZCLONE_DRIVE_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     8Mi
 
@@ -1090,8 +1090,8 @@ Set to allow files which return cannotDownloadAbusiveFile to be downloaded.
 
 If downloading a file returns the error "This file has been identified
 as malware or spam and cannot be downloaded" with the error code
-"cannotDownloadAbusiveFile" then supply this flag to rclone to
-indicate you acknowledge the risks of downloading the file and rclone
+"cannotDownloadAbusiveFile" then supply this flag to zclone to
+indicate you acknowledge the risks of downloading the file and zclone
 will download it anyway.
 
 Note that if you are using service account it will need Manager
@@ -1101,7 +1101,7 @@ does not have the right permission, Google will just ignore the flag.
 Properties:
 
 - Config:      acknowledge_abuse
-- Env Var:     RCLONE_DRIVE_ACKNOWLEDGE_ABUSE
+- Env Var:     ZCLONE_DRIVE_ACKNOWLEDGE_ABUSE
 - Type:        bool
 - Default:     false
 
@@ -1112,7 +1112,7 @@ Keep new head revision of each file forever.
 Properties:
 
 - Config:      keep_revision_forever
-- Env Var:     RCLONE_DRIVE_KEEP_REVISION_FOREVER
+- Env Var:     ZCLONE_DRIVE_KEEP_REVISION_FOREVER
 - Type:        bool
 - Default:     false
 
@@ -1128,7 +1128,7 @@ forever.
 
 It is not recommended to set this flag in your config - the
 recommended usage is using the flag form --drive-size-as-quota when
-doing rclone ls/lsl/lsf/lsjson/etc only.
+doing zclone ls/lsl/lsf/lsjson/etc only.
 
 If you do use this flag for syncing (not recommended) then you will
 need to use --ignore size also.
@@ -1136,7 +1136,7 @@ need to use --ignore size also.
 Properties:
 
 - Config:      size_as_quota
-- Env Var:     RCLONE_DRIVE_SIZE_AS_QUOTA
+- Env Var:     ZCLONE_DRIVE_SIZE_AS_QUOTA
 - Type:        bool
 - Default:     false
 
@@ -1147,7 +1147,7 @@ If Object's are greater, use drive v2 API to download.
 Properties:
 
 - Config:      v2_download_min_size
-- Env Var:     RCLONE_DRIVE_V2_DOWNLOAD_MIN_SIZE
+- Env Var:     ZCLONE_DRIVE_V2_DOWNLOAD_MIN_SIZE
 - Type:        SizeSuffix
 - Default:     off
 
@@ -1158,7 +1158,7 @@ Minimum time to sleep between API calls.
 Properties:
 
 - Config:      pacer_min_sleep
-- Env Var:     RCLONE_DRIVE_PACER_MIN_SLEEP
+- Env Var:     ZCLONE_DRIVE_PACER_MIN_SLEEP
 - Type:        Duration
 - Default:     100ms
 
@@ -1169,7 +1169,7 @@ Number of API calls to allow without sleeping.
 Properties:
 
 - Config:      pacer_burst
-- Env Var:     RCLONE_DRIVE_PACER_BURST
+- Env Var:     ZCLONE_DRIVE_PACER_BURST
 - Type:        int
 - Default:     100
 
@@ -1187,7 +1187,7 @@ configurations.
 Properties:
 
 - Config:      server_side_across_configs
-- Env Var:     RCLONE_DRIVE_SERVER_SIDE_ACROSS_CONFIGS
+- Env Var:     ZCLONE_DRIVE_SERVER_SIDE_ACROSS_CONFIGS
 - Type:        bool
 - Default:     false
 
@@ -1200,14 +1200,14 @@ HTTP/2.  HTTP/2 is therefore disabled by default for the drive backend
 but can be re-enabled here.  When the issue is solved this flag will
 be removed.
 
-See: https://github.com/rclone/rclone/issues/3631
+See: /
 
 
 
 Properties:
 
 - Config:      disable_http2
-- Env Var:     RCLONE_DRIVE_DISABLE_HTTP2
+- Env Var:     ZCLONE_DRIVE_DISABLE_HTTP2
 - Type:        bool
 - Default:     true
 
@@ -1224,13 +1224,13 @@ the in-progress sync.
 Note that this detection is relying on error message strings which
 Google don't document so it may break in the future.
 
-See: https://github.com/rclone/rclone/issues/3857
+See: /
 
 
 Properties:
 
 - Config:      stop_on_upload_limit
-- Env Var:     RCLONE_DRIVE_STOP_ON_UPLOAD_LIMIT
+- Env Var:     ZCLONE_DRIVE_STOP_ON_UPLOAD_LIMIT
 - Type:        bool
 - Default:     false
 
@@ -1251,7 +1251,7 @@ Google don't document so it may break in the future.
 Properties:
 
 - Config:      stop_on_download_limit
-- Env Var:     RCLONE_DRIVE_STOP_ON_DOWNLOAD_LIMIT
+- Env Var:     ZCLONE_DRIVE_STOP_ON_DOWNLOAD_LIMIT
 - Type:        bool
 - Default:     false
 
@@ -1259,15 +1259,15 @@ Properties:
 
 If set skip shortcut files.
 
-Normally rclone dereferences shortcut files making them appear as if
+Normally zclone dereferences shortcut files making them appear as if
 they are the original file (see [the shortcuts section](#shortcuts)).
-If this flag is set then rclone will ignore shortcut files completely.
+If this flag is set then zclone will ignore shortcut files completely.
 
 
 Properties:
 
 - Config:      skip_shortcuts
-- Env Var:     RCLONE_DRIVE_SKIP_SHORTCUTS
+- Env Var:     ZCLONE_DRIVE_SKIP_SHORTCUTS
 - Type:        bool
 - Default:     false
 
@@ -1275,13 +1275,13 @@ Properties:
 
 If set skip dangling shortcut files.
 
-If this is set then rclone will not show any dangling shortcuts in listings.
+If this is set then zclone will not show any dangling shortcuts in listings.
 
 
 Properties:
 
 - Config:      skip_dangling_shortcuts
-- Env Var:     RCLONE_DRIVE_SKIP_DANGLING_SHORTCUTS
+- Env Var:     ZCLONE_DRIVE_SKIP_DANGLING_SHORTCUTS
 - Type:        bool
 - Default:     false
 
@@ -1302,14 +1302,14 @@ See: https://developers.google.com/drive/api/guides/resource-keys
 This resource key requirement only applies to a subset of old files.
 
 Note also that opening the folder once in the web interface (with the
-user you've authenticated rclone with) seems to be enough so that the
+user you've authenticated zclone with) seems to be enough so that the
 resource key is not needed.
 
 
 Properties:
 
 - Config:      resource_key
-- Env Var:     RCLONE_DRIVE_RESOURCE_KEY
+- Env Var:     ZCLONE_DRIVE_RESOURCE_KEY
 - Type:        string
 - Required:    false
 
@@ -1317,15 +1317,15 @@ Properties:
 
 Work around a bug in Google Drive listing.
 
-Normally rclone will work around a bug in Google Drive when using
+Normally zclone will work around a bug in Google Drive when using
 --fast-list (ListR) where the search "(A in parents) or (B in
 parents)" returns nothing sometimes. See #3114, #4289 and
 https://issuetracker.google.com/issues/149522397
 
-Rclone detects this by finding no items in more than one directory
+Zclone detects this by finding no items in more than one directory
 when listing and retries them as lists of individual directories.
 
-This means that if you have a lot of empty directories rclone will end
+This means that if you have a lot of empty directories zclone will end
 up listing them all individually and this can take many more API
 calls.
 
@@ -1337,7 +1337,7 @@ having trouble with like many empty directories.
 Properties:
 
 - Config:      fast_list_bug_fix
-- Env Var:     RCLONE_DRIVE_FAST_LIST_BUG_FIX
+- Env Var:     ZCLONE_DRIVE_FAST_LIST_BUG_FIX
 - Type:        bool
 - Default:     true
 
@@ -1357,7 +1357,7 @@ organization.
 Properties:
 
 - Config:      metadata_owner
-- Env Var:     RCLONE_DRIVE_METADATA_OWNER
+- Env Var:     ZCLONE_DRIVE_METADATA_OWNER
 - Type:        Bits
 - Default:     read
 - Examples:
@@ -1379,7 +1379,7 @@ Control whether permissions should be read or written in metadata.
 Reading permissions metadata from files can be done quickly, but it
 isn't always desirable to set the permissions from the metadata.
 
-Note that rclone drops any inherited permissions on Shared Drives and
+Note that zclone drops any inherited permissions on Shared Drives and
 any owner permission on My Drives as these are duplicated in the owner
 metadata.
 
@@ -1387,7 +1387,7 @@ metadata.
 Properties:
 
 - Config:      metadata_permissions
-- Env Var:     RCLONE_DRIVE_METADATA_PERMISSIONS
+- Env Var:     ZCLONE_DRIVE_METADATA_PERMISSIONS
 - Type:        Bits
 - Default:     off
 - Examples:
@@ -1412,9 +1412,9 @@ from the metadata.
 
 The format of labels is documented in the drive API documentation at
 https://developers.google.com/drive/api/reference/rest/v3/Label -
-rclone just provides a JSON dump of this format.
+zclone just provides a JSON dump of this format.
 
-When setting labels, the label and fields must already exist - rclone
+When setting labels, the label and fields must already exist - zclone
 will not create them. This means that if you are transferring labels
 from two different accounts you will have to create the labels in
 advance and use the metadata mapper to translate the IDs between the
@@ -1424,7 +1424,7 @@ two accounts.
 Properties:
 
 - Config:      metadata_labels
-- Env Var:     RCLONE_DRIVE_METADATA_LABELS
+- Env Var:     ZCLONE_DRIVE_METADATA_LABELS
 - Type:        Bits
 - Default:     off
 - Examples:
@@ -1452,7 +1452,7 @@ See: https://developers.google.com/workspace/drive/api/guides/limited-expansive-
 Properties:
 
 - Config:      metadata_enforce_expansive_access
-- Env Var:     RCLONE_DRIVE_METADATA_ENFORCE_EXPANSIVE_ACCESS
+- Env Var:     ZCLONE_DRIVE_METADATA_ENFORCE_EXPANSIVE_ACCESS
 - Type:        bool
 - Default:     false
 
@@ -1465,7 +1465,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_DRIVE_ENCODING
+- Env Var:     ZCLONE_DRIVE_ENCODING
 - Type:        Encoding
 - Default:     InvalidUtf8
 
@@ -1478,7 +1478,7 @@ Only applies if service_account_file and service_account_credentials is blank.
 Properties:
 
 - Config:      env_auth
-- Env Var:     RCLONE_DRIVE_ENV_AUTH
+- Env Var:     ZCLONE_DRIVE_ENV_AUTH
 - Type:        bool
 - Default:     false
 - Examples:
@@ -1494,7 +1494,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_DRIVE_DESCRIPTION
+- Env Var:     ZCLONE_DRIVE_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -1530,12 +1530,12 @@ Here are the commands specific to the drive backend.
 Run them with:
 
 ```console
-rclone backend COMMAND remote:
+zclone backend COMMAND remote:
 ```
 
 The help below will explain what arguments each command takes.
 
-See the [backend](/commands/rclone_backend/) command for more
+See the [backend](/commands/zclone_backend/) command for more
 info on how to pass options and arguments.
 
 These can be run on a running backend using the rc command
@@ -1546,7 +1546,7 @@ These can be run on a running backend using the rc command
 Get command for fetching the drive config parameters.
 
 ```console
-rclone backend get remote: [options] [<arguments>+]
+zclone backend get remote: [options] [<arguments>+]
 ```
 
 This is a get command which will be used to fetch the various drive config
@@ -1555,8 +1555,8 @@ parameters.
 Usage examples:
 
 ```console
-rclone backend get drive: [-o service_account_file] [-o chunk_size]
-rclone rc backend/command command=get fs=drive: [-o service_account_file] [-o chunk_size]
+zclone backend get drive: [-o service_account_file] [-o chunk_size]
+zclone rc backend/command command=get fs=drive: [-o service_account_file] [-o chunk_size]
 ```
 
 Options:
@@ -1569,7 +1569,7 @@ Options:
 Set command for updating the drive config parameters.
 
 ```console
-rclone backend set remote: [options] [<arguments>+]
+zclone backend set remote: [options] [<arguments>+]
 ```
 
 This is a set command which will be used to update the various drive config
@@ -1578,8 +1578,8 @@ parameters.
 Usage examples:
 
 ```console
-rclone backend set drive: [-o service_account_file=sa.json] [-o chunk_size=67108864]
-rclone rc backend/command command=set fs=drive: [-o service_account_file=sa.json] [-o chunk_size=67108864]
+zclone backend set drive: [-o service_account_file=sa.json] [-o chunk_size=67108864]
+zclone rc backend/command command=set fs=drive: [-o service_account_file=sa.json] [-o chunk_size=67108864]
 ```
 
 Options:
@@ -1592,7 +1592,7 @@ Options:
 Create shortcuts from files or directories.
 
 ```console
-rclone backend shortcut remote: [options] [<arguments>+]
+zclone backend shortcut remote: [options] [<arguments>+]
 ```
 
 This command creates shortcuts from files or directories.
@@ -1600,8 +1600,8 @@ This command creates shortcuts from files or directories.
 Usage examples:
 
 ```console
-rclone backend shortcut drive: source_item destination_shortcut
-rclone backend shortcut drive: source_item -o target=drive2: destination_shortcut
+zclone backend shortcut drive: source_item destination_shortcut
+zclone backend shortcut drive: source_item -o target=drive2: destination_shortcut
 ```
 
 In the first example this creates a shortcut from the "source_item"
@@ -1623,7 +1623,7 @@ Options:
 List the Shared Drives available to this account.
 
 ```console
-rclone backend drives remote: [options] [<arguments>+]
+zclone backend drives remote: [options] [<arguments>+]
 ```
 
 This command lists the Shared Drives (Team Drives) available to this
@@ -1632,7 +1632,7 @@ account.
 Usage example:
 
 ```console
-rclone backend [-o config] drives drive:
+zclone backend [-o config] drives drive:
 ```
 
 This will return a JSON list of objects like this:
@@ -1670,7 +1670,7 @@ type = combine
 upstreams = "My Drive=My Drive:" "Test Drive=Test Drive:"
 ```
 
-Adding this to the rclone config file will cause those team drives to
+Adding this to the zclone config file will cause those team drives to
 be accessible with the aliases shown. Any illegal characters will be
 substituted with "_" and duplicate names will have numbers suffixed.
 It will also add a remote called AllDrives which shows all the shared
@@ -1681,7 +1681,7 @@ drives combined into one directory tree.
 Untrash files and directories.
 
 ```console
-rclone backend untrash remote: [options] [<arguments>+]
+zclone backend untrash remote: [options] [<arguments>+]
 ```
 
 This command untrashes all the files and directories in the directory
@@ -1690,8 +1690,8 @@ passed in recursively.
 Usage example:
 
 ```console
-rclone backend untrash drive:directory
-rclone backend --interactive untrash drive:directory subdir
+zclone backend untrash drive:directory
+zclone backend --interactive untrash drive:directory subdir
 ```
 
 This takes an optional directory to trash which make this easier to
@@ -1714,7 +1714,7 @@ Result:
 Copy files by ID.
 
 ```console
-rclone backend copyid remote: [options] [<arguments>+]
+zclone backend copyid remote: [options] [<arguments>+]
 ```
 
 This command copies files by ID.
@@ -1722,12 +1722,12 @@ This command copies files by ID.
 Usage examples:
 
 ```console
-rclone backend copyid drive: ID path
-rclone backend copyid drive: ID1 path1 ID2 path2
+zclone backend copyid drive: ID path
+zclone backend copyid drive: ID1 path1 ID2 path2
 ```
 
-It copies the drive file with ID given to the path (an rclone path which
-will be passed internally to rclone copyto). The ID and path pairs can be
+It copies the drive file with ID given to the path (an zclone path which
+will be passed internally to zclone copyto). The ID and path pairs can be
 repeated.
 
 The path should end with a / to indicate copy the file as named to
@@ -1745,7 +1745,7 @@ copying.
 Move files by ID.
 
 ```console
-rclone backend moveid remote: [options] [<arguments>+]
+zclone backend moveid remote: [options] [<arguments>+]
 ```
 
 This command moves files by ID.
@@ -1753,12 +1753,12 @@ This command moves files by ID.
 Usage examples:
 
 ```console
-rclone backend moveid drive: ID path
-rclone backend moveid drive: ID1 path1 ID2 path2
+zclone backend moveid drive: ID path
+zclone backend moveid drive: ID1 path1 ID2 path2
 ```
 
-It moves the drive file with ID given to the path (an rclone path which
-will be passed internally to rclone moveto).
+It moves the drive file with ID given to the path (an zclone path which
+will be passed internally to zclone moveto).
 
 The path should end with a / to indicate move the file as named to
 this directory. If it doesn't end with a / then the last path
@@ -1774,7 +1774,7 @@ Use the --interactive/-i or --dry-run flag to see what would be moved beforehand
 Dump the export formats for debug purposes.
 
 ```console
-rclone backend exportformats remote: [options] [<arguments>+]
+zclone backend exportformats remote: [options] [<arguments>+]
 ```
 
 ### importformats
@@ -1782,7 +1782,7 @@ rclone backend exportformats remote: [options] [<arguments>+]
 Dump the import formats for debug purposes.
 
 ```console
-rclone backend importformats remote: [options] [<arguments>+]
+zclone backend importformats remote: [options] [<arguments>+]
 ```
 
 ### query
@@ -1790,7 +1790,7 @@ rclone backend importformats remote: [options] [<arguments>+]
 List files using Google Drive query language.
 
 ```console
-rclone backend query remote: [options] [<arguments>+]
+zclone backend query remote: [options] [<arguments>+]
 ```
 
 This command lists files based on a query.
@@ -1798,24 +1798,24 @@ This command lists files based on a query.
 Usage example:
 
 ```console
-rclone backend query drive: query
+zclone backend query drive: query
 ```
 
-The query syntax is documented at [Google Drive Search query terms and 
+The query syntax is documented at [Google Drive Search query terms and
 operators](https://developers.google.com/drive/api/guides/ref-search-terms).
 
 For example:
 
 ```console
-rclone backend query drive: "'0ABc9DEFGHIJKLMNop0QRatUVW3X' in parents and name contains 'foo'"
+zclone backend query drive: "'0ABc9DEFGHIJKLMNop0QRatUVW3X' in parents and name contains 'foo'"
 ```
 
 If the query contains literal ' or \ characters, these need to be escaped with
-\ characters. "'" becomes "\'" and "\" becomes "\\\", for example to match a 
+\ characters. "'" becomes "\'" and "\" becomes "\\\", for example to match a
 file named "foo ' \.txt":
 
 ```console
-rclone backend query drive: "name = 'foo \' \\\.txt'"
+zclone backend query drive: "name = 'foo \' \\\.txt'"
 ```
 
 The result is a JSON array of matches, for example:
@@ -1845,7 +1845,7 @@ The result is a JSON array of matches, for example:
 Rescue or delete any orphaned files.
 
 ```console
-rclone backend rescue remote: [options] [<arguments>+]
+zclone backend rescue remote: [options] [<arguments>+]
 ```
 
 This command rescues or deletes any orphaned files or directories.
@@ -1861,32 +1861,32 @@ This can be used in 3 ways.
 First, list all orphaned files:
 
 ```console
-rclone backend rescue drive:
+zclone backend rescue drive:
 ```
 
 Second rescue all orphaned files to the directory indicated:
 
 ```console
-rclone backend rescue drive: "relative/path/to/rescue/directory"
+zclone backend rescue drive: "relative/path/to/rescue/directory"
 ```
 
 E.g. to rescue all orphans to a directory called "Orphans" in the top level:
 
 ```console
-rclone backend rescue drive: Orphans
+zclone backend rescue drive: Orphans
 ```
 
 Third delete all orphaned files to the trash:
 
 ```console
-rclone backend rescue drive: -o delete
+zclone backend rescue drive: -o delete
 ```
 
 <!-- autogenerated options stop -->
 
 ## Limitations
 
-Drive has quite a lot of rate limiting.  This causes rclone to be
+Drive has quite a lot of rate limiting.  This causes zclone to be
 limited to transferring about 2 files per second only.  Individual
 files may be transferred much faster at 100s of MiB/s but lots of
 small files can take a long time.
@@ -1898,20 +1898,20 @@ and upload the files if you prefer.
 
 ### Limitations of Google Docs
 
-Google docs will appear as size -1 in `rclone ls`, `rclone ncdu` etc,
-and as size 0 in anything which uses the VFS layer, e.g. `rclone mount`
-and `rclone serve`. When calculating directory totals, e.g. in
-`rclone size` and `rclone ncdu`, they will be counted in as empty
+Google docs will appear as size -1 in `zclone ls`, `zclone ncdu` etc,
+and as size 0 in anything which uses the VFS layer, e.g. `zclone mount`
+and `zclone serve`. When calculating directory totals, e.g. in
+`zclone size` and `zclone ncdu`, they will be counted in as empty
 files.
 
-This is because rclone can't find out the size of the Google docs
+This is because zclone can't find out the size of the Google docs
 without downloading them.
 
-Google docs will transfer correctly with `rclone sync`, `rclone copy`
-etc as rclone knows to ignore the size when doing the transfer.
+Google docs will transfer correctly with `zclone sync`, `zclone copy`
+etc as zclone knows to ignore the size when doing the transfer.
 
 However an unfortunate consequence of this is that you may not be able
-to download Google docs using `rclone mount`. If it doesn't work you
+to download Google docs using `zclone mount`. If it doesn't work you
 will get a 0 sized file.  If you try again the doc may gain its
 correct size and be downloadable. Whether it will work on not depends
 on the application accessing the mount and the OS you are running -
@@ -1920,27 +1920,27 @@ experiment to find out if it does work for you!
 ### Duplicated files
 
 Sometimes, for no reason I've been able to track down, drive will
-duplicate a file that rclone uploads.  Drive unlike all the other
+duplicate a file that zclone uploads.  Drive unlike all the other
 remotes can have duplicated files.
 
 Duplicated files cause problems with the syncing and you will see
 messages in the log about duplicates.
 
-Use `rclone dedupe` to fix duplicated files.
+Use `zclone dedupe` to fix duplicated files.
 
-Note that this isn't just a problem with rclone, even Google Photos on
+Note that this isn't just a problem with zclone, even Google Photos on
 Android duplicates files on drive sometimes.
 
-### Rclone appears to be re-copying files it shouldn't
+### Zclone appears to be re-copying files it shouldn't
 
 The most likely cause of this is the duplicated file issue above - run
-`rclone dedupe` and check your logs for duplicate object or directory
+`zclone dedupe` and check your logs for duplicate object or directory
 messages.
 
 This can also be caused by a delay/caching on google drive's end when
 comparing directory listings. Specifically with team drives used in
 combination with --fast-list. Files that were uploaded recently may
-not appear on the directory list sent to rclone when using --fast-list.
+not appear on the directory list sent to zclone when using --fast-list.
 
 Waiting a moderate period of time between attempts (estimated to be
 approximately 1 hour) and/or not using --fast-list both seem to be
@@ -1953,14 +1953,14 @@ not have SHA1 or SHA256 hashes especially if they were uploaded before 2018.
 
 ## Making your own client_id
 
-When you use rclone with Google drive in its default configuration you
-are using rclone's client_id.  This is shared between all the rclone
+When you use zclone with Google drive in its default configuration you
+are using zclone's client_id.  This is shared between all the zclone
 users.
 
 **This shared client_id is being retired and will stop working during
 2026.**  To avoid interruption you must create and use your own
 client_id, so creating one is now required rather than merely
-recommended.  New remotes created with `rclone config` will warn you if
+recommended.  New remotes created with `zclone config` will warn you if
 you leave the client_id blank.
 
 Using your own client_id has other benefits too. There is a global
@@ -1968,10 +1968,10 @@ rate limit on the number of queries per second that each client_id can
 do set by Google. If you have multiple services running, it is
 recommended to use an API key for each service. The default Google
 quota is 10 transactions per second so it is recommended to stay under
-that number as if you use more than that, it will cause rclone to rate
+that number as if you use more than that, it will cause zclone to rate
 limit and make things slower.
 
-Here is how to create your own Google Drive client ID for rclone:
+Here is how to create your own Google Drive client ID for zclone:
 
 1. Log into the [Google API
 Console](https://console.developers.google.com/) with your Google
@@ -1990,9 +1990,9 @@ credentials", which opens the wizard).
 to the next step; if not, click on "CONFIGURE CONSENT SCREEN" button
 (near the top right corner of the right panel), then click "Get started".
 On the next screen, enter an "Application name"
-("rclone" is OK); enter "User Support Email" (your own email is OK);
+("zclone" is OK); enter "User Support Email" (your own email is OK);
 Next, under Audience select "External". Next enter your own contact information,
-agree to terms and click "Create". You should now see rclone (or your project name)
+agree to terms and click "Create". You should now see zclone (or your project name)
 in a box in the top left of the screen.
 
     (PS: if you are a GSuite user, you could also select "Internal" instead
@@ -2003,7 +2003,7 @@ users in your organisation).
 including
     - `https://www.googleapis.com/auth/docs`
     - `https://www.googleapis.com/auth/drive` in order to be able to edit,
-        create and delete files with RClone.
+        create and delete files with Zclone.
     - `https://www.googleapis.com/auth/drive.metadata.readonly` which you may
       also want to add.
 
@@ -2029,17 +2029,17 @@ Scroll down and click "+ Add users". Add yourself as a test user and press save.
 9. Go to "Audience" and then click "PUBLISH APP" button and confirm.
    Add yourself as a test user if you haven't already.
 
-10. Provide the noted client ID and client secret to rclone.
+10. Provide the noted client ID and client secret to zclone.
 
-11. Run the web-based authorization flow from within `rclone config`, by answering
+11. Run the web-based authorization flow from within `zclone config`, by answering
     "Y" when it asks "Token already configured - replace it?".
 
 Be aware that, due to the "enhanced security" recently introduced by
 Google, you are theoretically expected to "submit your app for verification"
 and then wait a few weeks(!) for their response; in practice, you can go right
-ahead and use the client ID and client secret with rclone, the only issue will
-be a very scary confirmation screen shown when you connect via your browser 
-for rclone to be able to get its token-id (but as this only happens during 
+ahead and use the client ID and client secret with zclone, the only issue will
+be a very scary confirmation screen shown when you connect via your browser
+for zclone to be able to get its token-id (but as this only happens during
 the remote configuration, it's not such a big deal). Keeping the application in
 "Testing" will work as well, but the limitation is that any grants will expire
 after a week, which can be annoying to refresh constantly. If, for whatever
@@ -2059,7 +2059,7 @@ verification, including:
   mode are not subject to verification (but are limited to the 100-user cap and
   the unverified-app warning until verified).
 
-So for typical personal rclone use you can leave the app unverified, accept the
+So for typical personal zclone use you can leave the app unverified, accept the
 warning screen, and publish it (rather than leaving it in "Testing") to avoid
 the weekly grant expiry described above.
 

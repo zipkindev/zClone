@@ -2,19 +2,19 @@
 
 This file provides guidance to AI coding agents (e.g. Claude Code, Codex, Cursor, Gemini CLI, and similar tools) when working with code in this repository.
 
-Rclone welcomes AI-assisted contributions, but the expectation is that you, the human submitter, understand every line you propose and have compiled and tested it against real rclone code - not just generated it. See the "AI-assisted contributions" section of [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+Zclone welcomes AI-assisted contributions, but the expectation is that you, the human submitter, understand every line you propose and have compiled and tested it against real zclone code - not just generated it. See the "AI-assisted contributions" section of [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
 ## Project Overview
 
-Rclone is a command-line program to sync files and directories to and from cloud storage providers. It's written in Go and supports 70+ backends (cloud storage systems). Think "rsync for cloud storage".
+Zclone is a command-line program to sync files and directories to and from cloud storage providers. It's written in Go and supports 70+ backends (cloud storage systems). Think "rsync for cloud storage".
 
 ## General Notes
 
-**We take backwards compatibility very seriously.** PRs should not change the observable behaviour of existing commands, flags or rc API without very good reason. Rclone does not try to preserve a stable Go API but try not to change it gratuitously.
+**We take backwards compatibility very seriously.** PRs should not change the observable behaviour of existing commands, flags or rc API without very good reason. Zclone does not try to preserve a stable Go API but try not to change it gratuitously.
 
-Rclone operates with a lot of different backends, so **compatibility is key**. It is the backend integration tests which guarantee that compatibility. Changes should consider both known and unknown backends and should take care not to break functionality of existing installations.
+Zclone operates with a lot of different backends, so **compatibility is key**. It is the backend integration tests which guarantee that compatibility. Changes should consider both known and unknown backends and should take care not to break functionality of existing installations.
 
-The core parts of rclone under `fs` and `vfs` need to work with all backends and **backend specific hacks won't be merged**. Fixes likely need to go in the relevant backend or if new behaviour is really needed, a new Feature flag needs to be added.
+The core parts of zclone under `fs` and `vfs` need to work with all backends and **backend specific hacks won't be merged**. Fixes likely need to go in the relevant backend or if new behaviour is really needed, a new Feature flag needs to be added.
 
 **Changes should be kept to the minimum.** Work hard to make the most elegant, smallest change you can. Do not refactor or re-order code unless necessary as this makes review more challenging. Re-use existing test scaffolding, existing or library routines (e.g. `lib`) where possible.
 
@@ -23,7 +23,7 @@ Make sure added tests **actually test the code you have written** and test the i
 ## Build and Test Commands
 
 ```bash
-# Build rclone (simple)
+# Build zclone (simple)
 go build
 
 # Build with version info (preferred)
@@ -32,7 +32,7 @@ make
 # Run all unit tests (no cloud credentials needed)
 make quicktest
 # or equivalently:
-RCLONE_CONFIG="/notfound" go test ./...
+ZCLONE_CONFIG="/notfound" go test ./...
 
 # Run tests for a specific package
 cd backend/memory && go test -v
@@ -62,7 +62,7 @@ go run ./fstest/test_all -backends drive
 
 ### Entry Point and Plugin Registration
 
-`rclone.go` is the main entry point. It imports `backend/all` and `cmd/all` which use Go's `init()` pattern to register all backends and commands. Each backend calls `fs.Register()` with a `fs.RegInfo` struct during init.
+`zclone.go` is the main entry point. It imports `backend/all` and `cmd/all` which use Go's `init()` pattern to register all backends and commands. Each backend calls `fs.Register()` with a `fs.RegInfo` struct during init.
 
 ### Core Interfaces (`fs/`)
 
@@ -95,14 +95,14 @@ Each command is a package under `cmd/` registered in `cmd/all/all.go` via blank 
 - **`fs/accounting/`**: Transfer statistics and bandwidth limiting
 - **`fs/config/`**: Configuration file management
 - **`vfs/`**: Virtual filesystem layer (used by mount, serve)
-- **`librclone/`**: C-compatible library interface for embedding rclone
+- **`libzclone/`**: C-compatible library interface for embedding zclone
 - **`fstest/`**: Integration test framework; `fstest/fstests/` has the generic backend test suite
 
 ## Commit Message Convention
 
 Prefix with the directory of the change, then a colon: `drive: add team drive support - fixes #885`. For cross-cutting changes use a broader prefix like `fs` or `operations`.
 
-Make the first line of your commit message a summary of the change that a user (not a developer) of rclone would like to read. So write `drive: fix server side copy of big files` instead of `drive: no longer set the MimeType in Move or Copy`. This is important because these lines go into the change log which is read by users.
+Make the first line of your commit message a summary of the change that a user (not a developer) of zclone would like to read. So write `drive: fix server side copy of big files` instead of `drive: no longer set the MimeType in Move or Copy`. This is important because these lines go into the change log which is read by users.
 
 ## Code Commenting Style
 

@@ -1,4 +1,4 @@
-// Package huaweidrive implements the Huawei Drive backend for rclone
+// Package huaweidrive implements the Huawei Drive backend for zclone
 package huaweidrive
 
 import (
@@ -21,26 +21,26 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/backend/huaweidrive/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/oauthutil"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/readers"
-	"github.com/rclone/rclone/lib/rest"
 	"golang.org/x/oauth2"
+	"zclone/backend/huaweidrive/api"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/lib/dircache"
+	"zclone/lib/encoder"
+	"zclone/lib/oauthutil"
+	"zclone/lib/pacer"
+	"zclone/lib/readers"
+	"zclone/lib/rest"
 )
 
 const (
-	rcloneClientID              = "115505059"
-	rcloneEncryptedClientSecret = "EHQ1exJbwabjEMrIYc81zcWaSXg6n_SA_vzeiC34_Dfyfwys2RoNBbuDGwlNFbBFCrb_RYdU_DMLtaI5NnM9F9FriQAVHeRaN1oROHFZtCU"
+	zcloneClientID              = "115505059"
+	zcloneEncryptedClientSecret = "EHQ1exJbwabjEMrIYc81zcWaSXg6n_SA_vzeiC34_Dfyfwys2RoNBbuDGwlNFbBFCrb_RYdU_DMLtaI5NnM9F9FriQAVHeRaN1oROHFZtCU"
 	minSleep                    = 10 * time.Millisecond
 	maxSleep                    = 2 * time.Second
 	decayConstant               = 2 // bigger for slower decay, exponential
@@ -59,8 +59,8 @@ var oauthConfig = &oauthutil.Config{
 	},
 	AuthURL:      "https://oauth-login.cloud.huawei.com/oauth2/v3/authorize",
 	TokenURL:     "https://oauth-login.cloud.huawei.com/oauth2/v3/token",
-	ClientID:     rcloneClientID,
-	ClientSecret: obscure.MustReveal(rcloneEncryptedClientSecret),
+	ClientID:     zcloneClientID,
+	ClientSecret: obscure.MustReveal(zcloneEncryptedClientSecret),
 	RedirectURL:  oauthutil.RedirectURL,
 	AuthStyle:    oauth2.AuthStyleInParams,
 	EndpointParams: url.Values{
@@ -1108,7 +1108,7 @@ func (f *Fs) Copy(ctx context.Context, src fs.Object, remote string) (fs.Object,
 // - Same-directory renames work perfectly
 // - Cross-directory moves often fail silently (API returns success but file doesn't move)
 // - We detect this by verifying the parentFolder after the API call
-// - When detected, we return fs.ErrorCantMove to trigger rclone's copy+delete fallback
+// - When detected, we return fs.ErrorCantMove to trigger zclone's copy+delete fallback
 func (f *Fs) Move(ctx context.Context, src fs.Object, remote string) (fs.Object, error) {
 	srcObj, ok := src.(*Object)
 	if !ok {
@@ -1576,7 +1576,7 @@ func (o *Object) Update(ctx context.Context, in io.Reader, src fs.ObjectInfo, op
 
 	// Handle unknown size by spooling to a temp file to determine size
 	if size < 0 {
-		tmpFile, err := os.CreateTemp("", "rclone-huaweidrive-upload-")
+		tmpFile, err := os.CreateTemp("", "zclone-huaweidrive-upload-")
 		if err != nil {
 			return fmt.Errorf("failed to create temp file for unknown size upload: %w", err)
 		}
@@ -2107,7 +2107,7 @@ func (o *Object) SetMetadata(ctx context.Context, metadata fs.Metadata) error {
 		// and cannot be directly set via the update API
 		default:
 			// All other user metadata goes into Properties by default
-			// This makes the backend compatible with rclone's user metadata expectations
+			// This makes the backend compatible with zclone's user metadata expectations
 			updateReq.Properties[key] = value
 		}
 	}

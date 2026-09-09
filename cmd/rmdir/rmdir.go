@@ -4,9 +4,9 @@ package rmdir
 import (
 	"context"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs/operations"
 )
 
 func init() {
@@ -18,10 +18,10 @@ var commandDefinition = &cobra.Command{
 	Short: `Remove the empty directory at path.`,
 	Long: `This removes empty directory given by path. Will not remove the path if it
 has any objects in it, not even empty subdirectories. Use
-command [rmdirs](/commands/rclone_rmdirs/) (or [delete](/commands/rclone_delete/)
+command [rmdirs](/commands/zclone_rmdirs/) (or [delete](/commands/zclone_delete/)
 with option ` + "`--rmdirs`" + `) to do that.
 
-To delete a path and any objects in it, use [purge](/commands/rclone_purge/) command.`,
+To delete a path and any objects in it, use [purge](/commands/zclone_purge/) command.`,
 	Annotations: map[string]string{
 		"groups": "Important",
 	},

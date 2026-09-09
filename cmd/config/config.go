@@ -10,13 +10,13 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/rc"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/flags"
+	"zclone/fs/rc"
 )
 
 func init() {
@@ -180,25 +180,25 @@ var updateRemoteOpt config.UpdateRemoteOpt
 var configPasswordHelp = strings.ReplaceAll(
 	`Note that if the config process would normally ask a question the
 default is taken (unless |--non-interactive| is used).  Each time
-that happens rclone will print or DEBUG a message saying how to
+that happens zclone will print or DEBUG a message saying how to
 affect the value taken.
 
-If any of the parameters passed is a password field, then rclone will
+If any of the parameters passed is a password field, then zclone will
 automatically obscure them if they aren't already obscured before
 putting them in the config file.
 
 **NB** If the password parameter is 22 characters or longer and
-consists only of base64 characters then rclone can get confused about
+consists only of base64 characters then zclone can get confused about
 whether the password is already obscured or not and put unobscured
 passwords into the config file. If you want to be 100% certain that
 the passwords get obscured then use the |--obscure| flag, or if you
 are 100% certain you are already passing obscured passwords then use
 |--no-obscure|.  You can also set obscured passwords using the
-|rclone config password| command.
+|zclone config password| command.
 
 The flag |--non-interactive| is for use by applications that wish to
-configure rclone themselves, rather than using rclone's text based
-configuration questions. If this flag is set, and rclone needs to ask
+configure zclone themselves, rather than using zclone's text based
+configuration questions. If this flag is set, and zclone needs to ask
 the user a question, a JSON blob will be returned with the question in
 it.
 
@@ -209,7 +209,7 @@ This will look something like (some irrelevant detail removed):
   "State": "*oauth-islocal,teamdrive,,",
   "Option": {
     "Name": "config_is_local",
-    "Help": "Use web browser to automatically authenticate rclone with remote?\n * Say Y if the machine running rclone has a web browser you can use\n * Say N if running rclone on a (remote) machine without web browser access\nIf not sure try Y. If Y failed, try N.\n",
+    "Help": "Use web browser to automatically authenticate zclone with remote?\n * Say Y if the machine running zclone has a web browser you can use\n * Say N if running zclone on a (remote) machine without web browser access\nIf not sure try Y. If Y failed, try N.\n",
     "Default": true,
     "Examples": [
       {
@@ -230,9 +230,9 @@ This will look something like (some irrelevant detail removed):
 }
 |||
 
-The format of |Option| is the same as returned by |rclone config
+The format of |Option| is the same as returned by |zclone config
 providers|. The question should be asked to the user and returned to
-rclone as the |--result| option along with the |--state| parameter.
+zclone as the |--result| option along with the |--state| parameter.
 
 The keys of |Option| are used as follows:
 
@@ -250,21 +250,21 @@ If |Error| is set then it should be shown to the user at the same
 time as the question.
 
 |||sh
-rclone config update name --continue --state "*oauth-islocal,teamdrive,," --result "true"
+zclone config update name --continue --state "*oauth-islocal,teamdrive,," --result "true"
 |||
 
 Note that when using |--continue| all passwords should be passed in
 the clear (not obscured). Any default config values should be passed
 in with each invocation of |--continue|.
 
-At the end of the non interactive process, rclone will return a result
+At the end of the non interactive process, zclone will return a result
 with |State| as empty string.
 
-If |--all| is passed then rclone will ask all the config questions,
+If |--all| is passed then zclone will ask all the config questions,
 not just the post config questions. Any parameters are used as
 defaults for questions as usual.
 
-Note that |bin/config.py| in the rclone source implements this protocol
+Note that |bin/config.py| in the zclone source implements this protocol
 as a readable demonstration.`, "|", "`")
 var configCreateCommand = &cobra.Command{
 	Use:   "create name type [key value]*",
@@ -276,15 +276,15 @@ For example, to make a swift remote of name myremote using auto config
 you would do:
 
 |||sh
-rclone config create myremote swift env_auth true
-rclone config create myremote swift env_auth=true
+zclone config create myremote swift env_auth true
+zclone config create myremote swift env_auth=true
 |||
 
 So for example if you wanted to configure a Google Drive remote but
 using remote authorization you would do this:
 
 |||sh
-rclone config create mydrive drive config_is_local=false
+zclone config create mydrive drive config_is_local=false
 |||
 
 `, "|", "`") + configPasswordHelp,
@@ -350,15 +350,15 @@ For example, to update the env_auth field of a remote of name myremote
 you would do:
 
 |||sh
-rclone config update myremote env_auth true
-rclone config update myremote env_auth=true
+zclone config update myremote env_auth true
+zclone config update myremote env_auth=true
 |||
 
 If the remote uses OAuth the token will be updated, if you don't
 require this add an extra parameter thus:
 
 |||sh
-rclone config update myremote env_auth=true config_refresh_token=false
+zclone config update myremote env_auth=true config_refresh_token=false
 |||
 
 `, "|", "`") + configPasswordHelp,
@@ -399,12 +399,12 @@ For example, to remove the |client_id| and |client_secret| options from
 a remote of name myremote you would do:
 
 |||sh
-rclone config unset myremote client_id client_secret
+zclone config unset myremote client_id client_secret
 |||
 
 This removes the keys from the config file entirely, which is different
 from setting them to an empty string with |config update|. Removing a
-key restores rclone's default behaviour for that option, whereas setting
+key restores zclone's default behaviour for that option, whereas setting
 it to an empty string overrides the default with an empty value.
 
 You can't unset the |type| of a remote - use |config delete| to remove
@@ -433,8 +433,8 @@ The |password| should be passed in in clear (unobscured).
 For example, to set password of a remote of name myremote you would do:
 
 |||sh
-rclone config password myremote fieldname mypassword
-rclone config password myremote fieldname=mypassword
+zclone config password myremote fieldname mypassword
+zclone config password myremote fieldname=mypassword
 |||
 
 This command is obsolete now that "config update" and "config create"
@@ -484,7 +484,7 @@ var configReconnectCommand = &cobra.Command{
 	Short: `Re-authenticates user with remote.`,
 	Long: `This reconnects remote: passed in to the cloud storage system.
 
-To disconnect the remote use "rclone config disconnect".
+To disconnect the remote use "zclone config disconnect".
 
 This normally means going through the interactive oauth flow again.`,
 	RunE: func(command *cobra.Command, args []string) error {
@@ -505,7 +505,7 @@ var configDisconnectCommand = &cobra.Command{
 
 This normally means revoking the oauth token.
 
-To reconnect use "rclone config reconnect".`,
+To reconnect use "zclone config reconnect".`,
 	RunE: func(command *cobra.Command, args []string) error {
 		cmd.CheckArgs(1, 1, command, args)
 		f := cmd.NewFsSrc(args)
@@ -593,11 +593,11 @@ config using the old password and then again to read the new
 password to re-encrypt the config.
 
 When |--password-command| is called to change the password then the
-environment variable |RCLONE_PASSWORD_CHANGE=1| will be set. So if
+environment variable |ZCLONE_PASSWORD_CHANGE=1| will be set. So if
 changing passwords programmatically you can use the environment
 variable to distinguish which password you must supply.
 
-Alternatively you can remove the password first (with |rclone config
+Alternatively you can remove the password first (with |zclone config
 encryption remove|), then set it again with this command which may be
 easier if you don't mind the unencrypted config file being on the disk
 briefly.`, "|", "`"),
@@ -664,8 +664,8 @@ Backend parameters may be provided to the command also.
 Example:
 
 |||sh
-$ rclone config string s3:rclone --s3-no-check-bucket
-:s3,access_key_id=XXX,no_check_bucket,provider=AWS,region=eu-west-2,secret_access_key=YYY:rclone
+$ zclone config string s3:zclone --s3-no-check-bucket
+:s3,access_key_id=XXX,no_check_bucket,provider=AWS,region=eu-west-2,secret_access_key=YYY:zclone
 |||
 
 **NB** the strings are not quoted for use in shells (eg bash,

@@ -1,13 +1,13 @@
 // Package plugin implements loading out-of-tree storage backends
 // using https://golang.org/pkg/plugin/ on Linux and macOS.
 //
-// If the $RCLONE_PLUGIN_PATH is present, any Go plugins in that dir
-// named like librcloneplugin_NAME.so will be loaded.
+// If the $ZCLONE_PLUGIN_PATH is present, any Go plugins in that dir
+// named like libzcloneplugin_NAME.so will be loaded.
 //
 // To create a plugin, write the backend package like it was in-tree
 // but set the package name to "main". Then, build the plugin with
 //
-//	go build -buildmode=plugin -o librcloneplugin_NAME.so
+//	go build -buildmode=plugin -o libzcloneplugin_NAME.so
 //
 // where NAME equals the plugin's fs.RegInfo.Name.
 package plugin

@@ -1,6 +1,6 @@
 ---
 title: "Enterprise File Fabric"
-description: "Rclone docs for the Enterprise File Fabric backend"
+description: "Zclone docs for the Enterprise File Fabric backend"
 versionIntroduced: "v1.54"
 ---
 
@@ -15,12 +15,12 @@ through a global file system.
 
 The initial setup for the Enterprise File Fabric backend involves
 getting a token from the Enterprise File Fabric which you need to
-do in your browser.  `rclone config` walks you through it.
+do in your browser.  `zclone config` walks you through it.
 
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -40,7 +40,7 @@ XX / Enterprise File Fabric
    \ "filefabric"
 [snip]
 Storage> filefabric
-** See help for filefabric backend at: https://rclone.org/filefabric/ **
+** See help for filefabric backend at: //filefabric/ **
 
 URL of the Enterprise File Fabric to connect to
 Enter a string value. Press Enter for the default ("").
@@ -55,7 +55,7 @@ url> https://yourfabric.smestorage.com/
 ID of the root folder
 Leave blank normally.
 
-Fill in to make rclone start with directory of a given ID.
+Fill in to make zclone start with directory of a given ID.
 
 Enter a string value. Press Enter for the default ("").
 root_folder_id> 
@@ -89,25 +89,25 @@ d) Delete this remote
 y/e/d> y
 ```
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 List directories in top level of your Enterprise File Fabric
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your Enterprise File Fabric
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 To copy a local directory to an Enterprise File Fabric directory called backup
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
 ### Modification times and hashes
@@ -128,29 +128,29 @@ as they can't be used in JSON strings.
 
 ### Empty files
 
-Empty files aren't supported by the Enterprise File Fabric. Rclone will therefore
+Empty files aren't supported by the Enterprise File Fabric. Zclone will therefore
 upload an empty file as a single space with a mime type of
-`application/vnd.rclone.empty.file` and files with that mime type are
+`application/vnd.zclone.empty.file` and files with that mime type are
 treated as empty.
 
 ### Root folder ID
 
-You can set the `root_folder_id` for rclone.  This is the directory
-(identified by its `Folder ID`) that rclone considers to be the root
+You can set the `root_folder_id` for zclone.  This is the directory
+(identified by its `Folder ID`) that zclone considers to be the root
 of your Enterprise File Fabric.
 
-Normally you will leave this blank and rclone will determine the
+Normally you will leave this blank and zclone will determine the
 correct root to use itself.
 
-However you can set this to restrict rclone to a specific folder
+However you can set this to restrict zclone to a specific folder
 hierarchy.
 
 In order to do this you will have to find the `Folder ID` of the
-directory you wish rclone to display.  These aren't displayed in the
-web interface, but you can use `rclone lsf` to find them, for example
+directory you wish zclone to display.  These aren't displayed in the
+web interface, but you can use `zclone lsf` to find them, for example
 
 ```console
-$ rclone lsf --dirs-only -Fip --csv filefabric:
+$ zclone lsf --dirs-only -Fip --csv filefabric:
 120673758,Burnt PDFs/
 120673759,My Quick Uploads/
 120673755,My Syncs/
@@ -173,7 +173,7 @@ URL of the Enterprise File Fabric to connect to.
 Properties:
 
 - Config:      url
-- Env Var:     RCLONE_FILEFABRIC_URL
+- Env Var:     ZCLONE_FILEFABRIC_URL
 - Type:        string
 - Required:    true
 - Examples:
@@ -190,13 +190,13 @@ ID of the root folder.
 
 Leave blank normally.
 
-Fill in to make rclone start with directory of a given ID.
+Fill in to make zclone start with directory of a given ID.
 
 
 Properties:
 
 - Config:      root_folder_id
-- Env Var:     RCLONE_FILEFABRIC_ROOT_FOLDER_ID
+- Env Var:     ZCLONE_FILEFABRIC_ROOT_FOLDER_ID
 - Type:        string
 - Required:    false
 
@@ -217,7 +217,7 @@ For more info see: https://docs.storagemadeeasy.com/organisationcloud/api-tokens
 Properties:
 
 - Config:      permanent_token
-- Env Var:     RCLONE_FILEFABRIC_PERMANENT_TOKEN
+- Env Var:     ZCLONE_FILEFABRIC_PERMANENT_TOKEN
 - Type:        string
 - Required:    false
 
@@ -229,16 +229,16 @@ Here are the Advanced options specific to filefabric (Enterprise File Fabric).
 
 Session Token.
 
-This is a session token which rclone caches in the config file. It is
+This is a session token which zclone caches in the config file. It is
 usually valid for 1 hour.
 
-Don't set this value - rclone will set it automatically.
+Don't set this value - zclone will set it automatically.
 
 
 Properties:
 
 - Config:      token
-- Env Var:     RCLONE_FILEFABRIC_TOKEN
+- Env Var:     ZCLONE_FILEFABRIC_TOKEN
 - Type:        string
 - Required:    false
 
@@ -246,13 +246,13 @@ Properties:
 
 Token expiry time.
 
-Don't set this value - rclone will set it automatically.
+Don't set this value - zclone will set it automatically.
 
 
 Properties:
 
 - Config:      token_expiry
-- Env Var:     RCLONE_FILEFABRIC_TOKEN_EXPIRY
+- Env Var:     ZCLONE_FILEFABRIC_TOKEN_EXPIRY
 - Type:        string
 - Required:    false
 
@@ -260,13 +260,13 @@ Properties:
 
 Version read from the file fabric.
 
-Don't set this value - rclone will set it automatically.
+Don't set this value - zclone will set it automatically.
 
 
 Properties:
 
 - Config:      version
-- Env Var:     RCLONE_FILEFABRIC_VERSION
+- Env Var:     ZCLONE_FILEFABRIC_VERSION
 - Type:        string
 - Required:    false
 
@@ -279,7 +279,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_FILEFABRIC_ENCODING
+- Env Var:     ZCLONE_FILEFABRIC_ENCODING
 - Type:        Encoding
 - Default:     Slash,Del,Ctl,InvalidUtf8,Dot
 
@@ -290,7 +290,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_FILEFABRIC_DESCRIPTION
+- Env Var:     ZCLONE_FILEFABRIC_DESCRIPTION
 - Type:        string
 - Required:    false
 

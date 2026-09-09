@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 // OptionsInfo describes the Options in use
@@ -138,7 +138,7 @@ var OptionsInfo = fs.Options{{
 }, {
 	Name:    "vfs_used_is_size",
 	Default: false,
-	Help:    "Use the `rclone size` algorithm for Used size",
+	Help:    "Use the `zclone size` algorithm for Used size",
 	Groups:  "VFS",
 }, {
 	Name:    "vfs_fast_fingerprint",
@@ -211,7 +211,7 @@ type Options struct {
 	ReadWait           fs.Duration   `config:"vfs_read_wait"`        // time to wait for in-sequence read
 	WriteBack          fs.Duration   `config:"vfs_write_back"`       // time to wait before writing back dirty files
 	ReadAhead          fs.SizeSuffix `config:"vfs_read_ahead"`       // bytes to read ahead in cache mode "full"
-	UsedIsSize         bool          `config:"vfs_used_is_size"`     // if true, use the `rclone size` algorithm for Used size
+	UsedIsSize         bool          `config:"vfs_used_is_size"`     // if true, use the `zclone size` algorithm for Used size
 	FastFingerprint    bool          `config:"vfs_fast_fingerprint"` // if set use fast fingerprints
 	DiskSpaceTotalSize fs.SizeSuffix `config:"vfs_disk_space_total_size"`
 	HandleCaching      fs.Duration   `config:"vfs_handle_caching"`     // time to keep handle alive after last close

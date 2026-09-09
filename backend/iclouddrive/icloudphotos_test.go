@@ -8,11 +8,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/backend/iclouddrive/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/dircache"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/backend/iclouddrive/api"
+	"zclone/fs"
+	"zclone/lib/dircache"
 )
 
 func newTestPhotosFs() *PhotosFs {

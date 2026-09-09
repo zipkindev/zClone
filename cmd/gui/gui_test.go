@@ -24,52 +24,6 @@ const (
 	testIconSVG   = `<svg xmlns="http://www.w3.org/2000/svg"></svg>`
 )
 
-func TestBuildLoginURL(t *testing.T) {
-	tests := []struct {
-		name   string
-		guiURL string
-		rcURL  string
-		user   string
-		pass   string
-		noAuth bool
-		want   string
-	}{
-		{
-			name:   "with credentials",
-			guiURL: "http://localhost:5580/",
-			rcURL:  "http://localhost:5572/",
-			user:   "gui",
-			pass:   "secret",
-			noAuth: false,
-			want:   "http://localhost:5580/login?pass=secret&url=http%3A%2F%2Flocalhost%3A5572%2F&user=gui",
-		},
-		{
-			name:   "no auth",
-			guiURL: "http://localhost:5580/",
-			rcURL:  "http://localhost:5572/",
-			user:   "",
-			pass:   "",
-			noAuth: true,
-			want:   "http://localhost:5580/",
-		},
-		{
-			name:   "no auth ignores credentials",
-			guiURL: "http://localhost:5580/",
-			rcURL:  "http://localhost:5572/",
-			user:   "gui",
-			pass:   "secret",
-			noAuth: true,
-			want:   "http://localhost:5580/",
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got := buildLoginURL(tt.guiURL, tt.rcURL, tt.user, tt.pass, tt.noAuth)
-			assert.Equal(t, tt.want, got)
-		})
-	}
-}
-
 func TestOriginFromURL(t *testing.T) {
 	tests := []struct {
 		name string
@@ -138,17 +92,9 @@ func TestResolveAllowOrigin(t *testing.T) {
 			want:      "http://127.0.0.1:5580",
 		},
 		{
-			name:      "wildcard bind with auth falls back to *",
+			name:      "wildcard bind falls back to the gui origin",
 			guiOrigin: "http://[::]:5580",
 			addr:      wildcard,
-			noAuth:    false,
-			want:      "*",
-		},
-		{
-			name:      "wildcard bind without auth falls back to the gui origin",
-			guiOrigin: "http://[::]:5580",
-			addr:      wildcard,
-			noAuth:    true,
 			want:      "http://[::]:5580",
 		},
 	}
@@ -160,14 +106,21 @@ func TestResolveAllowOrigin(t *testing.T) {
 	}
 }
 
-// newTestHandler returns a guiHandler backed by the embedded GUI
-// bundle, or skips the test if it is not present (i.e. `make fetch-gui`
-// has not been run).
+func TestGUIConfigHandler(t *testing.T) {
+	w := httptest.NewRecorder()
+	guiConfigHandler("http://127.0.0.1:5572/").ServeHTTP(w, httptest.NewRequest("GET", "/_zclone/gui-config", nil))
+
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, "application/json", w.Header().Get("Content-Type"))
+	assert.JSONEq(t, `{"rcURL":"http://127.0.0.1:5572/"}`, w.Body.String())
+}
+
+// newTestHandler returns a guiHandler backed by the embedded GUI bundle.
 func newTestHandler(t *testing.T) http.Handler {
 	t.Helper()
 	srcFS, cleanup, err := guiSourceFS("")
 	if err != nil {
-		t.Skipf("skipping: GUI dist not embedded (run `make fetch-gui`): %v", err)
+		t.Skipf("skipping: GUI dist not embedded: %v", err)
 	}
 	t.Cleanup(func() { _ = cleanup() })
 	h, err := guiHandler(srcFS)
@@ -211,7 +164,7 @@ func TestGuiSourceFS(t *testing.T) {
 	t.Run("empty path returns embedded", func(t *testing.T) {
 		srcFS, cleanup, err := guiSourceFS("")
 		if err != nil {
-			t.Skipf("skipping: GUI dist not embedded (run `make fetch-gui`): %v", err)
+			t.Skipf("skipping: GUI dist not embedded; provide the approved local bundle: %v", err)
 		}
 		defer func() { _ = cleanup() }()
 		_, err = iofs.Stat(srcFS, "index.html")
@@ -318,7 +271,7 @@ func TestHandlerServesIndexHTML(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	assert.Contains(t, string(body), "<div id=\"root\"></div>")
+	assert.Contains(t, string(body), "<h1>Zclone Control</h1>")
 }
 
 func TestHandlerServesStaticAssets(t *testing.T) {
@@ -348,7 +301,7 @@ func TestHandlerSPAFallback(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	assert.Contains(t, string(body), "<div id=\"root\"></div>",
+	assert.Contains(t, string(body), "<h1>Zclone Control</h1>",
 		"SPA fallback should serve index.html for unknown routes")
 }
 
@@ -364,7 +317,7 @@ func TestHandlerSPAFallbackDeepPath(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	assert.Contains(t, string(body), "<div id=\"root\"></div>")
+	assert.Contains(t, string(body), "<h1>Zclone Control</h1>")
 }
 
 func TestHandlerServesGzip(t *testing.T) {

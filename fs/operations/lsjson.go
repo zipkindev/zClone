@@ -8,11 +8,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/backend/crypt"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/walk"
+	"zclone/backend/crypt"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/hash"
+	"zclone/fs/walk"
 )
 
 // ListJSONItem in the struct which gets marshalled for each line
@@ -317,7 +317,7 @@ func StatJSON(ctx context.Context, fsrc fs.Fs, remote string, opt *ListJSONOpt) 
 	}
 	// Must be a directory here
 	//
-	// Remove trailing / as rclone listings won't have them
+	// Remove trailing / as zclone listings won't have them
 	remote = strings.TrimRight(remote, "/")
 
 	// For bucket-based backends with ListP, try listing the

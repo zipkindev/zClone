@@ -11,9 +11,9 @@ import (
 	"testing"
 	"time"
 
-	libhttp "github.com/rclone/rclone/lib/http"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	libhttp "zclone/lib/http"
 )
 
 func GetTemplate(t *testing.T) *template.Template {

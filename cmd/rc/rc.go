@@ -12,14 +12,14 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/fs/rc/jobs"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/fshttp"
+	"zclone/fs/rc"
+	"zclone/fs/rc/jobs"
 )
 
 var (
@@ -38,20 +38,20 @@ func init() {
 	cmd.Root.AddCommand(commandDefinition)
 	cmdFlags := commandDefinition.Flags()
 	flags.BoolVarP(cmdFlags, &noOutput, "no-output", "", noOutput, "If set, don't output the JSON result", "")
-	flags.StringVarP(cmdFlags, &url, "url", "", url, "URL to connect to rclone remote control", "")
+	flags.StringVarP(cmdFlags, &url, "url", "", url, "URL to connect to zclone remote control", "")
 	flags.StringVarP(cmdFlags, &unixSocket, "unix-socket", "", unixSocket, "Path to a unix domain socket to dial to, instead of opening a TCP connection directly", "")
 	flags.StringVarP(cmdFlags, &jsonInput, "json", "", jsonInput, "Input JSON - use instead of key=value args", "")
-	flags.StringVarP(cmdFlags, &authUser, "user", "", "", "Username to use to rclone remote control", "")
-	flags.StringVarP(cmdFlags, &authPass, "pass", "", "", "Password to use to connect to rclone remote control", "")
-	flags.BoolVarP(cmdFlags, &loopback, "loopback", "", false, "If set connect to this rclone instance not via HTTP", "")
+	flags.StringVarP(cmdFlags, &authUser, "user", "", "", "Username to use to zclone remote control", "")
+	flags.StringVarP(cmdFlags, &authPass, "pass", "", "", "Password to use to connect to zclone remote control", "")
+	flags.BoolVarP(cmdFlags, &loopback, "loopback", "", false, "If set connect to this zclone instance not via HTTP", "")
 	flags.StringArrayVarP(cmdFlags, &options, "opt", "o", options, "Option in the form name=value or name placed in the \"opt\" array", "")
 	flags.StringArrayVarP(cmdFlags, &arguments, "arg", "a", arguments, "Argument placed in the \"arg\" array", "")
 }
 
 var commandDefinition = &cobra.Command{
 	Use:   "rc commands parameter",
-	Short: `Run a command against a running rclone.`,
-	Long: strings.ReplaceAll(`This runs a command against a running rclone.  Use the |--url| flag to
+	Short: `Run a command against a running zclone.`,
+	Long: strings.ReplaceAll(`This runs a command against a running zclone.  Use the |--url| flag to
 specify an non default URL to connect on.  This can be either a
 ":port" which is taken to mean <http://localhost:port> or a
 "host:port" which is taken to mean <http://host:port>.
@@ -65,9 +65,9 @@ The |--unix-socket| flag can be used to connect over a unix socket like this
 
 |||sh
 # start server on /tmp/my.socket
-rclone rcd --rc-addr unix:///tmp/my.socket
+zclone rcd --rc-addr unix:///tmp/my.socket
 # Connect to it
-rclone rc --unix-socket /tmp/my.socket core/stats
+zclone rc --unix-socket /tmp/my.socket core/stats
 |||
 
 Arguments should be passed in as parameter=value.
@@ -108,15 +108,15 @@ Will place this in the "arg" value
 ["value", "value2"]
 |||
 
-Use |--loopback| to connect to the rclone instance running |rclone rc|.
+Use |--loopback| to connect to the zclone instance running |zclone rc|.
 This is very useful for testing commands without having to run an
-rclone rc server, e.g.:
+zclone rc server, e.g.:
 
 |||sh
-rclone rc --loopback operations/about fs=/
+zclone rc --loopback operations/about fs=/
 |||
 
-Use |rclone rc| to see a list of all possible commands.`, "|", "`"),
+Use |zclone rc| to see a list of all possible commands.`, "|", "`"),
 	Annotations: map[string]string{
 		"versionIntroduced": "v1.40",
 	},

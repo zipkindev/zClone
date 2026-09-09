@@ -1,0 +1,11 @@
+name: Zclone
+description: Zclone S3 Server
+endpoint: {}
+quirks:
+  force_path_style: true
+  use_multipart_etag: false
+  use_already_exists: false
+  # zclone serve doesn't support multi-part server side copy:
+  # See: /
+  # So make cutoff very large which it does support
+  copy_cutoff: 9223372036854775807

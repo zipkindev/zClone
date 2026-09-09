@@ -7,9 +7,9 @@ package log
 import (
 	"os"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
 	"golang.org/x/sys/unix"
+	"zclone/fs"
+	"zclone/fs/config"
 )
 
 // redirectStderr to the file passed in

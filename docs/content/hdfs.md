@@ -17,7 +17,7 @@ Paths are specified as `remote:` or `remote:path/to/dir`.
 Here is an example of how to make a remote called `remote`. First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -37,7 +37,7 @@ XX / Hadoop distributed file system
    \ "hdfs"
 [skip]
 Storage> hdfs
-** See help for hdfs backend at: https://rclone.org/hdfs/ **
+** See help for hdfs backend at: //hdfs/ **
 
 hadoop name node and port
 Enter a string value. Press Enter for the default ("").
@@ -87,19 +87,19 @@ This remote is called `remote` and can now be used like this
 See all the top level directories
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List the contents of a directory
 
 ```console
-rclone ls remote:directory
+zclone ls remote:directory
 ```
 
 Sync the remote `directory` to `/home/local/directory`, deleting any excess files.
 
 ```console
-rclone sync --interactive remote:directory /home/local/directory
+zclone sync --interactive remote:directory /home/local/directory
 ```
 
 ### Setting up your own HDFS instance for testing
@@ -110,15 +110,15 @@ or use the docker image from the tests:
 If you want to build the docker image
 
 ```console
-git clone https://github.com/rclone/rclone.git
-cd rclone/fstest/testserver/images/test-hdfs
-docker build --rm -t rclone/test-hdfs .
+git clone <approved-zclone-repository-or-local-path>
+cd zclone/fstest/testserver/images/test-hdfs
+docker build --rm -t zclone/test-hdfs .
 ```
 
 Or you can just use the latest one pushed
 
 ```console
-docker run --rm --name "rclone-hdfs" -p 127.0.0.1:9866:9866 -p 127.0.0.1:8020:8020 --hostname "rclone-hdfs" rclone/test-hdfs
+docker run --rm --name "zclone-hdfs" -p 127.0.0.1:9866:9866 -p 127.0.0.1:8020:8020 --hostname "zclone-hdfs" zclone/test-hdfs
 ```
 
 **NB** it need few seconds to startup.
@@ -132,7 +132,7 @@ namenode = 127.0.0.1:8020
 username = root
 ```
 
-You can stop this image with `docker kill rclone-hdfs` (**NB** it does not use
+You can stop this image with `docker kill zclone-hdfs` (**NB** it does not use
 volumes, so all data uploaded will be lost.)
 
 ### Modification times
@@ -145,7 +145,7 @@ No checksums are implemented.
 
 ### Usage information
 
-You can use the `rclone about remote:` command which will display filesystem
+You can use the `zclone about remote:` command which will display filesystem
 size and current usage.
 
 ### Restricted filename characters
@@ -173,7 +173,7 @@ E.g. "namenode-1:8020,namenode-2:8020,..." to connect to host namenodes at port 
 Properties:
 
 - Config:      namenode
-- Env Var:     RCLONE_HDFS_NAMENODE
+- Env Var:     ZCLONE_HDFS_NAMENODE
 - Type:        CommaSepList
 - Default:     
 
@@ -184,7 +184,7 @@ Hadoop user name.
 Properties:
 
 - Config:      username
-- Env Var:     RCLONE_HDFS_USERNAME
+- Env Var:     ZCLONE_HDFS_USERNAME
 - Type:        string
 - Required:    false
 - Examples:
@@ -206,7 +206,7 @@ for namenode running as service 'hdfs' with FQDN 'namenode.hadoop.docker'.
 Properties:
 
 - Config:      service_principal_name
-- Env Var:     RCLONE_HDFS_SERVICE_PRINCIPAL_NAME
+- Env Var:     ZCLONE_HDFS_SERVICE_PRINCIPAL_NAME
 - Type:        string
 - Required:    false
 
@@ -222,7 +222,7 @@ and 'privacy'. Used only with KERBEROS enabled.
 Properties:
 
 - Config:      data_transfer_protection
-- Env Var:     RCLONE_HDFS_DATA_TRANSFER_PROTECTION
+- Env Var:     ZCLONE_HDFS_DATA_TRANSFER_PROTECTION
 - Type:        string
 - Required:    false
 - Examples:
@@ -238,7 +238,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_HDFS_ENCODING
+- Env Var:     ZCLONE_HDFS_ENCODING
 - Type:        Encoding
 - Default:     Slash,Colon,Del,Ctl,InvalidUtf8,Dot
 
@@ -249,7 +249,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_HDFS_DESCRIPTION
+- Env Var:     ZCLONE_HDFS_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -257,6 +257,6 @@ Properties:
 
 ## Limitations
 
-- Erasure coding not supported, see [issue #8808](https://github.com/rclone/rclone/issues/8808)
+- Erasure coding not supported, see [issue #8808](/)
 - No server-side `Move` or `DirMove`.
 - Checksums not implemented.

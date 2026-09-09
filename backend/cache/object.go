@@ -10,9 +10,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/readers"
+	"zclone/fs"
+	"zclone/fs/hash"
+	"zclone/lib/readers"
 )
 
 const (

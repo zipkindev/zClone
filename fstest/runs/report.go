@@ -13,9 +13,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/file"
 	"github.com/skratchdot/open-golang/open"
+	"zclone/fs"
+	"zclone/lib/file"
 )
 
 const timeFormat = "2006-01-02-150405"
@@ -29,12 +29,12 @@ type Report struct {
 	Failed    Runs          // failed runs
 	Passed    Runs          // passed runs
 	Runs      []ReportRun   // runs to report
-	Version   string        // rclone version
+	Version   string        // zclone version
 	Previous  string        // previous test name if known
 	IndexHTML string        // path to the index.html file
 	URL       string        // online version
-	Branch    string        // rclone branch
-	Commit    string        // rclone commit
+	Branch    string        // zclone branch
+	Commit    string        // zclone commit
 	GOOS      string        // Go OS
 	GOARCH    string        // Go Arch
 	GoVersion string        // Go Version
@@ -244,8 +244,8 @@ a:focus {
 <table>
 <tr><th>Version</th><td>{{ .Version }}</td></tr>
 <tr><th>Test</th><td><a href="{{ .URL }}">{{ .DateTime}}</a></td></tr>
-<tr><th>Branch</th><td><a href="https://github.com/rclone/rclone/tree/{{ .Branch }}">{{ .Branch }}</a></td></tr>
-{{ if .Commit}}<tr><th>Commit</th><td><a href="https://github.com/rclone/rclone/commit/{{ .Commit }}">{{ .Commit }}</a></td></tr>{{ end }}
+<tr><th>Branch</th><td><a href="/ .Branch }}">{{ .Branch }}</a></td></tr>
+{{ if .Commit}}<tr><th>Commit</th><td><a href="/ .Commit }}">{{ .Commit }}</a></td></tr>{{ end }}
 <tr><th>Go</th><td>{{ .GoVersion }} {{ .GOOS }}/{{ .GOARCH }}</td></tr>
 <tr><th>Duration</th><td>{{ .Duration }}</td></tr>
 {{ if .Previous}}<tr><th>Previous</th><td><a href="../{{ .Previous }}/index.html">{{ .Previous }}</a></td></tr>{{ end }}
@@ -291,7 +291,7 @@ func (r *Report) EmailHTML(Opt RunOpt) {
 		return
 	}
 	fs.Logf(nil, "Sending email summary to %q", Opt.EmailReport)
-	cmdLine := []string{"mail", "-a", "Content-Type: text/html", Opt.EmailReport, "-s", "rclone integration tests: " + r.Title()}
+	cmdLine := []string{"mail", "-a", "Content-Type: text/html", Opt.EmailReport, "-s", "zclone integration tests: " + r.Title()}
 	cmd := exec.Command(cmdLine[0], cmdLine[1:]...)
 	in, err := os.Open(r.IndexHTML)
 	if err != nil {
@@ -311,7 +311,7 @@ func (r *Report) EmailHTML(Opt RunOpt) {
 func (r *Report) uploadTo(Opt RunOpt, uploadDir string) {
 	dst := path.Join(Opt.UploadPath, uploadDir)
 	fs.Logf(nil, "Uploading results to %q", dst)
-	cmdLine := []string{"rclone", "sync", "--stats-log-level", "NOTICE", r.LogDir, dst}
+	cmdLine := []string{"zclone", "sync", "--stats-log-level", "NOTICE", r.LogDir, dst}
 	cmd := exec.Command(cmdLine[0], cmdLine[1:]...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/putdotio/go-putio/putio"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/lib/pacer"
+	"zclone/fs/fserrors"
+	"zclone/lib/pacer"
 )
 
 func checkStatusCode(resp *http.Response, expected ...int) error {

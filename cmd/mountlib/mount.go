@@ -11,16 +11,16 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/daemonize"
-	"github.com/rclone/rclone/lib/systemd"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
-	"github.com/rclone/rclone/vfs/vfsflags"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/flags"
+	"zclone/lib/atexit"
+	"zclone/lib/daemonize"
+	"zclone/lib/systemd"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
+	"zclone/vfs/vfsflags"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -71,7 +71,7 @@ var OptionsInfo = fs.Options{{
 		}
 		return 0
 	}(),
-	Help:   "Time limit for rclone to respond to kernel (not supported on Windows)",
+	Help:   "Time limit for zclone to respond to kernel (not supported on Windows)",
 	Groups: "Mount",
 }, {
 	Name:    "default_permissions",
@@ -111,7 +111,7 @@ var OptionsInfo = fs.Options{{
 }, {
 	Name:    "write_back_cache",
 	Default: false,
-	Help:    "Makes kernel buffer writes before sending them to rclone (without this, writethrough caching is used) (not supported on Windows)",
+	Help:    "Makes kernel buffer writes before sending them to zclone (without this, writethrough caching is used) (not supported on Windows)",
 	Groups:  "Mount",
 }, {
 	Name:    "devname",
@@ -261,7 +261,7 @@ const (
 	pollInterval = 100 * time.Millisecond
 )
 
-// WaitMountReady waits until mountpoint is mounted by rclone.
+// WaitMountReady waits until mountpoint is mounted by zclone.
 //
 // If the mount daemon dies prematurely it will notice too.
 func WaitMountReady(mountpoint string, timeout time.Duration, daemon *os.Process) (err error) {
@@ -416,7 +416,7 @@ func (m *MountPoint) Wait() error {
 	finalise := func() {
 		finaliseOnce.Do(func() {
 			defer m.shutdownVFS()
-			// Unmount only if directory was mounted by rclone, e.g. don't unmount autofs hooks.
+			// Unmount only if directory was mounted by zclone, e.g. don't unmount autofs hooks.
 			if err := CheckMountReady(m.MountPoint); err != nil {
 				fs.Debugf(m.MountPoint, "Unmounted externally. Just exit now.")
 				return
@@ -424,7 +424,7 @@ func (m *MountPoint) Wait() error {
 			if err := m.Unmount(); err != nil {
 				fs.Errorf(m.MountPoint, "Failed to unmount: %v", err)
 			} else {
-				fs.Logf(m.MountPoint, "Unmounted rclone mount")
+				fs.Logf(m.MountPoint, "Unmounted zclone mount")
 			}
 		})
 	}

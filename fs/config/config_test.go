@@ -6,13 +6,13 @@ import (
 	"context"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configfile"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/rc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configfile"
+	"zclone/fs/config/configmap"
+	"zclone/fs/rc"
 )
 
 func init() {
@@ -27,7 +27,7 @@ func TestConfigLoad(t *testing.T) {
 	}()
 	config.ClearConfigPassword()
 	sections := config.Data().GetSectionList()
-	var expect = []string{"RCLONE_ENCRYPT_V0", "nounc", "unc"}
+	var expect = []string{"ZCLONE_ENCRYPT_V0", "nounc", "unc"}
 	assert.Equal(t, expect, sections)
 
 	keys := config.Data().GetKeyList("nounc")

@@ -4,17 +4,17 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
 )
 
 // Authorize is for remote authorization of headless machines.
 //
 // It expects 1, 2 or 3 arguments
 //
-//	rclone authorize "backend name"
-//	rclone authorize "backend name" "base64 encoded JSON blob"
-//	rclone authorize "backend name" "client id" "client secret"
+//	zclone authorize "backend name"
+//	zclone authorize "backend name" "base64 encoded JSON blob"
+//	zclone authorize "backend name" "client id" "client secret"
 func Authorize(ctx context.Context, args []string, noAutoBrowser bool, templateFile string) error {
 	ctx = suppressConfirm(ctx)
 	ctx = fs.ConfigOAuthOnly(ctx)
@@ -35,7 +35,7 @@ func Authorize(ctx context.Context, args []string, noAutoBrowser bool, templateF
 	// Config map for remote
 	inM := configmap.Simple{}
 
-	// Indicate that we are running rclone authorize
+	// Indicate that we are running zclone authorize
 	inM[ConfigAuthorize] = "true"
 	if noAutoBrowser {
 		inM[ConfigAuthNoBrowser] = "true"

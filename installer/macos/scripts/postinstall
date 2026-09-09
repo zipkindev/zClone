@@ -1,0 +1,15 @@
+#!/bin/sh
+# Install Zclone in a system-owned location and expose it to login shells.
+set -eu
+
+target=${3:-/}
+prefix="$target/usr/local"
+bin_dir="$prefix/bin"
+lib_dir="$prefix/lib/zclone"
+paths_dir="$target/etc/paths.d"
+
+mkdir -p "$bin_dir" "$lib_dir" "$paths_dir"
+ln -sfn ../lib/zclone/zclone "$bin_dir/zclone"
+printf '%s\n' /usr/local/bin > "$paths_dir/zclone"
+
+exit 0

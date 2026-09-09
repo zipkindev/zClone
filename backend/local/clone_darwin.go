@@ -10,7 +10,7 @@ import (
 	"runtime"
 
 	"github.com/go-darwin/apfs"
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 // Copy src to this remote using server-side copy operations.

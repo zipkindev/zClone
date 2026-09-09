@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/pool"
 	"golang.org/x/sync/errgroup"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/lib/atexit"
+	"zclone/lib/pacer"
+	"zclone/lib/pool"
 )
 
 const (

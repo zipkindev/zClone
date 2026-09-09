@@ -1,6 +1,6 @@
 ---
 title: "ImageKit"
-description: "Rclone docs for ImageKit backend."
+description: "Zclone docs for ImageKit backend."
 versionIntroduced: "v1.63"
 ---
 
@@ -28,7 +28,7 @@ from the developer section.
 Now run
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -89,19 +89,19 @@ y/e/d> y
 List directories in the top level of your Media Library
 
 ```console
-rclone lsd imagekit-media-library:
+zclone lsd imagekit-media-library:
 ```
 
 Make a new directory.
 
 ```console
-rclone mkdir imagekit-media-library:directory
+zclone mkdir imagekit-media-library:directory
 ```
 
 List the contents of a directory.
 
 ```console
-rclone ls imagekit-media-library:directory
+zclone ls imagekit-media-library:directory
 ```
 
 ### Modified time and hashes
@@ -124,7 +124,7 @@ You can find your ImageKit.io URL endpoint in your [dashboard](https://imagekit.
 Properties:
 
 - Config:      endpoint
-- Env Var:     RCLONE_IMAGEKIT_ENDPOINT
+- Env Var:     ZCLONE_IMAGEKIT_ENDPOINT
 - Type:        string
 - Required:    true
 
@@ -135,7 +135,7 @@ You can find your ImageKit.io public key in your [dashboard](https://imagekit.io
 Properties:
 
 - Config:      public_key
-- Env Var:     RCLONE_IMAGEKIT_PUBLIC_KEY
+- Env Var:     ZCLONE_IMAGEKIT_PUBLIC_KEY
 - Type:        string
 - Required:    true
 
@@ -146,7 +146,7 @@ You can find your ImageKit.io private key in your [dashboard](https://imagekit.i
 Properties:
 
 - Config:      private_key
-- Env Var:     RCLONE_IMAGEKIT_PRIVATE_KEY
+- Env Var:     ZCLONE_IMAGEKIT_PRIVATE_KEY
 - Type:        string
 - Required:    true
 
@@ -161,7 +161,7 @@ If you have configured `Restrict unsigned image URLs` in your dashboard settings
 Properties:
 
 - Config:      only_signed
-- Env Var:     RCLONE_IMAGEKIT_ONLY_SIGNED
+- Env Var:     ZCLONE_IMAGEKIT_ONLY_SIGNED
 - Type:        bool
 - Default:     false
 
@@ -172,7 +172,7 @@ Include old versions in directory listings.
 Properties:
 
 - Config:      versions
-- Env Var:     RCLONE_IMAGEKIT_VERSIONS
+- Env Var:     ZCLONE_IMAGEKIT_VERSIONS
 - Type:        bool
 - Default:     false
 
@@ -183,7 +183,7 @@ Tags to add to the uploaded files, e.g. "tag1,tag2".
 Properties:
 
 - Config:      upload_tags
-- Env Var:     RCLONE_IMAGEKIT_UPLOAD_TAGS
+- Env Var:     ZCLONE_IMAGEKIT_UPLOAD_TAGS
 - Type:        string
 - Required:    false
 
@@ -196,7 +196,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_IMAGEKIT_ENCODING
+- Env Var:     ZCLONE_IMAGEKIT_ENCODING
 - Type:        Encoding
 - Default:     Slash,LtGt,DoubleQuote,Dollar,Question,Hash,Percent,BackSlash,Del,Ctl,InvalidUtf8,Dot,SquareBracket
 
@@ -207,7 +207,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_IMAGEKIT_DESCRIPTION
+- Env Var:     ZCLONE_IMAGEKIT_DESCRIPTION
 - Type:        string
 - Required:    false
 

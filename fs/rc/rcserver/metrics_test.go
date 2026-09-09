@@ -7,11 +7,11 @@ import (
 	"regexp"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/config/configfile"
-	"github.com/rclone/rclone/fs/rc"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	"zclone/fs/accounting"
+	"zclone/fs/config/configfile"
+	"zclone/fs/rc"
 )
 
 // Run a suite of tests
@@ -57,31 +57,31 @@ func makeMetricsTestCases(stats *accounting.StatsInfo) (tests []testRun) {
 		URL:      "metrics",
 		Method:   "GET",
 		Status:   http.StatusOK,
-		Contains: regexp.MustCompile(fmt.Sprintf("rclone_bytes_transferred_total %d", stats.GetBytes())),
+		Contains: regexp.MustCompile(fmt.Sprintf("zclone_bytes_transferred_total %d", stats.GetBytes())),
 	}, {
 		Name:     "Checked Files Metric",
 		URL:      "metrics",
 		Method:   "GET",
 		Status:   http.StatusOK,
-		Contains: regexp.MustCompile(fmt.Sprintf("rclone_checked_files_total %d", stats.GetChecks())),
+		Contains: regexp.MustCompile(fmt.Sprintf("zclone_checked_files_total %d", stats.GetChecks())),
 	}, {
 		Name:     "Errors Metric",
 		URL:      "metrics",
 		Method:   "GET",
 		Status:   http.StatusOK,
-		Contains: regexp.MustCompile(fmt.Sprintf("rclone_errors_total %d", stats.GetErrors())),
+		Contains: regexp.MustCompile(fmt.Sprintf("zclone_errors_total %d", stats.GetErrors())),
 	}, {
 		Name:     "Deleted Files Metric",
 		URL:      "metrics",
 		Method:   "GET",
 		Status:   http.StatusOK,
-		Contains: regexp.MustCompile(fmt.Sprintf("rclone_files_deleted_total %d", stats.GetDeletes())),
+		Contains: regexp.MustCompile(fmt.Sprintf("zclone_files_deleted_total %d", stats.GetDeletes())),
 	}, {
 		Name:     "Files Transferred Metric",
 		URL:      "metrics",
 		Method:   "GET",
 		Status:   http.StatusOK,
-		Contains: regexp.MustCompile(fmt.Sprintf("rclone_files_transferred_total %d", stats.GetTransfers())),
+		Contains: regexp.MustCompile(fmt.Sprintf("zclone_files_transferred_total %d", stats.GetTransfers())),
 	},
 	}
 	return

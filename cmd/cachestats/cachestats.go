@@ -7,10 +7,10 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/rclone/rclone/backend/cache"
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
 	"github.com/spf13/cobra"
+	"zclone/backend/cache"
+	"zclone/cmd"
+	"zclone/fs"
 )
 
 func init() {
@@ -29,7 +29,7 @@ var commandDefinition = &cobra.Command{
 	},
 	Run: func(command *cobra.Command, args []string) {
 		cmd.CheckArgs(1, 1, command, args)
-		fs.Logf(nil, `"rclone cachestats" is deprecated, use "rclone backend stats %s" instead`, args[0])
+		fs.Logf(nil, `"zclone cachestats" is deprecated, use "zclone backend stats %s" instead`, args[0])
 
 		fsrc := cmd.NewFsSrc(args)
 		cmd.Run(false, false, command, func() error {

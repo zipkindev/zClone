@@ -14,11 +14,11 @@ import (
 	"time"
 
 	"github.com/coreos/go-semver/semver"
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/fshttp"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/fshttp"
 )
 
 var (
@@ -29,22 +29,22 @@ var (
 func init() {
 	cmd.Root.AddCommand(commandDefinition)
 	cmdFlags := commandDefinition.Flags()
-	flags.BoolVarP(cmdFlags, &check, "check", "", false, "Check for new version", "")
+	flags.BoolVarP(cmdFlags, &check, "check", "", false, "Report whether version checking is configured", "")
 	flags.BoolVarP(cmdFlags, &deps, "deps", "", false, "Show the Go dependencies", "")
 }
 
 var commandDefinition = &cobra.Command{
 	Use:   "version",
 	Short: `Show the version number.`,
-	Long: `Show the rclone version number, the go version, the build target
+	Long: `Show the zclone version number, the go version, the build target
 OS and architecture, the runtime OS and kernel version and bitness,
 build tags and the type of executable (static or dynamic).
 
 For example:
 
 ` + "```console" + `
-$ rclone version
-rclone v1.55.0
+$ zclone version
+zclone v1.55.0
 - os/version: ubuntu 18.04 (64 bit)
 - os/kernel: 4.15.0-136-generic (x86_64)
 - os/type: linux
@@ -54,31 +54,13 @@ rclone v1.55.0
 - go/tags: none
 ` + "```" + `
 
-Note: before rclone version 1.55 the os/type and os/arch lines were merged,
+Note: before zclone version 1.55 the os/type and os/arch lines were merged,
       and the "go/version" line was tagged as "go version".
 
-If you supply the --check flag, then it will do an online check to
-compare your version with the latest release and the latest beta.
+This local build does not have a configured release service, so --check
+does not make a network request.
 
-` + "```console" + `
-$ rclone version --check
-yours:  1.42.0.6
-latest: 1.42          (released 2018-06-16)
-beta:   1.42.0.5      (released 2018-06-17)
-` + "```" + `
-
-Or
-
-` + "```console" + `
-$ rclone version --check
-yours:  1.41
-latest: 1.42          (released 2018-06-16)
-  upgrade: https://downloads.rclone.org/v1.42
-beta:   1.42.0.5      (released 2018-06-17)
-  upgrade: https://beta.rclone.org/v1.42-005-g56e1e820
-` + "```" + `
-
-If you supply the --deps flag then rclone will print a list of all the
+If you supply the --deps flag then zclone will print a list of all the
 packages it depends on and their versions along with some other
 information about the build.`,
 	Annotations: map[string]string{
@@ -91,7 +73,7 @@ information about the build.`,
 			return printDependencies()
 		}
 		if check {
-			CheckVersion(ctx)
+			return CheckVersion(ctx)
 		} else {
 			cmd.ShowVersion()
 		}
@@ -122,7 +104,7 @@ func GetVersion(ctx context.Context, url string) (v *semver.Version, vs string, 
 		return v, vs, date, err
 	}
 	vs = strings.TrimSpace(string(bodyBytes))
-	vs = strings.TrimPrefix(vs, "rclone ")
+	vs = strings.TrimPrefix(vs, "zclone ")
 	vs = strings.TrimRight(vs, "β")
 	date, err = http.ParseTime(resp.Header.Get("Last-Modified"))
 	if err != nil {
@@ -132,41 +114,9 @@ func GetVersion(ctx context.Context, url string) (v *semver.Version, vs string, 
 	return v, vs, date, err
 }
 
-// CheckVersion checks the installed version against available downloads
-func CheckVersion(ctx context.Context) {
-	vCurrent, err := semver.NewVersion(stripV(fs.Version))
-	if err != nil {
-		fs.Errorf(nil, "Failed to parse version: %v", err)
-	}
-	const timeFormat = "2006-01-02"
-
-	printVersion := func(what, url string) {
-		v, vs, t, err := GetVersion(ctx, url+"version.txt")
-		if err != nil {
-			fs.Errorf(nil, "Failed to get rclone %s version: %v", what, err)
-			return
-		}
-		fmt.Printf("%-8s%-40v %20s\n",
-			what+":",
-			v,
-			"(released "+t.Format(timeFormat)+")",
-		)
-		if v.Compare(*vCurrent) > 0 {
-			fmt.Printf("  upgrade: %s\n", url+vs)
-		}
-	}
-	fmt.Printf("yours:  %-13s\n", vCurrent)
-	printVersion(
-		"latest",
-		"https://downloads.rclone.org/",
-	)
-	printVersion(
-		"beta",
-		"https://beta.rclone.org/",
-	)
-	if strings.HasSuffix(fs.Version, "-DEV") {
-		fmt.Println("Your version is compiled from git so comparisons may be wrong.")
-	}
+// CheckVersion reports that this local build has no configured release service.
+func CheckVersion(context.Context) error {
+	return errors.New("version checking is disabled because this Zclone build has no configured release service")
 }
 
 // Print info about a build module

@@ -1,14 +1,14 @@
-# tests whether rclone check and rclone sync output exactly the same file lists.
+# tests whether zclone check and zclone sync output exactly the same file lists.
 # src and dst are filled by the test Setup with two overlapping trees of files
 # (lots of files with the same name but different content) to produce a more
 # realistic test than makefiles.
 
-# running rclone check for baseline test:
+# running zclone check for baseline test:
 # error is expected here:
-! exec rclone check $SRC $DST --match $WORK/CHECKmatch.txt --combined $WORK/CHECKcombined.txt --missing-on-src $WORK/CHECKmissingonsrc.txt --missing-on-dst $WORK/CHECKmissingondst.txt --error $WORK/CHECKerr.txt --differ $WORK/CHECKdiffer.txt -q
+! exec zclone check $SRC $DST --match $WORK/CHECKmatch.txt --combined $WORK/CHECKcombined.txt --missing-on-src $WORK/CHECKmissingonsrc.txt --missing-on-dst $WORK/CHECKmissingondst.txt --error $WORK/CHECKerr.txt --differ $WORK/CHECKdiffer.txt -q
 
 # running sync with output files:
-exec rclone sync $SRC $DST --match $WORK/SYNCmatch.txt --combined $WORK/SYNCcombined.txt --missing-on-src $WORK/SYNCmissingonsrc.txt --missing-on-dst $WORK/SYNCmissingondst.txt --error $WORK/SYNCerr.txt --differ $WORK/SYNCdiffer.txt
+exec zclone sync $SRC $DST --match $WORK/SYNCmatch.txt --combined $WORK/SYNCcombined.txt --missing-on-src $WORK/SYNCmissingonsrc.txt --missing-on-dst $WORK/SYNCmissingondst.txt --error $WORK/SYNCerr.txt --differ $WORK/SYNCdiffer.txt
 
 # sorting them by line and diffing:
 exec sort $WORK/CHECKmatch.txt -o $WORK/CHECKmatch.txt
@@ -39,7 +39,7 @@ cmp $WORK/CHECKerr.txt $WORK/SYNCerr.txt
 cmp $WORK/CHECKdiffer.txt $WORK/SYNCdiffer.txt
 
 # verify accuracy
-exec rclone check $SRC $DST
+exec zclone check $SRC $DST
 exec diff -rya --suppress-common-lines $SRC $DST
 [!windows] exec rsync -aEvhPu $SRC/ $WORK/rsyncDst
-[!windows] exec rclone check $DST $WORK/rsyncDst
+[!windows] exec zclone check $DST $WORK/rsyncDst

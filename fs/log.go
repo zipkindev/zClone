@@ -9,14 +9,14 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/rclone/rclone/lib/caller"
+	"zclone/lib/caller"
 )
 
 // logger represents the slog logging facility and should be overridden by
 // the fs/log handling code.
 var logger *slog.Logger = slog.Default()
 
-// LogLevel describes rclone's logs.  These are a subset of the syslog log levels.
+// LogLevel describes zclone's logs.  These are a subset of the syslog log levels.
 type LogLevel = Enum[logLevelChoices]
 
 // Log levels.  These are the syslog levels of which we only use a
@@ -130,7 +130,7 @@ func (j LogValueItem) String() string {
 	return fmt.Sprint(j.value)
 }
 
-// LogLevelToSlog converts an rclone log level to log/slog log level.
+// LogLevelToSlog converts an zclone log level to log/slog log level.
 func LogLevelToSlog(level LogLevel) slog.Level {
 	slogLevel := slog.LevelError
 	// NB level is unsigned so we don't check < 0 here
@@ -215,7 +215,7 @@ func Panicf(o any, text string, args ...any) {
 // Panic if this called from an rc job.
 //
 // This means fatal errors get turned into panics which get caught by
-// the rc job handler so they don't crash rclone.
+// the rc job handler so they don't crash zclone.
 //
 // This detects if we are being called from an rc Job by looking for
 // Job.run in the call stack.
@@ -285,7 +285,7 @@ func Printf(o any, text string, args ...any) {
 
 // Log writes log output for this Object or Fs.  This should be
 // considered to be Notice level logging.  It is the default level.
-// By default rclone should not log very much so only use this for
+// By default zclone should not log very much so only use this for
 // important things the user should see.  The user can filter these
 // out with the -q flag.
 func Log(o any, text string) {
@@ -294,7 +294,7 @@ func Log(o any, text string) {
 
 // Logf writes log output for this Object or Fs.  This should be
 // considered to be Notice level logging.  It is the default level.
-// By default rclone should not log very much so only use this for
+// By default zclone should not log very much so only use this for
 // important things the user should see.  The user can filter these
 // out with the -q flag.
 func Logf(o any, text string, args ...any) {

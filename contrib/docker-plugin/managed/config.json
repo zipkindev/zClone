@@ -1,8 +1,8 @@
 {
-    "description": "Rclone volume plugin for Docker",
-    "documentation": "https://rclone.org/docker",
+    "description": "Zclone volume plugin for Docker",
+    "documentation": "//docker",
     "interface": {
-        "socket": "rclone.sock",
+        "socket": "zclone.sock",
         "types": ["docker.volumedriver/1.0"]
     },
     "linux": {
@@ -18,7 +18,7 @@
     "network": {
         "type": "host"
     },
-    "entrypoint": ["rclone", "serve", "docker"],
+    "entrypoint": ["zclone", "serve", "docker"],
     "workdir": "/data",
     "args": {
         "name": "args",
@@ -27,20 +27,20 @@
     },
     "env": [
         {
-            "name": "RCLONE_VERBOSE",
+            "name": "ZCLONE_VERBOSE",
             "value": "0",
             "settable": ["value"]
         },
         {
-            "name": "RCLONE_CONFIG",
-            "value": "/data/config/rclone.conf"
+            "name": "ZCLONE_CONFIG",
+            "value": "/data/config/zclone.conf"
         },
         {
-            "name": "RCLONE_CACHE_DIR",
+            "name": "ZCLONE_CACHE_DIR",
             "value": "/data/cache"
         },
         {
-            "name": "RCLONE_BASE_DIR",
+            "name": "ZCLONE_BASE_DIR",
             "value": "/mnt"
         },
         {
@@ -62,7 +62,7 @@
     "mounts": [
         {
             "name": "config",
-            "source": "/var/lib/docker-plugins/rclone/config",
+            "source": "/var/lib/docker-plugins/zclone/config",
             "destination": "/data/config",
             "type": "bind",
             "options": ["rbind"],
@@ -70,7 +70,7 @@
         },
         {
             "name": "cache",
-            "source": "/var/lib/docker-plugins/rclone/cache",
+            "source": "/var/lib/docker-plugins/zclone/cache",
             "destination": "/data/cache",
             "type": "bind",
             "options": ["rbind"],

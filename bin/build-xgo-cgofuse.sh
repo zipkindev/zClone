@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
-docker build -t rclone/xgo-cgofuse https://github.com/winfsp/cgofuse.git
-docker images
-docker push rclone/xgo-cgofuse
+
+echo "Building xgo-cgofuse from a remote source is disabled." >&2
+echo "Provide an approved local cgofuse build context and build it explicitly." >&2
+exit 2

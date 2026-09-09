@@ -1,6 +1,6 @@
 ---
 title: "iCloud Drive and Photos"
-description: "Rclone docs for iCloud Drive and Photos"
+description: "Zclone docs for iCloud Drive and Photos"
 versionIntroduced: "v1.69"
 ---
 
@@ -20,30 +20,30 @@ This backend serves two Apple services:
 - `drive` - iCloud Drive (default)
 - `photos` - iCloud Photos
 
-`rclone config` walks you through the token creation. The trust token is valid
-for 30 days. After which you will have to reauthenticate with `rclone reconnect`
-or `rclone config`.
+`zclone config` walks you through the token creation. The trust token is valid
+for 30 days. After which you will have to reauthenticate with `zclone reconnect`
+or `zclone config`.
 
 ## Authentication
 
-rclone authenticates with Apple using [SRP (Secure Remote Password)](https://en.wikipedia.org/wiki/Secure_Remote_Password_protocol),
+zclone authenticates with Apple using [SRP (Secure Remote Password)](https://en.wikipedia.org/wiki/Secure_Remote_Password_protocol),
 the same protocol used by the iCloud web interface. Your password is never
 sent to Apple's servers -- instead, a cryptographic proof is exchanged that
 verifies you know the password without revealing it.
 
 The authentication flow is:
 
-1. rclone initiates a session with Apple's identity service
+1. zclone initiates a session with Apple's identity service
 2. An SRP key exchange takes place (your password is used locally to derive a key)
 3. Apple sends a 2FA prompt to your trusted devices, or lets you request an
    SMS code
-4. After you enter the 2FA code, rclone receives a trust token for future sessions
+4. After you enter the 2FA code, zclone receives a trust token for future sessions
 
 Here is an example of how to make a Photos remote called `icloudphotos`.
 For iCloud Drive, leave `service` at its default `drive` value. First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -116,7 +116,7 @@ The iCloud Drive backend also supports accessing iCloud Photos by setting the
 `service` option to `photos`:
 
 ```console
-rclone lsd iclouddrive: --iclouddrive-service photos
+zclone lsd iclouddrive: --iclouddrive-service photos
 ```
 
 This presents a read-only hierarchy rooted at photo libraries:
@@ -132,21 +132,21 @@ Examples:
 
 ```console
 # List libraries
-rclone lsd iclouddrive: --iclouddrive-service photos
+zclone lsd iclouddrive: --iclouddrive-service photos
 
 # List albums in your primary library
-rclone lsd iclouddrive:PrimarySync/ --iclouddrive-service photos
+zclone lsd iclouddrive:PrimarySync/ --iclouddrive-service photos
 
 # List photos in an album
-rclone ls iclouddrive:PrimarySync/All\ Photos/ --iclouddrive-service photos
+zclone ls iclouddrive:PrimarySync/All\ Photos/ --iclouddrive-service photos
 
 # Download a photo
-rclone copy iclouddrive:PrimarySync/Favorites/IMG_0001.HEIC /tmp/ --iclouddrive-service photos
+zclone copy iclouddrive:PrimarySync/Favorites/IMG_0001.HEIC /tmp/ --iclouddrive-service photos
 ```
 
 You can either:
 
-- set `service = photos` in `rclone config` for a dedicated Photos remote
+- set `service = photos` in `zclone config` for a dedicated Photos remote
 - keep `service = drive` and pass `--iclouddrive-service photos` when needed
 
 ### Metadata
@@ -168,16 +168,16 @@ On the first run, listing a large album uses parallel `startRank`
 partitions to fetch pages concurrently. After that, a lightweight change
 check (~200ms) determines whether the cache is still valid.
 
-Cache location: `~/.cache/rclone/iclouddrive-photos/<remote>/<zone>/`
+Cache location: `~/.cache/zclone/iclouddrive-photos/<remote>/<zone>/`
 
-To clear the cache: delete that directory or run `rclone config reconnect`.
+To clear the cache: delete that directory or run `zclone config reconnect`.
 
 ### FUSE mounts
 
-For mounting iCloud Photos via `rclone mount`, the following flags
+For mounting iCloud Photos via `zclone mount`, the following flags
 are recommended:
 
-    rclone mount remote: /mnt/photos \
+    zclone mount remote: /mnt/photos \
         --iclouddrive-service photos \
         --vfs-refresh \
         --dir-cache-time 1h \
@@ -211,7 +211,7 @@ Advanced Data Protection is supported.
 On iPhone, Settings `>` Apple Account `>` iCloud `>` 'Access iCloud Data on the Web'
 must be ON.
 
-If ADP is enabled on your account, rclone requests PCS cookies after 2FA.
+If ADP is enabled on your account, zclone requests PCS cookies after 2FA.
 Apple may require approval on a trusted device before those cookies are issued.
 
 ## Troubleshooting
@@ -224,7 +224,7 @@ the ADP approval flow did not complete successfully.
 Check that 'Access iCloud Data on the Web' is enabled and approve any prompt
 on your trusted device.
 
-Then run `rclone reconnect remote:`.
+Then run `zclone reconnect remote:`.
 
 If the remote still has stale auth state, clear the `cookies` and
 `trust_token` fields in the config, or delete and recreate the remote.
@@ -241,7 +241,7 @@ iCloud service to use.
 Properties:
 
 - Config:      service
-- Env Var:     RCLONE_ICLOUDDRIVE_SERVICE
+- Env Var:     ZCLONE_ICLOUDDRIVE_SERVICE
 - Type:        string
 - Default:     "drive"
 - Examples:
@@ -257,7 +257,7 @@ Apple ID.
 Properties:
 
 - Config:      apple_id
-- Env Var:     RCLONE_ICLOUDDRIVE_APPLE_ID
+- Env Var:     ZCLONE_ICLOUDDRIVE_APPLE_ID
 - Type:        string
 - Required:    true
 
@@ -265,12 +265,12 @@ Properties:
 
 Password.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      password
-- Env Var:     RCLONE_ICLOUDDRIVE_PASSWORD
+- Env Var:     ZCLONE_ICLOUDDRIVE_PASSWORD
 - Type:        string
 - Required:    true
 
@@ -285,7 +285,7 @@ Client ID for iCloud API access.
 Properties:
 
 - Config:      client_id
-- Env Var:     RCLONE_ICLOUDDRIVE_CLIENT_ID
+- Env Var:     ZCLONE_ICLOUDDRIVE_CLIENT_ID
 - Type:        string
 - Default:     "d39ba9916b7251055b22c7f910e2ea796ee65e98b2ddecea8f5dde8d9d1a815d"
 
@@ -298,7 +298,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_ICLOUDDRIVE_ENCODING
+- Env Var:     ZCLONE_ICLOUDDRIVE_ENCODING
 - Type:        Encoding
 - Default:     Slash,BackSlash,Del,Ctl,InvalidUtf8,Dot
 
@@ -309,7 +309,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_ICLOUDDRIVE_DESCRIPTION
+- Env Var:     ZCLONE_ICLOUDDRIVE_DESCRIPTION
 - Type:        string
 - Required:    false
 

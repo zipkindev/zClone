@@ -12,7 +12,7 @@ import (
 
 // Check we can remove an open file
 func TestRemove(t *testing.T) {
-	fd, err := os.CreateTemp("", "rclone-remove-test")
+	fd, err := os.CreateTemp("", "zclone-remove-test")
 	require.NoError(t, err)
 	name := fd.Name()
 	defer func() {

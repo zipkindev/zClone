@@ -8,12 +8,12 @@ import (
 	"testing"
 	"time"
 
-	_ "github.com/rclone/rclone/backend/memory"
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/memory"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/operations"
 )
 
 // TestResticPathTraversal checks that request paths with "." or ".."

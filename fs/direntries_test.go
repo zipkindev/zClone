@@ -4,10 +4,10 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fstest/mockdir"
-	"github.com/rclone/rclone/fstest/mockobject"
 	"github.com/stretchr/testify/assert"
+	"zclone/fs"
+	"zclone/fstest/mockdir"
+	"zclone/fstest/mockobject"
 )
 
 func TestDirEntriesSort(t *testing.T) {

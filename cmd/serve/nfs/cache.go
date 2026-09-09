@@ -17,12 +17,12 @@ import (
 	"sync"
 
 	billy "github.com/go-git/go-billy/v5"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/file"
 	"github.com/willscott/go-nfs"
 	nfshelper "github.com/willscott/go-nfs/helpers"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/lib/encoder"
+	"zclone/lib/file"
 )
 
 // Errors on cache initialisation

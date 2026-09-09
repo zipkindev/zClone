@@ -5,8 +5,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/rclone/rclone/fs"
 	"golang.org/x/text/encoding/charmap"
+	"zclone/fs"
 )
 
 var (

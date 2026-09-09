@@ -12,12 +12,12 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/rclone/rclone/cmd/mountlib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/vfs"
 	"github.com/winfsp/cgofuse/fuse"
+	"zclone/cmd/mountlib"
+	"zclone/fs"
+	"zclone/fs/fserrors"
+	"zclone/fs/log"
+	"zclone/vfs"
 )
 
 const fhUnset = ^uint64(0)
@@ -485,7 +485,7 @@ func (fsys *FS) Mknod(path string, mode uint32, dev uint64) (errc int) {
 // Fsync synchronizes file contents.
 func (fsys *FS) Fsync(path string, datasync bool, fh uint64) (errc int) {
 	defer log.Trace(path, "datasync=%v, fh=0x%X", datasync, fh)("errc=%d", &errc)
-	// This is a no-op for rclone
+	// This is a no-op for zclone
 	return 0
 }
 
@@ -511,28 +511,28 @@ func (fsys *FS) Readlink(path string) (errc int, linkPath string) {
 // Chmod changes the permission bits of a file.
 func (fsys *FS) Chmod(path string, mode uint32) (errc int) {
 	defer log.Trace(path, "mode=0%o", mode)("errc=%d", &errc)
-	// This is a no-op for rclone
+	// This is a no-op for zclone
 	return 0
 }
 
 // Chown changes the owner and group of a file.
 func (fsys *FS) Chown(path string, uid uint32, gid uint32) (errc int) {
 	defer log.Trace(path, "uid=%d, gid=%d", uid, gid)("errc=%d", &errc)
-	// This is a no-op for rclone
+	// This is a no-op for zclone
 	return 0
 }
 
 // Access checks file access permissions.
 func (fsys *FS) Access(path string, mask uint32) (errc int) {
 	defer log.Trace(path, "mask=0%o", mask)("errc=%d", &errc)
-	// This is a no-op for rclone
+	// This is a no-op for zclone
 	return 0
 }
 
 // Fsyncdir synchronizes directory contents.
 func (fsys *FS) Fsyncdir(path string, datasync bool, fh uint64) (errc int) {
 	defer log.Trace(path, "datasync=%v, fh=0x%X", datasync, fh)("errc=%d", &errc)
-	// This is a no-op for rclone
+	// This is a no-op for zclone
 	return 0
 }
 

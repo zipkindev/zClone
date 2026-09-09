@@ -18,11 +18,11 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/lib/atexit"
-	sdActivation "github.com/rclone/rclone/lib/sdactivation"
 	"github.com/spf13/pflag"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/lib/atexit"
+	sdActivation "zclone/lib/sdactivation"
 )
 
 // Help returns text describing the http server to add to the command
@@ -55,12 +55,12 @@ accept in the HTTP header.
 will overriding existing values. The flag may be repeated to add multiple
 headers. Use the format ` + "`Header-Name: value`" + `.
 
-` + "`--{{ .Prefix }}baseurl`" + ` controls the URL prefix that rclone serves from.  By default
-rclone will serve from the root.  If you used ` + "`--{{ .Prefix }}baseurl \"/rclone\"`" + ` then
-rclone would serve from a URL starting with "/rclone/".  This is
-useful if you wish to proxy rclone serve.  Rclone automatically
-inserts leading and trailing "/" on ` + "`--{{ .Prefix }}baseurl`" + `, so ` + "`--{{ .Prefix }}baseurl \"rclone\"`" + `,
-` + "`--{{ .Prefix }}baseurl \"/rclone\"` and `--{{ .Prefix }}baseurl \"/rclone/\"`" + ` are all treated
+` + "`--{{ .Prefix }}baseurl`" + ` controls the URL prefix that zclone serves from.  By default
+zclone will serve from the root.  If you used ` + "`--{{ .Prefix }}baseurl \"/zclone\"`" + ` then
+zclone would serve from a URL starting with "/zclone/".  This is
+useful if you wish to proxy zclone serve.  Zclone automatically
+inserts leading and trailing "/" on ` + "`--{{ .Prefix }}baseurl`" + `, so ` + "`--{{ .Prefix }}baseurl \"zclone\"`" + `,
+` + "`--{{ .Prefix }}baseurl \"/zclone\"` and `--{{ .Prefix }}baseurl \"/zclone/\"`" + ` are all treated
 identically.
 
 ` + "`--{{ .Prefix }}disable-zip`" + ` may be set to disable the zipping download option.
@@ -91,25 +91,25 @@ it should be set to the path of a file with PEM encoded client certificate
 authority certificates.
 
 ` + "`--{{ .Prefix }}min-tls-version`" + ` is minimum TLS version that is acceptable. Valid
-values are "tls1.0", "tls1.1", "tls1.2" and "tls1.3" (default "tls1.0").
+values are "tls1.0", "tls1.1", "tls1.2" and "tls1.3" (default "tls1.2").
 
 ### Socket activation
 
-Instead of the listening addresses specified above, rclone will listen to all
+Instead of the listening addresses specified above, zclone will listen to all
 FDs passed by the service manager, if any (and ignore any arguments passed
 by ` + "`--{{ .Prefix }}addr`" + `).
 
-This allows rclone to be a socket-activated service.
+This allows zclone to be a socket-activated service.
 It can be configured with .socket and .service unit files as described in
 <https://www.freedesktop.org/software/systemd/man/latest/systemd.socket.html>.
 
 Socket activation can be tested ad-hoc with the ` + "`systemd-socket-activate`" + `command
 
 ` + "```console" + `
-systemd-socket-activate -l 8000 -- rclone serve
+systemd-socket-activate -l 8000 -- zclone serve
 ` + "```" + `
 
-This will socket-activate rclone on the first connection to port 8000 over TCP.
+This will socket-activate zclone on the first connection to port 8000 over TCP.
 
 `
 	tmpl, err := template.New("server help").Parse(help)
@@ -168,7 +168,7 @@ var ConfigInfo = fs.Options{{
 	Help:    "Prefix for URLs - leave blank for root",
 }, {
 	Name:    "min_tls_version",
-	Default: "tls1.0",
+	Default: "tls1.2",
 	Help:    "Minimum TLS version that is acceptable",
 }, {
 	Name:    "allow_origin",
@@ -227,7 +227,7 @@ func DefaultCfg() Config {
 		ServerReadTimeout:  fs.Duration(1 * time.Hour),
 		ServerWriteTimeout: fs.Duration(1 * time.Hour),
 		MaxHeaderBytes:     4096,
-		MinTLSVersion:      "tls1.0",
+		MinTLSVersion:      "tls1.2",
 	}
 }
 

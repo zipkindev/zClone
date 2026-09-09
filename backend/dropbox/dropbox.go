@@ -39,28 +39,28 @@ import (
 	"github.com/dropbox/dropbox-sdk-go-unofficial/v6/dropbox/sharing"
 	"github.com/dropbox/dropbox-sdk-go-unofficial/v6/dropbox/team"
 	"github.com/dropbox/dropbox-sdk-go-unofficial/v6/dropbox/users"
-	"github.com/rclone/rclone/backend/dropbox/dbhash"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/batcher"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/oauthutil"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/readers"
 	"golang.org/x/oauth2"
+	"zclone/backend/dropbox/dbhash"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/fs/operations"
+	"zclone/lib/batcher"
+	"zclone/lib/encoder"
+	"zclone/lib/oauthutil"
+	"zclone/lib/pacer"
+	"zclone/lib/readers"
 )
 
 // Constants
 const (
-	rcloneClientID              = "5jcck7diasz0rqy"
-	rcloneEncryptedClientSecret = "fRS5vVLr2v6FbyXYnIgjwBuUAt0osq_QZTXAEcmZ7g"
+	zcloneClientID              = "5jcck7diasz0rqy"
+	zcloneEncryptedClientSecret = "fRS5vVLr2v6FbyXYnIgjwBuUAt0osq_QZTXAEcmZ7g"
 	defaultMinSleep             = fs.Duration(10 * time.Millisecond)
 	maxSleep                    = 2 * time.Second
 	decayConstant               = 2 // bigger for slower decay, exponential
@@ -84,7 +84,7 @@ const (
 	// 96	12.302	95%
 	// 128	12.945	100%
 	//
-	// Choose 48 MiB which is 91% of Maximum speed.  rclone by
+	// Choose 48 MiB which is 91% of Maximum speed.  zclone by
 	// default does 4 transfers so this should use 4*48 MiB = 192 MiB
 	// by default.
 	defaultChunkSize = 48 * fs.Mebi
@@ -115,8 +115,8 @@ var (
 		// },
 		AuthURL:      dropbox.OAuthEndpoint("").AuthURL,
 		TokenURL:     dropbox.OAuthEndpoint("").TokenURL,
-		ClientID:     rcloneClientID,
-		ClientSecret: obscure.MustReveal(rcloneEncryptedClientSecret),
+		ClientID:     zcloneClientID,
+		ClientSecret: obscure.MustReveal(zcloneEncryptedClientSecret),
 		RedirectURL:  oauthutil.RedirectLocalhostURL,
 	}
 	// A regexp matching path names for files Dropbox ignores
@@ -189,7 +189,7 @@ func init() {
 
 Any files larger than this will be uploaded in chunks of this size.
 
-Note that chunks are buffered in memory (one at a time) so rclone can
+Note that chunks are buffered in memory (one at a time) so zclone can
 deal with retries.  Setting this larger will increase the speed
 slightly (at most 10%% for 128 MiB in tests) at the cost of using more
 memory.  It can be set smaller if you are tight on memory.`, maxChunkSize),
@@ -200,7 +200,7 @@ memory.  It can be set smaller if you are tight on memory.`, maxChunkSize),
 			Help: `Impersonate this user when using a business account.
 
 Note that if you want to use impersonate, you should make sure this
-flag is set when running "rclone config" as this will cause rclone to
+flag is set when running "zclone config" as this will cause zclone to
 request the "members.read" scope which it won't normally. This is
 needed to lookup a members email address into the internal ID that
 dropbox uses in the API.
@@ -209,7 +209,7 @@ Using the "members.read" scope will require a Dropbox Team Admin
 to approve during the OAuth flow.
 
 You will have to use your own App (setting your own client_id and
-client_secret) to use this option as currently rclone's default set of
+client_secret) to use this option as currently zclone's default set of
 permissions doesn't include "members.read". This can be added once
 v1.55 or later is in use everywhere.
 `,
@@ -226,14 +226,14 @@ member ID (for example "dbmid:...").
 This takes a team member ID directly rather than an email address.
 
 Note that if you want to use impersonate_admin, you should make sure this
-flag is set when running "rclone config" as this will cause rclone to
+flag is set when running "zclone config" as this will cause zclone to
 request the "team_data.member" scope which it won't normally.
 
 Using the "team_data.member" scope will require a Dropbox Team Admin
 to approve during the OAuth flow.
 
 You will have to use your own App (setting your own client_id and
-client_secret) to use this option as currently rclone's default set of
+client_secret) to use this option as currently zclone's default set of
 permissions doesn't include "team_data.member".
 `,
 			Default:   "",
@@ -241,26 +241,26 @@ permissions doesn't include "team_data.member".
 			Sensitive: true,
 		}, {
 			Name: "shared_files",
-			Help: `Instructs rclone to work on individual shared files.
+			Help: `Instructs zclone to work on individual shared files.
 
-In this mode rclone's features are extremely limited - only list (ls, lsl, etc.) 
+In this mode zclone's features are extremely limited - only list (ls, lsl, etc.)
 operations and read operations (e.g. downloading) are supported in this mode.
 All other operations will be disabled.`,
 			Default:  false,
 			Advanced: true,
 		}, {
 			Name: "shared_folders",
-			Help: `Instructs rclone to work on shared folders.
-			
-When this flag is used with no path only the List operation is supported and 
-all available shared folders will be listed. If you specify a path the first part 
-will be interpreted as the name of shared folder. Rclone will then try to mount this 
-shared to the root namespace. On success shared folder rclone proceeds normally. 
-The shared folder is now pretty much a normal folder and all normal operations 
-are supported. 
+			Help: `Instructs zclone to work on shared folders.
 
-Note that we don't unmount the shared folder afterwards so the 
---dropbox-shared-folders can be omitted after the first use of a particular 
+When this flag is used with no path only the List operation is supported and
+all available shared folders will be listed. If you specify a path the first part
+will be interpreted as the name of shared folder. Zclone will then try to mount this
+shared to the root namespace. On success shared folder zclone proceeds normally.
+The shared folder is now pretty much a normal folder and all normal operations
+are supported.
+
+Note that we don't unmount the shared folder afterwards so the
+--dropbox-shared-folders can be omitted after the first use of a particular
 shared folder.
 
 See also --dropbox-root-namespace for an alternative way to work with shared
@@ -269,7 +269,7 @@ folders.`,
 			Advanced: true,
 		}, {
 			Name: "skip_shared_folders",
-			Help: `Instructs rclone to skip all shared folders.
+			Help: `Instructs zclone to skip all shared folders.
 
 When set, any folder that is a shared folder mount point will be
 excluded from directory listings, regardless of ownership.
@@ -279,7 +279,7 @@ using a separate remote configured with the shared folder namespace.`,
 			Advanced: true,
 		}, {
 			Name: "skip_unowned_folders",
-			Help: `Instructs rclone to skip shared folders not owned by the current user.
+			Help: `Instructs zclone to skip shared folders not owned by the current user.
 
 When set, any folder that is a shared folder mount point and not
 owned by the current user will be excluded from directory listings.
@@ -327,7 +327,7 @@ This makes an extra API call per shared folder mount point.`,
 Certain Dropbox files can only be accessed by exporting them to another format.
 These include Dropbox Paper documents.
 
-For each such file, rclone will choose the first format on this list that Dropbox
+For each such file, zclone will choose the first format on this list that Dropbox
 considers valid. If none is valid, it will choose Dropbox's default format.
 
 Known formats include: "html", "md" (markdown)`,
@@ -335,7 +335,7 @@ Known formats include: "html", "md" (markdown)`,
 			Advanced: true,
 		}, {
 			Name:     "skip_exports",
-			Help:     "Skip exportable files in all listings.\n\nIf given, exportable files practically become invisible to rclone.",
+			Help:     "Skip exportable files in all listings.\n\nIf given, exportable files practically become invisible to zclone.",
 			Default:  false,
 			Advanced: true,
 		}, {
@@ -344,14 +344,14 @@ Known formats include: "html", "md" (markdown)`,
 			Help: `Show all exportable files in listings.
 
 Adding this flag will allow all exportable files to be server side copied.
-Note that rclone doesn't add extensions to the exportable file names in this mode.
+Note that zclone doesn't add extensions to the exportable file names in this mode.
 
-Do **not** use this flag when trying to download exportable files - rclone
+Do **not** use this flag when trying to download exportable files - zclone
 will fail to download them.
 `,
 			Advanced: true,
 		},
-		}...), defaultBatcherOptions.FsOptions("For full info see [the main docs](https://rclone.org/dropbox/#batch-mode)\n\n")...),
+		}...), defaultBatcherOptions.FsOptions("For full info see [the main docs](//dropbox/#batch-mode)\n\n")...),
 	})
 
 	for apiFormat, ext := range exportKnownAPIFormats {
@@ -789,7 +789,7 @@ func (f *Fs) getMetadataForExt(ctx context.Context, filePath string, wantExportE
 	return ch
 }
 
-// For a given rclone-path, figure out what the Dropbox-path may be, in order of preference.
+// For a given zclone-path, figure out what the Dropbox-path may be, in order of preference.
 // Multiple paths might be plausible, due to export path munging.
 func (f *Fs) possibleMetadatas(ctx context.Context, filePath string) (ret []<-chan getMetadataResult) {
 	ret = []<-chan getMetadataResult{}
@@ -1428,7 +1428,7 @@ func (f *Fs) Move(ctx context.Context, src fs.Object, remote string) (fs.Object,
 		case files.MoveV2APIError:
 			// There seems to be a bit of eventual consistency here which causes this to
 			// fail on just created objects
-			// See: https://github.com/rclone/rclone/issues/8881
+			// See: /
 			if e.EndpointError != nil && e.EndpointError.FromLookup != nil && e.EndpointError.FromLookup.Tag == files.LookupErrorNotFound {
 				fs.Debugf(srcObj, "Retrying move on %v error", err)
 				return true, err

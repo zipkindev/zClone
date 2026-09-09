@@ -17,14 +17,14 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fstest/fstests"
-	"github.com/rclone/rclone/lib/encoder"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/ssh"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/obscure"
+	"zclone/fstest/fstests"
+	"zclone/lib/encoder"
 )
 
 func TestShellEscapeUnix(t *testing.T) {

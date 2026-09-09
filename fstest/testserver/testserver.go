@@ -14,8 +14,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fspath"
+	"zclone/fs"
+	"zclone/fs/fspath"
 )
 
 var (
@@ -30,7 +30,7 @@ var (
 	trackedServers = map[string]int{}
 )
 
-// Assume we are run somewhere within the rclone root
+// Assume we are run somewhere within the zclone root
 func findConfig() (string, error) {
 	dir := filepath.Join("fstest", "testserver", "init.d")
 	for range 5 {
@@ -42,7 +42,7 @@ func findConfig() (string, error) {
 		}
 		dir = filepath.Join("..", dir)
 	}
-	return "", errors.New("couldn't find testserver config files - run from within rclone source")
+	return "", errors.New("couldn't find testserver config files - run from within zclone source")
 }
 
 // returns path to a script to start this server
@@ -69,13 +69,13 @@ func run(name, command string) (out []byte, err error) {
 
 // envKey returns the environment variable name to set name, key
 func envKey(name, key string) string {
-	return fmt.Sprintf("RCLONE_CONFIG_%s_%s", strings.ToUpper(name), strings.ToUpper(key))
+	return fmt.Sprintf("ZCLONE_CONFIG_%s_%s", strings.ToUpper(name), strings.ToUpper(key))
 }
 
 // match a line of config var=value
 var matchLine = regexp.MustCompile(`^([a-zA-Z_]+)=(.*)$`)
 
-// Start the server and env vars so rclone can use it
+// Start the server and env vars so zclone can use it
 func start(name string) error {
 	fs.Logf(name, "Starting server")
 	out, err := run(name, "start")

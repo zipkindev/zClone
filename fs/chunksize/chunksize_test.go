@@ -3,7 +3,7 @@ package chunksize
 import (
 	"testing"
 
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 func TestComputeChunkSize(t *testing.T) {

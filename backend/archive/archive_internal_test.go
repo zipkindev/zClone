@@ -15,15 +15,15 @@ import (
 	"strings"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/filter"
+	"zclone/fs/operations"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
 )
 
 // FIXME need to test Open with seek
@@ -139,7 +139,7 @@ func checkTree(ctx context.Context, name string, t *testing.T, dstArchive, src s
 
 // test creating and reading back some archives
 //
-// Note that this uses rclone and zip as external binaries.
+// Note that this uses zclone and zip as external binaries.
 func testArchive(t *testing.T, archiveName string, archiveFn func(t *testing.T, output, input string)) {
 	ctx := context.Background()
 	checkFiles := 1000
@@ -148,7 +148,7 @@ func testArchive(t *testing.T, archiveName string, archiveFn func(t *testing.T, 
 	inputRoot := t.TempDir()
 	input := filepath.Join(inputRoot, archiveName)
 	require.NoError(t, os.Mkdir(input, 0777))
-	run(t, "rclone", "test", "makefiles", "--files", strconv.Itoa(checkFiles), "--ascii", input)
+	run(t, "zclone", "test", "makefiles", "--files", strconv.Itoa(checkFiles), "--ascii", input)
 
 	// Create the archive
 	output := t.TempDir()
@@ -193,11 +193,11 @@ func skipIfNoExe(t *testing.T, exeName string) {
 
 // Test creating and reading back some archives
 //
-// Note that this uses rclone and zip as external binaries.
+// Note that this uses zclone and zip as external binaries.
 func TestArchiveZip(t *testing.T) {
 	fstest.Initialise()
 	skipIfNoExe(t, "zip")
-	skipIfNoExe(t, "rclone")
+	skipIfNoExe(t, "zclone")
 	testArchive(t, "test.zip", func(t *testing.T, output, input string) {
 		oldcwd, err := os.Getwd()
 		require.NoError(t, err)
@@ -211,11 +211,11 @@ func TestArchiveZip(t *testing.T) {
 
 // Test creating and reading back some archives
 //
-// Note that this uses rclone and squashfs as external binaries.
+// Note that this uses zclone and squashfs as external binaries.
 func TestArchiveSquashfs(t *testing.T) {
 	fstest.Initialise()
 	skipIfNoExe(t, "mksquashfs")
-	skipIfNoExe(t, "rclone")
+	skipIfNoExe(t, "zclone")
 	testArchive(t, "test.sqfs", func(t *testing.T, output, input string) {
 		run(t, "mksquashfs", input, output)
 	})

@@ -19,19 +19,19 @@ import (
 
 	mutex "sync" // renamed as "sync" already in use
 
-	_ "github.com/rclone/rclone/backend/all" // import all backends
-	"github.com/rclone/rclone/cmd/bisync/bilib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/lib/transform"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/text/unicode/norm"
+	_ "zclone/backend/all" // import all backends
+	"zclone/cmd/bisync/bilib"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/filter"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
+	"zclone/fstest"
+	"zclone/lib/transform"
 )
 
 // Some times used in the tests
@@ -1941,7 +1941,7 @@ func TestServerSideMoveOverlap(t *testing.T) {
 		t.Skip("Skipping test as remote supports DirMove")
 	}
 
-	subRemoteName := r.FremoteName + "/rclone-move-test"
+	subRemoteName := r.FremoteName + "/zclone-move-test"
 	FremoteMove, err := fs.NewFs(ctx, subRemoteName)
 	require.NoError(t, err)
 
@@ -1971,7 +1971,7 @@ func TestSyncOverlap(t *testing.T) {
 	ctx := context.Background()
 	r := fstest.NewRun(t)
 
-	subRemoteName := r.FremoteName + "/rclone-sync-test"
+	subRemoteName := r.FremoteName + "/zclone-sync-test"
 	FremoteSync, err := fs.NewFs(ctx, subRemoteName)
 	require.NoError(t, err)
 
@@ -2002,26 +2002,26 @@ func TestSyncOverlapWithFilter(t *testing.T) {
 
 	fi, err := filter.NewFilter(nil)
 	require.NoError(t, err)
-	require.NoError(t, fi.Add(false, "/rclone-sync-test/"))
+	require.NoError(t, fi.Add(false, "/zclone-sync-test/"))
 	require.NoError(t, fi.Add(false, "*/layer2/"))
 	fi.Opt.ExcludeFile = []string{".ignore"}
 	filterCtx := filter.ReplaceConfig(ctx, fi)
 
-	subRemoteName := r.FremoteName + "/rclone-sync-test"
+	subRemoteName := r.FremoteName + "/zclone-sync-test"
 	FremoteSync, err := fs.NewFs(ctx, subRemoteName)
 	require.NoError(t, FremoteSync.Mkdir(ctx, ""))
 	require.NoError(t, err)
 
-	subRemoteName2 := r.FremoteName + "/rclone-sync-test-include/layer2"
+	subRemoteName2 := r.FremoteName + "/zclone-sync-test-include/layer2"
 	FremoteSync2, err := fs.NewFs(ctx, subRemoteName2)
 	require.NoError(t, FremoteSync2.Mkdir(ctx, ""))
 	require.NoError(t, err)
 
-	subRemoteName3 := r.FremoteName + "/rclone-sync-test-ignore-file"
+	subRemoteName3 := r.FremoteName + "/zclone-sync-test-ignore-file"
 	FremoteSync3, err := fs.NewFs(ctx, subRemoteName3)
 	require.NoError(t, FremoteSync3.Mkdir(ctx, ""))
 	require.NoError(t, err)
-	r.WriteObject(context.Background(), "rclone-sync-test-ignore-file/.ignore", "-", t1)
+	r.WriteObject(context.Background(), "zclone-sync-test-ignore-file/.ignore", "-", t1)
 
 	checkErr := func(err error) {
 		require.Error(t, err)

@@ -19,16 +19,16 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/backend/pikpak/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/pikpak/api"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/fserrors"
+	"zclone/lib/rest"
 )
 
 // Globals
 const (
-	cachePrefix = "rclone-pikpak-gcid-"
+	cachePrefix = "zclone-pikpak-gcid-"
 )
 
 // requestDecompress requests decompress of compressed files
@@ -519,7 +519,7 @@ type CaptchaTokenSource struct {
 	rst   *pikpakClient
 }
 
-// initialize CaptchaTokenSource from rclone.conf if possible
+// initialize CaptchaTokenSource from zclone.conf if possible
 func newCaptchaTokenSource(ctx context.Context, opt *Options, m configmap.Mapper) *CaptchaTokenSource {
 	token := new(api.CaptchaToken)
 	tokenString, ok := m.Get("captcha_token")
@@ -571,7 +571,7 @@ func (cts *CaptchaTokenSource) refreshToken(opts *rest.Opts) (string, error) {
 		return "", fmt.Errorf("failed to retrieve captcha token from api: %w", err)
 	}
 
-	// put it into rclone.conf
+	// put it into zclone.conf
 	tokenBytes, err := json.Marshal(cts.token)
 	if err != nil {
 		return "", fmt.Errorf("failed to marshal captcha token: %w", err)

@@ -11,10 +11,10 @@ import (
 	"path"
 	"strings"
 
-	"github.com/rclone/rclone/backend/seafile/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/readers"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/seafile/api"
+	"zclone/fs"
+	"zclone/lib/readers"
+	"zclone/lib/rest"
 )
 
 // Start of the API URLs
@@ -161,7 +161,7 @@ func (f *Fs) createLibrary(ctx context.Context, libraryName, password string) (l
 
 	request := api.CreateLibraryRequest{
 		Name:        f.opt.Enc.FromStandardName(libraryName),
-		Description: "Created by rclone",
+		Description: "Created by zclone",
 		Password:    password,
 	}
 	result := &api.CreateLibrary{}

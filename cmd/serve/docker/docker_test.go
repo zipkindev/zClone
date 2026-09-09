@@ -17,21 +17,21 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/cmd/mountlib"
-	"github.com/rclone/rclone/cmd/serve/docker"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/testy"
-	"github.com/rclone/rclone/lib/file"
+	"zclone/cmd/mountlib"
+	"zclone/cmd/serve/docker"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fstest"
+	"zclone/fstest/testy"
+	"zclone/lib/file"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	_ "github.com/rclone/rclone/backend/local"
-	_ "github.com/rclone/rclone/backend/memory"
-	_ "github.com/rclone/rclone/cmd/cmount"
-	_ "github.com/rclone/rclone/cmd/mount"
+	_ "zclone/backend/local"
+	_ "zclone/backend/memory"
+	_ "zclone/cmd/cmount"
+	_ "zclone/cmd/mount"
 )
 
 func initialise(ctx context.Context, t *testing.T) (string, fs.Fs) {
@@ -331,7 +331,7 @@ func testMountAPI(t *testing.T, sockAddr string) {
 	if sockAddr != "" {
 		cli = newAPIClient(t, sockAddr, "")
 	} else {
-		unixPath = filepath.Join(testDir, "rclone.sock")
+		unixPath = filepath.Join(testDir, "zclone.sock")
 		cli = newAPIClient(t, "localhost", unixPath)
 	}
 

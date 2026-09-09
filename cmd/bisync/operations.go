@@ -14,13 +14,13 @@ import (
 	gosync "sync"
 	"time"
 
-	"github.com/rclone/rclone/cmd/bisync/bilib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/terminal"
+	"zclone/cmd/bisync/bilib"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/log"
+	"zclone/fs/operations"
+	"zclone/lib/atexit"
+	"zclone/lib/terminal"
 )
 
 // ErrBisyncAborted signals that bisync is aborted and forces non-zero exit code
@@ -301,7 +301,7 @@ func (b *bisyncRun) runLocked(octx context.Context) (err error) {
 			errTip += fmt.Sprintf(Color(terminal.CyanFg, "Path1: %s\n"), Color(terminal.HiBlueFg, b.listing1))
 			errTip += fmt.Sprintf(Color(terminal.CyanFg, "Path2: %s\n"), Color(terminal.HiBlueFg, b.listing2))
 			errTip += Color(terminal.MagentaFg, "Try running this command to inspect the work dir: \n")
-			errTip += fmt.Sprintf(Color(terminal.HiCyanFg, "rclone lsl \"%s\""), b.workDir)
+			errTip += fmt.Sprintf(Color(terminal.HiCyanFg, "zclone lsl \"%s\""), b.workDir)
 
 			return errors.New("cannot find prior Path1 or Path2 listings, likely due to critical error on prior run \n" + errTip)
 		}
@@ -502,7 +502,7 @@ func (b *bisyncRun) checkAccess(checkFiles1, checkFiles2 bilib.Names) error {
 	numChecks2 := len(checkFiles2)
 	if numChecks1 == 0 || numChecks1 != numChecks2 {
 		if numChecks1 == 0 && numChecks2 == 0 {
-			fs.Logf("--check-access", Color(terminal.RedFg, "Failed to find any files named %s\n More info: %s"), Color(terminal.CyanFg, opt.CheckFilename), Color(terminal.BlueFg, "https://rclone.org/bisync/#check-access"))
+			fs.Logf("--check-access", Color(terminal.RedFg, "Failed to find any files named %s\n More info: %s"), Color(terminal.CyanFg, opt.CheckFilename), Color(terminal.BlueFg, "//bisync/#check-access"))
 		}
 		fs.Errorf(nil, "%s Path1 count %d, Path2 count %d - %s", prefix, numChecks1, numChecks2, opt.CheckFilename)
 		ok = false

@@ -16,13 +16,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configfile"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/lib/rest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/config/configfile"
+	"zclone/fs/config/configmap"
+	"zclone/fstest"
+	"zclone/lib/rest"
 )
 
 var (
@@ -432,7 +432,7 @@ func TestParseApache(t *testing.T) {
 		"mandelterm/",
 		"pgp-key.txt",
 		"pymath/",
-		"rclone",
+		"zclone",
 		"readdir.exe",
 		"rush_hour_solver_cut_down.py",
 		"snake-puzzle/",
@@ -449,9 +449,9 @@ func TestParseMemstore(t *testing.T) {
 		"test/",
 		"v1.35/",
 		"v1.36-01-g503cd84/",
-		"rclone-beta-latest-freebsd-386.zip",
-		"rclone-beta-latest-freebsd-amd64.zip",
-		"rclone-beta-latest-windows-amd64.zip",
+		"zclone-beta-latest-freebsd-386.zip",
+		"zclone-beta-latest-freebsd-amd64.zip",
+		"zclone-beta-latest-windows-amd64.zip",
 	})
 }
 
@@ -469,8 +469,8 @@ func TestParseNginx(t *testing.T) {
 func TestParseCaddy(t *testing.T) {
 	parseHTML(t, "caddy.html", "", []string{
 		"mimetype.zip",
-		"rclone-delete-empty-dirs.py",
-		"rclone-show-empty-dirs.py",
+		"zclone-delete-empty-dirs.py",
+		"zclone-show-empty-dirs.py",
 		"stat-windows-386.zip",
 		"v1.36-155-gcf29ee8b-team-driveβ/",
 		"v1.36-156-gca76b3fb-team-driveβ/",

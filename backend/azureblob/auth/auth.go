@@ -15,10 +15,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/lib/env"
+	"zclone/fs"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fshttp"
+	"zclone/lib/env"
 )
 
 const (
@@ -157,7 +157,7 @@ Leave blank normally. Needed only if you want to use a service principal instead
 See ["Create an Azure service principal"](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) and ["Assign an Azure role for access to blob data"](https://docs.microsoft.com/en-us/azure/storage/common/storage-auth-aad-rbac-cli) pages for more details.
 
 It may be more convenient to put the credentials directly into the
-rclone config file under the ` + "`client_id`, `tenant` and `client_secret`" + `
+zclone config file under the ` + "`client_id`, `tenant` and `client_secret`" + `
 keys instead of setting ` + "`service_principal_file`" + `.
 `,
 	Advanced: true,
@@ -168,7 +168,7 @@ keys instead of setting ` + "`service_principal_file`" + `.
 This should be set true only by applications authenticating in
 disconnected clouds, or private clouds such as Azure Stack.
 
-It determines whether rclone requests Microsoft Entra instance
+It determines whether zclone requests Microsoft Entra instance
 metadata from ` + "`https://login.microsoft.com/`" + ` before
 authenticating.
 
@@ -286,7 +286,7 @@ type transporter struct {
 func newTransporter(ctx context.Context) transporter {
 	// Set the User-Agent to include the Microsoft Partner Network prefix
 	ctx, ci := fs.AddConfig(ctx)
-	ci.UserAgent = "APN/1.0 rclone/1.0 rclone/" + strings.TrimPrefix(fs.Version, "v")
+	ci.UserAgent = "APN/1.0 zclone/1.0 zclone/" + strings.TrimPrefix(fs.Version, "v")
 	return transporter{
 		RoundTripper: fshttp.NewTransport(ctx),
 	}
@@ -297,7 +297,7 @@ func (tr transporter) Do(req *http.Request) (*http.Response, error) {
 	return tr.RoundTripper.RoundTrip(req)
 }
 
-// Transporter returns the policy.Transporter rclone uses for Azure SDK
+// Transporter returns the policy.Transporter zclone uses for Azure SDK
 // clients (an fshttp based transport with the APN user agent), for callers
 // which build their own azcore pipelines.
 func Transporter(ctx context.Context) policy.Transporter {
@@ -308,7 +308,7 @@ func Transporter(ctx context.Context) policy.Transporter {
 type NewClientOpts[Client, ClientOptions, SharedKeyCredential any] struct {
 	DefaultBaseURL                   string // Base URL, eg blob.core.windows.net
 	Blob                             bool   // set if this is blob storage
-	RootContainer                    string // Container that rclone is looking at
+	RootContainer                    string // Container that zclone is looking at
 	NewClient                        func(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error)
 	NewClientFromConnectionString    func(connectionString string, options *ClientOptions) (*Client, error)
 	NewClientWithNoCredential        func(serviceURL string, options *ClientOptions) (*Client, error)
@@ -326,7 +326,7 @@ type NewClientResult[Client any] struct {
 	Container          string                 // Container that SAS URL points to
 }
 
-// NewClient creates a service client from the rclone options
+// NewClient creates a service client from the zclone options
 func NewClient[Client, ClientOptions, SharedKeyCredential any](ctx context.Context, conf NewClientOpts[Client, ClientOptions, SharedKeyCredential], opt *Options) (r NewClientResult[Client], err error) {
 	var sharedKeyCred *SharedKeyCredential
 

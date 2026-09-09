@@ -18,12 +18,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/lib/file"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs/fserrors"
+	"zclone/fs/object"
+	"zclone/fstest"
+	"zclone/lib/file"
 )
 
 // errReader is an io.Reader that always returns the configured error,

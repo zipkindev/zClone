@@ -1,5 +1,5 @@
 // TestBisync is a test engine for bisync test cases.
-// See https://rclone.org/bisync/#testing for documentation.
+// See https://zclone.org/bisync/#testing for documentation.
 // Test cases are organized in subdirs beneath ./testdata
 // Results are compared against golden listings and log file.
 package bisync_test
@@ -23,30 +23,30 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/rclone/rclone/cmd/bisync"
-	"github.com/rclone/rclone/cmd/bisync/bilib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/sync"
-	"github.com/rclone/rclone/fs/walk"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/lib/terminal"
 	"golang.org/x/text/unicode/norm"
+	"zclone/cmd/bisync"
+	"zclone/cmd/bisync/bilib"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/cache"
+	"zclone/fs/filter"
+	"zclone/fs/fspath"
+	"zclone/fs/hash"
+	"zclone/fs/object"
+	"zclone/fs/operations"
+	"zclone/fs/sync"
+	"zclone/fs/walk"
+	"zclone/fstest"
+	"zclone/lib/atexit"
+	"zclone/lib/encoder"
+	"zclone/lib/random"
+	"zclone/lib/terminal"
 
 	"github.com/pmezard/go-difflib/difflib"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	_ "github.com/rclone/rclone/backend/all" // for integration tests
+	_ "zclone/backend/all" // for integration tests
 )
 
 const (
@@ -66,10 +66,10 @@ var initDate = time.Date(2000, time.January, 1, 0, 0, 0, 0, bisync.TZ)
 // go test ./cmd/bisync -remote local -golden
 // go test ./cmd/bisync -remote local -case extended_filenames
 // go run ./fstest/test_all -run '^TestBisync.*$' -timeout 3h -verbose -maxtries 5
-// go run ./fstest/test_all -remotes local,TestCrypt:,TestDrive:,TestOneDrive:,TestOneDriveBusiness:,TestDropbox:,TestCryptDrive:,TestOpenDrive:,TestChunker:,:memory:,TestCryptNoEncryption:,TestCombine:DirA,TestFTPRclone:,TestWebdavRclone:,TestS3Rclone:,TestSFTPRclone:,TestSFTPRcloneSSH:,TestNextcloud:,TestChunkerNometaLocal:,TestChunkerChunk3bLocal:,TestChunkerLocal:,TestChunkerChunk3bNometaLocal:,TestStorj: -run '^TestBisync.*$' -timeout 3h -verbose -maxtries 5
-// go test -timeout 3h -run '^TestBisync.*$' github.com/rclone/rclone/cmd/bisync -remote TestDrive:Bisync -v
-// go test -timeout 3h -run '^TestBisyncRemoteRemote/basic$' github.com/rclone/rclone/cmd/bisync -remote TestDropbox:Bisync -v
-// TestFTPProftpd:,TestFTPPureftpd:,TestFTPRclone:,TestFTPVsftpd:,TestHdfs:,TestS3Minio:,TestS3MinioEdge:,TestS3Rclone:,TestSeafile:,TestSeafileEncrypted:,TestSeafileV6:,TestSFTPOpenssh:,TestSFTPRclone:,TestSFTPRcloneSSH:,TestSia:,TestSwiftAIO:,TestWebdavNextcloud:,TestWebdavOwncloud:,TestWebdavRclone:
+// go run ./fstest/test_all -remotes local,TestCrypt:,TestDrive:,TestOneDrive:,TestOneDriveBusiness:,TestDropbox:,TestCryptDrive:,TestOpenDrive:,TestChunker:,:memory:,TestCryptNoEncryption:,TestCombine:DirA,TestFTPZclone:,TestWebdavZclone:,TestS3Zclone:,TestSFTPZclone:,TestSFTPZcloneSSH:,TestNextcloud:,TestChunkerNometaLocal:,TestChunkerChunk3bLocal:,TestChunkerLocal:,TestChunkerChunk3bNometaLocal:,TestStorj: -run '^TestBisync.*$' -timeout 3h -verbose -maxtries 5
+// go test -timeout 3h -run '^TestBisync.*$' zclone/cmd/bisync -remote TestDrive:Bisync -v
+// go test -timeout 3h -run '^TestBisyncRemoteRemote/basic$' zclone/cmd/bisync -remote TestDropbox:Bisync -v
+// TestFTPProftpd:,TestFTPPureftpd:,TestFTPZclone:,TestFTPVsftpd:,TestHdfs:,TestS3Minio:,TestS3MinioEdge:,TestS3Zclone:,TestSeafile:,TestSeafileEncrypted:,TestSeafileV6:,TestSFTPOpenssh:,TestSFTPZclone:,TestSFTPZcloneSSH:,TestSia:,TestSwiftAIO:,TestWebdavNextcloud:,TestWebdavOwncloud:,TestWebdavZclone:
 
 // logReplacements make modern test logs comparable with golden dir.
 // It is a string slice of even length with this structure:
@@ -80,10 +80,10 @@ var logReplacements = []string{
 	`^(<[1-9]>)(INFO  |ERROR |NOTICE|DEBUG ):(.*)$`, "$2:$3",
 	// skip log prefixes
 	`^\d+/\d\d/\d\d \d\d:\d\d:\d\d(?:\.\d{6})? `, "",
-	// ignore rclone info messages
+	// ignore zclone info messages
 	`^INFO  : .*?: (Deleted|Copied |Moved |Updated ).*$`, dropMe,
 	`^NOTICE: .*?: Replacing invalid UTF-8 characters in "[^"]*"$`, dropMe,
-	// ignore rclone debug messages
+	// ignore zclone debug messages
 	`^DEBUG : .*$`, dropMe,
 	// ignore SFTP host key messages
 	`^NOTICE: .*?No host key validation is being performed.*$`, dropMe,
@@ -124,7 +124,7 @@ var dryrunReplacements = []string{
 	`$1 copy (or update modification time) $3`,
 }
 
-// Some groups of log lines may appear unordered because rclone applies
+// Some groups of log lines may appear unordered because zclone applies
 // many operations in parallel to boost performance.
 var logHoppers = []string{
 	// Test case `dry-run` produced log mismatches due to non-deterministic
@@ -137,7 +137,7 @@ var logHoppers = []string{
 	`(?:INFO  |NOTICE): - Path[12] +File (?:was deleted|is new|is newer|is OLDER) +- .*`,
 
 	// Test case `check-access-filters` detected listing miscompares due
-	// to indeterminate order of rclone operations in presence of multiple
+	// to indeterminate order of zclone operations in presence of multiple
 	// subdirectories. The order inconsistency initially showed up in the
 	// listings and triggered reordering of log messages, but the actual
 	// files will in fact match.
@@ -850,7 +850,7 @@ func (b *bisyncTest) runTestStep(ctx context.Context, line string) (err error) {
 					}
 					fs.Debugf(nil, "Attempting to move %s to %s", oldName.Root(), new)
 					// Create random name to temporarily move dir to
-					tmpDirName := strings.TrimSuffix(new, slash) + "-rclone-move-" + random.String(8)
+					tmpDirName := strings.TrimSuffix(new, slash) + "-zclone-move-" + random.String(8)
 					var tmpDirFs fs.Fs
 					tmpDirFs, err = cache.Get(ctx, tmpDirName)
 					if err != nil {
@@ -980,20 +980,20 @@ func (b *bisyncTest) checkPreReqs(ctx context.Context, opt *bisync.Options) (con
 		b.t.Skip("skipping 'volatile' test on non-local as it requires uploading 100 files")
 	}
 	if strings.HasPrefix(b.fs1.String(), "Dropbox") || strings.HasPrefix(b.fs2.String(), "Dropbox") {
-		fs.GetConfig(ctx).RefreshTimes = true // https://rclone.org/bisync/#notes-about-testing
+		fs.GetConfig(ctx).RefreshTimes = true // https://zclone.org/bisync/#notes-about-testing
 	}
 	if strings.HasPrefix(b.fs1.String(), "Dropbox") {
-		b.fs1.Features().Disable("Copy") // https://github.com/rclone/rclone/issues/6199#issuecomment-1570366202
+		b.fs1.Features().Disable("Copy") // https://zclone/issues/6199#issuecomment-1570366202
 	}
 	if strings.HasPrefix(b.fs2.String(), "Dropbox") {
-		b.fs2.Features().Disable("Copy") // https://github.com/rclone/rclone/issues/6199#issuecomment-1570366202
+		b.fs2.Features().Disable("Copy") // https://zclone/issues/6199#issuecomment-1570366202
 	}
 	if strings.HasPrefix(b.fs1.String(), "OneDrive") {
-		b.fs1.Features().Disable("Copy") // API has longstanding bug for conflictBehavior=replace https://github.com/rclone/rclone/issues/4590
+		b.fs1.Features().Disable("Copy") // API has longstanding bug for conflictBehavior=replace https://zclone/issues/4590
 		b.fs1.Features().Disable("Move")
 	}
 	if strings.HasPrefix(b.fs2.String(), "OneDrive") {
-		b.fs2.Features().Disable("Copy") // API has longstanding bug for conflictBehavior=replace https://github.com/rclone/rclone/issues/4590
+		b.fs2.Features().Disable("Copy") // API has longstanding bug for conflictBehavior=replace https://zclone/issues/4590
 		b.fs2.Features().Disable("Move")
 	}
 	if strings.HasPrefix(b.fs1.String(), "sftp") {
@@ -1003,7 +1003,7 @@ func (b *bisyncTest) checkPreReqs(ctx context.Context, opt *bisync.Options) (con
 		b.fs2.Features().Disable("Copy") // disable --sftp-copy-is-hardlink as hardlinks are not truly copies
 	}
 	if strings.Contains(strings.ToLower(fs.ConfigString(b.fs1)), "mailru") || strings.Contains(strings.ToLower(fs.ConfigString(b.fs2)), "mailru") {
-		fs.GetConfig(ctx).TPSLimit = 10 // https://github.com/rclone/rclone/issues/7768#issuecomment-2060888980
+		fs.GetConfig(ctx).TPSLimit = 10 // https://zclone/issues/7768#issuecomment-2060888980
 	}
 	if (!b.fs1.Features().CanHaveEmptyDirectories || !b.fs2.Features().CanHaveEmptyDirectories) && (b.testCase == "createemptysrcdirs" || b.testCase == "rmdirs") {
 		b.t.Skip("skipping test as remote does not support empty dirs")
@@ -1308,7 +1308,7 @@ func (b *bisyncTest) copyFile(ctx context.Context, src, dst, asName string) (err
 	return operations.CopyFile(fctx, fdst, fsrc, dstFile, srcFile)
 }
 
-// listSubdirs is equivalent to `rclone lsf -R [--dirs-only]`
+// listSubdirs is equivalent to `zclone lsf -R [--dirs-only]`
 func (b *bisyncTest) listSubdirs(ctx context.Context, remote string, DirsOnly bool) error {
 	f, err := cache.Get(ctx, remote)
 	if err != nil {
@@ -1369,7 +1369,7 @@ func deleteFiles(ctx context.Context, f fs.Fs, glob string) error {
 
 // touchFiles sets modification time on a group of files.
 // Returns names of touched files and/or error.
-// Note: `rclone touch` can touch only single file, doesn't support filters.
+// Note: `zclone touch` can touch only single file, doesn't support filters.
 func touchFiles(ctx context.Context, dateStr string, f fs.Fs, dir, glob string) ([]string, error) {
 	files := []string{}
 	if f.Precision() == fs.ModTimeNotSupported {

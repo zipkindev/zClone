@@ -1,7 +1,7 @@
 test filters
 # Tests operation of bisync --filters-file flag.
 # Note that this test checks for bisync's access to and usage of the
-# filters file, not an extensive test of rclone's filter capability.
+# filters file, not an extensive test of zclone's filter capability.
 
 # Exclude fileZ.txt in root only.
 # The copy in the subdir should be found and synched.

@@ -12,15 +12,15 @@ import (
 	"time"
 
 	"github.com/a8m/tree"
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/dirtree"
-	"github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/fs/walk"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/terminal"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/dirtree"
+	"zclone/fs/log"
+	"zclone/fs/walk"
+	"zclone/lib/encoder"
+	"zclone/lib/terminal"
 )
 
 var (
@@ -74,7 +74,7 @@ var commandDefinition = &cobra.Command{
 For example
 
 ` + "```text" + `
-$ rclone tree remote:path
+$ zclone tree remote:path
 /
 ├── file1
 ├── file2
@@ -92,10 +92,10 @@ You can use any of the filtering options with the tree command (e.g.
 The tree command has many options for controlling the listing which
 are compatible with the tree command, for example you can include file
 sizes with ` + "`--size`" + `.  Note that not all of them have
-short options as they conflict with rclone's short options.
+short options as they conflict with zclone's short options.
 
 For a more interactive navigation of the remote see the
-[ncdu](/commands/rclone_ncdu/) command.`,
+[ncdu](/commands/zclone_ncdu/) command.`,
 	Annotations: map[string]string{
 		"versionIntroduced": "v1.38",
 		"groups":            "Filter,Listing",

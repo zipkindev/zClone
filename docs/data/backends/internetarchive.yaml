@@ -10,7 +10,7 @@ adoption: Widely used
 docs: Full
 security: High
 virtual: false
-remote: TestIA:rclone-integration-test
+remote: TestIA:zclone-integration-test
 features:
 - About
 - BucketBased

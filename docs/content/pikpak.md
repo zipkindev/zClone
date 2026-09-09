@@ -1,6 +1,6 @@
 ---
 title: "PikPak"
-description: "Rclone docs for PikPak"
+description: "Zclone docs for PikPak"
 versionIntroduced: "v1.62"
 ---
 
@@ -17,7 +17,7 @@ Here is an example of making a remote for PikPak.
 First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -92,7 +92,7 @@ Pikpak username.
 Properties:
 
 - Config:      user
-- Env Var:     RCLONE_PIKPAK_USER
+- Env Var:     ZCLONE_PIKPAK_USER
 - Type:        string
 - Required:    true
 
@@ -100,12 +100,12 @@ Properties:
 
 Pikpak password.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      pass
-- Env Var:     RCLONE_PIKPAK_PASS
+- Env Var:     ZCLONE_PIKPAK_PASS
 - Type:        string
 - Required:    true
 
@@ -120,7 +120,7 @@ Device ID used for authorization.
 Properties:
 
 - Config:      device_id
-- Env Var:     RCLONE_PIKPAK_DEVICE_ID
+- Env Var:     ZCLONE_PIKPAK_DEVICE_ID
 - Type:        string
 - Required:    false
 
@@ -133,7 +133,7 @@ Defaults to "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:129.0) Gecko/20100101 
 Properties:
 
 - Config:      user_agent
-- Env Var:     RCLONE_PIKPAK_USER_AGENT
+- Env Var:     ZCLONE_PIKPAK_USER_AGENT
 - Type:        string
 - Default:     "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:129.0) Gecko/20100101 Firefox/129.0"
 
@@ -142,13 +142,13 @@ Properties:
 ID of the root folder.
 Leave blank normally.
 
-Fill in for rclone to use a non root folder as its starting point.
+Fill in for zclone to use a non root folder as its starting point.
 
 
 Properties:
 
 - Config:      root_folder_id
-- Env Var:     RCLONE_PIKPAK_ROOT_FOLDER_ID
+- Env Var:     ZCLONE_PIKPAK_ROOT_FOLDER_ID
 - Type:        string
 - Required:    false
 
@@ -162,7 +162,7 @@ Use `--pikpak-use-trash=false` to delete files permanently instead.
 Properties:
 
 - Config:      use_trash
-- Env Var:     RCLONE_PIKPAK_USE_TRASH
+- Env Var:     ZCLONE_PIKPAK_USE_TRASH
 - Type:        bool
 - Default:     true
 
@@ -175,7 +175,7 @@ This will show trashed files in their original directory structure.
 Properties:
 
 - Config:      trashed_only
-- Env Var:     RCLONE_PIKPAK_TRASHED_ONLY
+- Env Var:     ZCLONE_PIKPAK_TRASHED_ONLY
 - Type:        bool
 - Default:     false
 
@@ -188,7 +188,7 @@ This avoids issues caused by invalid media links, but may reduce download speeds
 Properties:
 
 - Config:      no_media_link
-- Env Var:     RCLONE_PIKPAK_NO_MEDIA_LINK
+- Env Var:     ZCLONE_PIKPAK_NO_MEDIA_LINK
 - Type:        bool
 - Default:     false
 
@@ -199,7 +199,7 @@ Files bigger than this will be cached on disk to calculate hash if required.
 Properties:
 
 - Config:      hash_memory_limit
-- Env Var:     RCLONE_PIKPAK_HASH_MEMORY_LIMIT
+- Env Var:     ZCLONE_PIKPAK_HASH_MEMORY_LIMIT
 - Type:        SizeSuffix
 - Default:     10Mi
 
@@ -213,7 +213,7 @@ The minimum is 0 and the maximum is 5 GiB.
 Properties:
 
 - Config:      upload_cutoff
-- Env Var:     RCLONE_PIKPAK_UPLOAD_CUTOFF
+- Env Var:     ZCLONE_PIKPAK_UPLOAD_CUTOFF
 - Type:        SizeSuffix
 - Default:     200Mi
 
@@ -230,7 +230,7 @@ in memory.
 If you are transferring large files over high-speed links and you have
 enough memory, then increasing this will speed up the transfers.
 
-Rclone will automatically increase the chunk size when uploading a
+Zclone will automatically increase the chunk size when uploading a
 large file of known size to stay below the 10,000 chunks limit.
 
 Increasing the chunk size decreases the accuracy of the progress
@@ -239,7 +239,7 @@ statistics displayed with "-P" flag.
 Properties:
 
 - Config:      chunk_size
-- Env Var:     RCLONE_PIKPAK_CHUNK_SIZE
+- Env Var:     ZCLONE_PIKPAK_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     5Mi
 
@@ -261,7 +261,7 @@ this may help to speed up the transfers.
 Properties:
 
 - Config:      upload_concurrency
-- Env Var:     RCLONE_PIKPAK_UPLOAD_CONCURRENCY
+- Env Var:     ZCLONE_PIKPAK_UPLOAD_CONCURRENCY
 - Type:        int
 - Default:     4
 
@@ -274,7 +274,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_PIKPAK_ENCODING
+- Env Var:     ZCLONE_PIKPAK_ENCODING
 - Type:        Encoding
 - Default:     Slash,LtGt,DoubleQuote,Colon,Question,Asterisk,Pipe,BackSlash,Ctl,LeftSpace,RightSpace,RightPeriod,InvalidUtf8,Dot
 
@@ -285,7 +285,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_PIKPAK_DESCRIPTION
+- Env Var:     ZCLONE_PIKPAK_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -296,12 +296,12 @@ Here are the commands specific to the pikpak backend.
 Run them with:
 
 ```console
-rclone backend COMMAND remote:
+zclone backend COMMAND remote:
 ```
 
 The help below will explain what arguments each command takes.
 
-See the [backend](/commands/rclone_backend/) command for more
+See the [backend](/commands/zclone_backend/) command for more
 info on how to pass options and arguments.
 
 These can be run on a running backend using the rc command
@@ -312,7 +312,7 @@ These can be run on a running backend using the rc command
 Add offline download task for url.
 
 ```console
-rclone backend addurl remote: [options] [<arguments>+]
+zclone backend addurl remote: [options] [<arguments>+]
 ```
 
 This command adds offline download task for url.
@@ -320,8 +320,8 @@ This command adds offline download task for url.
 Usage examples:
 
 ```console
-rclone backend addurl pikpak:dirpath url
-rclone backend addurl pikpak:dirpath url -o name=custom_filename.zip
+zclone backend addurl pikpak:dirpath url
+zclone backend addurl pikpak:dirpath url -o name=custom_filename.zip
 ```
 
 Downloads will be stored in 'dirpath'. If 'dirpath' is invalid,
@@ -336,7 +336,7 @@ Options:
 Request decompress of a file/files in a folder.
 
 ```console
-rclone backend decompress remote: [options] [<arguments>+]
+zclone backend decompress remote: [options] [<arguments>+]
 ```
 
 This command requests decompress of file/files in a folder.
@@ -344,8 +344,8 @@ This command requests decompress of file/files in a folder.
 Usage examples:
 
 ```console
-rclone backend decompress pikpak:dirpath {filename} -o password=password
-rclone backend decompress pikpak:dirpath {filename} -o delete-src-file
+zclone backend decompress pikpak:dirpath {filename} -o password=password
+zclone backend decompress pikpak:dirpath {filename} -o delete-src-file
 ```
 
 An optional argument 'filename' can be specified for a file located in

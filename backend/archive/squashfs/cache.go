@@ -11,7 +11,7 @@ import (
 	"sync"
 
 	"github.com/diskfs/go-diskfs/backend"
-	"github.com/rclone/rclone/vfs"
+	"zclone/vfs"
 )
 
 // Cache file handles for accessing the file

@@ -27,37 +27,37 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/env"
-	"github.com/rclone/rclone/lib/oauthutil"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/readers"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	drive_v2 "google.golang.org/api/drive/v2"
 	drive "google.golang.org/api/drive/v3"
 	"google.golang.org/api/googleapi"
 	"google.golang.org/api/option"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/filter"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/fspath"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/fs/operations"
+	"zclone/lib/dircache"
+	"zclone/lib/encoder"
+	"zclone/lib/env"
+	"zclone/lib/oauthutil"
+	"zclone/lib/pacer"
+	"zclone/lib/readers"
 )
 
 // Constants
 const (
-	rcloneClientID              = "202264815644.apps.googleusercontent.com"
-	rcloneEncryptedClientSecret = "eX8GpZTVx3vxMWVkuuBdDWmAUE6rGhTwVrvG9GhllYccSdj2-mvHVg"
+	zcloneClientID              = "202264815644.apps.googleusercontent.com"
+	zcloneEncryptedClientSecret = "eX8GpZTVx3vxMWVkuuBdDWmAUE6rGhTwVrvG9GhllYccSdj2-mvHVg"
 	driveFolderType             = "application/vnd.google-apps.folder"
 	shortcutMimeType            = "application/vnd.google-apps.shortcut"
 	shortcutMimeTypeDangling    = "application/vnd.google-apps.shortcut.dangling" // synthetic mime type for internal use
@@ -85,8 +85,8 @@ var (
 		Scopes:       []string{scopePrefix + "drive"},
 		AuthURL:      google.Endpoint.AuthURL,
 		TokenURL:     google.Endpoint.TokenURL,
-		ClientID:     rcloneClientID,
-		ClientSecret: obscure.MustReveal(rcloneEncryptedClientSecret),
+		ClientID:     zcloneClientID,
+		ClientSecret: obscure.MustReveal(zcloneEncryptedClientSecret),
 		RedirectURL:  oauthutil.RedirectURL,
 	}
 	_mimeTypeToExtensionDuplicates = map[string]string{
@@ -208,10 +208,10 @@ func driveOAuthOptions() []fs.Option {
 	opts := []fs.Option{}
 	for _, opt := range oauthutil.SharedOptions {
 		if opt.Name == config.ConfigClientID {
-			opt.Help = "Google Application Client Id\nLeave blank to use rclone's shared client_id, or if you are using a service account.\nThe shared client_id is being retired and will stop working during 2026, so creating your own is now strongly recommended.\nSee https://rclone.org/drive/#making-your-own-client-id for how to create your own."
+			opt.Help = "Google Application Client Id\nLeave blank to use zclone's shared client_id, or if you are using a service account.\nThe shared client_id is being retired and will stop working during 2026, so creating your own is now strongly recommended.\nSee //drive/#making-your-own-client-id for how to create your own."
 		}
 		if opt.Name == config.ConfigClientSecret {
-			opt.Help = "Google Application Client Secret\nLeave blank to use rclone's shared client_id, or if you are using a service account.\nIf you created your own client_id then enter its client secret here."
+			opt.Help = "Google Application Client Secret\nLeave blank to use zclone's shared client_id, or if you are using a service account.\nIf you created your own client_id then enter its client secret here."
 		}
 		opts = append(opts, opt)
 	}
@@ -251,7 +251,7 @@ func init() {
 				if clientID, _ := m.Get(config.ConfigClientID); clientID != "" {
 					return fs.ConfigGoto("oauth")
 				}
-				return oauthutil.SharedClientIDConfigConfirm("client_id_warning", "Google Drive", "https://rclone.org/drive/#making-your-own-client-id")
+				return oauthutil.SharedClientIDConfigConfirm("client_id_warning", "Google Drive", "//drive/#making-your-own-client-id")
 			case "client_id_warning":
 				if configIn.Result == "true" {
 					// Continue using the shared client_id
@@ -319,7 +319,7 @@ Metadata is supported on files and directories.
 		},
 		Options: append(driveOAuthOptions(), []fs.Option{{
 			Name: "scope",
-			Help: "Comma separated list of scopes that rclone should use when requesting access from drive.",
+			Help: "Comma separated list of scopes that zclone should use when requesting access from drive.",
 			Examples: []fs.OptionExample{{
 				Value: "drive",
 				Help:  "Full access all files, excluding Application Data Folder.",
@@ -328,7 +328,7 @@ Metadata is supported on files and directories.
 				Help:  "Read-only access to file metadata and file contents.",
 			}, {
 				Value: "drive.file",
-				Help:  "Access to files created by rclone only.\nThese are visible in the drive website.\nFile authorization is revoked when the user deauthorizes the app.",
+				Help:  "Access to files created by zclone only.\nThese are visible in the drive website.\nFile authorization is revoked when the user deauthorizes the app.",
 			}, {
 				Value: "drive.appfolder",
 				Help:  "Allows read and write access to the Application Data folder.\nThis is not visible in the drive website.",
@@ -341,7 +341,7 @@ Metadata is supported on files and directories.
 			Help: `ID of the root folder.
 Leave blank normally.
 
-Fill in to access "Computers" folders (see docs), or for rclone to use
+Fill in to access "Computers" folders (see docs), or for zclone to use
 a non root folder as its starting point.
 `,
 			Advanced:  true,
@@ -376,16 +376,16 @@ a non root folder as its starting point.
 			Default: false,
 			Help: `Server side copy contents of shortcuts instead of the shortcut.
 
-When doing server side copies, normally rclone will copy shortcuts as
+When doing server side copies, normally zclone will copy shortcuts as
 shortcuts.
 
-If this flag is used then rclone will copy the contents of shortcuts
+If this flag is used then zclone will copy the contents of shortcuts
 rather than shortcuts themselves when doing server side copies.`,
 			Advanced: true,
 		}, {
 			Name:     "skip_gdocs",
 			Default:  false,
-			Help:     "Skip google documents in all listings.\n\nIf given, gdocs practically become invisible to rclone.",
+			Help:     "Skip google documents in all listings.\n\nIf given, gdocs practically become invisible to zclone.",
 			Advanced: true,
 		}, {
 			Name:    "show_all_gdocs",
@@ -399,10 +399,10 @@ will get this error:
 
 However adding this flag will allow the form to be server side copied.
 
-Note that rclone doesn't add extensions to the Google Docs file names
+Note that zclone doesn't add extensions to the Google Docs file names
 in this mode.
 
-Do **not** use this flag when trying to download Google Docs - rclone
+Do **not** use this flag when trying to download Google Docs - zclone
 will fail to download them.
 `,
 			Advanced: true,
@@ -427,7 +427,7 @@ not updating the checksum.`,
 			Default: false,
 			Help: `Only show files that are shared with me.
 
-Instructs rclone to operate on your "Shared with me" folder (where
+Instructs zclone to operate on your "Shared with me" folder (where
 Google Drive lets you access the files and folders others have shared
 with you).
 
@@ -539,8 +539,8 @@ Reducing this will reduce memory usage but decrease performance.`,
 
 If downloading a file returns the error "This file has been identified
 as malware or spam and cannot be downloaded" with the error code
-"cannotDownloadAbusiveFile" then supply this flag to rclone to
-indicate you acknowledge the risks of downloading the file and rclone
+"cannotDownloadAbusiveFile" then supply this flag to zclone to
+indicate you acknowledge the risks of downloading the file and zclone
 will download it anyway.
 
 Note that if you are using service account it will need Manager
@@ -565,7 +565,7 @@ forever.
 
 It is not recommended to set this flag in your config - the
 recommended usage is using the flag form --drive-size-as-quota when
-doing rclone ls/lsl/lsf/lsjson/etc only.
+doing zclone ls/lsl/lsf/lsjson/etc only.
 
 If you do use this flag for syncing (not recommended) then you will
 need to use --ignore size also.`,
@@ -608,7 +608,7 @@ HTTP/2.  HTTP/2 is therefore disabled by default for the drive backend
 but can be re-enabled here.  When the issue is solved this flag will
 be removed.
 
-See: https://github.com/rclone/rclone/issues/3631
+See: /
 
 `,
 			Advanced: true,
@@ -626,7 +626,7 @@ the in-progress sync.
 Note that this detection is relying on error message strings which
 Google don't document so it may break in the future.
 
-See: https://github.com/rclone/rclone/issues/3857
+See: /
 `,
 			Advanced: true,
 		}, {
@@ -648,9 +648,9 @@ Google don't document so it may break in the future.
 			Name: "skip_shortcuts",
 			Help: `If set skip shortcut files.
 
-Normally rclone dereferences shortcut files making them appear as if
+Normally zclone dereferences shortcut files making them appear as if
 they are the original file (see [the shortcuts section](#shortcuts)).
-If this flag is set then rclone will ignore shortcut files completely.
+If this flag is set then zclone will ignore shortcut files completely.
 `,
 			Advanced: true,
 			Default:  false,
@@ -658,7 +658,7 @@ If this flag is set then rclone will ignore shortcut files completely.
 			Name: "skip_dangling_shortcuts",
 			Help: `If set skip dangling shortcut files.
 
-If this is set then rclone will not show any dangling shortcuts in listings.
+If this is set then zclone will not show any dangling shortcuts in listings.
 `,
 			Advanced: true,
 			Default:  false,
@@ -679,7 +679,7 @@ See: https://developers.google.com/drive/api/guides/resource-keys
 This resource key requirement only applies to a subset of old files.
 
 Note also that opening the folder once in the web interface (with the
-user you've authenticated rclone with) seems to be enough so that the
+user you've authenticated zclone with) seems to be enough so that the
 resource key is not needed.
 `,
 			Advanced:  true,
@@ -688,15 +688,15 @@ resource key is not needed.
 			Name: "fast_list_bug_fix",
 			Help: `Work around a bug in Google Drive listing.
 
-Normally rclone will work around a bug in Google Drive when using
+Normally zclone will work around a bug in Google Drive when using
 --fast-list (ListR) where the search "(A in parents) or (B in
 parents)" returns nothing sometimes. See #3114, #4289 and
 https://issuetracker.google.com/issues/149522397
 
-Rclone detects this by finding no items in more than one directory
+Zclone detects this by finding no items in more than one directory
 when listing and retries them as lists of individual directories.
 
-This means that if you have a lot of empty directories rclone will end
+This means that if you have a lot of empty directories zclone will end
 up listing them all individually and this can take many more API
 calls.
 
@@ -728,7 +728,7 @@ organization.
 Reading permissions metadata from files can be done quickly, but it
 isn't always desirable to set the permissions from the metadata.
 
-Note that rclone drops any inherited permissions on Shared Drives and
+Note that zclone drops any inherited permissions on Shared Drives and
 any owner permission on My Drives as these are duplicated in the owner
 metadata.
 `,
@@ -745,9 +745,9 @@ from the metadata.
 
 The format of labels is documented in the drive API documentation at
 https://developers.google.com/drive/api/reference/rest/v3/Label -
-rclone just provides a JSON dump of this format.
+zclone just provides a JSON dump of this format.
 
-When setting labels, the label and fields must already exist - rclone
+When setting labels, the label and fields must already exist - zclone
 will not create them. This means that if you are transferring labels
 from two different accounts you will have to create the labels in
 advance and use the metadata mapper to translate the IDs between the
@@ -1325,7 +1325,7 @@ func createOAuthClient(ctx context.Context, opt *Options, name string, m configm
 			return nil, fmt.Errorf("failed to create client from environment: %w", err)
 		}
 	} else {
-		oauthutil.SharedClientIDWarning(name, "Google Drive", "https://rclone.org/drive/#making-your-own-client-id", m)
+		oauthutil.SharedClientIDWarning(name, "Google Drive", "//drive/#making-your-own-client-id", m)
 		oAuthClient, _, err = oauthutil.NewClientWithBaseClient(ctx, name, m, driveConfig, getClient(ctx, opt))
 		if err != nil {
 			return nil, fmt.Errorf("failed to create oauth client: %w", err)
@@ -1521,7 +1521,7 @@ func NewFs(ctx context.Context, name, path string, m configmap.Mapper) (fs.Fs, e
 		}
 		// XXX: update the old f here instead of returning tempF, since
 		// `features` were already filled with functions having *f as a receiver.
-		// See https://github.com/rclone/rclone/issues/2182
+		// See /
 		f.dirCache = tempF.dirCache
 		f.root = tempF.root
 		return f, fs.ErrorIsFile
@@ -2468,7 +2468,7 @@ func (f *Fs) itemToDirEntry(ctx context.Context, remote string, item *drive.File
 	switch {
 	case item.MimeType == driveFolderType:
 		// A folder shortcut pointing at one of its own ancestors
-		// would make rclone recurse forever, so drop it.
+		// would make zclone recurse forever, so drop it.
 		if isShortcutID(item.Id) && f.shortcutLoop(remote, actualID(item.Id)) {
 			fs.Errorf(remote, "Ignoring folder shortcut as it points to an ancestor directory creating a loop")
 			return nil, nil
@@ -2910,7 +2910,7 @@ func (f *Fs) Copy(ctx context.Context, src fs.Object, remote string) (fs.Object,
 		return nil, err
 	}
 	// Google docs aren't preserving their mod time after copy, so set them explicitly
-	// See: https://github.com/rclone/rclone/issues/4517
+	// See: /
 	//
 	// FIXME remove this when google fixes the problem!
 	if isDoc {
@@ -3622,7 +3622,7 @@ func (f *Fs) copyOrMoveID(ctx context.Context, operation string, id, dest string
 		return fmt.Errorf("couldn't find id: %w", err)
 	}
 	if info.MimeType == driveFolderType {
-		return fmt.Errorf("can't %s directory use: rclone %s --drive-root-folder-id %s %s %s", operation, operation, id, fs.ConfigString(f), dest)
+		return fmt.Errorf("can't %s directory use: zclone %s --drive-root-folder-id %s %s %s", operation, operation, id, fs.ConfigString(f), dest)
 	}
 	info.Name = f.opt.Enc.ToStandardName(info.Name)
 	o, err := f.newObjectWithInfo(ctx, info.Name, info)
@@ -3753,8 +3753,8 @@ parameters.
 Usage examples:
 
 ` + "```console" + `
-rclone backend get drive: [-o service_account_file] [-o chunk_size]
-rclone rc backend/command command=get fs=drive: [-o service_account_file] [-o chunk_size]
+zclone backend get drive: [-o service_account_file] [-o chunk_size]
+zclone rc backend/command command=get fs=drive: [-o service_account_file] [-o chunk_size]
 ` + "```",
 	Opts: map[string]string{
 		"chunk_size":           "Show the current upload chunk size.",
@@ -3769,8 +3769,8 @@ parameters.
 Usage examples:
 
 ` + "```console" + `
-rclone backend set drive: [-o service_account_file=sa.json] [-o chunk_size=67108864]
-rclone rc backend/command command=set fs=drive: [-o service_account_file=sa.json] [-o chunk_size=67108864]
+zclone backend set drive: [-o service_account_file=sa.json] [-o chunk_size=67108864]
+zclone rc backend/command command=set fs=drive: [-o service_account_file=sa.json] [-o chunk_size=67108864]
 ` + "```",
 	Opts: map[string]string{
 		"chunk_size":           "Update the current upload chunk size.",
@@ -3784,8 +3784,8 @@ rclone rc backend/command command=set fs=drive: [-o service_account_file=sa.json
 Usage examples:
 
 ` + "```console" + `
-rclone backend shortcut drive: source_item destination_shortcut
-rclone backend shortcut drive: source_item -o target=drive2: destination_shortcut
+zclone backend shortcut drive: source_item destination_shortcut
+zclone backend shortcut drive: source_item -o target=drive2: destination_shortcut
 ` + "```" + `
 
 In the first example this creates a shortcut from the "source_item"
@@ -3809,7 +3809,7 @@ account.
 Usage example:
 
 ` + "```console" + `
-rclone backend [-o config] drives drive:
+zclone backend [-o config] drives drive:
 ` + "```" + `
 
 This will return a JSON list of objects like this:
@@ -3847,7 +3847,7 @@ type = combine
 upstreams = "My Drive=My Drive:" "Test Drive=Test Drive:"
 ` + "```" + `
 
-Adding this to the rclone config file will cause those team drives to
+Adding this to the zclone config file will cause those team drives to
 be accessible with the aliases shown. Any illegal characters will be
 substituted with "_" and duplicate names will have numbers suffixed.
 It will also add a remote called AllDrives which shows all the shared
@@ -3861,8 +3861,8 @@ passed in recursively.
 Usage example:
 
 ` + "```console" + `
-rclone backend untrash drive:directory
-rclone backend --interactive untrash drive:directory subdir
+zclone backend untrash drive:directory
+zclone backend --interactive untrash drive:directory subdir
 ` + "```" + `
 
 This takes an optional directory to trash which make this easier to
@@ -3887,12 +3887,12 @@ Result:
 Usage examples:
 
 ` + "```console" + `
-rclone backend copyid drive: ID path
-rclone backend copyid drive: ID1 path1 ID2 path2
+zclone backend copyid drive: ID path
+zclone backend copyid drive: ID1 path1 ID2 path2
 ` + "```" + `
 
-It copies the drive file with ID given to the path (an rclone path which
-will be passed internally to rclone copyto). The ID and path pairs can be
+It copies the drive file with ID given to the path (an zclone path which
+will be passed internally to zclone copyto). The ID and path pairs can be
 repeated.
 
 The path should end with a / to indicate copy the file as named to
@@ -3912,12 +3912,12 @@ copying.`,
 Usage examples:
 
 ` + "```console" + `
-rclone backend moveid drive: ID path
-rclone backend moveid drive: ID1 path1 ID2 path2
+zclone backend moveid drive: ID path
+zclone backend moveid drive: ID1 path1 ID2 path2
 ` + "```" + `
 
-It moves the drive file with ID given to the path (an rclone path which
-will be passed internally to rclone moveto).
+It moves the drive file with ID given to the path (an zclone path which
+will be passed internally to zclone moveto).
 
 The path should end with a / to indicate move the file as named to
 this directory. If it doesn't end with a / then the last path
@@ -3941,7 +3941,7 @@ Use the --interactive/-i or --dry-run flag to see what would be moved beforehand
 Usage example:
 
 ` + "```console" + `
-rclone backend query drive: query
+zclone backend query drive: query
 ` + "```" + `
 
 The query syntax is documented at [Google Drive Search query terms and 
@@ -3950,7 +3950,7 @@ operators](https://developers.google.com/drive/api/guides/ref-search-terms).
 For example:
 
 ` + "```console" + `
-rclone backend query drive: "'0ABc9DEFGHIJKLMNop0QRatUVW3X' in parents and name contains 'foo'"
+zclone backend query drive: "'0ABc9DEFGHIJKLMNop0QRatUVW3X' in parents and name contains 'foo'"
 ` + "```" + `
 
 If the query contains literal ' or \ characters, these need to be escaped with
@@ -3958,7 +3958,7 @@ If the query contains literal ' or \ characters, these need to be escaped with
 file named "foo ' \.txt":
 
 ` + "```console" + `
-rclone backend query drive: "name = 'foo \' \\\.txt'"
+zclone backend query drive: "name = 'foo \' \\\.txt'"
 ` + "```" + `
 
 The result is a JSON array of matches, for example:
@@ -3998,25 +3998,25 @@ This can be used in 3 ways.
 First, list all orphaned files:
 
 ` + "```console" + `
-rclone backend rescue drive:
+zclone backend rescue drive:
 ` + "```" + `
 
 Second rescue all orphaned files to the directory indicated:
 
 ` + "```console" + `
-rclone backend rescue drive: "relative/path/to/rescue/directory"
+zclone backend rescue drive: "relative/path/to/rescue/directory"
 ` + "```" + `
 
 E.g. to rescue all orphans to a directory called "Orphans" in the top level:
 
 ` + "```console" + `
-rclone backend rescue drive: Orphans
+zclone backend rescue drive: Orphans
 ` + "```" + `
 
 Third delete all orphaned files to the trash:
 
 ` + "```console" + `
-rclone backend rescue drive: -o delete
+zclone backend rescue drive: -o delete
 ` + "```",
 }}
 
@@ -4436,7 +4436,7 @@ func (o *Object) Open(ctx context.Context, options ...fs.OpenOption) (in io.Read
 
 func (o *documentObject) Open(ctx context.Context, options ...fs.OpenOption) (in io.ReadCloser, err error) {
 	// Update the size with what we are reading as it can change from
-	// the HEAD in the listing to this GET. This stops rclone marking
+	// the HEAD in the listing to this GET. This stops zclone marking
 	// the transfer as corrupted.
 	var offset, end int64 = 0, -1
 	newOptions := options[:0]

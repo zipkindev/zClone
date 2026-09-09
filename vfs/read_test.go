@@ -6,9 +6,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/rclone/rclone/fstest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fstest"
 )
 
 // Open a file for write

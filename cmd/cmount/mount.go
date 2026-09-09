@@ -1,6 +1,6 @@
 //go:build cmount && ((linux && cgo) || (darwin && cgo) || (freebsd && cgo) || (openbsd && cgo) || windows)
 
-// Package cmount implements a FUSE mounting system for rclone remotes.
+// Package cmount implements a FUSE mounting system for zclone remotes.
 //
 // This uses the cgo based cgofuse library
 package cmount
@@ -13,17 +13,17 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/cmd/mountlib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/buildinfo"
-	"github.com/rclone/rclone/vfs"
 	"github.com/winfsp/cgofuse/fuse"
+	"zclone/cmd/mountlib"
+	"zclone/fs"
+	"zclone/lib/atexit"
+	"zclone/lib/buildinfo"
+	"zclone/vfs"
 )
 
 func init() {
 	name := "cmount"
-	cmountOnly := runtime.GOOS != "linux" // rclone mount only works for linux
+	cmountOnly := runtime.GOOS != "linux" // zclone mount only works for linux
 	if cmountOnly {
 		name = "mount"
 	}
@@ -48,7 +48,7 @@ func mountOptions(VFS *vfs.VFS, device string, mountpoint string, opt *mountlib.
 	if runtime.GOOS == "windows" {
 		options = append(options, "-o", "uid=-1")
 		options = append(options, "-o", "gid=-1")
-		options = append(options, "--FileSystemName=rclone")
+		options = append(options, "--FileSystemName=zclone")
 		if opt.VolumeName != "" {
 			if opt.NetworkMode {
 				options = append(options, "--VolumePrefix="+opt.VolumeName)
@@ -58,7 +58,7 @@ func mountOptions(VFS *vfs.VFS, device string, mountpoint string, opt *mountlib.
 		}
 	} else {
 		options = append(options, "-o", "fsname="+device)
-		options = append(options, "-o", "subtype=rclone")
+		options = append(options, "-o", "subtype=zclone")
 		if runtime.GOOS != "openbsd" {
 			options = append(options, "-o", fmt.Sprintf("max_readahead=%d", opt.MaxReadAhead))
 			// This causes FUSE to supply O_TRUNC with the Open

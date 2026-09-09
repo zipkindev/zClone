@@ -1,6 +1,6 @@
 ---
 title: "HiDrive"
-description: "Rclone docs for HiDrive"
+description: "Zclone docs for HiDrive"
 versionIntroduced: "v1.59"
 ---
 
@@ -12,14 +12,14 @@ Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 
 The initial setup for hidrive involves getting a token from HiDrive
 which you need to do in your browser.
-`rclone config` walks you through it.
+`zclone config` walks you through it.
 
 ## Configuration
 
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -42,18 +42,18 @@ OAuth Client Id - Leave blank normally.
 client_id>
 OAuth Client Secret - Leave blank normally.
 client_secret>
-Access permissions that rclone should use when requesting access from HiDrive.
+Access permissions that zclone should use when requesting access from HiDrive.
 Leave blank normally.
 scope_access>
 Edit advanced config?
 y/n> n
-Use web browser to automatically authenticate rclone with remote?
- * Say Y if the machine running rclone has a web browser you can use
- * Say N if running rclone on a (remote) machine without web browser access
+Use web browser to automatically authenticate zclone with remote?
+ * Say Y if the machine running zclone has a web browser you can use
+ * Say N if running zclone on a (remote) machine without web browser access
 If not sure try Y. If Y failed, try N.
 y/n> y
 If your browser doesn't open automatically go to the following link: http://127.0.0.1:53682/auth?state=xxxxxxxxxxxxxxxxxxxxxx
-Log in and authorize rclone for access
+Log in and authorize zclone for access
 Waiting for code...
 Got code
 Configuration complete.
@@ -74,42 +74,42 @@ See the [below section](#keeping-your-tokens-safe) for more information.
 See the [remote setup docs](/remote_setup/) for how to set it up on a
 machine without an internet-connected web browser available.
 
-Note that rclone runs a webserver on your local machine to collect the
+Note that zclone runs a webserver on your local machine to collect the
 token as returned from HiDrive. This only runs from the moment it opens
 your browser to the moment you get back the verification code.
 The webserver runs on `http://127.0.0.1:53682/`.
 If local port `53682` is protected by a firewall you may need to temporarily
 unblock the firewall to complete authorization.
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 List directories in top level of your HiDrive root folder
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your HiDrive filesystem
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 To copy a local directory to a HiDrive directory called backup
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
 ### Keeping your tokens safe
 
-Any OAuth-tokens will be stored by rclone in the remote's configuration file as
+Any OAuth-tokens will be stored by zclone in the remote's configuration file as
 unencrypted text. Anyone can use a valid refresh-token to access your HiDrive
 filesystem without knowing your password. Therefore you should make sure no one
 else can access your configuration.
 
-It is possible to encrypt rclone's configuration file.
+It is possible to encrypt zclone's configuration file.
 You can find information on securing your configuration file by viewing the
 [configuration encryption docs](/docs/#configuration-encryption).
 
@@ -123,15 +123,15 @@ This means that if you
 
 - Don't use the HiDrive remote for 60 days
 
-then rclone will return an error which includes a text
+then zclone will return an error which includes a text
 that implies the refresh token is *invalid* or *expired*.
 
-To fix this you will need to authorize rclone to access your HiDrive account again.
+To fix this you will need to authorize zclone to access your HiDrive account again.
 
 Using
 
 ```console
-rclone config reconnect remote:
+zclone config reconnect remote:
 ```
 
 the process is very similar to the process of initial setup exemplified before.
@@ -150,7 +150,7 @@ HiDrive cannot store files or folders that include
 Any other characters can be used in the names of files or folders.
 Additionally, files or folders cannot be named either of the following: `.` or `..`
 
-Therefore rclone will automatically replace these characters,
+Therefore zclone will automatically replace these characters,
 if files or folders are stored or accessed with such names.
 
 You can read about how this filename encoding works in general
@@ -164,7 +164,7 @@ with a length of 255 characters or less.
 HiDrive limits file sizes per single request to a maximum of 2 GiB.
 To allow storage of larger files and allow for better upload performance,
 the hidrive backend will use a chunked transfer for files larger than 96 MiB.
-Rclone will upload multiple parts/chunks of the file at the same time.
+Zclone will upload multiple parts/chunks of the file at the same time.
 Chunks in the process of being uploaded are buffered in memory,
 so you may want to restrict this behaviour on systems with limited resources.
 
@@ -178,28 +178,28 @@ See the below section about configuration options for more details.
 
 ### Root folder
 
-You can set the root folder for rclone.
-This is the directory that rclone considers to be the root of your HiDrive.
+You can set the root folder for zclone.
+This is the directory that zclone considers to be the root of your HiDrive.
 
-Usually, you will leave this blank, and rclone will use the root of the account.
+Usually, you will leave this blank, and zclone will use the root of the account.
 
-However, you can set this to restrict rclone to a specific folder hierarchy.
+However, you can set this to restrict zclone to a specific folder hierarchy.
 
 This works by prepending the contents of the `root_prefix` option
-to any paths accessed by rclone.
+to any paths accessed by zclone.
 For example, the following two ways to access the home directory are equivalent:
 
 ```console
-rclone lsd --hidrive-root-prefix="/users/test/" remote:path
-rclone lsd remote:/users/test/path
+zclone lsd --hidrive-root-prefix="/users/test/" remote:path
+zclone lsd remote:/users/test/path
 ```
 
 See the below section about configuration options for more details.
 
 ### Directory member count
 
-By default, rclone will know the number of directory members contained in a directory.
-For example, `rclone lsd` uses this information.
+By default, zclone will know the number of directory members contained in a directory.
+For example, `zclone lsd` uses this information.
 
 The acquisition of this information will result in additional time costs for
 HiDrive's API. When dealing with large directory structures, it may be
@@ -222,7 +222,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_id
-- Env Var:     RCLONE_HIDRIVE_CLIENT_ID
+- Env Var:     ZCLONE_HIDRIVE_CLIENT_ID
 - Type:        string
 - Required:    false
 
@@ -235,18 +235,18 @@ Leave blank normally.
 Properties:
 
 - Config:      client_secret
-- Env Var:     RCLONE_HIDRIVE_CLIENT_SECRET
+- Env Var:     ZCLONE_HIDRIVE_CLIENT_SECRET
 - Type:        string
 - Required:    false
 
 #### --hidrive-scope-access
 
-Access permissions that rclone should use when requesting access from HiDrive.
+Access permissions that zclone should use when requesting access from HiDrive.
 
 Properties:
 
 - Config:      scope_access
-- Env Var:     RCLONE_HIDRIVE_SCOPE_ACCESS
+- Env Var:     ZCLONE_HIDRIVE_SCOPE_ACCESS
 - Type:        string
 - Default:     "rw"
 - Examples:
@@ -266,7 +266,7 @@ OAuth Access Token as a JSON blob.
 Properties:
 
 - Config:      token
-- Env Var:     RCLONE_HIDRIVE_TOKEN
+- Env Var:     ZCLONE_HIDRIVE_TOKEN
 - Type:        string
 - Required:    false
 
@@ -279,7 +279,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      auth_url
-- Env Var:     RCLONE_HIDRIVE_AUTH_URL
+- Env Var:     ZCLONE_HIDRIVE_AUTH_URL
 - Type:        string
 - Required:    false
 
@@ -292,7 +292,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      token_url
-- Env Var:     RCLONE_HIDRIVE_TOKEN_URL
+- Env Var:     ZCLONE_HIDRIVE_TOKEN_URL
 - Type:        string
 - Required:    false
 
@@ -307,18 +307,18 @@ Note that this option is NOT supported by all backends.
 Properties:
 
 - Config:      client_credentials
-- Env Var:     RCLONE_HIDRIVE_CLIENT_CREDENTIALS
+- Env Var:     ZCLONE_HIDRIVE_CLIENT_CREDENTIALS
 - Type:        bool
 - Default:     false
 
 #### --hidrive-scope-role
 
-User-level that rclone should use when requesting access from HiDrive.
+User-level that zclone should use when requesting access from HiDrive.
 
 Properties:
 
 - Config:      scope_role
-- Env Var:     RCLONE_HIDRIVE_SCOPE_ROLE
+- Env Var:     ZCLONE_HIDRIVE_SCOPE_ROLE
 - Type:        string
 - Default:     "user"
 - Examples:
@@ -335,18 +335,18 @@ Properties:
 The root/parent folder for all paths.
 
 Fill in to use the specified folder as the parent for all paths given to the remote.
-This way rclone can use any folder as its starting point.
+This way zclone can use any folder as its starting point.
 
 Properties:
 
 - Config:      root_prefix
-- Env Var:     RCLONE_HIDRIVE_ROOT_PREFIX
+- Env Var:     ZCLONE_HIDRIVE_ROOT_PREFIX
 - Type:        string
 - Default:     "/"
 - Examples:
   - "/"
-    - The topmost directory accessible by rclone.
-    - This will be equivalent with "root" if rclone uses a regular HiDrive user account.
+    - The topmost directory accessible by zclone.
+    - This will be equivalent with "root" if zclone uses a regular HiDrive user account.
   - "root"
     - The topmost directory of the HiDrive user account
   - ""
@@ -362,7 +362,7 @@ This is the URL that API-calls will be made to.
 Properties:
 
 - Config:      endpoint
-- Env Var:     RCLONE_HIDRIVE_ENDPOINT
+- Env Var:     ZCLONE_HIDRIVE_ENDPOINT
 - Type:        string
 - Default:     "https://api.hidrive.strato.com/2.1"
 
@@ -375,7 +375,7 @@ Requests may be faster if the number of objects in subdirectories is not fetched
 Properties:
 
 - Config:      disable_fetching_member_count
-- Env Var:     RCLONE_HIDRIVE_DISABLE_FETCHING_MEMBER_COUNT
+- Env Var:     ZCLONE_HIDRIVE_DISABLE_FETCHING_MEMBER_COUNT
 - Type:        bool
 - Default:     false
 
@@ -395,7 +395,7 @@ It can be set to smaller values smaller to save on memory.
 Properties:
 
 - Config:      chunk_size
-- Env Var:     RCLONE_HIDRIVE_CHUNK_SIZE
+- Env Var:     ZCLONE_HIDRIVE_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     48Mi
 
@@ -412,7 +412,7 @@ Setting this above the upper limit will cause uploads to fail.
 Properties:
 
 - Config:      upload_cutoff
-- Env Var:     RCLONE_HIDRIVE_UPLOAD_CUTOFF
+- Env Var:     ZCLONE_HIDRIVE_UPLOAD_CUTOFF
 - Type:        SizeSuffix
 - Default:     96Mi
 
@@ -430,7 +430,7 @@ this may help to speed up the transfers.
 Properties:
 
 - Config:      upload_concurrency
-- Env Var:     RCLONE_HIDRIVE_UPLOAD_CONCURRENCY
+- Env Var:     ZCLONE_HIDRIVE_UPLOAD_CONCURRENCY
 - Type:        int
 - Default:     4
 
@@ -443,7 +443,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_HIDRIVE_ENCODING
+- Env Var:     ZCLONE_HIDRIVE_ENCODING
 - Type:        Encoding
 - Default:     Slash,Dot
 
@@ -454,7 +454,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_HIDRIVE_DESCRIPTION
+- Env Var:     ZCLONE_HIDRIVE_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -469,12 +469,12 @@ for example, when unpacked from a zip archive.
 
 There exists no direct mechanism to manage native symlinks in remotes.
 As such this implementation has chosen to ignore any native symlinks present in
-the remote. rclone will not be able to access or show any symlinks stored in
+the remote. zclone will not be able to access or show any symlinks stored in
 the hidrive-remote. This means symlinks cannot be individually removed, copied,
 or moved, except when removing, copying, or moving the parent folder.
 
-*This does not affect the `.rclonelink`-files
-that rclone uses to encode and store symbolic links.*
+*This does not affect the `.zclonelink`-files
+that zclone uses to encode and store symbolic links.*
 
 ### Sparse files
 

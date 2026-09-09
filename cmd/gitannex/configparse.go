@@ -5,9 +5,9 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/fspath"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/fspath"
 )
 
 type configID int
@@ -28,33 +28,33 @@ type configDefinition struct {
 }
 
 const (
-	defaultRclonePrefix = "git-annex-rclone"
-	defaultRcloneLayout = "nodir"
+	defaultZclonePrefix = "git-annex-zclone"
+	defaultZcloneLayout = "nodir"
 )
 
 var requiredConfigs = []configDefinition{
 	{
 		id:    configRemoteName,
-		names: []string{"rcloneremotename", "target"},
-		description: "Name of the rclone remote to use. " +
-			"Must match a remote known to rclone. " +
-			"(Note that rclone remotes are a distinct concept from git-annex remotes.)",
+		names: []string{"zcloneremotename", "target"},
+		description: "Name of the zclone remote to use. " +
+			"Must match a remote known to zclone. " +
+			"(Note that zclone remotes are a distinct concept from git-annex remotes.)",
 	},
 	{
 		id:    configPrefix,
-		names: []string{"rcloneprefix", "prefix"},
-		description: "Directory where rclone will write git-annex content. " +
-			fmt.Sprintf("If not specified, defaults to %q. ", defaultRclonePrefix) +
+		names: []string{"zcloneprefix", "prefix"},
+		description: "Directory where zclone will write git-annex content. " +
+			fmt.Sprintf("If not specified, defaults to %q. ", defaultZclonePrefix) +
 			"This directory will be created on init if it does not exist.",
-		defaultValue: defaultRclonePrefix,
+		defaultValue: defaultZclonePrefix,
 	},
 	{
 		id:    configLayout,
-		names: []string{"rclonelayout", "rclone_layout"},
-		description: "Defines where, within the rcloneprefix directory, rclone will write git-annex content. " +
+		names: []string{"zclonelayout", "zclone_layout"},
+		description: "Defines where, within the zcloneprefix directory, zclone will write git-annex content. " +
 			fmt.Sprintf("Must be one of %v. ", allLayoutModes()) +
-			fmt.Sprintf("If empty, defaults to %q.", defaultRcloneLayout),
-		defaultValue: defaultRcloneLayout,
+			fmt.Sprintf("If empty, defaults to %q.", defaultZcloneLayout),
+		defaultValue: defaultZcloneLayout,
 	},
 }
 
@@ -78,7 +78,7 @@ func (c *configDefinition) fullDescription() string {
 	return fmt.Sprintf("(synonyms: %s) %s", commaSeparatedSynonyms, c.description)
 }
 
-// validateRemoteName validates the "rcloneremotename" config that we receive
+// validateRemoteName validates the "zcloneremotename" config that we receive
 // from git-annex. It returns nil iff `value` is valid. Otherwise, it returns a
 // descriptive error suitable for sending back to git-annex via stdout.
 //
@@ -86,7 +86,7 @@ func (c *configDefinition) fullDescription() string {
 //  1. It is the exact name of an existing remote.
 //  2. It is an fspath string that names an existing remote or a backend. The
 //     string may include options, but it must not include a path. (That's what
-//     the "rcloneprefix" config is for.)
+//     the "zcloneprefix" config is for.)
 //
 // While backends are not remote names, per se, they are permitted for
 // compatibility with [fstest]. We could guard this behavior behind

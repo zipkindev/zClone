@@ -1,4 +1,4 @@
-// Package cmd implements the rclone command
+// Package cmd implements the zclone command
 //
 // It is in a sub package so it's internals can be reused elsewhere
 package cmd
@@ -20,25 +20,25 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/config/configfile"
-	"github.com/rclone/rclone/fs/config/configflags"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fspath"
-	fslog "github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/fs/rc/rcserver"
-	fssync "github.com/rclone/rclone/fs/sync"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/buildinfo"
-	"github.com/rclone/rclone/lib/exitcode"
-	"github.com/rclone/rclone/lib/terminal"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/cache"
+	"zclone/fs/config/configfile"
+	"zclone/fs/config/configflags"
+	"zclone/fs/config/flags"
+	"zclone/fs/filter"
+	"zclone/fs/fserrors"
+	"zclone/fs/fspath"
+	fslog "zclone/fs/log"
+	"zclone/fs/rc"
+	"zclone/fs/rc/rcserver"
+	fssync "zclone/fs/sync"
+	"zclone/lib/atexit"
+	"zclone/lib/buildinfo"
+	"zclone/lib/exitcode"
+	"zclone/lib/terminal"
 )
 
 // Globals
@@ -68,7 +68,7 @@ func ShowVersion() {
 
 	arch := buildinfo.GetArch()
 
-	fmt.Printf("rclone %s\n", fs.Version)
+	fmt.Printf("%s %s\n", fs.AppName, fs.Version)
 	fmt.Printf("- os/version: %s\n", osVersion)
 	fmt.Printf("- os/kernel: %s\n", osKernel)
 	fmt.Printf("- os/type: %s\n", runtime.GOOS)
@@ -414,11 +414,11 @@ func initConfig() {
 	}
 
 	// Write the args for debug purposes
-	fs.Debugf("rclone", "Version %q starting with parameters %q", fs.Version, os.Args)
+	fs.Debugf("zclone", "Version %q starting with parameters %q", fs.Version, os.Args)
 
 	// Inform user about systemd log support now that we have a logger
 	if fslog.Opt.LogSystemdSupport {
-		fs.Debugf("rclone", "systemd logging support activated")
+		fs.Debugf("zclone", "systemd logging support activated")
 	}
 
 	// Start the remote control server if configured
@@ -532,7 +532,7 @@ func AddBackendFlags() {
 	}
 }
 
-// Main runs rclone interpreting flags and commands out of os.Args
+// Main runs the command interpreting flags and commands out of os.Args.
 func Main() {
 	setupRootCommand(Root)
 	AddBackendFlags()

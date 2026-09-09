@@ -1,6 +1,6 @@
 //go:build !plan9
 
-// Package create implements 'rclone archive create'.
+// Package create implements 'zclone archive create'.
 package create
 
 import (
@@ -15,15 +15,15 @@ import (
 	"time"
 
 	"github.com/mholt/archives"
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/archive"
-	"github.com/rclone/rclone/cmd/archive/files"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/walk"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/cmd/archive"
+	"zclone/cmd/archive/files"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/filter"
+	"zclone/fs/operations"
+	"zclone/fs/walk"
 )
 
 var (
@@ -50,7 +50,7 @@ Creates an archive from the files in source:path and saves the archive to
 dest:path. If dest:path is missing, it will write to the console.
 
 The valid formats for the !--format! flag are listed below. If
-!--format! is not set rclone will guess it from the extension of dest:path.
+!--format! is not set zclone will guess it from the extension of dest:path.
 
 | Format | Extensions |
 |:-------|:-----------|
@@ -82,21 +82,21 @@ Given a directory !/sourcedir! with the following:
     file1.txt
     dir1/file2.txt
 
-Running the command !rclone archive create /sourcedir /dest.tar.gz!
+Running the command !zclone archive create /sourcedir /dest.tar.gz!
 will make an archive with the contents:
 
     file1.txt
     dir1/
     dir1/file2.txt
 
-Running the command !rclone archive create --full-path /sourcedir /dest.tar.gz!
+Running the command !zclone archive create --full-path /sourcedir /dest.tar.gz!
 will make an archive with the contents:
 
     sourcedir/file1.txt
     sourcedir/dir1/
     sourcedir/dir1/file2.txt
 
-Running the command !rclone archive create --prefix=my_new_path /sourcedir /dest.tar.gz!
+Running the command !zclone archive create --prefix=my_new_path /sourcedir /dest.tar.gz!
 will make an archive with the contents:
 
     my_new_path/file1.txt

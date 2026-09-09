@@ -10,13 +10,13 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
-	"github.com/rclone/rclone/lib/random"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/hash"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
+	"zclone/lib/random"
 )
 
 // TestIntegration runs integration tests against the remote

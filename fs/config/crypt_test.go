@@ -10,10 +10,10 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/config"
 )
 
 func TestConfigLoadEncrypted(t *testing.T) {
@@ -153,7 +153,7 @@ import (
 )
 
 func main() {
-	if _, found := os.LookupEnv("RCLONE_PASSWORD_CHANGE"); found {
+	if _, found := os.LookupEnv("ZCLONE_PASSWORD_CHANGE"); found {
 		fmt.Println("Env var set")
 	} else {
 		fmt.Println("OK")

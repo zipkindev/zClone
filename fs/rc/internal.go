@@ -16,11 +16,11 @@ import (
 	"github.com/adrg/xdg"
 	"github.com/coreos/go-semver/semver"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/buildinfo"
-	"github.com/rclone/rclone/lib/debug"
+	"zclone/fs"
+	"zclone/fs/config/obscure"
+	"zclone/lib/atexit"
+	"zclone/lib/buildinfo"
+	"zclone/lib/debug"
 )
 
 func init() {
@@ -30,7 +30,7 @@ func init() {
 		Title: "Echo the input to the output parameters requiring auth",
 		Help: `
 This echoes the input parameters to the output parameters for testing
-purposes.  It can be used to check that rclone is still alive and to
+purposes.  It can be used to check that zclone is still alive and to
 check that parameter passing is working properly.`,
 	})
 	Add(Call{
@@ -40,7 +40,7 @@ check that parameter passing is working properly.`,
 		Title:  "Echo the input to the output parameters",
 		Help: `
 This echoes the input parameters to the output parameters for testing
-purposes.  It can be used to check that rclone is still alive and to
+purposes.  It can be used to check that zclone is still alive and to
 check that parameter passing is working properly.`,
 	})
 }
@@ -126,7 +126,7 @@ func init() {
 		Title: "Return PID of current process",
 		Help: `
 This returns PID of current process.
-Useful for stopping rclone process.`,
+Useful for stopping zclone process.`,
 	})
 }
 
@@ -148,8 +148,8 @@ are explained in the go docs: https://golang.org/pkg/runtime/#MemStats
 
 The most interesting values for most people are:
 
-- HeapAlloc - this is the amount of memory rclone is actually using
-- HeapSys - this is the amount of memory rclone has obtained from the OS
+- HeapAlloc - this is the amount of memory zclone is actually using
+- HeapSys - this is the amount of memory zclone has obtained from the OS
 - Sys - this is the total amount of memory requested from the OS
    - It is virtual memory so may include unused memory
 `,
@@ -208,11 +208,11 @@ func init() {
 		Path:   "core/version",
 		NoAuth: true,
 		Fn:     rcVersion,
-		Title:  "Shows the current version of rclone, Go and the OS.",
+		Title:  "Shows the current version of zclone, Go and the OS.",
 		Help: `
-This shows the current versions of rclone, Go and the OS:
+This shows the current versions of zclone, Go and the OS:
 
-- version - rclone version, e.g. "v1.71.2"
+- version - zclone version, e.g. "v1.71.2"
 - decomposed - version number as [major, minor, patch]
 - isGit - boolean - true if this was compiled from the git version
 - isBeta - boolean - true if this is a beta version
@@ -222,7 +222,7 @@ This shows the current versions of rclone, Go and the OS:
 - osArch - cpu architecture in use (e.g. "arm64 (ARMv8 compatible)")
 - arch - cpu architecture in use according to Go GOARCH (e.g. "arm64")
 - goVersion - version of Go runtime in use (e.g. "go1.25.0")
-- linking - type of rclone executable (static or dynamic)
+- linking - type of zclone executable (static or dynamic)
 - goTags - space separated build tags or "none"
 
 `,
@@ -266,7 +266,7 @@ func init() {
 		Fn:    rcObscure,
 		Title: "Obscures a string passed in.",
 		Help: `
-Pass a clear string and rclone will obscure it for the config file:
+Pass a clear string and zclone will obscure it for the config file:
 - clear - string
 
 Returns:
@@ -488,7 +488,7 @@ func init() {
 		Fn:            rcRunCommand,
 		NeedsRequest:  true,
 		NeedsResponse: true,
-		Title:         "Run a rclone terminal command over rc.",
+		Title:         "Run a zclone terminal command over rc.",
 		Help: `This takes the following parameters:
 
 - command - a string with the command name.
@@ -503,13 +503,13 @@ Returns:
 
 - result - result from the backend command.
     - Only set when using returnType "COMBINED_OUTPUT".
-- error	 - set if rclone exits with an error code.
+- error	 - set if zclone exits with an error code.
 - returnType - one of ("COMBINED_OUTPUT", "STREAM", "STREAM_ONLY_STDOUT", "STREAM_ONLY_STDERR").
 
 Example:
 
-    rclone rc core/command command=ls -a mydrive:/ -o max-depth=1
-    rclone rc core/command -a ls -a mydrive:/ -o max-depth=1
+    zclone rc core/command command=ls -a mydrive:/ -o max-depth=1
+    zclone rc core/command -a ls -a mydrive:/ -o max-depth=1
 
 Returns:
 
@@ -530,7 +530,7 @@ OR
 	})
 }
 
-// rcRunCommand runs an rclone command with the given args and flags
+// rcRunCommand runs an zclone command with the given args and flags
 func rcRunCommand(ctx context.Context, in Params) (out Params, err error) {
 	command, err := in.GetString("command")
 	if err != nil {
@@ -579,7 +579,7 @@ func rcRunCommand(ctx context.Context, in Params) (out Params, err error) {
 		allArgs = append(allArgs, value)
 	}
 
-	// Get the path for the current executable which was used to run rclone.
+	// Get the path for the current executable which was used to run zclone.
 	ex, err := os.Executable()
 	if err != nil {
 		return nil, err
@@ -624,7 +624,7 @@ func init() {
 		Title: "List the local disks",
 		Help: `This does not take any parameters
 
-This call is for rclone GUI programs to enumerate local disks and
+This call is for zclone GUI programs to enumerate local disks and
 important directories for doing transfers to and from. The list
 returned will include the root directory and the user's home directory
 and any mounted disks. The returned items should be usable directly as

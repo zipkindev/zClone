@@ -1,6 +1,6 @@
 //go:build ignore
 
-// Cross compile rclone - in go because I hate bash ;-)
+// Cross compile zclone - in go because I hate bash ;-)
 
 package main
 
@@ -75,8 +75,8 @@ var osarches = []string{
 	"plan9/386",
 	"plan9/amd64",
 	"solaris/amd64",
-	// "js/wasm", // Rclone is too big for js/wasm until https://github.com/golang/go/issues/64856 is fixed
-    "aix/ppc64",
+	// "js/wasm", // Zclone is too big for js/wasm until https://github.com/golang/go/issues/64856 is fixed
+	"aix/ppc64",
 }
 
 // Special environment flags for a given arch
@@ -162,7 +162,7 @@ func buildZip(dir string) string {
 	// Now build the zip
 	run("cp", "-a", "../MANUAL.txt", filepath.Join(dir, "README.txt"))
 	run("cp", "-a", "../MANUAL.html", filepath.Join(dir, "README.html"))
-	run("cp", "-a", "../rclone.1", dir)
+	run("cp", "-a", "../zclone.1", dir)
 	if *gitLog != "" {
 		run("cp", "-a", *gitLog, dir)
 	}
@@ -248,7 +248,7 @@ func generateResourceWindows(version, arch string) func() {
 func compileArch(version, goos, goarch, dir string) bool {
 	log.Printf("Compiling %s/%s into %s", goos, goarch, dir)
 	goarchBase := stripVersion(goarch)
-	output := filepath.Join(dir, "rclone")
+	output := filepath.Join(dir, "zclone")
 	if goos == "windows" {
 		output += ".exe"
 		if cleanupFn := generateResourceWindows(version, goarchBase); cleanupFn != nil {
@@ -261,7 +261,7 @@ func compileArch(version, goos, goarch, dir string) bool {
 	}
 	args := []string{
 		"go", "build",
-		"--ldflags", "-s -X github.com/rclone/rclone/fs.Version=" + version,
+		"--ldflags", "-s -X zclone/fs.Version=" + version,
 		"-trimpath",
 		"-p", strconv.Itoa(*buildParallel),
 		"-o", output,
@@ -388,7 +388,7 @@ func compile(version string) {
 		if goos == "darwin" {
 			userGoos = "osx"
 		}
-		dir := filepath.Join("rclone-" + version + "-" + userGoos + "-" + goarch)
+		dir := filepath.Join("zclone-" + version + "-" + userGoos + "-" + goarch)
 		run <- func() {
 			if !compileArch(version, goos, goarch, dir) {
 				failuresMu.Lock()
@@ -420,7 +420,7 @@ func main() {
 		run("mkdir", "build")
 	}
 	chdir("build")
-	err := os.WriteFile("version.txt", []byte(fmt.Sprintf("rclone %s\n", version)), 0666)
+	err := os.WriteFile("version.txt", []byte(fmt.Sprintf("zclone %s\n", version)), 0666)
 	if err != nil {
 		log.Fatalf("Couldn't write version.txt: %v", err)
 	}

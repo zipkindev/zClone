@@ -14,17 +14,17 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/testy"
-	"github.com/rclone/rclone/lib/buildinfo"
-	"github.com/rclone/rclone/lib/israce"
+	"zclone/fs"
+	"zclone/fstest"
+	"zclone/fstest/testy"
+	"zclone/lib/buildinfo"
+	"zclone/lib/israce"
 )
 
-// checkRcloneBinaryVersion runs whichever rclone is on the PATH and checks
+// checkZcloneBinaryVersion runs whichever zclone is on the PATH and checks
 // whether it reports a version that matches the test's expectations. Returns
 // nil when the version is the expected version, otherwise returns an error.
-func checkRcloneBinaryVersion(t *testing.T) error {
+func checkZcloneBinaryVersion(t *testing.T) error {
 	// versionInfo is a subset of information produced by "core/version".
 	type versionInfo struct {
 		Version string
@@ -32,19 +32,19 @@ func checkRcloneBinaryVersion(t *testing.T) error {
 		GoTags  string
 	}
 
-	cmd := exec.Command("rclone", "rc", "--loopback", "core/version")
+	cmd := exec.Command("zclone", "rc", "--loopback", "core/version")
 	stdout, err := cmd.Output()
 	require.NoError(t, err)
 
 	var parsed versionInfo
 	if err := json.Unmarshal(stdout, &parsed); err != nil {
-		return fmt.Errorf("failed to parse rclone version: %w", err)
+		return fmt.Errorf("failed to parse zclone version: %w", err)
 	}
 	if parsed.Version != fs.Version {
 		return fmt.Errorf("expected version %q, but got %q", fs.Version, parsed.Version)
 	}
 	if parsed.IsGit != strings.HasSuffix(fs.Version, "-DEV") {
-		return errors.New("expected rclone to be a dev build")
+		return errors.New("expected zclone to be a dev build")
 	}
 	_, tagString := buildinfo.GetLinkingAndTags()
 	if parsed.GoTags != tagString {
@@ -99,7 +99,7 @@ type e2eTestingContext struct {
 	binDir           string
 	homeDir          string
 	configDir        string
-	rcloneConfigDir  string
+	zcloneConfigDir  string
 	ephemeralRepoDir string
 }
 
@@ -109,52 +109,52 @@ type e2eTestingContext struct {
 //
 //	.
 //	|-- bin
-//	|   `-- git-annex-remote-rclone-builtin -> ${PATH_TO_RCLONE_BINARY}
+//	|   `-- git-annex-remote-zclone-builtin -> ${PATH_TO_ZCLONE_BINARY}
 //	|-- ephemeralRepo
 //	`-- user
 //		`-- .config
-//			`-- rclone
-//				`-- rclone.conf
+//			`-- zclone
+//				`-- zclone.conf
 func makeE2eTestingContext(t *testing.T) e2eTestingContext {
 	tempDir := t.TempDir()
 
 	binDir := filepath.Join(tempDir, "bin")
 	homeDir := filepath.Join(tempDir, "user")
 	configDir := filepath.Join(homeDir, ".config")
-	rcloneConfigDir := filepath.Join(configDir, "rclone")
+	zcloneConfigDir := filepath.Join(configDir, "zclone")
 	ephemeralRepoDir := filepath.Join(tempDir, "ephemeralRepo")
 
-	for _, dir := range []string{binDir, homeDir, configDir, rcloneConfigDir, ephemeralRepoDir} {
+	for _, dir := range []string{binDir, homeDir, configDir, zcloneConfigDir, ephemeralRepoDir} {
 		require.NoError(t, os.Mkdir(dir, 0700))
 	}
 
-	return e2eTestingContext{t, tempDir, binDir, homeDir, configDir, rcloneConfigDir, ephemeralRepoDir}
+	return e2eTestingContext{t, tempDir, binDir, homeDir, configDir, zcloneConfigDir, ephemeralRepoDir}
 }
 
-// Install the symlink that enables git-annex to invoke "rclone gitannex"
+// Install the symlink that enables git-annex to invoke "zclone gitannex"
 // without explicitly specifying the subcommand.
-func (e *e2eTestingContext) installRcloneGitannexSymlink(t *testing.T) {
-	rcloneBinaryPath, err := exec.LookPath("rclone")
+func (e *e2eTestingContext) installZcloneGitannexSymlink(t *testing.T) {
+	zcloneBinaryPath, err := exec.LookPath("zclone")
 	require.NoError(t, err)
 	require.NoError(t, os.Symlink(
-		rcloneBinaryPath,
-		filepath.Join(e.binDir, "git-annex-remote-rclone-builtin")))
+		zcloneBinaryPath,
+		filepath.Join(e.binDir, "git-annex-remote-zclone-builtin")))
 }
 
-// Install a rclone.conf file in an appropriate location in the fake home
-// directory. The config defines an rclone remote named "MyRcloneRemote" using
+// Install a zclone.conf file in an appropriate location in the fake home
+// directory. The config defines an zclone remote named "MyZcloneRemote" using
 // the local backend.
-func (e *e2eTestingContext) installRcloneConfig(t *testing.T) {
-	// Install the rclone.conf file that defines the remote.
-	rcloneConfigPath := filepath.Join(e.rcloneConfigDir, "rclone.conf")
-	rcloneConfigContents := "[MyRcloneRemote]\ntype = local"
-	require.NoError(t, os.WriteFile(rcloneConfigPath, []byte(rcloneConfigContents), 0600))
+func (e *e2eTestingContext) installZcloneConfig(t *testing.T) {
+	// Install the zclone.conf file that defines the remote.
+	zcloneConfigPath := filepath.Join(e.zcloneConfigDir, "zclone.conf")
+	zcloneConfigContents := "[MyZcloneRemote]\ntype = local"
+	require.NoError(t, os.WriteFile(zcloneConfigPath, []byte(zcloneConfigContents), 0600))
 }
 
 // runInRepo runs the given command from within the ephemeral repo directory. To
 // prevent accidental changes in the real home directory, it sets the HOME
 // variable to a subdirectory of the temp directory. It also ensures that the
-// git-annex-remote-rclone-builtin symlink will be found by extending the PATH.
+// git-annex-remote-zclone-builtin symlink will be found by extending the PATH.
 func (e *e2eTestingContext) runInRepo(t *testing.T, command string, args ...string) {
 	if testing.Verbose() {
 		t.Logf("Running %s %v\n", command, args)
@@ -198,11 +198,11 @@ func skipE2eTestIfNecessary(t *testing.T) {
 		t.Skip("Skipping on macOS CI - tests frequently time out")
 	}
 
-	// The code under test runs in a separate rclone subprocess which is not
+	// The code under test runs in a separate zclone subprocess which is not
 	// built with race instrumentation, so running these tests under the race
 	// detector costs time without adding any race coverage.
 	if israce.Enabled {
-		t.Skip("Skipping because the race detector cannot observe the rclone subprocess")
+		t.Skip("Skipping because the race detector cannot observe the zclone subprocess")
 	}
 
 	// TODO: Support e2e tests on Windows. Need to evaluate the semantics of the
@@ -219,8 +219,8 @@ func skipE2eTestIfNecessary(t *testing.T) {
 		t.Skipf("GOOS %q is not supported.", runtime.GOOS)
 	}
 
-	if err := checkRcloneBinaryVersion(t); err != nil {
-		t.Skipf("Skipping due to rclone version: %s", err)
+	if err := checkZcloneBinaryVersion(t); err != nil {
+		t.Skipf("Skipping due to zclone version: %s", err)
 	}
 
 	if _, err := exec.LookPath("git-annex"); err != nil {
@@ -229,10 +229,10 @@ func skipE2eTestIfNecessary(t *testing.T) {
 }
 
 // This end-to-end test runs `git annex testremote` in a temporary git repo.
-// This test will be skipped unless the `rclone` binary on PATH reports the
+// This test will be skipped unless the `zclone` binary on PATH reports the
 // expected version.
 //
-// When run on CI, an rclone binary built from HEAD will be on the PATH. When
+// When run on CI, an zclone binary built from HEAD will be on the PATH. When
 // running locally, you will likely need to ensure the current binary is on the
 // PATH like so:
 //
@@ -250,14 +250,14 @@ func TestEndToEnd(t *testing.T) {
 			t.Parallel()
 
 			testingContext := makeE2eTestingContext(t)
-			testingContext.installRcloneGitannexSymlink(t)
-			testingContext.installRcloneConfig(t)
+			testingContext.installZcloneGitannexSymlink(t)
+			testingContext.installZcloneConfig(t)
 			testingContext.createGitRepo(t)
 
 			testingContext.runInRepo(t, "git", "annex", "initremote", "MyTestRemote",
-				"type=external", "externaltype=rclone-builtin", "encryption=none",
-				"rcloneremotename=MyRcloneRemote", "rcloneprefix="+testingContext.ephemeralRepoDir,
-				"rclonelayout="+string(mode))
+				"type=external", "externaltype=zclone-builtin", "encryption=none",
+				"zcloneremotename=MyZcloneRemote", "zcloneprefix="+testingContext.ephemeralRepoDir,
+				"zclonelayout="+string(mode))
 
 			// Layout modes only vary how object paths are constructed, so
 			// one layout mode gets the full testremote suite for depth. The
@@ -273,15 +273,15 @@ func TestEndToEnd(t *testing.T) {
 	}
 }
 
-// For each layout mode, migrate a single remote from git-annex-remote-rclone
-// to git-annex-remote-rclone-builtin and verify that annexed files remain
+// For each layout mode, migrate a single remote from git-annex-remote-zclone
+// to git-annex-remote-zclone-builtin and verify that annexed files remain
 // accessible.
 func TestEndToEndMigration(t *testing.T) {
 	t.Parallel()
 	skipE2eTestIfNecessary(t)
 
-	if _, err := exec.LookPath("git-annex-remote-rclone"); err != nil {
-		t.Skipf("Skipping because git-annex-remote-rclone was not found: %s", err)
+	if _, err := exec.LookPath("git-annex-remote-zclone"); err != nil {
+		t.Skipf("Skipping because git-annex-remote-zclone was not found: %s", err)
 	}
 
 	for _, mode := range allLayoutModes() {
@@ -289,8 +289,8 @@ func TestEndToEndMigration(t *testing.T) {
 			t.Parallel()
 
 			tc := makeE2eTestingContext(t)
-			tc.installRcloneGitannexSymlink(t)
-			tc.installRcloneConfig(t)
+			tc.installZcloneGitannexSymlink(t)
+			tc.installZcloneConfig(t)
 			tc.createGitRepo(t)
 
 			remoteStorage := filepath.Join(tc.tempDir, "remotePrefix")
@@ -298,9 +298,9 @@ func TestEndToEndMigration(t *testing.T) {
 
 			tc.runInRepo(t,
 				"git", "annex", "initremote", "MigratedRemote",
-				"type=external", "externaltype=rclone", "encryption=none",
-				"target=MyRcloneRemote",
-				"rclone_layout="+string(mode),
+				"type=external", "externaltype=zclone", "encryption=none",
+				"target=MyZcloneRemote",
+				"zclone_layout="+string(mode),
 				"prefix="+remoteStorage,
 			)
 
@@ -319,10 +319,10 @@ func TestEndToEndMigration(t *testing.T) {
 
 			tc.runInRepo(t,
 				"git", "annex", "enableremote", "MigratedRemote",
-				"externaltype=rclone-builtin",
-				"rcloneremotename=MyRcloneRemote",
-				"rclonelayout="+string(mode),
-				"rcloneprefix="+remoteStorage,
+				"externaltype=zclone-builtin",
+				"zcloneremotename=MyZcloneRemote",
+				"zclonelayout="+string(mode),
+				"zcloneprefix="+remoteStorage,
 			)
 
 			tc.runInRepo(t, "git", "annex", "fsck", "--from=MigratedRemote", "foo")
@@ -330,16 +330,16 @@ func TestEndToEndMigration(t *testing.T) {
 	}
 }
 
-// For each layout mode, create two git-annex remotes with externaltype=rclone
-// and externaltype=rclone-builtin respectively. Test that files copied to one
+// For each layout mode, create two git-annex remotes with externaltype=zclone
+// and externaltype=zclone-builtin respectively. Test that files copied to one
 // remote are present on the other. Similarly, test that files deleted from one
 // are removed on the other.
 func TestEndToEndRepoLayoutCompat(t *testing.T) {
 	t.Parallel()
 	skipE2eTestIfNecessary(t)
 
-	if _, err := exec.LookPath("git-annex-remote-rclone"); err != nil {
-		t.Skipf("Skipping because git-annex-remote-rclone was not found: %s", err)
+	if _, err := exec.LookPath("git-annex-remote-zclone"); err != nil {
+		t.Skipf("Skipping because git-annex-remote-zclone was not found: %s", err)
 	}
 
 	for _, mode := range allLayoutModes() {
@@ -347,8 +347,8 @@ func TestEndToEndRepoLayoutCompat(t *testing.T) {
 			t.Parallel()
 
 			tc := makeE2eTestingContext(t)
-			tc.installRcloneGitannexSymlink(t)
-			tc.installRcloneConfig(t)
+			tc.installZcloneGitannexSymlink(t)
+			tc.installZcloneConfig(t)
 			tc.createGitRepo(t)
 
 			remoteStorage := filepath.Join(tc.tempDir, "remotePrefix")
@@ -356,17 +356,17 @@ func TestEndToEndRepoLayoutCompat(t *testing.T) {
 
 			tc.runInRepo(t,
 				"git", "annex", "initremote", "Control",
-				"type=external", "externaltype=rclone", "encryption=none",
-				"target=MyRcloneRemote",
-				"rclone_layout="+string(mode),
+				"type=external", "externaltype=zclone", "encryption=none",
+				"target=MyZcloneRemote",
+				"zclone_layout="+string(mode),
 				"prefix="+remoteStorage)
 
 			tc.runInRepo(t,
 				"git", "annex", "initremote", "Experiment",
-				"type=external", "externaltype=rclone-builtin", "encryption=none",
-				"rcloneremotename=MyRcloneRemote",
-				"rclonelayout="+string(mode),
-				"rcloneprefix="+remoteStorage)
+				"type=external", "externaltype=zclone-builtin", "encryption=none",
+				"zcloneremotename=MyZcloneRemote",
+				"zclonelayout="+string(mode),
+				"zcloneprefix="+remoteStorage)
 
 			fooFileContents := []byte{1, 2, 3, 4}
 			fooFilePath := filepath.Join(tc.ephemeralRepoDir, "foo")

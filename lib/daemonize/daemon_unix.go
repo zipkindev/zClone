@@ -9,8 +9,8 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/rclone/rclone/fs"
 	"golang.org/x/sys/unix"
+	"zclone/fs"
 )
 
 // StartDaemon runs background twin of current process.
@@ -93,7 +93,7 @@ func argsToEnv(origArgs, origEnv []string) (args, env []string) {
 			val = "true"
 		}
 
-		name := "RCLONE_" + strings.ToUpper(strings.ReplaceAll(key, "-", "_"))
+		name := "ZCLONE_" + strings.ToUpper(strings.ReplaceAll(key, "-", "_"))
 
 		pref := name + "="
 		line := name + "=" + val

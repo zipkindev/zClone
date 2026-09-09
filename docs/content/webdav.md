@@ -1,6 +1,6 @@
 ---
 title: "WebDAV"
-description: "Rclone docs for WebDAV"
+description: "Zclone docs for WebDAV"
 versionIntroduced: "v1.39"
 ---
 
@@ -14,12 +14,12 @@ Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 
 To configure the WebDAV remote you will need to have a URL for it, and
 a username and password.  If you know what kind of system you are
-connecting to then rclone can enable extra features.
+connecting to then zclone can enable extra features.
 
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -55,8 +55,8 @@ Choose a number from below, or type in your own value
    \ (sharepoint)
  5 / Sharepoint with NTLM authentication, usually self-hosted or on-premises
    \ (sharepoint-ntlm)
- 6 / rclone WebDAV server to serve a remote over HTTP via the WebDAV protocol
-   \ (rclone)
+ 6 / zclone WebDAV server to serve a remote over HTTP via the WebDAV protocol
+   \ (zclone)
  7 / Other site/service or software
    \ (other)
 vendor> 2
@@ -89,37 +89,37 @@ d) Delete this remote
 y/e/d> y
 ```
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 List directories in top level of your WebDAV
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your WebDAV
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 To copy a local directory to an WebDAV directory called backup
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
 ### Modification times and hashes
 
 Plain WebDAV does not support modified times.  However when used with
-Fastmail Files, ownCloud or Nextcloud rclone will support modified times.
+Fastmail Files, ownCloud or Nextcloud zclone will support modified times.
 
 Likewise plain WebDAV does not support hashes, however when used with
-Fastmail Files, ownCloud or Nextcloud rclone will support SHA1 and MD5 hashes.
+Fastmail Files, ownCloud or Nextcloud zclone will support SHA1 and MD5 hashes.
 Depending on the exact version of ownCloud or Nextcloud hashes may
 appear on all objects, or only on objects which had a hash uploaded
-with them. With Nextcloud, rclone asks the server to calculate the SHA1
+with them. With Nextcloud, zclone asks the server to calculate the SHA1
 of uploads which had no hash to send, such as streamed uploads, and
 after setting the modification time, which discards the stored hash.
 
@@ -137,7 +137,7 @@ E.g. https://example.com.
 Properties:
 
 - Config:      url
-- Env Var:     RCLONE_WEBDAV_URL
+- Env Var:     ZCLONE_WEBDAV_URL
 - Type:        string
 - Required:    true
 
@@ -148,7 +148,7 @@ Name of the WebDAV site/service/software you are using.
 Properties:
 
 - Config:      vendor
-- Env Var:     RCLONE_WEBDAV_VENDOR
+- Env Var:     ZCLONE_WEBDAV_VENDOR
 - Type:        string
 - Required:    false
 - Examples:
@@ -164,8 +164,8 @@ Properties:
     - Sharepoint Online, authenticated by Microsoft account
   - "sharepoint-ntlm"
     - Sharepoint with NTLM authentication, usually self-hosted or on-premises
-  - "rclone"
-    - rclone WebDAV server to serve a remote over HTTP via the WebDAV protocol
+  - "zclone"
+    - zclone WebDAV server to serve a remote over HTTP via the WebDAV protocol
   - "other"
     - Other site/service or software
 
@@ -178,7 +178,7 @@ In case NTLM authentication is used, the username should be in the format 'Domai
 Properties:
 
 - Config:      user
-- Env Var:     RCLONE_WEBDAV_USER
+- Env Var:     ZCLONE_WEBDAV_USER
 - Type:        string
 - Required:    false
 
@@ -186,12 +186,12 @@ Properties:
 
 Password.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      pass
-- Env Var:     RCLONE_WEBDAV_PASS
+- Env Var:     ZCLONE_WEBDAV_PASS
 - Type:        string
 - Required:    false
 
@@ -202,7 +202,7 @@ Bearer token instead of user/pass (e.g. a Macaroon).
 Properties:
 
 - Config:      bearer_token
-- Env Var:     RCLONE_WEBDAV_BEARER_TOKEN
+- Env Var:     ZCLONE_WEBDAV_BEARER_TOKEN
 - Type:        string
 - Required:    false
 
@@ -217,7 +217,7 @@ Command to run to get a bearer token.
 Properties:
 
 - Config:      bearer_token_command
-- Env Var:     RCLONE_WEBDAV_BEARER_TOKEN_COMMAND
+- Env Var:     ZCLONE_WEBDAV_BEARER_TOKEN_COMMAND
 - Type:        string
 - Required:    false
 
@@ -232,7 +232,7 @@ Default encoding is Slash,LtGt,DoubleQuote,Colon,Question,Asterisk,Pipe,Hash,Per
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_WEBDAV_ENCODING
+- Env Var:     ZCLONE_WEBDAV_ENCODING
 - Type:        string
 - Required:    false
 
@@ -253,7 +253,7 @@ You can set multiple headers, e.g. '"Cookie","name=value","Authorization","xxx"'
 Properties:
 
 - Config:      headers
-- Env Var:     RCLONE_WEBDAV_HEADERS
+- Env Var:     ZCLONE_WEBDAV_HEADERS
 - Type:        CommaSepList
 - Default:     
 
@@ -264,7 +264,7 @@ Minimum time to sleep between API calls.
 Properties:
 
 - Config:      pacer_min_sleep
-- Env Var:     RCLONE_WEBDAV_PACER_MIN_SLEEP
+- Env Var:     ZCLONE_WEBDAV_PACER_MIN_SLEEP
 - Type:        Duration
 - Default:     10ms
 
@@ -281,7 +281,7 @@ Set to 0 to disable chunked uploading.
 Properties:
 
 - Config:      nextcloud_chunk_size
-- Env Var:     RCLONE_WEBDAV_NEXTCLOUD_CHUNK_SIZE
+- Env Var:     ZCLONE_WEBDAV_NEXTCLOUD_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     10Mi
 
@@ -292,7 +292,7 @@ Exclude ownCloud shares
 Properties:
 
 - Config:      owncloud_exclude_shares
-- Env Var:     RCLONE_WEBDAV_OWNCLOUD_EXCLUDE_SHARES
+- Env Var:     ZCLONE_WEBDAV_OWNCLOUD_EXCLUDE_SHARES
 - Type:        bool
 - Default:     false
 
@@ -303,7 +303,7 @@ Exclude ownCloud mounted storages
 Properties:
 
 - Config:      owncloud_exclude_mounts
-- Env Var:     RCLONE_WEBDAV_OWNCLOUD_EXCLUDE_MOUNTS
+- Env Var:     ZCLONE_WEBDAV_OWNCLOUD_EXCLUDE_MOUNTS
 - Type:        bool
 - Default:     false
 
@@ -314,7 +314,7 @@ Path to a unix domain socket to dial to, instead of opening a TCP connection dir
 Properties:
 
 - Config:      unix_socket
-- Env Var:     RCLONE_WEBDAV_UNIX_SOCKET
+- Env Var:     ZCLONE_WEBDAV_UNIX_SOCKET
 - Type:        string
 - Required:    false
 
@@ -322,26 +322,26 @@ Properties:
 
 Preserve authentication on redirect.
 
-If the server redirects rclone to a new domain when it is trying to
-read a file then normally rclone will drop the Authorization: header
+If the server redirects zclone to a new domain when it is trying to
+read a file then normally zclone will drop the Authorization: header
 from the request.
 
 This is standard security practice to avoid sending your credentials
 to an unknown webserver.
 
 However this is desirable in some circumstances. If you are getting
-an error like "401 Unauthorized" when rclone is attempting to read
+an error like "401 Unauthorized" when zclone is attempting to read
 files from the webdav server then you can try this option.
 
 Note that enabling this also permits sending your credentials over a
 plaintext HTTP connection if the server redirects from HTTPS to HTTP,
-which rclone otherwise refuses to do.
+which zclone otherwise refuses to do.
 
 
 Properties:
 
 - Config:      auth_redirect
-- Env Var:     RCLONE_WEBDAV_AUTH_REDIRECT
+- Env Var:     ZCLONE_WEBDAV_AUTH_REDIRECT
 - Type:        bool
 - Default:     false
 
@@ -352,7 +352,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_WEBDAV_DESCRIPTION
+- Env Var:     ZCLONE_WEBDAV_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -375,7 +375,7 @@ Fastmail supports modified times using the `X-OC-Mtime` header.
 ### ownCloud
 
 Click on the settings cog in the bottom right of the page and this
-will show the WebDAV URL that rclone needs in the config step.  It
+will show the WebDAV URL that zclone needs in the config step.  It
 will look something like `https://example.com/remote.php/webdav/`.
 
 ownCloud supports modified times using the `X-OC-Mtime` header.
@@ -385,7 +385,7 @@ ownCloud supports modified times using the `X-OC-Mtime` header.
 This is configured in an identical way to ownCloud.  Note that
 Nextcloud initially did not support streaming of files (`rcat`) whereas
 ownCloud did, but [this](https://github.com/nextcloud/nextcloud-snap/issues/365)
-seems to be fixed as of 2020-11-27 (tested with rclone v1.53.1 and Nextcloud
+seems to be fixed as of 2020-11-27 (tested with zclone v1.53.1 and Nextcloud
 Server v19).
 
 ### ownCloud Infinite Scale
@@ -399,17 +399,17 @@ The chunk size is currently fixed 10 MB.
 
 ### Sharepoint Online
 
-Rclone can be used with Sharepoint provided by OneDrive for Business
+Zclone can be used with Sharepoint provided by OneDrive for Business
 or Office365 Education Accounts.
 This feature is only needed for a few of these Accounts,
 mostly Office365 Education ones. These accounts are sometimes not
-verified by the domain owner [github#1975](https://github.com/rclone/rclone/issues/1975)
+verified by the domain owner [github#1975](/)
 
 This means that these accounts can't be added using the official
 API (other Accounts should work with the "onedrive" option). However,
 it is possible to access them using webdav.
 
-To use a sharepoint remote with rclone, add it like this:
+To use a sharepoint remote with zclone, add it like this:
 First, you need to get your remote's URL:
 
 - Go [here](https://onedrive.live.com/about/en-us/signin/)
@@ -421,7 +421,7 @@ You'll only need this URL up to the email address. After that, you'll
 most likely want to add "/Documents". That subdirectory contains
 the actual data stored on your OneDrive.
 
-Add the remote to rclone like this:
+Add the remote to zclone like this:
 Configure the `url` as `https://[YOUR-DOMAIN]-my.sharepoint.com/personal/[YOUR-EMAIL]/Documents`
 and use your normal account email and password for `user` and `pass`.
 If you have 2FA enabled, you have to generate an app password.
@@ -476,20 +476,20 @@ As SharePoint does some special things with uploaded documents, you won't be
 able to use the documents size or the documents hash to compare if a file has
 been changed since the upload / which file is newer.
 
-For Rclone calls copying files (especially Office files such as .docx, .xlsx, etc.)
+For Zclone calls copying files (especially Office files such as .docx, .xlsx, etc.)
 from/to SharePoint (like copy, sync, etc.), you should append these flags to ensure
-Rclone uses the "Last Modified" datetime property to compare your documents:
+Zclone uses the "Last Modified" datetime property to compare your documents:
 
 ```text
 --ignore-size --ignore-checksum --update
 ```
 
-## Rclone
+## Zclone
 
-Use this option if you are hosting remotes over WebDAV provided by rclone.
-Read [rclone serve webdav](commands/rclone_serve_webdav/) for more details.
+Use this option if you are hosting remotes over WebDAV provided by zclone.
+Read [zclone serve webdav](commands/zclone_serve_webdav/) for more details.
 
-rclone serve supports modified times using the `X-OC-Mtime` header.
+zclone serve supports modified times using the `X-OC-Mtime` header.
 
 ### dCache
 
@@ -517,7 +517,7 @@ bearer_token = your-macaroon
 ```
 
 There is a [script](https://github.com/sara-nl/GridScripts/blob/master/get-macaroon)
-that obtains a Macaroon from a dCache WebDAV endpoint, and creates an rclone config
+that obtains a Macaroon from a dCache WebDAV endpoint, and creates an zclone config
 file.
 
 Macaroons may also be obtained from the dCacheView
@@ -529,7 +529,7 @@ dCache also supports authenticating with OpenID-Connect access tokens.
 OpenID-Connect is a protocol (based on OAuth 2.0) that allows services
 to identify users who have authenticated with some central service.
 
-Support for OpenID-Connect in rclone is currently achieved using
+Support for OpenID-Connect in zclone is currently achieved using
 another software package called
 [oidc-agent](https://github.com/indigo-dc/oidc-agent).  This is a
 command-line tool that facilitates obtaining an access token.  Once
@@ -550,7 +550,7 @@ session.  Full details on this and how to register oidc-agent with
 your OIDC Provider are provided in the [oidc-agent
 documentation](https://indigo-dc.gitbooks.io/oidc-agent/).
 
-The rclone `bearer_token_command` configuration option is used to
+The zclone `bearer_token_command` configuration option is used to
 fetch the access token from oidc-agent.
 
 Configure as a normal WebDAV endpoint, using the 'other' vendor,

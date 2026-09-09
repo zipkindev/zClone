@@ -4,8 +4,8 @@ package opendrive_test
 import (
 	"testing"
 
-	"github.com/rclone/rclone/backend/opendrive"
-	"github.com/rclone/rclone/fstest/fstests"
+	"zclone/backend/opendrive"
+	"zclone/fstest/fstests"
 )
 
 // TestIntegration runs integration tests against the remote

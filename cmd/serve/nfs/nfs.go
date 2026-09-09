@@ -13,16 +13,16 @@ import (
 	"context"
 	"strings"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/serve"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
-	"github.com/rclone/rclone/vfs/vfsflags"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	"zclone/cmd"
+	"zclone/cmd/serve"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/rc"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
+	"zclone/vfs/vfsflags"
 )
 
 // OptionsInfo descripts the Options in use
@@ -144,10 +144,10 @@ var Command = &cobra.Command{
 	Short: `Serve the remote as an NFS mount`,
 	Long: strings.ReplaceAll(`Create an NFS server that serves the given remote over the network.
 
-This implements an NFSv3 server to serve any rclone remote via NFS.
+This implements an NFSv3 server to serve any zclone remote via NFS.
 
 The primary purpose for this command is to enable the [mount
-command](/commands/rclone_mount/) on recent macOS versions where
+command](/commands/zclone_mount/) on recent macOS versions where
 installing FUSE is very cumbersome.
 
 This server does not implement any authentication so any client will be
@@ -172,7 +172,7 @@ when needed. These are stored in memory. If the server is restarted
 the handle cache will be lost and connected NFS clients will get stale
 handle errors.
 
-|--nfs-cache-type disk| uses an on disk NFS handle cache. Rclone
+|--nfs-cache-type disk| uses an on disk NFS handle cache. Zclone
 hashes the path of the object and stores it in a file named after the
 hash. These hashes are stored on disk the directory controlled by
 |--cache-dir| or the exact directory may be specified with
@@ -181,12 +181,12 @@ restarted at will without affecting the connected clients.
 
 |--nfs-cache-type symlink| is similar to |--nfs-cache-type disk| in
 that it uses an on disk cache, but the cache entries are held as
-symlinks. Rclone will use the handle of the underlying file as the NFS
+symlinks. Zclone will use the handle of the underlying file as the NFS
 handle which improves performance. This sort of cache can't be backed
 up and restored as the underlying handles will change. This is Linux
-only. It requires running rclone as root or with |CAP_DAC_READ_SEARCH|.
-You can run rclone with this extra permission by doing this to the
-rclone binary |sudo setcap cap_dac_read_search+ep /path/to/rclone|.
+only. It requires running zclone as root or with |CAP_DAC_READ_SEARCH|.
+You can run zclone with this extra permission by doing this to the
+zclone binary |sudo setcap cap_dac_read_search+ep /path/to/zclone|.
 
 |--nfs-cache-handle-limit| controls the maximum number of cached NFS
 handles stored by the caching handler. This should not be set too low
@@ -198,7 +198,7 @@ cache.
 To serve NFS over the network use following command:
 
 |||sh
-rclone serve nfs remote: --addr 0.0.0.0:$PORT --vfs-cache-mode=full
+zclone serve nfs remote: --addr 0.0.0.0:$PORT --vfs-cache-mode=full
 |||
 
 This specifies a port that can be used in the mount command. To mount

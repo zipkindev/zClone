@@ -4,11 +4,11 @@ package moveto
 import (
 	"context"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/operations/operationsflags"
-	"github.com/rclone/rclone/fs/sync"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs/operations"
+	"zclone/fs/operations/operationsflags"
+	"zclone/fs/sync"
 )
 
 var (
@@ -31,15 +31,15 @@ directory named dest:path.
 
 This can be used to rename files or upload single files to other than
 their existing name.  If the source is a directory then it acts exactly
-like the [move](/commands/rclone_move/) command.
+like the [move](/commands/zclone_move/) command.
 
 So
 
 ` + "```console" + `
-rclone moveto src dst
+zclone moveto src dst
 ` + "```" + `
 
-where src and dst are rclone paths, either remote:path or
+where src and dst are zclone paths, either remote:path or
 /path/to/local or C:\windows\path\if\on\windows.
 
 This will:

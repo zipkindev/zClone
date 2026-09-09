@@ -7,7 +7,9 @@ fi
 
 echo "Installing deadlock detector - use 'git reset --hard HEAD' to undo"
 
-go get -v github.com/sasha-s/go-deadlock/...
+echo "Downloading the deadlock detector is disabled in the local Zclone distribution." >&2
+echo "Provide an approved local copy before enabling this development helper." >&2
+exit 2
 find . -type f -name "*.go" -print0 | xargs -0 sed -i~ 's/sync.RWMutex/deadlock.RWMutex/; s/sync.Mutex/deadlock.Mutex/;'
 goimports -w .
 

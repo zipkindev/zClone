@@ -11,14 +11,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fshttp"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
 const (
@@ -26,7 +26,7 @@ const (
 	defaultChunkSize    = fs.SizeSuffix(64 * 1024 * 1024)
 )
 
-// Register the backend with Rclone
+// Register the backend with Zclone
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "filelu",
@@ -34,7 +34,7 @@ func init() {
 		NewFs:       NewFs,
 		Options: []fs.Option{{
 			Name:      "key",
-			Help:      "Your FileLu Rclone key from My Account",
+			Help:      "Your FileLu Zclone key from My Account",
 			Required:  true,
 			Sensitive: true,
 		},
@@ -116,7 +116,7 @@ func NewFs(ctx context.Context, name string, root string, m configmap.Mapper) (f
 	}
 
 	if opt.Key == "" {
-		return nil, fmt.Errorf("FileLu Rclone Key is required")
+		return nil, fmt.Errorf("FileLu Zclone Key is required")
 	}
 
 	client := fshttp.NewClient(ctx)
@@ -131,9 +131,9 @@ func NewFs(ctx context.Context, name string, root string, m configmap.Mapper) (f
 	f := &Fs{
 		name:       name,
 		opt:        *opt,
-		endpoint:   "https://filelu.com/rclone",
+		endpoint:   "https://filelu.com/zclone",
 		client:     client,
-		srv:        rest.NewClient(client).SetRoot("https://filelu.com/rclone"),
+		srv:        rest.NewClient(client).SetRoot("https://filelu.com/zclone"),
 		pacer:      pacer.New(),
 		targetFile: filename,
 		root:       root,

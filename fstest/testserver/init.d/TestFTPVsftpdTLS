@@ -3,21 +3,21 @@
 set -e
 
 NAME=vsftpdtls
-USER=rclone
+USER=zclone
 PASS=TiffedRestedSian4
 
 . $(dirname "$0")/docker.bash
 
 start() {
     docker run --rm -d --name $NAME \
-           -e "FTP_USER=rclone" \
+           -e "FTP_USER=zclone" \
            -e "FTP_PASS=$PASS" \
-           rclone/vsftpd
+           zclone/vsftpd
 
     echo type=ftp
     echo host=$(docker_ip)
     echo user=$USER
-    echo pass=$(rclone obscure $PASS)
+    echo pass=$(zclone obscure $PASS)
     echo writing_mdtm=true
     echo encoding=Ctl,LeftPeriod,Slash
     echo _connect=$(docker_ip):21

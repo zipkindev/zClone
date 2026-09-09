@@ -14,7 +14,7 @@ created by [Zoho](https://zoho.com).
 Here is an example of making a zoho configuration.  First run
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -33,7 +33,7 @@ XX / Zoho
    \ "zoho"
 [snip]
 Storage> zoho
-** See help for zoho backend at: https://rclone.org/zoho/ **
+** See help for zoho backend at: //zoho/ **
 
 OAuth Client Id
 Leave blank normally.
@@ -48,15 +48,15 @@ y) Yes
 n) No (default)
 y/n> n
 Remote config
-Use web browser to automatically authenticate rclone with remote?
- * Say Y if the machine running rclone has a web browser you can use
- * Say N if running rclone on a (remote) machine without web browser access
+Use web browser to automatically authenticate zclone with remote?
+ * Say Y if the machine running zclone has a web browser you can use
+ * Say N if running zclone on a (remote) machine without web browser access
 If not sure try Y. If Y failed, try N.
 y) Yes (default)
 n) No
 y/n> 
 If your browser doesn't open automatically go to the following link: http://127.0.0.1:53682/auth?state=LVn0IHzxej1ZkmQw31d0wQ
-Log in and authorize rclone for access
+Log in and authorize zclone for access
 Waiting for code...
 Got code
 Choose a number from below, or type in your own value
@@ -82,39 +82,39 @@ y/e/d>
 See the [remote setup docs](/remote_setup/) for how to set it up on a
 machine without an internet-connected web browser available.
 
-Rclone runs a webserver on your local computer to collect the
+Zclone runs a webserver on your local computer to collect the
 authorization token from Zoho Workdrive. This is only from the moment
 your browser is opened until the token is returned.
 The webserver runs on `http://127.0.0.1:53682/`.
 If local port `53682` is protected by a firewall you may need to temporarily
 unblock the firewall to complete authorization.
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 See top level directories
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 Make a new directory
 
 ```console
-rclone mkdir remote:directory
+zclone mkdir remote:directory
 ```
 
 List the contents of a directory
 
 ```console
-rclone ls remote:directory
+zclone ls remote:directory
 ```
 
 Sync `/home/local/directory` to the remote path, deleting any
 excess files in the path.
 
 ```console
-rclone sync --interactive /home/local/directory remote:directory
+zclone sync --interactive /home/local/directory remote:directory
 ```
 
 Zoho paths may be as deep as required, eg `remote:directory/subdirectory`.
@@ -127,7 +127,7 @@ No hash algorithms are supported.
 
 ### Usage information
 
-To view your current quota you can use the `rclone about remote:`
+To view your current quota you can use the `zclone about remote:`
 command which will display your current usage.
 
 ### Restricted filename characters
@@ -150,7 +150,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_id
-- Env Var:     RCLONE_ZOHO_CLIENT_ID
+- Env Var:     ZCLONE_ZOHO_CLIENT_ID
 - Type:        string
 - Required:    false
 
@@ -163,7 +163,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_secret
-- Env Var:     RCLONE_ZOHO_CLIENT_SECRET
+- Env Var:     ZCLONE_ZOHO_CLIENT_SECRET
 - Type:        string
 - Required:    false
 
@@ -178,7 +178,7 @@ browser.
 Properties:
 
 - Config:      region
-- Env Var:     RCLONE_ZOHO_REGION
+- Env Var:     ZCLONE_ZOHO_REGION
 - Type:        string
 - Required:    false
 - Examples:
@@ -206,7 +206,7 @@ OAuth Access Token as a JSON blob.
 Properties:
 
 - Config:      token
-- Env Var:     RCLONE_ZOHO_TOKEN
+- Env Var:     ZCLONE_ZOHO_TOKEN
 - Type:        string
 - Required:    false
 
@@ -219,7 +219,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      auth_url
-- Env Var:     RCLONE_ZOHO_AUTH_URL
+- Env Var:     ZCLONE_ZOHO_AUTH_URL
 - Type:        string
 - Required:    false
 
@@ -232,7 +232,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      token_url
-- Env Var:     RCLONE_ZOHO_TOKEN_URL
+- Env Var:     ZCLONE_ZOHO_TOKEN_URL
 - Type:        string
 - Required:    false
 
@@ -247,7 +247,7 @@ Note that this option is NOT supported by all backends.
 Properties:
 
 - Config:      client_credentials
-- Env Var:     RCLONE_ZOHO_CLIENT_CREDENTIALS
+- Env Var:     ZCLONE_ZOHO_CLIENT_CREDENTIALS
 - Type:        bool
 - Default:     false
 
@@ -257,12 +257,12 @@ ID of the root folder.
 
 Leave blank normally.
 
-Fill in to make rclone use a non root folder as its starting point.
+Fill in to make zclone use a non root folder as its starting point.
 
 Properties:
 
 - Config:      root_folder_id
-- Env Var:     RCLONE_ZOHO_ROOT_FOLDER_ID
+- Env Var:     ZCLONE_ZOHO_ROOT_FOLDER_ID
 - Type:        string
 - Required:    false
 
@@ -273,7 +273,7 @@ Cutoff for switching to large file upload api (>= 10 MiB).
 Properties:
 
 - Config:      upload_cutoff
-- Env Var:     RCLONE_ZOHO_UPLOAD_CUTOFF
+- Env Var:     ZCLONE_ZOHO_UPLOAD_CUTOFF
 - Type:        SizeSuffix
 - Default:     10Mi
 
@@ -295,7 +295,7 @@ account tolerates more.
 Properties:
 
 - Config:      tpslimit
-- Env Var:     RCLONE_ZOHO_TPSLIMIT
+- Env Var:     ZCLONE_ZOHO_TPSLIMIT
 - Type:        float64
 - Default:     6
 
@@ -310,7 +310,7 @@ synchronized clusters of 429 errors.
 Properties:
 
 - Config:      tpslimit_burst
-- Env Var:     RCLONE_ZOHO_TPSLIMIT_BURST
+- Env Var:     ZCLONE_ZOHO_TPSLIMIT_BURST
 - Type:        int
 - Default:     1
 
@@ -341,7 +341,7 @@ responsiveness.
 Properties:
 
 - Config:      list_folder_limit
-- Env Var:     RCLONE_ZOHO_LIST_FOLDER_LIMIT
+- Env Var:     ZCLONE_ZOHO_LIST_FOLDER_LIMIT
 - Type:        int
 - Default:     19
 
@@ -359,7 +359,7 @@ spacing between same-folder listings is window/(limit - burst).
 Properties:
 
 - Config:      list_folder_window
-- Env Var:     RCLONE_ZOHO_LIST_FOLDER_WINDOW
+- Env Var:     ZCLONE_ZOHO_LIST_FOLDER_WINDOW
 - Type:        Duration
 - Default:     1m0s
 
@@ -385,7 +385,7 @@ limit - 1.
 Properties:
 
 - Config:      list_folder_burst
-- Env Var:     RCLONE_ZOHO_LIST_FOLDER_BURST
+- Env Var:     ZCLONE_ZOHO_LIST_FOLDER_BURST
 - Type:        int
 - Default:     6
 
@@ -398,7 +398,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_ZOHO_ENCODING
+- Env Var:     ZCLONE_ZOHO_ENCODING
 - Type:        Encoding
 - Default:     Del,Ctl,InvalidUtf8
 
@@ -409,7 +409,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_ZOHO_DESCRIPTION
+- Env Var:     ZCLONE_ZOHO_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -428,4 +428,4 @@ don't matter, but you must add the redirect URL `http://localhost:53682/`.
 3. Once the client is created, you can go to the settings tab and enable it in
 other regions.
 
-The client id and client secret can now be used with rclone.
+The client id and client secret can now be used with zclone.

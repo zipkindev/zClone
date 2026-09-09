@@ -13,9 +13,9 @@ import (
 	"testing/iotest"
 	"time"
 
-	"github.com/rclone/rclone/lib/readers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/lib/readers"
 )
 
 func TestAsyncReader(t *testing.T) {

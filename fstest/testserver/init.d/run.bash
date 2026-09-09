@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-RUN_BASE="${STATE_DIR:-${XDG_RUNTIME_DIR:-/tmp}/rclone-test-server}"
+RUN_BASE="${STATE_DIR:-${XDG_RUNTIME_DIR:-/tmp}/zclone-test-server}"
 : "${NAME:=$(basename "$0")}"
 RUN_ROOT="${RUN_BASE}/${NAME}"
 RUN_STATE="${RUN_ROOT}/state"

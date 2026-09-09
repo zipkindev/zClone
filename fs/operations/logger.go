@@ -8,9 +8,9 @@ import (
 	"io"
 	mutex "sync"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
 	"github.com/spf13/pflag"
+	"zclone/fs"
+	"zclone/fs/hash"
 )
 
 // Sigil represents the rune (-+=*!?) used by Logger to categorize files by their match/differ/missing status.

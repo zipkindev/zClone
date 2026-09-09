@@ -5,8 +5,8 @@ package cloudinary_test
 import (
 	"testing"
 
-	"github.com/rclone/rclone/backend/cloudinary"
-	"github.com/rclone/rclone/fstest/fstests"
+	"zclone/backend/cloudinary"
+	"zclone/fstest/fstests"
 )
 
 // TestIntegration runs integration tests against the remote

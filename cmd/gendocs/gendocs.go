@@ -13,12 +13,12 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/lib/file"
 	"github.com/spf13/cobra"
 	"github.com/spf13/cobra/doc"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/lib/file"
 )
 
 func init() {
@@ -53,10 +53,10 @@ aliases:
 
 var commandDefinition = &cobra.Command{
 	Use:   "gendocs output_directory",
-	Short: `Output markdown docs for rclone to the directory supplied.`,
-	Long: `This produces markdown docs for the rclone commands to the directory
-supplied.  These are in a format suitable for hugo to render into the
-rclone.org website.`,
+	Short: `Output markdown docs for zclone to the directory supplied.`,
+	Long: `This produces markdown docs for the zclone commands to the directory
+supplied. These are in a format suitable for Hugo to render as local
+documentation.`,
 	Annotations: map[string]string{
 		"versionIntroduced": "v1.33",
 	},
@@ -129,7 +129,7 @@ rclone.org website.`,
 				Date:        now,
 				Title:       strings.ReplaceAll(base, "_", " "),
 				Description: commands[name].Short,
-				Source:      strings.ReplaceAll(strings.ReplaceAll(base, "rclone", "cmd"), "_", "/") + "/",
+				Source:      strings.ReplaceAll(strings.ReplaceAll(base, "zclone", "cmd"), "_", "/") + "/",
 				Aliases:     []string{},
 				Annotations: map[string]string{},
 			}
@@ -171,13 +171,13 @@ rclone.org website.`,
 				cmd, ok := commands[name]
 				if !ok {
 					switch name {
-					case "rclone_mount.md":
+					case "zclone_mount.md":
 						switch runtime.GOOS {
 						case "darwin", "windows":
 							fs.Logf(nil, "Skipping docs for command not available without the cmount build tag: %v", name)
 							return nil
 						}
-					case "rclone_nfsmount.md", "rclone_serve_nfs.md":
+					case "zclone_nfsmount.md", "zclone_serve_nfs.md":
 						switch runtime.GOOS {
 						case "windows":
 							fs.Logf(nil, "Skipping docs for command not supported on %v: %v", runtime.GOOS, name)
@@ -195,7 +195,7 @@ rclone.org website.`,
 				startCut := strings.Index(doc, `### Options inherited from parent commands`)
 				endCut := strings.Index(doc, `### SEE ALSO`)
 				if startCut < 0 || endCut < 0 {
-					if name != "rclone.md" {
+					if name != "zclone.md" {
 						return fmt.Errorf("internal error: failed to find cut points: startCut = %d, endCut = %d", startCut, endCut)
 					}
 					if endCut >= 0 {

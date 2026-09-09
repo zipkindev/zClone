@@ -7,9 +7,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/vfs/vfscommon"
+	"zclone/fs"
+	"zclone/fs/rc"
+	"zclone/vfs/vfscommon"
 )
 
 var (
@@ -49,8 +49,8 @@ func init() {
 		Path:  "mount/mount",
 		Fn:    mountRc,
 		Title: "Create a new mount point",
-		Help: `rclone allows Linux, FreeBSD, macOS and Windows to mount any of
-Rclone's cloud storage systems as a file system with FUSE.
+		Help: `zclone allows Linux, FreeBSD, macOS and Windows to mount any of
+Zclone's cloud storage systems as a file system with FUSE.
 
 If no mountType is provided, the priority is given as follows: 1. mount 2.cmount 3.mount2
 
@@ -80,18 +80,18 @@ This returns the following values:
 Example:
 
 ` + "```console" + `
-rclone rc mount/mount fs=mydrive: mountPoint=/home/<user>/mountPoint
-rclone rc mount/mount fs=mydrive: mountPoint=/home/<user>/mountPoint mountType=mount
-rclone rc mount/mount fs=TestDrive: mountPoint=/mnt/tmp vfsOpt='{"CacheMode": 2}' mountOpt='{"AllowOther": true}'
-rclone rc mount/mount fs=TestDrive: mountPoint=/mnt/tmp vfs_cache_mode=writes volname=MyTestVolume
-rclone rc mount/mount fs=mydrive: mountPoint=* mountType=cmount
+zclone rc mount/mount fs=mydrive: mountPoint=/home/<user>/mountPoint
+zclone rc mount/mount fs=mydrive: mountPoint=/home/<user>/mountPoint mountType=mount
+zclone rc mount/mount fs=TestDrive: mountPoint=/mnt/tmp vfsOpt='{"CacheMode": 2}' mountOpt='{"AllowOther": true}'
+zclone rc mount/mount fs=TestDrive: mountPoint=/mnt/tmp vfs_cache_mode=writes volname=MyTestVolume
+zclone rc mount/mount fs=mydrive: mountPoint=* mountType=cmount
 ` + "```" + `
 
 The vfsOpt are as described in options/get and can be seen in the
 "vfs" section when running and the mountOpt can be seen in the "mount" section:
 
 ` + "```console" + `
-rclone rc options/get
+zclone rc options/get
 ` + "```" + `
 `,
 	})
@@ -182,8 +182,8 @@ func init() {
 		Fn:    unMountRc,
 		Title: "Unmount selected active mount",
 		Help: `
-rclone allows Linux, FreeBSD, macOS and Windows to
-mount any of Rclone's cloud storage systems as a file system with
+zclone allows Linux, FreeBSD, macOS and Windows to
+mount any of Zclone's cloud storage systems as a file system with
 FUSE.
 
 This takes the following parameters:
@@ -192,7 +192,7 @@ This takes the following parameters:
 
 Example:
 
-    rclone rc mount/unmount mountPoint=/home/<user>/mountPoint
+    zclone rc mount/unmount mountPoint=/home/<user>/mountPoint
 `,
 	})
 }
@@ -232,7 +232,7 @@ be passed to mount/mount as the mountType parameter.
 
 Eg
 
-    rclone rc mount/types
+    zclone rc mount/types
 `,
 	})
 }
@@ -264,7 +264,7 @@ This takes no parameters and returns
 
 Eg
 
-    rclone rc mount/listmounts
+    zclone rc mount/listmounts
 `,
 	})
 }
@@ -306,15 +306,15 @@ func init() {
 		Fn:    unmountAll,
 		Title: "Unmount all active mounts",
 		Help: `
-rclone allows Linux, FreeBSD, macOS and Windows to
-mount any of Rclone's cloud storage systems as a file system with
+zclone allows Linux, FreeBSD, macOS and Windows to
+mount any of Zclone's cloud storage systems as a file system with
 FUSE.
 
 This takes no parameters and returns error if unmount does not succeed.
 
 Eg
 
-    rclone rc mount/unmountall
+    zclone rc mount/unmountall
 `,
 	})
 }

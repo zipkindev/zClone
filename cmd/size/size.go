@@ -7,11 +7,11 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/operations"
 )
 
 var jsonOutput bool
@@ -39,7 +39,7 @@ recursion.
 Some backends do not always provide file sizes, see for example
 [Google Photos](/googlephotos/#size) and
 [Google Docs](/drive/#limitations-of-google-docs).
-Rclone will then show a notice in the log indicating how many such
+Zclone will then show a notice in the log indicating how many such
 files were encountered, and count them in as empty files in the output
 of the size command.`,
 	Annotations: map[string]string{

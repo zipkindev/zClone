@@ -8,10 +8,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
 	"golang.org/x/net/ipv4"
 	"golang.org/x/net/ipv6"
+	"zclone/fs"
+	"zclone/fs/accounting"
 )
 
 // Dialer structure contains default dialer and timeout, tclass support
@@ -22,7 +22,7 @@ type Dialer struct {
 }
 
 // NewDialer creates a Dialer structure with Timeout, Keepalive,
-// LocalAddr and DSCP set from rclone flags.
+// LocalAddr and DSCP set from zclone flags.
 func NewDialer(ctx context.Context) *Dialer {
 	ci := fs.GetConfig(ctx)
 	dialer := &Dialer{

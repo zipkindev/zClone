@@ -12,20 +12,20 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/encoder"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/encoder"
 
 	httpclient "github.com/koofr/go-httpclient"
 	koofrclient "github.com/koofr/go-koofrclient"
 )
 
-// Register Fs with rclone
+// Register Fs with zclone
 func init() {
 	fs.Register(&fs.RegInfo{
 		Name:        "koofr",
@@ -67,19 +67,19 @@ func init() {
 			Sensitive: true,
 		}, {
 			Name:       "password",
-			Help:       "Your password for rclone generate one at https://app.koofr.net/app/admin/preferences/password.",
+			Help:       "Your password for zclone generate one at https://app.koofr.net/app/admin/preferences/password.",
 			Provider:   "koofr",
 			IsPassword: true,
 			Required:   true,
 		}, {
 			Name:       "password",
-			Help:       "Your password for rclone generate one at https://storage.rcs-rds.ro/app/admin/preferences/password.",
+			Help:       "Your password for zclone generate one at https://storage.rcs-rds.ro/app/admin/preferences/password.",
 			Provider:   "digistorage",
 			IsPassword: true,
 			Required:   true,
 		}, {
 			Name:       "password",
-			Help:       "Your password for rclone (generate one at your service's settings page).",
+			Help:       "Your password for zclone (generate one at your service's settings page).",
 			Provider:   "other",
 			IsPassword: true,
 			Required:   true,
@@ -301,7 +301,7 @@ func setProviderDefaults(opt *Options) {
 	}
 }
 
-// NewFs constructs a new filesystem given a root path and rclone configuration options
+// NewFs constructs a new filesystem given a root path and zclone configuration options
 func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (ff fs.Fs, err error) {
 	opt := new(Options)
 	err = configstruct.Set(m, opt)
@@ -449,7 +449,7 @@ func isBadRequest(err error) bool {
 	return false
 }
 
-// translateErrorsDir translates koofr errors to rclone errors (for a dir
+// translateErrorsDir translates koofr errors to zclone errors (for a dir
 // operation)
 func translateErrorsDir(err error) error {
 	switch err := err.(type) {
@@ -461,7 +461,7 @@ func translateErrorsDir(err error) error {
 	return err
 }
 
-// translateErrorsObject translates Koofr errors to rclone errors (for an object operation)
+// translateErrorsObject translates Koofr errors to zclone errors (for an object operation)
 func translateErrorsObject(err error) error {
 	switch err := err.(type) {
 	case httpclient.InvalidStatusError:

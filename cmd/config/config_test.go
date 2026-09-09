@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/rclone/rclone/fs/rc"
 	"github.com/stretchr/testify/assert"
+	"zclone/fs/rc"
 )
 
 func TestArgsToMap(t *testing.T) {

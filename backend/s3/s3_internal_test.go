@@ -16,16 +16,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/aws/smithy-go"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
-	"github.com/rclone/rclone/lib/bucket"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/lib/version"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/hash"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
+	"zclone/lib/bucket"
+	"zclone/lib/random"
+	"zclone/lib/version"
 )
 
 func gz(t *testing.T, s string) string {
@@ -589,7 +589,7 @@ func (f *Fs) InternalTestObjectLock(t *testing.T) {
 	}
 
 	// Verify Object Lock is actually enabled on the new bucket.
-	// Some S3-compatible servers (e.g. rclone serve s3) accept the
+	// Some S3-compatible servers (e.g. zclone serve s3) accept the
 	// ObjectLockEnabledForBucket flag but don't actually implement Object Lock.
 	var lockCfg *s3.GetObjectLockConfigurationOutput
 	err = f.pacer.Call(func() (bool, error) {

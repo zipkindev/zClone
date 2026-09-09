@@ -16,16 +16,16 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/lib/random"
 	"github.com/skratchdot/open-golang/open"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/clientcredentials"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/rc"
+	"zclone/lib/random"
 )
 
 var (
@@ -55,15 +55,15 @@ const (
 	// RedirectURL is redirect to local webserver when active
 	RedirectURL = "http://" + bindAddress + "/"
 
-	// RedirectPublicURL is redirect to local webserver when active with public name
-	RedirectPublicURL = "http://localhost.rclone.org:" + bindPort + "/"
+	// RedirectPublicURL is redirect to the local webserver when active.
+	RedirectPublicURL = RedirectLocalhostURL
 
 	// RedirectLocalhostURL is redirect to local webserver when active with localhost
 	RedirectLocalhostURL = "http://localhost:" + bindPort + "/"
 
-	// RedirectPublicSecureURL is a public https URL which
-	// redirects to the local webserver
-	RedirectPublicSecureURL = "https://oauth.rclone.org/"
+	// RedirectPublicSecureURL is the local redirect URL. Configure a provider-
+	// specific redirect URL when an HTTPS callback is required.
+	RedirectPublicSecureURL = RedirectLocalhostURL
 
 	// DefaultAuthResponseTemplate is the default template used in the authorization webserver
 	DefaultAuthResponseTemplate = `<!DOCTYPE html>
@@ -82,7 +82,7 @@ Error: {{ .Name }}<br>
 {{ if .Code }}Code: {{ .Code }}<br>{{ end }}
 {{ if .HelpURL }}Look here for help: <a href="{{ .HelpURL }}">{{ .HelpURL }}</a><br>{{ end }}
 {{ else }}
-All done. Please go back to rclone.
+All done. Please go back to zclone.
 {{ end }}
 </pre>
 </body>
@@ -90,7 +90,7 @@ All done. Please go back to rclone.
 `
 )
 
-// OpenURL is used when rclone wants to open a browser window
+// OpenURL is used when zclone wants to open a browser window
 // for user authentication. It defaults to something which
 // should work for most uses, but may be overridden.
 var OpenURL = open.Start
@@ -171,7 +171,7 @@ var SharedOptions = []fs.Option{{
 // This is the data you must store to persist authentication.
 //
 // From the original code.google.com/p/goauth2/oauth package - used
-// for backwards compatibility in the rclone config file
+// for backwards compatibility in the zclone config file
 type oldToken struct {
 	AccessToken  string
 	RefreshToken string
@@ -183,7 +183,7 @@ type oldToken struct {
 func GetToken(name string, m configmap.Mapper) (*oauth2.Token, error) {
 	tokenString, ok := m.Get(config.ConfigToken)
 	if !ok || tokenString == "" {
-		return nil, fmt.Errorf("empty token found - please run \"rclone config reconnect %s:\"", name)
+		return nil, fmt.Errorf("empty token found - please run \"zclone config reconnect %s:\"", name)
 	}
 	token := new(oauth2.Token)
 	err := json.Unmarshal([]byte(tokenString), token)
@@ -242,7 +242,7 @@ type TokenSource struct {
 }
 
 // If token has expired then first try re-reading it (and its refresh token)
-// from the config file in case a concurrently running rclone has updated them
+// from the config file in case a concurrently running zclone has updated them
 // already.
 // Returns whether either of the two tokens has been reread.
 func (ts *TokenSource) reReadToken() (changed bool) {
@@ -289,7 +289,7 @@ func maybeWrapOAuthError(err error, remoteName string) (newErr error) {
 			fs.Debugf(remoteName, "got fatal oauth error: %v", rErr)
 			var resp retrieveErrResponse
 			if err = json.Unmarshal(rErr.Body, &resp); err != nil {
-				newErr = fmt.Errorf("(can't decode error info) - try refreshing token with \"rclone config reconnect %s:\"", remoteName)
+				newErr = fmt.Errorf("(can't decode error info) - try refreshing token with \"zclone config reconnect %s:\"", remoteName)
 				return
 			}
 			var suggestion string
@@ -299,7 +299,7 @@ func maybeWrapOAuthError(err error, remoteName string) (newErr error) {
 			case "invalid_grant":
 				fallthrough
 			default:
-				suggestion = fmt.Sprintf("maybe token expired? - try refreshing with \"rclone config reconnect %s:\"", remoteName)
+				suggestion = fmt.Sprintf("maybe token expired? - try refreshing with \"zclone config reconnect %s:\"", remoteName)
 			}
 			newErr = fmt.Errorf("%s: %s", resp.Error, suggestion)
 		}
@@ -332,13 +332,13 @@ func (ts *TokenSource) Token() (*oauth2.Token, error) {
 	// Try getting the token a few times
 	for i := 1; i <= maxTries; i++ {
 		// Try reading the token from the config file in case it has
-		// been updated by a concurrent rclone process
+		// been updated by a concurrent zclone process
 		if !ts.token.Valid() {
 			if ts.reReadToken() {
 				changed = true
 			} else if !ts.config.ClientCredentialFlow && ts.token.RefreshToken == "" {
 				return nil, fserrors.FatalError(
-					fmt.Errorf("token expired and there's no refresh token - manually refresh with \"rclone config reconnect %s:\"", ts.name),
+					fmt.Errorf("token expired and there's no refresh token - manually refresh with \"zclone config reconnect %s:\"", ts.name),
 				)
 			}
 		}
@@ -485,7 +485,7 @@ func OverrideCredentials(name string, m configmap.Mapper, origConfig *Config) (n
 }
 
 // SharedClientIDWarning warns the user that this remote is relying on
-// rclone's built-in shared OAuth client_id.
+// zclone's built-in shared OAuth client_id.
 //
 // It only warns when the user has not configured their own client_id
 // (config.ConfigClientID is blank in the config), so it must only be
@@ -499,11 +499,11 @@ func SharedClientIDWarning(name, service, helpURL string, m configmap.Mapper) {
 	if clientID, _ := m.Get(config.ConfigClientID); clientID != "" {
 		return
 	}
-	fs.Logf(name, "This remote uses rclone's shared %s client_id, which is being retired and will stop working during 2026. Create your own client_id to avoid interruption: %s", service, helpURL)
+	fs.Logf(name, "This remote uses zclone's shared %s client_id, which is being retired and will stop working during 2026. Create your own client_id to avoid interruption: %s", service, helpURL)
 }
 
 // SharedClientIDConfigConfirm returns a config wizard Yes/No step
-// warning that this remote would use rclone's shared client_id (which
+// warning that this remote would use zclone's shared client_id (which
 // is being retired) and asking whether to continue with it anyway. It
 // should only be used when the user has left client_id blank on the
 // OAuth path.
@@ -515,7 +515,7 @@ func SharedClientIDWarning(name, service, helpURL string, m configmap.Mapper) {
 // The question defaults to No to steer the user towards making their
 // own client_id.
 func SharedClientIDConfigConfirm(state, service, helpURL string) (*fs.ConfigOut, error) {
-	return fs.ConfigConfirm(state, false, "config_shared_client_id", fmt.Sprintf(`rclone's shared %s client_id is being retired and will stop working during 2026.
+	return fs.ConfigConfirm(state, false, "config_shared_client_id", fmt.Sprintf(`zclone's shared %s client_id is being retired and will stop working during 2026.
 Create your own to avoid interruption: %s
 
 Continue using the shared client_id anyway?`, service, helpURL))
@@ -685,7 +685,7 @@ func ConfigOAuth(ctx context.Context, name string, m configmap.Mapper, ri *fs.Re
 			// If using client credential flow, skip straight to getting the token since we don't need a browser
 			return fs.ConfigGoto(newState("*oauth-do"))
 		}
-		return fs.ConfigConfirm(newState("*oauth-islocal"), true, "config_is_local", "Use web browser to automatically authenticate rclone with remote?\n * Say Y if the machine running rclone has a web browser you can use\n * Say N if running rclone on a (remote) machine without web browser access\nIf not sure try Y. If Y failed, try N.\n")
+		return fs.ConfigConfirm(newState("*oauth-islocal"), true, "config_is_local", "Use web browser to automatically authenticate zclone with remote?\n * Say Y if the machine running zclone has a web browser you can use\n * Say N if running zclone on a (remote) machine without web browser access\nIf not sure try Y. If Y failed, try N.\n")
 	case "*oauth-islocal":
 		if in.Result == "true" {
 			return fs.ConfigGoto(newState("*oauth-do"))
@@ -704,12 +704,12 @@ func ConfigOAuth(ctx context.Context, name string, m configmap.Mapper, ri *fs.Re
 			return fs.ConfigInput(newState("*oauth-do"), "config_verification_code", fmt.Sprintf("Verification code\n\nGo to this URL, authenticate then paste the code here.\n\n%s\n", authURL))
 		}
 		var out strings.Builder
-		fmt.Fprintf(&out, `For this to work, you will need rclone available on a machine that has
+		fmt.Fprintf(&out, `For this to work, you will need zclone available on a machine that has
 a web browser available.
 
-For more help and alternate methods see: https://rclone.org/remote_setup/
+For more help and alternate methods see: //remote_setup/
 
-Execute the following on the machine with the web browser (same rclone
+Execute the following on the machine with the web browser (same zclone
 version recommended):
 
 `)
@@ -727,9 +727,9 @@ version recommended):
 		}
 		// Write what the user has to do
 		if len(mCopyString) > 0 {
-			fmt.Fprintf(&out, "\trclone authorize %q %q\n", ri.Name, mCopyString)
+			fmt.Fprintf(&out, "\tzclone authorize %q %q\n", ri.Name, mCopyString)
 		} else {
-			fmt.Fprintf(&out, "\trclone authorize %q\n", ri.Name)
+			fmt.Fprintf(&out, "\tzclone authorize %q\n", ri.Name)
 		}
 		fmt.Fprintln(&out, "\nThen paste the result.")
 		return fs.ConfigInput(newState("*oauth-authorize"), "config_token", out.String())
@@ -745,7 +745,7 @@ version recommended):
 			err = json.Unmarshal([]byte(code), &token)
 		}
 		if err != nil {
-			return fs.ConfigError(newState("*oauth-authorize"), fmt.Sprintf("Couldn't decode response - try again (make sure you are using a matching version of rclone on both sides: %v\n", err))
+			return fs.ConfigError(newState("*oauth-authorize"), fmt.Sprintf("Couldn't decode response - try again (make sure you are using a matching version of zclone on both sides: %v\n", err))
 		}
 		// Save the config updates
 		if newFormat {
@@ -825,7 +825,7 @@ func init() {
 		Help: `Stops the OAuth authentication server if one is running.
 
 This can be used to recover from an interrupted OAuth flow without
-restarting rclone. If no OAuth authentication is in progress, an error
+restarting zclone. If no OAuth authentication is in progress, an error
 is returned.
 `,
 	})
@@ -990,7 +990,7 @@ func configSetup(ctx context.Context, id, name string, m configmap.Mapper, oauth
 	} else {
 		fs.Logf(nil, "Please go to the following link: %s\n", authURL)
 	}
-	fs.Logf(nil, "Log in and authorize rclone for access\n")
+	fs.Logf(nil, "Log in and authorize zclone for access\n")
 
 	// Read the code via the webserver
 	fs.Logf(nil, "Waiting for code...\n")

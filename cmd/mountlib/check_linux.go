@@ -50,8 +50,8 @@ func singleEntryFilter(mp string) mountinfo.FilterFunc {
 	}
 }
 
-// CheckMountReady checks whether mountpoint is mounted by rclone.
-// Only mounts with type "rclone" or "fuse.rclone" count.
+// CheckMountReady checks whether mountpoint is mounted by zclone.
+// Only mounts with type "zclone" or "fuse.zclone" count.
 func CheckMountReady(mountpoint string) error {
 	const msg = "mount not ready: %s"
 
@@ -66,7 +66,7 @@ func CheckMountReady(mountpoint string) error {
 	}
 
 	for _, info := range infos {
-		if strings.Contains(info.FSType, "rclone") {
+		if strings.Contains(info.FSType, "zclone") {
 			return nil
 		}
 	}

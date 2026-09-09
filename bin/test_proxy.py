@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-A demo proxy for rclone serve sftp/webdav/ftp, etc.
+A demo proxy for zclone serve sftp/webdav/ftp, etc.
 
 This takes the incoming user/pass and converts it into an sftp backend
 running on localhost.
@@ -23,7 +23,7 @@ def allowed(ip):
 
 def main():
     i = json.load(sys.stdin)
-    # Exiting non zero refuses the login - rclone logs whatever we
+    # Exiting non zero refuses the login - zclone logs whatever we
     # write on stderr, so say why.
     if not allowed(i.get("client_ip")):
         sys.exit("client_ip %s not allowed" % i.get("client_ip"))

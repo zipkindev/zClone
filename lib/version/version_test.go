@@ -4,9 +4,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/lib/version"
 	"github.com/stretchr/testify/assert"
+	"zclone/fstest"
+	"zclone/lib/version"
 )
 
 var (

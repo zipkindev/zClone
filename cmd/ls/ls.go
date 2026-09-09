@@ -5,10 +5,10 @@ import (
 	"context"
 	"os"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/ls/lshelp"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/cmd/ls/lshelp"
+	"zclone/fs/operations"
 )
 
 func init() {
@@ -24,7 +24,7 @@ readable format with size and path. Recurses by default.
 E.g.
 
 ` + "```console" + `
-$ rclone ls swift:bucket
+$ zclone ls swift:bucket
     60295 bevajer5jef
     90613 canole
     94467 diwogej7

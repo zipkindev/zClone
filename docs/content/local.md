@@ -1,6 +1,6 @@
 ---
 title: "Local Filesystem"
-description: "Rclone docs for the local filesystem"
+description: "Zclone docs for the local filesystem"
 versionIntroduced: "v0.91"
 ---
 
@@ -9,7 +9,7 @@ versionIntroduced: "v0.91"
 Local paths are specified as normal filesystem paths, e.g. `/path/to/wherever`, so
 
 ```console
-rclone sync --interactive /home/source /tmp/destination
+zclone sync --interactive /home/source /tmp/destination
 ```
 
 Will sync `/home/source` to `/tmp/destination`.
@@ -18,12 +18,12 @@ Will sync `/home/source` to `/tmp/destination`.
 
 For consistencies sake one can also configure a remote of type
 `local` in the config file, and access the local filesystem using
-rclone remote paths, e.g. `remote:path/to/wherever`, but it is probably
+zclone remote paths, e.g. `remote:path/to/wherever`, but it is probably
 easier not to.
 
 ### Modification times
 
-Rclone reads and writes the modification times using an accuracy determined
+Zclone reads and writes the modification times using an accuracy determined
 by the OS. Typically this is 1ns on Linux, 10 ns on Windows and 1 Second
 on OS X.
 
@@ -40,7 +40,7 @@ tool is available in most distributions' package managers.
 
 If an invalid (non-UTF8) filename is read, the invalid characters will
 be replaced with a quoted representation of the invalid bytes. The name
-`gro\xdf` will be transferred as `gro‛DF`. `rclone` will emit a debug
+`gro\xdf` will be transferred as `gro‛DF`. `zclone` will emit a debug
 message in this case (use `-v` to see), e.g.
 
 ```text
@@ -51,7 +51,7 @@ Local file system at .: Replacing invalid UTF-8 characters in "gro\xdf"
 
 With the local backend, restrictions on the characters that are usable in
 file or directory names depend on the operating system. To check what
-rclone will replace by default on your system, run `rclone help flags local-encoding`.
+zclone will replace by default on your system, run `zclone help flags local-encoding`.
 
 On non Windows platforms the following characters are replaced when
 handling file names.
@@ -129,7 +129,7 @@ Length of these paths are limited to 259 characters for files and 247
 characters for directories, but there is an alternative extended-length
 path format increasing the limit to (approximately) 32,767 characters.
 This format requires absolute paths and the use of prefix `\\?\`,
-e.g. `\\?\D:\some\very\long\path`. For convenience rclone will automatically
+e.g. `\\?\D:\some\very\long\path`. For convenience zclone will automatically
 convert regular paths into the corresponding extended-length paths,
 so in most cases you do not have to worry about this (read more [below](#long-paths)).
 Using the same prefix `\\?\` it is also possible to specify path to volumes
@@ -137,7 +137,7 @@ identified by their GUID, e.g. `\\?\Volume{b75e2c83-0000-0000-0000-602f00000000}
 
 #### Long paths
 
-Rclone handles long paths automatically, by converting all paths to
+Zclone handles long paths automatically, by converting all paths to
 [extended-length path format](https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation),
 which allows paths up to 32,767 characters.
 
@@ -147,8 +147,8 @@ the `\\?\`. This is why you will see that your paths, for instance
 as `\\?\UNC\server\share`.
 
 However, in rare cases this may cause problems with buggy file
-system drivers like [EncFS](https://github.com/rclone/rclone/issues/261).
-To disable UNC conversion globally, add this to your `.rclone.conf` file:
+system drivers like [EncFS](/).
+To disable UNC conversion globally, add this to your `.zclone.conf` file:
 
 ```ini
 [local]
@@ -163,9 +163,9 @@ type = local
 nounc = true
 ```
 
-And use rclone like this:
+And use zclone like this:
 
-`rclone copy c:\src nounc:z:\dst`
+`zclone copy c:\src nounc:z:\dst`
 
 This will use UNC paths on `c:\src` but not on `z:\dst`.
 Of course this will cause problems if the absolute path length of a
@@ -173,10 +173,10 @@ file exceeds 259 characters on z, so only use this option if you have to.
 
 ### Symlinks / Junction points
 
-Normally rclone will ignore symlinks or junction points (which behave
+Normally zclone will ignore symlinks or junction points (which behave
 like symlinks under Windows).
 
-If you supply `--copy-links` or `-L` then rclone will follow the
+If you supply `--copy-links` or `-L` then zclone will follow the
 symlink and copy the pointed to file or directory.  Note that this
 flag is incompatible with `--links` / `-l`.
 
@@ -197,7 +197,7 @@ $ tree /tmp/a
 Then you can see the difference with and without the flag like this
 
 ```console
-$ rclone ls /tmp/a
+$ zclone ls /tmp/a
         6 one
         6 two/three
 ```
@@ -205,7 +205,7 @@ $ rclone ls /tmp/a
 and
 
 ```console
-$ rclone -L ls /tmp/a
+$ zclone -L ls /tmp/a
      4174 expected
         6 one
         6 two/three
@@ -215,11 +215,11 @@ $ rclone -L ls /tmp/a
 
 #### --local-links, --links, -l
 
-Normally rclone will ignore symlinks or junction points (which behave
+Normally zclone will ignore symlinks or junction points (which behave
 like symlinks under Windows).
 
-If you supply this flag then rclone will copy symbolic links from the local storage,
-and store them as text files, with a `.rclonelink` suffix in the remote storage.
+If you supply this flag then zclone will copy symbolic links from the local storage,
+and store them as text files, with a `.zclonelink` suffix in the remote storage.
 
 The text file will contain the target of the symbolic link (see example).
 
@@ -237,31 +237,31 @@ $ tree /tmp/a
 Copying the entire directory with '-l'
 
 ```console
-rclone copy -l /tmp/a/ remote:/tmp/a/
+zclone copy -l /tmp/a/ remote:/tmp/a/
 ```
 
-The remote files are created with a `.rclonelink` suffix
+The remote files are created with a `.zclonelink` suffix
 
 ```console
-$ rclone ls remote:/tmp/a
-       5 file1.rclonelink
-      14 file2.rclonelink
+$ zclone ls remote:/tmp/a
+       5 file1.zclonelink
+      14 file2.zclonelink
 ```
 
 The remote files will contain the target of the symbolic links
 
 ```console
-$ rclone cat remote:/tmp/a/file1.rclonelink
+$ zclone cat remote:/tmp/a/file1.zclonelink
 ./file4
 
-$ rclone cat remote:/tmp/a/file2.rclonelink
+$ zclone cat remote:/tmp/a/file2.zclonelink
 /home/user/file3
 ```
 
 Copying them back with '-l'
 
 ```console
-$ rclone copy -l remote:/tmp/a/ /tmp/b/
+$ zclone copy -l remote:/tmp/a/ /tmp/b/
 
 $ tree /tmp/b
 /tmp/b
@@ -272,18 +272,18 @@ $ tree /tmp/b
 However, if copied back without '-l'
 
 ```console
-$ rclone copyto remote:/tmp/a/ /tmp/b/
+$ zclone copyto remote:/tmp/a/ /tmp/b/
 
 $ tree /tmp/b
 /tmp/b
-├── file1.rclonelink
-└── file2.rclonelink
+├── file1.zclonelink
+└── file2.zclonelink
 ```
 
-If you want to copy a single file with `-l` then you must use the `.rclonelink` suffix.
+If you want to copy a single file with `-l` then you must use the `.zclonelink` suffix.
 
 ```console
-$ rclone copy -l remote:/tmp/a/file1.rclonelink /tmp/c
+$ zclone copy -l remote:/tmp/a/file1.zclonelink /tmp/c
 
 $ tree /tmp/c
 /tmp/c
@@ -298,16 +298,16 @@ Note that this flag is incompatible with `-copy-links` / `-L`.
 
 #### Symlink targets and the destination
 
-When rclone recreates a `.rclonelink` file as a symlink on local storage,
+When zclone recreates a `.zclonelink` file as a symlink on local storage,
 the symlink can point anywhere - including, with an absolute path or one
 using `../` - to a location outside the directory you are copying into. This
-is normal - rclone reproduces whatever target the link had, so backups
+is normal - zclone reproduces whatever target the link had, so backups
 round-trip faithfully.
 
-What rclone will **not** do is *write through* such a link. If a remote you
+What zclone will **not** do is *write through* such a link. If a remote you
 are copying from contains both a symlink and a file or directory that would
-be placed inside it - for example a `dir.rclonelink` pointing somewhere
-outside the destination, alongside a `dir/file.txt` - rclone refuses to
+be placed inside it - for example a `dir.zclonelink` pointing somewhere
+outside the destination, alongside a `dir/file.txt` - zclone refuses to
 follow the symlink when writing `dir/file.txt`. The offending file is
 skipped with an error, the rest of the transfer continues, and the skipped
 file is counted in the error summary printed at the end of the run.
@@ -318,14 +318,14 @@ your destination. Ordinary symlink round-trips, and symlinks that stay
 inside the destination, are unaffected.
 
 If you have intentionally pre-created a symlinked directory inside your
-destination and want rclone to write into the directory it points at, do
+destination and want zclone to write into the directory it points at, do
 not use `-l` / `--links` for that copy, or remove the symlink first.
 
 ### Restricting filesystems with --one-file-system
 
-Normally rclone will recurse through filesystems as mounted.
+Normally zclone will recurse through filesystems as mounted.
 
-However if you set `--one-file-system` or `-x` this tells rclone to
+However if you set `--one-file-system` or `-x` this tells zclone to
 stay in the filesystem specified by the root and not to recurse into
 different file systems.
 
@@ -341,24 +341,24 @@ root
 └── file2     - stored on the root disk
 ```
 
-Using `rclone --one-file-system copy root remote:` will only copy `file1`
+Using `zclone --one-file-system copy root remote:` will only copy `file1`
 and `file2`. E.g.
 
 ```console
-$ rclone -q --one-file-system ls root
+$ zclone -q --one-file-system ls root
         0 file1
         0 file2
 ```
 
 ```console
-$ rclone -q ls root
+$ zclone -q ls root
         0 disk1/file3
         0 disk2/file4
         0 file1
         0 file2
 ```
 
-**NB** Rclone (like most unix tools such as `du`, `rsync` and `tar`)
+**NB** Zclone (like most unix tools such as `du`, `rsync` and `tar`)
 treats a bind mount to the same device as being on the same
 filesystem.
 
@@ -377,7 +377,7 @@ Disable UNC (long path names) conversion on Windows.
 Properties:
 
 - Config:      nounc
-- Env Var:     RCLONE_LOCAL_NOUNC
+- Env Var:     ZCLONE_LOCAL_NOUNC
 - Type:        bool
 - Default:     false
 - Examples:
@@ -391,18 +391,18 @@ Follow symlinks and copy the pointed to item.
 Properties:
 
 - Config:      copy_links
-- Env Var:     RCLONE_LOCAL_COPY_LINKS
+- Env Var:     ZCLONE_LOCAL_COPY_LINKS
 - Type:        bool
 - Default:     false
 
 #### --local-links
 
-Translate symlinks to/from regular files with a '.rclonelink' extension for the local backend.
+Translate symlinks to/from regular files with a '.zclonelink' extension for the local backend.
 
 Properties:
 
 - Config:      links
-- Env Var:     RCLONE_LOCAL_LINKS
+- Env Var:     ZCLONE_LOCAL_LINKS
 - Type:        bool
 - Default:     false
 
@@ -416,7 +416,7 @@ points, as you explicitly acknowledge that they should be skipped.
 Properties:
 
 - Config:      skip_links
-- Env Var:     RCLONE_LOCAL_SKIP_LINKS
+- Env Var:     ZCLONE_LOCAL_SKIP_LINKS
 - Type:        bool
 - Default:     false
 
@@ -431,7 +431,7 @@ skipped.
 Properties:
 
 - Config:      skip_specials
-- Env Var:     RCLONE_LOCAL_SKIP_SPECIALS
+- Env Var:     ZCLONE_LOCAL_SKIP_SPECIALS
 - Type:        bool
 - Default:     false
 
@@ -439,19 +439,19 @@ Properties:
 
 Assume the Stat size of links is zero (and read them instead) (deprecated).
 
-Rclone used to use the Stat size of links as the link size, but this fails in quite a few places:
+Zclone used to use the Stat size of links as the link size, but this fails in quite a few places:
 
 - Windows
 - On some virtual filesystems (such ash LucidLink)
 - Android
 
-So rclone now always reads the link.
+So zclone now always reads the link.
 
 
 Properties:
 
 - Config:      zero_size_links
-- Env Var:     RCLONE_LOCAL_ZERO_SIZE_LINKS
+- Env Var:     ZCLONE_LOCAL_ZERO_SIZE_LINKS
 - Type:        bool
 - Default:     false
 
@@ -462,20 +462,20 @@ Apply unicode NFC normalization to paths and filenames.
 This flag can be used to normalize file names into unicode NFC form
 that are read from the local filesystem.
 
-Rclone does not normally touch the encoding of file names it reads from
+Zclone does not normally touch the encoding of file names it reads from
 the file system.
 
 This can be useful when using macOS as it normally provides decomposed (NFD)
 unicode which in some language (eg Korean) doesn't display properly on
 some OSes.
 
-Note that rclone compares filenames with unicode normalization in the sync
+Note that zclone compares filenames with unicode normalization in the sync
 routine so this flag shouldn't normally be used.
 
 Properties:
 
 - Config:      unicode_normalization
-- Env Var:     RCLONE_LOCAL_UNICODE_NORMALIZATION
+- Env Var:     ZCLONE_LOCAL_UNICODE_NORMALIZATION
 - Type:        bool
 - Default:     false
 
@@ -483,18 +483,18 @@ Properties:
 
 Don't check to see if the files change during upload.
 
-Normally rclone checks the size and modification time of files as they
+Normally zclone checks the size and modification time of files as they
 are being uploaded and aborts with a message which starts "can't copy -
 source file is being updated" if the file changes during upload.
 
 However on some file systems this modification time check may fail (e.g.
-[Glusterfs #2206](https://github.com/rclone/rclone/issues/2206)) so this
+[Glusterfs #2206](/)) so this
 check can be disabled with this flag.
 
-If this flag is set, rclone will use its best efforts to transfer a
+If this flag is set, zclone will use its best efforts to transfer a
 file which is being updated. If the file is only having things
-appended to it (e.g. a log) then rclone will transfer the log file with
-the size it had the first time rclone saw it.
+appended to it (e.g. a log) then zclone will transfer the log file with
+the size it had the first time zclone saw it.
 
 If the file is being modified throughout (not just appended to) then
 the transfer may fail with a hash check failure.
@@ -516,7 +516,7 @@ the direct stat value and setting this flag will disable that.
 Properties:
 
 - Config:      no_check_updated
-- Env Var:     RCLONE_LOCAL_NO_CHECK_UPDATED
+- Env Var:     ZCLONE_LOCAL_NO_CHECK_UPDATED
 - Type:        bool
 - Default:     false
 
@@ -527,7 +527,7 @@ Don't cross filesystem boundaries (unix/macOS only).
 Properties:
 
 - Config:      one_file_system
-- Env Var:     RCLONE_LOCAL_ONE_FILE_SYSTEM
+- Env Var:     ZCLONE_LOCAL_ONE_FILE_SYSTEM
 - Type:        bool
 - Default:     false
 
@@ -542,7 +542,7 @@ to override the default choice.
 Properties:
 
 - Config:      case_sensitive
-- Env Var:     RCLONE_LOCAL_CASE_SENSITIVE
+- Env Var:     ZCLONE_LOCAL_CASE_SENSITIVE
 - Type:        bool
 - Default:     false
 
@@ -557,7 +557,7 @@ to override the default choice.
 Properties:
 
 - Config:      case_insensitive
-- Env Var:     RCLONE_LOCAL_CASE_INSENSITIVE
+- Env Var:     ZCLONE_LOCAL_CASE_INSENSITIVE
 - Type:        bool
 - Default:     false
 
@@ -565,7 +565,7 @@ Properties:
 
 Disable reflink cloning for server-side copies.
 
-Normally, for local-to-local transfers, rclone will "clone" the file when
+Normally, for local-to-local transfers, zclone will "clone" the file when
 possible, and fall back to "copying" only when cloning is not supported.
 
 Cloning creates a shallow copy (or "reflink") which initially shares blocks with
@@ -583,7 +583,7 @@ platforms may be added in the future.)
 Properties:
 
 - Config:      no_clone
-- Env Var:     RCLONE_LOCAL_NO_CLONE
+- Env Var:     ZCLONE_LOCAL_NO_CLONE
 - Type:        bool
 - Default:     false
 
@@ -600,7 +600,7 @@ Use this flag to disable preallocation.
 Properties:
 
 - Config:      no_preallocate
-- Env Var:     RCLONE_LOCAL_NO_PREALLOCATE
+- Env Var:     ZCLONE_LOCAL_NO_PREALLOCATE
 - Type:        bool
 - Default:     false
 
@@ -608,7 +608,7 @@ Properties:
 
 Disable sparse files for multi-thread downloads.
 
-On Windows platforms rclone will make sparse files when doing
+On Windows platforms zclone will make sparse files when doing
 multi-thread downloads. This avoids long pauses on large files where
 the OS zeros the file. However sparse files may be undesirable as they
 cause disk fragmentation and can be slow to work with.
@@ -616,7 +616,7 @@ cause disk fragmentation and can be slow to work with.
 Properties:
 
 - Config:      no_sparse
-- Env Var:     RCLONE_LOCAL_NO_SPARSE
+- Env Var:     ZCLONE_LOCAL_NO_SPARSE
 - Type:        bool
 - Default:     false
 
@@ -624,16 +624,16 @@ Properties:
 
 Disable setting modtime.
 
-Normally rclone updates modification time of files after they are done
+Normally zclone updates modification time of files after they are done
 uploading. This can cause permissions issues on Linux platforms when 
-the user rclone is running as does not own the file uploaded, such as
+the user zclone is running as does not own the file uploaded, such as
 when copying to a CIFS mount owned by another user. If this option is 
-enabled, rclone will no longer update the modtime after copying a file.
+enabled, zclone will no longer update the modtime after copying a file.
 
 Properties:
 
 - Config:      no_set_modtime
-- Env Var:     RCLONE_LOCAL_NO_SET_MODTIME
+- Env Var:     ZCLONE_LOCAL_NO_SET_MODTIME
 - Type:        bool
 - Default:     false
 
@@ -641,8 +641,8 @@ Properties:
 
 Restore the setuid, setgid and sticky bits from metadata.
 
-When restoring metadata with --metadata rclone applies the "mode" from
-the source. By default rclone applies only the permission bits and
+When restoring metadata with --metadata zclone applies the "mode" from
+the source. By default zclone applies only the permission bits and
 strips the setuid, setgid and sticky bits.
 
 The "mode" comes from the source remote which may not be trusted.
@@ -652,13 +652,13 @@ in particular when restoring from an untrusted source while running as
 root. For this reason these bits are not restored by default.
 
 If you trust the source and want the setuid, setgid and sticky bits
-restored - for example when restoring a system backup made by rclone -
+restored - for example when restoring a system backup made by zclone -
 set this flag.
 
 Properties:
 
 - Config:      metadata_restore_special_bits
-- Env Var:     RCLONE_LOCAL_METADATA_RESTORE_SPECIAL_BITS
+- Env Var:     ZCLONE_LOCAL_METADATA_RESTORE_SPECIAL_BITS
 - Type:        bool
 - Default:     false
 
@@ -667,14 +667,14 @@ Properties:
 Make out-of-space errors fatal during transfers.
 
 When enabled, an ENOSPC error during a write returns a fatal error so
-that rclone aborts rather than retrying the operation. Useful for
+that zclone aborts rather than retrying the operation. Useful for
 backup scripts that should halt loudly on a full disk rather than spin
 retrying.
 
 Properties:
 
 - Config:      fatal_if_no_space
-- Env Var:     RCLONE_LOCAL_FATAL_IF_NO_SPACE
+- Env Var:     ZCLONE_LOCAL_FATAL_IF_NO_SPACE
 - Type:        bool
 - Default:     false
 
@@ -682,13 +682,13 @@ Properties:
 
 Set what kind of time is returned.
 
-Normally rclone does all operations on the mtime or Modification time.
+Normally zclone does all operations on the mtime or Modification time.
 
-If you set this flag then rclone will return the Modified time as whatever
-you set here. So if you use "rclone lsl --local-time-type ctime" then
+If you set this flag then zclone will return the Modified time as whatever
+you set here. So if you use "zclone lsl --local-time-type ctime" then
 you will see ctimes in the listing.
 
-If the OS doesn't support returning the time_type specified then rclone
+If the OS doesn't support returning the time_type specified then zclone
 will silently replace it with the modification time which all OSes support.
 
 - mtime is supported by all OSes
@@ -703,7 +703,7 @@ only useful for reading.
 Properties:
 
 - Config:      time_type
-- Env Var:     RCLONE_LOCAL_TIME_TYPE
+- Env Var:     ZCLONE_LOCAL_TIME_TYPE
 - Type:        mtime|atime|btime|ctime
 - Default:     mtime
 - Examples:
@@ -723,7 +723,7 @@ Comma separated list of supported checksum types.
 Properties:
 
 - Config:      hashes
-- Env Var:     RCLONE_LOCAL_HASHES
+- Env Var:     ZCLONE_LOCAL_HASHES
 - Type:        CommaSepList
 - Default:     
 
@@ -736,9 +736,9 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_LOCAL_ENCODING
+- Env Var:     ZCLONE_LOCAL_ENCODING
 - Type:        Encoding
-- Default:     Slash,Dot
+- Default:     Slash,InvalidUtf8,Dot
 
 #### --local-description
 
@@ -747,7 +747,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_LOCAL_DESCRIPTION
+- Env Var:     ZCLONE_LOCAL_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -764,7 +764,7 @@ supported by all file systems) under the "user.*" prefix.
 
 Metadata is supported on files and directories.
 
-When restoring metadata with `--metadata` rclone applies the
+When restoring metadata with `--metadata` zclone applies the
 "mode", "uid" and "gid" from the source. These come from the source
 remote which may not be trusted, so restoring metadata as root from an
 untrusted source can change file ownership and is not recommended. The
@@ -792,12 +792,12 @@ Here are the commands specific to the local backend.
 Run them with:
 
 ```console
-rclone backend COMMAND remote:
+zclone backend COMMAND remote:
 ```
 
 The help below will explain what arguments each command takes.
 
-See the [backend](/commands/rclone_backend/) command for more
+See the [backend](/commands/zclone_backend/) command for more
 info on how to pass options and arguments.
 
 These can be run on a running backend using the rc command
@@ -808,7 +808,7 @@ These can be run on a running backend using the rc command
 A null operation for testing backend commands.
 
 ```console
-rclone backend noop remote: [options] [<arguments>+]
+zclone backend noop remote: [options] [<arguments>+]
 ```
 
 This is a test command which has some options you can try to change the output.

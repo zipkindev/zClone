@@ -7,13 +7,13 @@ import (
 	"io"
 	"os"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/ls/lshelp"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/cmd/ls/lshelp"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
 )
 
 var (
@@ -55,7 +55,7 @@ one per line.  The directories will have a / suffix.
 E.g.
 
 ` + "```console" + `
-$ rclone lsf swift:bucket
+$ zclone lsf swift:bucket
 bevajer5jef
 canole
 diwogej7
@@ -92,7 +92,7 @@ So if you wanted the path, size and modification time, you would use
 E.g.
 
 ` + "```console" + `
-$ rclone lsf  --format "tsp" swift:bucket
+$ zclone lsf  --format "tsp" swift:bucket
 2016-06-25 18:55:41;60295;bevajer5jef
 2016-06-25 18:55:43;90613;canole
 2016-06-25 18:55:43;94467;diwogej7
@@ -110,13 +110,13 @@ type.
 For example, to emulate the md5sum command you can use
 
 ` + "```console" + `
-rclone lsf -R --hash MD5 --format hp --separator "  " --files-only .
+zclone lsf -R --hash MD5 --format hp --separator "  " --files-only .
 ` + "```" + `
 
 E.g.
 
 ` + "```console" + `
-$ rclone lsf -R --hash MD5 --format hp --separator "  " --files-only swift:bucket
+$ zclone lsf -R --hash MD5 --format hp --separator "  " --files-only swift:bucket
 7908e352297f0f530b84a756f188baa3  bevajer5jef
 cd65ac234e6fea5925974a51cdd865cc  canole
 03b5341b4f234b9d984d03ad076bae91  diwogej7
@@ -124,7 +124,7 @@ cd65ac234e6fea5925974a51cdd865cc  canole
 99713e14a4c4ff553acaf1930fad985b  gixacuh7ku
 ` + "```" + `
 
-(Though "rclone md5sum ." is an easier way of typing this.)
+(Though "zclone md5sum ." is an easier way of typing this.)
 
 By default the separator is ";" this can be changed with the
 ` + "`--separator`" + ` flag.  Note that separators aren't escaped in the path so
@@ -133,7 +133,7 @@ putting it last is a good strategy.
 E.g.
 
 ` + "```console" + `
-$ rclone lsf  --separator "," --format "tshp" swift:bucket
+$ zclone lsf  --separator "," --format "tshp" swift:bucket
 2016-06-25 18:55:41,60295,7908e352297f0f530b84a756f188baa3,bevajer5jef
 2016-06-25 18:55:43,90613,cd65ac234e6fea5925974a51cdd865cc,canole
 2016-06-25 18:55:43,94467,03b5341b4f234b9d984d03ad076bae91,diwogej7
@@ -147,21 +147,21 @@ if they contain,
 E.g.
 
 ` + "```console" + `
-$ rclone lsf --csv --files-only --format ps remote:path
+$ zclone lsf --csv --files-only --format ps remote:path
 test.log,22355
 test.sh,449
 "this file contains a comma, in the file name.txt",6
 ` + "```" + `
 
 Note that the ` + "`--absolute`" + ` parameter is useful for making lists of files
-to pass to an rclone copy with the ` + "`--files-from-raw`" + ` flag.
+to pass to an zclone copy with the ` + "`--files-from-raw`" + ` flag.
 
 For example, to find all the files modified within one day and copy
 those only (without traversing the whole directory structure):
 
 ` + "```console" + `
-rclone lsf --absolute --files-only --max-age 1d /path/to/local > new_files
-rclone copy --files-from-raw new_files /path/to/local remote:path
+zclone lsf --absolute --files-only --max-age 1d /path/to/local > new_files
+zclone copy --files-from-raw new_files /path/to/local remote:path
 ` + "```" + `
 
 The default time format is ` + "`'2006-01-02 15:04:05'`" + `.
@@ -169,14 +169,14 @@ The default time format is ` + "`'2006-01-02 15:04:05'`" + `.
 the ` + "`--time-format`" + ` flag. Examples:
 
 ` + "```console" + `
-rclone lsf remote:path --format pt --time-format 'Jan 2, 2006 at 3:04pm (MST)'
-rclone lsf remote:path --format pt --time-format '2006-01-02 15:04:05.000000000'
-rclone lsf remote:path --format pt --time-format '2006-01-02T15:04:05.999999999Z07:00'
-rclone lsf remote:path --format pt --time-format RFC3339
-rclone lsf remote:path --format pt --time-format DateOnly
-rclone lsf remote:path --format pt --time-format max
-rclone lsf remote:path --format pt --time-format unix
-rclone lsf remote:path --format pt --time-format unixnano
+zclone lsf remote:path --format pt --time-format 'Jan 2, 2006 at 3:04pm (MST)'
+zclone lsf remote:path --format pt --time-format '2006-01-02 15:04:05.000000000'
+zclone lsf remote:path --format pt --time-format '2006-01-02T15:04:05.999999999Z07:00'
+zclone lsf remote:path --format pt --time-format RFC3339
+zclone lsf remote:path --format pt --time-format DateOnly
+zclone lsf remote:path --format pt --time-format max
+zclone lsf remote:path --format pt --time-format unix
+zclone lsf remote:path --format pt --time-format unixnano
 ` + "```" + `
 
 ` + "`--time-format max`" + ` will automatically truncate ` + "`2006-01-02 15:04:05.000000000`" + `

@@ -1,4 +1,4 @@
-// Package gui implements the "rclone gui" command.
+// Package gui implements the "zclone gui" command.
 package gui
 
 import (
@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"context"
 	_ "embed"
+	"encoding/json"
 	"fmt"
 	iofs "io/fs"
 	"net"
@@ -16,15 +17,14 @@ import (
 	"sync"
 
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/fs/rc/rcserver"
-	libhttp "github.com/rclone/rclone/lib/http"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/lib/systemd"
 	"github.com/skratchdot/open-golang/open"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/rc"
+	"zclone/fs/rc/rcserver"
+	libhttp "zclone/lib/http"
+	"zclone/lib/systemd"
 )
 
 //go:embed dist.zip
@@ -58,42 +58,40 @@ func init() {
 var commandDefinition = &cobra.Command{
 	Use:   "gui [path]",
 	Short: `Open the web based GUI.`,
-	Long: `This command starts an embedded web GUI for rclone and opens it in
+	Long: `This command starts an embedded web GUI for zclone and opens it in
 your default browser.
 
 This starts an RC API server and a GUI server on separate localhost
-ports, generates login credentials automatically unless --no-auth
-is specified, and opens the browser already authenticated.
+ports. Authentication requires --pass unless --no-auth is specified.
 
-    rclone gui
+    zclone gui
 
-By default rclone gui serves the web GUI that was embedded into the
-rclone binary at build time from https://github.com/rclone/rclone-web/
+By default zclone gui serves the web GUI embedded into the zclone binary
+at build time.
 You can override this by passing a path to either an unpacked GUI
-directory or a dist.zip archive (e.g. one downloaded from the
-rclone-web releases page):
+directory or a dist.zip archive:
 
-    rclone gui ./my-dist/
-    rclone gui ./dist.zip
+    zclone gui ./my-dist/
+    zclone gui ./dist.zip
 
 This is useful for iterating on the GUI locally without rebuilding
-rclone, or for serving a different GUI release than the one embedded.
+zclone, or for serving a different GUI release than the one embedded.
 
 Use --no-open-browser to skip opening the browser automatically:
 
-    rclone gui --no-open-browser
+    zclone gui --no-open-browser
 
 Use --addr to bind the GUI to a specific address:
 
-    rclone gui --addr localhost:5580
+    zclone gui --addr localhost:5580
 
 Use --user and --pass to set specific credentials:
 
-    rclone gui --user admin --pass secret
+    zclone gui --user admin --pass secret
 
 Use --no-auth to disable authentication entirely:
 
-    rclone gui --no-auth
+    zclone gui --no-auth
 
 For more help see [the GUI docs](/gui/).
 `,
@@ -149,7 +147,7 @@ For more help see [the GUI docs](/gui/).
 			opt.EnableMetrics = enableMetrics
 		}
 
-		// Generate credentials if needed
+		// Configure credentials without exposing generated secrets in logs.
 		if command.Flags().Changed("user") {
 			opt.Auth.BasicUser = user
 		}
@@ -166,12 +164,7 @@ For more help see [the GUI docs](/gui/).
 				fs.Infof(nil, "No username specified. Using default username: %s", opt.Auth.BasicUser)
 			}
 			if opt.Auth.BasicPass == "" {
-				randomPass, err := random.Password(128)
-				if err != nil {
-					return fmt.Errorf("failed to make password: %w", err)
-				}
-				opt.Auth.BasicPass = randomPass
-				fs.Infof(nil, "No password specified. Using random password: %s", randomPass)
+				return fmt.Errorf("GUI authentication requires --pass; use --no-auth only on a trusted local network")
 			}
 		}
 
@@ -184,16 +177,13 @@ For more help see [the GUI docs](/gui/).
 			return fmt.Errorf("failed to start RC server: %w", err)
 		}
 
-		// Read the bound RC URL back from rcserver, in case we asked
-		// libhttp to pick a free port (localhost:0).
-		rcURL := rcServer.URLs()[0]
-
 		// Mount the GUI handler and start serving
 		spaHandler, err := guiHandler(srcFS)
 		if err != nil || spaHandler == nil {
 			return fmt.Errorf("failed to start GUI handler: %w", err)
 		}
 		guiServer.Router().Use(middleware.Compress(5))
+		guiServer.Router().Get("/_zclone/gui-config", guiConfigHandler(rcServer.URLs()[0]))
 		guiServer.Router().Get("/*", spaHandler.ServeHTTP)
 		guiServer.Router().Head("/*", spaHandler.ServeHTTP)
 		guiServer.Serve()
@@ -205,12 +195,11 @@ For more help see [the GUI docs](/gui/).
 		}
 		fs.Logf(nil, "Serving GUI %s on %s", guiSource, guiURL)
 
-		// Open browser
-		loginURL := buildLoginURL(guiURL, rcURL, opt.Auth.BasicUser, opt.Auth.BasicPass, opt.NoAuth)
-
-		fs.Logf(nil, "GUI available at %s", loginURL)
+		// Open browser. Credentials stay out of the URL so they are not
+		// persisted in browser history or copied into logs.
+		fs.Logf(nil, "GUI available at %s", guiURL)
 		if !noOpenBrowser {
-			if err := open.Start(loginURL); err != nil {
+			if err := open.Start(guiURL); err != nil {
 				fs.Errorf(nil, "failed to open GUI in browser: %v", err)
 			}
 		}
@@ -243,11 +232,8 @@ func originFromURL(rawURL string) string {
 
 // resolveAllowOrigin picks the Access-Control-Allow-Origin value for the RC
 // API server. An explicit --rc-allow-origin always wins. Otherwise a value is
-// derived from how the GUI is bound: the bound origin (e.g. http://[::]:5522)
-// is never what a browser sends in its Origin header when the GUI is bound to
-// a wildcard address, and the GUI may be reached via any number of hosts
-// (localhost, a LAN IP, a Docker host), so no single origin can match them
-// all.
+// derived from how the GUI is bound. A wildcard bind requires an explicit
+// origin because an authenticated RC server must not permit every website.
 func resolveAllowOrigin(explicitAllowOrigin bool, currentAllowOrigin, guiOrigin string, addr *net.TCPAddr, noAuth bool) string {
 	if explicitAllowOrigin {
 		return currentAllowOrigin
@@ -255,11 +241,17 @@ func resolveAllowOrigin(explicitAllowOrigin bool, currentAllowOrigin, guiOrigin 
 	switch {
 	case addr == nil || !addr.IP.IsUnspecified():
 		return guiOrigin
-	case !noAuth:
-		return "*"
 	default:
-		fs.Logf(nil, "GUI bound to a wildcard address with --no-auth: browsers can only use the API from %s. Enable auth or bind --addr to a specific host.", guiOrigin)
+		fs.Logf(nil, "GUI bound to a wildcard address: set --rc-allow-origin to the browser origin or bind --addr to a specific host. Using %s.", guiOrigin)
 		return guiOrigin
+	}
+}
+
+// guiConfigHandler returns the non-secret configuration required by the embedded GUI.
+func guiConfigHandler(rcURL string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]string{"rcURL": rcURL})
 	}
 }
 
@@ -272,10 +264,10 @@ func guiSourceFS(path string) (iofs.FS, func() error, error) {
 	if path == "" {
 		zr, err := zip.NewReader(bytes.NewReader(distZip), int64(len(distZip)))
 		if err != nil {
-			return nil, nil, fmt.Errorf("failed to read embedded GUI zip: was `make fetch-gui` run before building?: %w", err)
+			return nil, nil, fmt.Errorf("failed to read embedded GUI zip: provide an approved local GUI bundle: %w", err)
 		}
 		if _, err := iofs.Stat(zr, "index.html"); err != nil {
-			return nil, nil, fmt.Errorf("embedded GUI has no index.html: was `make fetch-gui` run before building?: %w", err)
+			return nil, nil, fmt.Errorf("embedded GUI has no index.html: provide an approved local GUI bundle: %w", err)
 		}
 		return zr, noop, nil
 	}
@@ -318,25 +310,4 @@ func guiHandler(srcFS iofs.FS) (http.Handler, error) {
 		r.URL.Path = "/"
 		fileServer.ServeHTTP(w, r)
 	}), nil
-}
-
-// guiBaseURL is the GUI server's URL. rcURL is the RC API server's URL.
-// When auth is enabled it appends url, user, and pass as query
-// parameters so the React app can discover the API endpoint and
-// log in automatically.
-func buildLoginURL(guiBaseURL, rcURL, user, pass string, noAuth bool) string {
-	u, err := url.Parse(guiBaseURL)
-	if err != nil {
-		return guiBaseURL
-	}
-	if noAuth {
-		return u.String()
-	}
-	u.Path = "/login"
-	q := u.Query()
-	q.Set("url", rcURL)
-	q.Set("user", user)
-	q.Set("pass", pass)
-	u.RawQuery = q.Encode()
-	return u.String()
 }

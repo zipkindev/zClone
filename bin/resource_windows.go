@@ -1,6 +1,6 @@
-// Utility program to generate Rclone-specific Windows resource system object
+// Utility program to generate Zclone-specific Windows resource system object
 // file (.syso), that can be picked up by a following go build for embedding
-// version information and icon resources into a rclone binary.
+// version information and icon resources into a zclone binary.
 //
 // Run it with "go generate", or "go run" to be able to customize with
 // command-line flags. Note that this program is intended to be run directly
@@ -10,8 +10,8 @@
 // run by "go generate" or "go run", but it will not make sense if this
 // program's source is moved out from the source tree.
 //
-// Can be used for rclone.exe (default), and other binaries such as
-// librclone.dll (must be specified with flag -binary).
+// Can be used for zclone.exe (default), and other binaries such as
+// libzclone.dll (must be specified with flag -binary).
 //
 
 //go:generate go run resource_windows.go
@@ -29,7 +29,7 @@ import (
 
 	"github.com/coreos/go-semver/semver"
 	"github.com/josephspurrier/goversioninfo"
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 func main() {
@@ -41,7 +41,7 @@ func main() {
 	}
 
 	// Define flags
-	binary := flag.String("binary", "rclone.exe", `The name of the binary to generate resource for, e.g. "rclone.exe" or "librclone.dll"`)
+	binary := flag.String("binary", "zclone.exe", `The name of the binary to generate resource for, e.g. "zclone.exe" or "libzclone.dll"`)
 	arch := flag.String("arch", runtime.GOARCH, `Architecture of resource file, or the target GOARCH, "386", "amd64", "arm", or "arm64"`)
 	version := flag.String("version", fs.Version, "Version number or tag name")
 	icon := flag.String("icon", path.Join(projectDir, "graphics/logo/ico/logo_symbol_color.ico"), "Path to icon file to embed in an .exe binary")
@@ -94,12 +94,12 @@ func main() {
 	vi.FixedFileInfo.ProductVersion.Build = 0
 
 	// StringFileInfo
-	vi.StringFileInfo.CompanyName = "https://rclone.org"
-	vi.StringFileInfo.ProductName = "Rclone"
-	vi.StringFileInfo.FileDescription = "Rclone"
+	vi.StringFileInfo.CompanyName = "Zclone"
+	vi.StringFileInfo.ProductName = "Zclone"
+	vi.StringFileInfo.FileDescription = "Zclone"
 	vi.StringFileInfo.InternalName = (*binary)[:len(*binary)-len(binaryExt)]
 	vi.StringFileInfo.OriginalFilename = *binary
-	vi.StringFileInfo.LegalCopyright = "The Rclone Authors"
+	vi.StringFileInfo.LegalCopyright = "The Zclone Authors"
 	vi.StringFileInfo.FileVersion = stringVersion
 	vi.StringFileInfo.ProductVersion = stringVersion
 

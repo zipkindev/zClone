@@ -10,14 +10,14 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/dirtree"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/fs/walk"
-	"github.com/rclone/rclone/lib/transform"
 	"golang.org/x/sync/semaphore"
 	"golang.org/x/text/unicode/norm"
+	"zclone/fs"
+	"zclone/fs/dirtree"
+	"zclone/fs/filter"
+	"zclone/fs/list"
+	"zclone/fs/walk"
+	"zclone/lib/transform"
 )
 
 // matchTransformFn converts a name into a form which is used for

@@ -24,7 +24,7 @@ command.)  You may put subdirectories in too, e.g. `remote:container/path/to/dir
 Here is an example of making a swift configuration.  First run
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process.
@@ -127,26 +127,26 @@ This remote is called `remote` and can now be used like this
 See all containers
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 Make a new container
 
 ```console
-rclone mkdir remote:container
+zclone mkdir remote:container
 ```
 
 List the contents of a container
 
 ```console
-rclone ls remote:container
+zclone ls remote:container
 ```
 
 Sync `/home/local/directory` to the remote container, deleting any
 excess files in the container.
 
 ```console
-rclone sync --interactive /home/local/directory remote:container
+zclone sync --interactive /home/local/directory remote:container
 ```
 
 ### Configuration from an OpenStack credentials file
@@ -183,13 +183,13 @@ Note that you may (or may not) need to set `region` too - try without first.
 
 ### Configuration from the environment
 
-If you prefer you can configure rclone to use swift using a standard
+If you prefer you can configure zclone to use swift using a standard
 set of OpenStack environment variables.
 
 When you run through the config, make sure you choose `true` for
 `env_auth` and leave everything else blank.
 
-rclone will then set any empty config parameters from the environment
+zclone will then set any empty config parameters from the environment
 using standard OpenStack environment variables.  There is [a list of
 the
 variables](https://godoc.org/github.com/ncw/swift#Connection.ApplyEnvironment)
@@ -198,37 +198,37 @@ in the docs for the swift library.
 ### Using an alternate authentication method
 
 If your OpenStack installation uses a non-standard authentication method
-that might not be yet supported by rclone or the underlying swift library,
+that might not be yet supported by zclone or the underlying swift library,
 you can authenticate externally (e.g. calling manually the `openstack`
 commands to get a token). Then, you just need to pass the two
 configuration variables ``auth_token`` and ``storage_url``.
-If they are both provided, the other variables are ignored. rclone will
+If they are both provided, the other variables are ignored. zclone will
 not try to authenticate but instead assume it is already authenticated
 and use these two variables to access the OpenStack installation.
 
-#### Using rclone without a config file
+#### Using zclone without a config file
 
-You can use rclone with swift without a config file, if desired, like
+You can use zclone with swift without a config file, if desired, like
 this:
 
 ```sh
 source openstack-credentials-file
-export RCLONE_CONFIG_MYREMOTE_TYPE=swift
-export RCLONE_CONFIG_MYREMOTE_ENV_AUTH=true
-rclone lsd myremote:
+export ZCLONE_CONFIG_MYREMOTE_TYPE=swift
+export ZCLONE_CONFIG_MYREMOTE_ENV_AUTH=true
+zclone lsd myremote:
 ```
 
 ### --fast-list
 
 This remote supports `--fast-list` which allows you to use fewer
-transactions in exchange for more memory. See the [rclone
+transactions in exchange for more memory. See the [zclone
 docs](/docs/#fast-list) for more details.
 
 ### --update and --use-server-modtime
 
 As noted below, the modified time is stored on metadata on the object. It is
 used by default for all operations that require checking the time a file was
-last updated. It allows rclone to treat the remote more like a true filesystem,
+last updated. It allows zclone to treat the remote more like a true filesystem,
 but it is inefficient because it requires an extra API call to retrieve the
 metadata.
 
@@ -270,7 +270,7 @@ Get swift credentials from environment variables in standard OpenStack form.
 Properties:
 
 - Config:      env_auth
-- Env Var:     RCLONE_SWIFT_ENV_AUTH
+- Env Var:     ZCLONE_SWIFT_ENV_AUTH
 - Type:        bool
 - Default:     false
 - Examples:
@@ -287,7 +287,7 @@ User name to log in (OS_USERNAME).
 Properties:
 
 - Config:      user
-- Env Var:     RCLONE_SWIFT_USER
+- Env Var:     ZCLONE_SWIFT_USER
 - Type:        string
 - Required:    false
 
@@ -298,7 +298,7 @@ API key or password (OS_PASSWORD).
 Properties:
 
 - Config:      key
-- Env Var:     RCLONE_SWIFT_KEY
+- Env Var:     ZCLONE_SWIFT_KEY
 - Type:        string
 - Required:    false
 
@@ -309,7 +309,7 @@ Authentication URL for server (OS_AUTH_URL).
 Properties:
 
 - Config:      auth
-- Env Var:     RCLONE_SWIFT_AUTH
+- Env Var:     ZCLONE_SWIFT_AUTH
 - Type:        string
 - Required:    false
 - Examples:
@@ -335,7 +335,7 @@ User ID to log in - optional - most swift systems use user and leave this blank 
 Properties:
 
 - Config:      user_id
-- Env Var:     RCLONE_SWIFT_USER_ID
+- Env Var:     ZCLONE_SWIFT_USER_ID
 - Type:        string
 - Required:    false
 
@@ -346,7 +346,7 @@ User domain - optional (v3 auth) (OS_USER_DOMAIN_NAME)
 Properties:
 
 - Config:      domain
-- Env Var:     RCLONE_SWIFT_DOMAIN
+- Env Var:     ZCLONE_SWIFT_DOMAIN
 - Type:        string
 - Required:    false
 
@@ -357,7 +357,7 @@ Tenant name - optional for v1 auth, this or tenant_id required otherwise (OS_TEN
 Properties:
 
 - Config:      tenant
-- Env Var:     RCLONE_SWIFT_TENANT
+- Env Var:     ZCLONE_SWIFT_TENANT
 - Type:        string
 - Required:    false
 
@@ -368,7 +368,7 @@ Tenant ID - optional for v1 auth, this or tenant required otherwise (OS_TENANT_I
 Properties:
 
 - Config:      tenant_id
-- Env Var:     RCLONE_SWIFT_TENANT_ID
+- Env Var:     ZCLONE_SWIFT_TENANT_ID
 - Type:        string
 - Required:    false
 
@@ -379,7 +379,7 @@ Tenant domain - optional (v3 auth) (OS_PROJECT_DOMAIN_NAME).
 Properties:
 
 - Config:      tenant_domain
-- Env Var:     RCLONE_SWIFT_TENANT_DOMAIN
+- Env Var:     ZCLONE_SWIFT_TENANT_DOMAIN
 - Type:        string
 - Required:    false
 
@@ -390,7 +390,7 @@ Region name - optional (OS_REGION_NAME).
 Properties:
 
 - Config:      region
-- Env Var:     RCLONE_SWIFT_REGION
+- Env Var:     ZCLONE_SWIFT_REGION
 - Type:        string
 - Required:    false
 
@@ -401,7 +401,7 @@ Storage URL - optional (OS_STORAGE_URL).
 Properties:
 
 - Config:      storage_url
-- Env Var:     RCLONE_SWIFT_STORAGE_URL
+- Env Var:     ZCLONE_SWIFT_STORAGE_URL
 - Type:        string
 - Required:    false
 
@@ -412,7 +412,7 @@ Auth Token from alternate authentication - optional (OS_AUTH_TOKEN).
 Properties:
 
 - Config:      auth_token
-- Env Var:     RCLONE_SWIFT_AUTH_TOKEN
+- Env Var:     ZCLONE_SWIFT_AUTH_TOKEN
 - Type:        string
 - Required:    false
 
@@ -423,7 +423,7 @@ Application Credential ID (OS_APPLICATION_CREDENTIAL_ID).
 Properties:
 
 - Config:      application_credential_id
-- Env Var:     RCLONE_SWIFT_APPLICATION_CREDENTIAL_ID
+- Env Var:     ZCLONE_SWIFT_APPLICATION_CREDENTIAL_ID
 - Type:        string
 - Required:    false
 
@@ -434,7 +434,7 @@ Application Credential Name (OS_APPLICATION_CREDENTIAL_NAME).
 Properties:
 
 - Config:      application_credential_name
-- Env Var:     RCLONE_SWIFT_APPLICATION_CREDENTIAL_NAME
+- Env Var:     ZCLONE_SWIFT_APPLICATION_CREDENTIAL_NAME
 - Type:        string
 - Required:    false
 
@@ -445,7 +445,7 @@ Application Credential Secret (OS_APPLICATION_CREDENTIAL_SECRET).
 Properties:
 
 - Config:      application_credential_secret
-- Env Var:     RCLONE_SWIFT_APPLICATION_CREDENTIAL_SECRET
+- Env Var:     ZCLONE_SWIFT_APPLICATION_CREDENTIAL_SECRET
 - Type:        string
 - Required:    false
 
@@ -456,7 +456,7 @@ AuthVersion - optional - set to (1,2,3) if your auth URL has no version (ST_AUTH
 Properties:
 
 - Config:      auth_version
-- Env Var:     RCLONE_SWIFT_AUTH_VERSION
+- Env Var:     ZCLONE_SWIFT_AUTH_VERSION
 - Type:        int
 - Default:     0
 
@@ -467,7 +467,7 @@ Endpoint type to choose from the service catalogue (OS_ENDPOINT_TYPE).
 Properties:
 
 - Config:      endpoint_type
-- Env Var:     RCLONE_SWIFT_ENDPOINT_TYPE
+- Env Var:     ZCLONE_SWIFT_ENDPOINT_TYPE
 - Type:        string
 - Default:     "public"
 - Examples:
@@ -490,7 +490,7 @@ provider.
 Properties:
 
 - Config:      storage_policy
-- Env Var:     RCLONE_SWIFT_STORAGE_POLICY
+- Env Var:     ZCLONE_SWIFT_STORAGE_POLICY
 - Type:        string
 - Required:    false
 - Examples:
@@ -514,7 +514,7 @@ It should be set to true for resuming uploads across different sessions.
 Properties:
 
 - Config:      leave_parts_on_error
-- Env Var:     RCLONE_SWIFT_LEAVE_PARTS_ON_ERROR
+- Env Var:     ZCLONE_SWIFT_LEAVE_PARTS_ON_ERROR
 - Type:        bool
 - Default:     false
 
@@ -522,10 +522,10 @@ Properties:
 
 When paginating, always fetch unless we received an empty page.
 
-Consider using this option if rclone listings show fewer objects
+Consider using this option if zclone listings show fewer objects
 than expected, or if repeated syncs copy unchanged objects.
 
-It is safe to enable this, but rclone may make more API calls than
+It is safe to enable this, but zclone may make more API calls than
 necessary.
 
 This is one of a pair of workarounds to handle implementations
@@ -535,7 +535,7 @@ also "partial_page_fetch_threshold".
 Properties:
 
 - Config:      fetch_until_empty_page
-- Env Var:     RCLONE_SWIFT_FETCH_UNTIL_EMPTY_PAGE
+- Env Var:     ZCLONE_SWIFT_FETCH_UNTIL_EMPTY_PAGE
 - Type:        bool
 - Default:     false
 
@@ -543,10 +543,10 @@ Properties:
 
 When paginating, fetch if the current page is within this percentage of the limit.
 
-Consider using this option if rclone listings show fewer objects
+Consider using this option if zclone listings show fewer objects
 than expected, or if repeated syncs copy unchanged objects.
 
-It is safe to enable this, but rclone may make more API calls than
+It is safe to enable this, but zclone may make more API calls than
 necessary.
 
 This is one of a pair of workarounds to handle implementations
@@ -556,7 +556,7 @@ also "fetch_until_empty_page".
 Properties:
 
 - Config:      partial_page_fetch_threshold
-- Env Var:     RCLONE_SWIFT_PARTIAL_PAGE_FETCH_THRESHOLD
+- Env Var:     ZCLONE_SWIFT_PARTIAL_PAGE_FETCH_THRESHOLD
 - Type:        int
 - Default:     0
 
@@ -569,13 +569,13 @@ or a `.file-segments` directory. (See the `use_segments_container` option
 for more info). Default for this is 5 GiB which is its maximum value, which
 means only files above this size will be chunked.
 
-Rclone uploads chunked files as dynamic large objects (DLO).
+Zclone uploads chunked files as dynamic large objects (DLO).
 
 
 Properties:
 
 - Config:      chunk_size
-- Env Var:     RCLONE_SWIFT_CHUNK_SIZE
+- Env Var:     ZCLONE_SWIFT_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     5Gi
 
@@ -591,13 +591,13 @@ This will limit the maximum streamed upload size to 5 GiB. This is
 useful because non chunked files are easier to deal with and have an
 MD5SUM.
 
-Rclone will still chunk files bigger than `chunk_size` when doing
+Zclone will still chunk files bigger than `chunk_size` when doing
 normal copy operations.
 
 Properties:
 
 - Config:      no_chunk
-- Env Var:     RCLONE_SWIFT_NO_CHUNK
+- Env Var:     ZCLONE_SWIFT_NO_CHUNK
 - Type:        bool
 - Default:     false
 
@@ -607,13 +607,13 @@ Disable support for static and dynamic large objects
 
 Swift cannot transparently store files bigger than 5 GiB. There are
 two schemes for chunking large files, static large objects (SLO) or
-dynamic large objects (DLO), and the API does not allow rclone to
+dynamic large objects (DLO), and the API does not allow zclone to
 determine whether a file is a static or dynamic large object without
 doing a HEAD on the object. Since these need to be treated
-differently, this means rclone has to issue HEAD requests for objects
+differently, this means zclone has to issue HEAD requests for objects
 for example when reading checksums.
 
-When `no_large_objects` is set, rclone will assume that there are no
+When `no_large_objects` is set, zclone will assume that there are no
 static or dynamic large objects stored. This means it can stop doing
 the extra HEAD calls which in turn increases performance greatly
 especially when doing a swift to swift transfer with `--checksum` set.
@@ -630,7 +630,7 @@ but other operations such as Remove and Copy will fail.
 Properties:
 
 - Config:      no_large_objects
-- Env Var:     RCLONE_SWIFT_NO_LARGE_OBJECTS
+- Env Var:     ZCLONE_SWIFT_NO_LARGE_OBJECTS
 - Type:        bool
 - Default:     false
 
@@ -638,7 +638,7 @@ Properties:
 
 Choose destination for large object segments
 
-Swift cannot transparently store files bigger than 5 GiB and rclone
+Swift cannot transparently store files bigger than 5 GiB and zclone
 will chunk files larger than `chunk_size` (default 5 GiB) in order to
 upload them.
 
@@ -655,8 +655,8 @@ providers (eg Blomp) require this mode as creating additional
 containers isn't allowed. If it is desired to see the `.file-segments`
 directory in the root then this flag must be set to `true`.
 
-If this value is `unset` (the default), then rclone will choose the value
-to use. It will be `false` unless rclone detects any `auth_url`s that
+If this value is `unset` (the default), then zclone will choose the value
+to use. It will be `false` unless zclone detects any `auth_url`s that
 it knows need it to be `true`. In this case you'll see a message in
 the DEBUG log.
 
@@ -664,7 +664,7 @@ the DEBUG log.
 Properties:
 
 - Config:      use_segments_container
-- Env Var:     RCLONE_SWIFT_USE_SEGMENTS_CONTAINER
+- Env Var:     ZCLONE_SWIFT_USE_SEGMENTS_CONTAINER
 - Type:        Tristate
 - Default:     unset
 
@@ -677,7 +677,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_SWIFT_ENCODING
+- Env Var:     ZCLONE_SWIFT_ENCODING
 - Type:        Encoding
 - Default:     Slash,InvalidUtf8
 
@@ -688,7 +688,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_SWIFT_DESCRIPTION
+- Env Var:     ZCLONE_SWIFT_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -697,12 +697,12 @@ Properties:
 ## Limitations
 
 The Swift API doesn't return a correct MD5SUM for segmented files
-(Dynamic or Static Large Objects) so rclone won't check or use the
+(Dynamic or Static Large Objects) so zclone won't check or use the
 MD5SUM for these.
 
 ## Troubleshooting
 
-### Rclone gives Failed to create file system for "remote:": Bad Request
+### Zclone gives Failed to create file system for "remote:": Bad Request
 
 Due to an oddity of the underlying swift library, it gives a "Bad
 Request" error rather than a more sensible error when the
@@ -714,14 +714,14 @@ investigate further with the `--dump bodies` flag.
 This may also be caused by specifying the region when you shouldn't
 have (e.g. OVH).
 
-### Rclone gives Failed to create file system: Response didn't have storage url and auth token
+### Zclone gives Failed to create file system: Response didn't have storage url and auth token
 
 This is most likely caused by forgetting to specify your tenant when
 setting up a swift remote.
 
 ## OVH Cloud Archive
 
-To use rclone with OVH cloud archive, first use `rclone config` to set up a
+To use zclone with OVH cloud archive, first use `zclone config` to set up a
 `swift` backend with OVH, choosing `pca` as the `storage_policy`.
 
 ### Uploading Objects
@@ -732,12 +732,12 @@ Once uploaded the objects will show in a "Frozen" state within the OVH control p
 
 ### Retrieving Objects
 
-To retrieve objects use `rclone copy` as normal. If the objects are in a frozen
-state then rclone will ask for them all to be unfrozen and it will wait at the
+To retrieve objects use `zclone copy` as normal. If the objects are in a frozen
+state then zclone will ask for them all to be unfrozen and it will wait at the
 end of the output with a message like the following:
 
 ```text
 2019/03/23 13:06:33 NOTICE: Received retry after error - sleeping until 2019-03-23T13:16:33.481657164+01:00 (9m59.99985121s)
 ```
 
-Rclone will wait for the time specified then retry the copy.
+Zclone will wait for the time specified then retry the copy.

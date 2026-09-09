@@ -2,8 +2,8 @@
 
 set -e
 
-NAME=rclone-sftp-openssh
-USER=rclone
+NAME=zclone-sftp-openssh
+USER=zclone
 PASS=password
 PORT=28627
 
@@ -12,13 +12,13 @@ PORT=28627
 start() {
     docker run --rm -d --name ${NAME} \
            -p 127.0.0.1:${PORT}:22 \
-           rclone/test-sftp-openssh
+           zclone/test-sftp-openssh
     
     echo type=sftp
     echo host=127.0.0.1
     echo port=$PORT
     echo user=$USER
-    echo pass=$(rclone obscure $PASS)
+    echo pass=$(zclone obscure $PASS)
     echo copy_is_hardlink=true
     echo _connect=127.0.0.1:${PORT}
 }

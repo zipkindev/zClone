@@ -16,15 +16,15 @@ import (
 	"time"
 
 	"github.com/ncw/swift/v2"
-	"github.com/rclone/gofakes3"
-	"github.com/rclone/rclone/cmd/serve/proxy"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
+	"zclone/lib/gofakes3"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/cmd/serve/proxy"
+	"zclone/fs"
+	"zclone/fstest"
+	"zclone/lib/random"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
 )
 
 // errorReader yields data then fails with err.

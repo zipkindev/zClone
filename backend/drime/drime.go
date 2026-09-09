@@ -9,7 +9,7 @@ Return results give
   X-Ratelimit-Remaining: 1999
 
 The rate limit headers indicate the number of allowed API requests per
-minute. The limit is two thousand requests per minute, and rclone
+minute. The limit is two thousand requests per minute, and zclone
 should stay under that.
 */
 
@@ -29,21 +29,21 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/rclone/rclone/backend/drime/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/chunksize"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/multipart"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/drime/api"
+	"zclone/fs"
+	"zclone/fs/chunksize"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/dircache"
+	"zclone/lib/encoder"
+	"zclone/lib/multipart"
+	"zclone/lib/pacer"
+	"zclone/lib/random"
+	"zclone/lib/rest"
 )
 
 const (
@@ -73,9 +73,9 @@ You can get this from the web control panel.`,
 			Name: "root_folder_id",
 			Help: `ID of the root folder
 
-Leave this blank normally, rclone will fill it in automatically.
+Leave this blank normally, zclone will fill it in automatically.
 
-If you want rclone to be restricted to a particular folder you can
+If you want zclone to be restricted to a particular folder you can
 fill it in - see the docs for more info.
 `,
 			Default:   "",
@@ -113,7 +113,7 @@ The minimum is 0 and the maximum is 5 GiB.`,
 			Help: `Chunk size to use for uploading.
 
 When uploading files larger than upload_cutoff or files with unknown
-size (e.g. from "rclone rcat" or uploaded with "rclone mount" or google
+size (e.g. from "zclone rcat" or uploaded with "zclone mount" or google
 photos or google docs) they will be uploaded as multipart uploads
 using this chunk size.
 
@@ -123,7 +123,7 @@ in memory per transfer.
 If you are transferring large files over high-speed links and you have
 enough memory, then increasing this will speed up the transfers.
 
-Rclone will automatically increase the chunk size when uploading a
+Zclone will automatically increase the chunk size when uploading a
 large file of known size to stay below the 10,000 chunks limit.
 
 Files of unknown size are uploaded with the configured
@@ -411,7 +411,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 		f.features.Fill(ctx, &tempF)
 		// XXX: update the old f here instead of returning tempF, since
 		// `features` were already filled with functions having *f as a receiver.
-		// See https://github.com/rclone/rclone/issues/2182
+		// See /
 		f.dirCache = tempF.dirCache
 		f.root = tempF.root
 		// return an error with an fs which points to the parent

@@ -8,9 +8,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/lib/cache"
+	"zclone/fs"
+	"zclone/fs/filter"
+	"zclone/lib/cache"
 )
 
 var (

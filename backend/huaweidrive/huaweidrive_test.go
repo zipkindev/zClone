@@ -11,12 +11,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/backend/huaweidrive/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fstest/fstests"
-	"github.com/rclone/rclone/lib/encoder"
+	"zclone/backend/huaweidrive/api"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/hash"
+	"zclone/fstest/fstests"
+	"zclone/lib/encoder"
 )
 
 // TestIntegration runs integration tests against the remote
@@ -506,8 +506,8 @@ func TestParsePath(t *testing.T) {
 // TestConstants tests various constants and configuration values
 func TestConstants(t *testing.T) {
 	// Test OAuth configuration
-	if rcloneClientID != "115505059" {
-		t.Errorf("expected client ID %q, got %q", "115505059", rcloneClientID)
+	if zcloneClientID != "115505059" {
+		t.Errorf("expected client ID %q, got %q", "115505059", zcloneClientID)
 	}
 
 	// Test URLs

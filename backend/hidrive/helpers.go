@@ -20,15 +20,15 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/backend/hidrive/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/lib/ranges"
-	"github.com/rclone/rclone/lib/readers"
-	"github.com/rclone/rclone/lib/rest"
 	"golang.org/x/sync/errgroup"
 	"golang.org/x/sync/semaphore"
+	"zclone/backend/hidrive/api"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/fserrors"
+	"zclone/lib/ranges"
+	"zclone/lib/readers"
+	"zclone/lib/rest"
 )
 
 const (

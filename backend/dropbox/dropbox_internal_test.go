@@ -15,13 +15,13 @@ import (
 	"github.com/dropbox/dropbox-sdk-go-unofficial/v6/dropbox"
 	"github.com/dropbox/dropbox-sdk-go-unofficial/v6/dropbox/files"
 	"github.com/dropbox/dropbox-sdk-go-unofficial/v6/dropbox/sharing"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fstest/fstests"
-	"github.com/rclone/rclone/lib/batcher"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fstest/fstests"
+	"zclone/lib/batcher"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
 )
 
 type paperMetadataClient struct {
@@ -463,7 +463,7 @@ func TestListReceivedFilesDecodesName(t *testing.T) {
 }
 
 // TestFindSharedFileResolvesDecodedName confirms findSharedFile can look up
-// a received file by its standard, decoded rclone-visible name.
+// a received file by its standard, decoded zclone-visible name.
 func TestFindSharedFileResolvesDecodedName(t *testing.T) {
 	const rawName = "report.txt␠"
 	f := newSharingTestFs(t, receivedFilesHandler(t, rawName))

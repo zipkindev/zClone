@@ -9,16 +9,16 @@ import (
 	"path"
 	"time"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/test"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/sync"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/random"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/cmd/test"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/config/flags"
+	"zclone/fs/operations"
+	"zclone/fs/sync"
+	"zclone/lib/atexit"
+	"zclone/lib/random"
 )
 
 var (
@@ -66,7 +66,7 @@ each subsequent test.
 
 It is recommended to use -q flag for a simpler output. e.g.:
 
-    rclone test speed remote: -q
+    zclone test speed remote: -q
 
 **NB** This command will create and delete files on the remote in a randomly
 named directory which will be automatically removed on a clean exit.
@@ -163,7 +163,7 @@ func speedTest(ctx context.Context, numberOfFiles int, size fs.SizeSuffix, remot
 		NumberOfFiles: numberOfFiles,
 	}
 
-	tempDirName := "rclone-speed-test-" + random.String(8)
+	tempDirName := "zclone-speed-test-" + random.String(8)
 	tempDirPath := path.Join(remote, tempDirName)
 	fremote := cmd.NewFsDir([]string{tempDirPath})
 	aErr := io.EOF
@@ -174,7 +174,7 @@ func speedTest(ctx context.Context, numberOfFiles int, size fs.SizeSuffix, remot
 		}
 	})()
 
-	flocalDir, err := os.MkdirTemp("", "rclone-speedtest-local-")
+	flocalDir, err := os.MkdirTemp("", "zclone-speedtest-local-")
 	if err != nil {
 		return nil, fmt.Errorf("failed to create local temp dir: %w", err)
 	}
@@ -185,7 +185,7 @@ func speedTest(ctx context.Context, numberOfFiles int, size fs.SizeSuffix, remot
 		return nil, fmt.Errorf("failed to create local fs: %w", err)
 	}
 
-	fdownloadDir, err := os.MkdirTemp("", "rclone-speedtest-download-")
+	fdownloadDir, err := os.MkdirTemp("", "zclone-speedtest-download-")
 	if err != nil {
 		return nil, fmt.Errorf("failed to create download temp dir: %w", err)
 	}

@@ -20,17 +20,17 @@ import (
 	"github.com/buengese/sgzip"
 	"github.com/gabriel-vasile/mimetype"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/chunkedreader"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fs/operations"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/chunkedreader"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fspath"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/fs/log"
+	"zclone/fs/object"
+	"zclone/fs/operations"
 )
 
 // Globals
@@ -582,7 +582,7 @@ func (f *Fs) rcat(ctx context.Context, dstFileName string, in io.ReadCloser, mod
 	}
 
 	fs.Debugf(f, "Target remote doesn't support streaming uploads, creating temporary local file")
-	tempFile, err := os.CreateTemp("", "rclone-press-")
+	tempFile, err := os.CreateTemp("", "zclone-press-")
 	defer func() {
 		// these errors should be relatively uncritical and the upload should've succeeded so it's okay-ish
 		// to ignore them

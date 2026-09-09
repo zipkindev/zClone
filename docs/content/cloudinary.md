@@ -1,6 +1,6 @@
 ---
 title: "Cloudinary"
-description: "Rclone docs for Cloudinary backend"
+description: "Zclone docs for Cloudinary backend"
 versionIntroduced: "v1.69"
 
 ---
@@ -39,7 +39,7 @@ from the developer section.
 Now run
 
 ```console
-rclone config
+zclone config
 ```
 
 Follow the interactive setup process:
@@ -114,19 +114,19 @@ y/e/d> y
 List directories in the top level of your Media Library
 
 ```console
-rclone lsd cloudinary-media-library:
+zclone lsd cloudinary-media-library:
 ```
 
 Make a new directory.
 
 ```console
-rclone mkdir cloudinary-media-library:directory
+zclone mkdir cloudinary-media-library:directory
 ```
 
 List the contents of a directory.
 
 ```console
-rclone ls cloudinary-media-library:directory
+zclone ls cloudinary-media-library:directory
 ```
 
 ### Modified time and hashes
@@ -145,7 +145,7 @@ Cloudinary Environment Name
 Properties:
 
 - Config:      cloud_name
-- Env Var:     RCLONE_CLOUDINARY_CLOUD_NAME
+- Env Var:     ZCLONE_CLOUDINARY_CLOUD_NAME
 - Type:        string
 - Required:    true
 
@@ -156,7 +156,7 @@ Cloudinary API Key
 Properties:
 
 - Config:      api_key
-- Env Var:     RCLONE_CLOUDINARY_API_KEY
+- Env Var:     ZCLONE_CLOUDINARY_API_KEY
 - Type:        string
 - Required:    true
 
@@ -167,7 +167,7 @@ Cloudinary API Secret
 Properties:
 
 - Config:      api_secret
-- Env Var:     RCLONE_CLOUDINARY_API_SECRET
+- Env Var:     ZCLONE_CLOUDINARY_API_SECRET
 - Type:        string
 - Required:    true
 
@@ -178,7 +178,7 @@ Specify the API endpoint for environments out of the US
 Properties:
 
 - Config:      upload_prefix
-- Env Var:     RCLONE_CLOUDINARY_UPLOAD_PREFIX
+- Env Var:     ZCLONE_CLOUDINARY_UPLOAD_PREFIX
 - Type:        string
 - Required:    false
 
@@ -189,7 +189,7 @@ Upload Preset to select asset manipulation on upload
 Properties:
 
 - Config:      upload_preset
-- Env Var:     RCLONE_CLOUDINARY_UPLOAD_PRESET
+- Env Var:     ZCLONE_CLOUDINARY_UPLOAD_PRESET
 - Type:        string
 - Required:    false
 
@@ -206,7 +206,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_CLOUDINARY_ENCODING
+- Env Var:     ZCLONE_CLOUDINARY_ENCODING
 - Type:        Encoding
 - Default:     Slash,LtGt,DoubleQuote,Question,Asterisk,Pipe,Hash,Percent,BackSlash,Del,Ctl,RightSpace,InvalidUtf8,Dot
 
@@ -217,7 +217,7 @@ Wait N seconds for eventual consistency of the databases that support the backen
 Properties:
 
 - Config:      eventually_consistent_delay
-- Env Var:     RCLONE_CLOUDINARY_EVENTUALLY_CONSISTENT_DELAY
+- Env Var:     ZCLONE_CLOUDINARY_EVENTUALLY_CONSISTENT_DELAY
 - Type:        Duration
 - Default:     0s
 
@@ -228,7 +228,7 @@ Cloudinary handles media formats as a file attribute and strips it from the name
 Properties:
 
 - Config:      adjust_media_files_extensions
-- Env Var:     RCLONE_CLOUDINARY_ADJUST_MEDIA_FILES_EXTENSIONS
+- Env Var:     ZCLONE_CLOUDINARY_ADJUST_MEDIA_FILES_EXTENSIONS
 - Type:        bool
 - Default:     true
 
@@ -239,7 +239,7 @@ Cloudinary supported media extensions
 Properties:
 
 - Config:      media_extensions
-- Env Var:     RCLONE_CLOUDINARY_MEDIA_EXTENSIONS
+- Env Var:     ZCLONE_CLOUDINARY_MEDIA_EXTENSIONS
 - Type:        stringArray
 - Default:     [3ds 3g2 3gp ai arw avi avif bmp bw cr2 cr3 djvu dng eps3 fbx flif flv gif glb gltf hdp heic heif ico indd jp2 jpe jpeg jpg jxl jxr m2ts mov mp4 mpeg mts mxf obj ogv pdf ply png psd svg tga tif tiff ts u3ma usdz wdp webm webp wmv]
 
@@ -250,7 +250,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_CLOUDINARY_DESCRIPTION
+- Env Var:     ZCLONE_CLOUDINARY_DESCRIPTION
 - Type:        string
 - Required:    false
 

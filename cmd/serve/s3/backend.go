@@ -1,4 +1,4 @@
-// Package s3 implements an s3 server for rclone
+// Package s3 implements an s3 server for zclone
 package s3
 
 import (
@@ -14,11 +14,11 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/ncw/swift/v2"
-	"github.com/rclone/gofakes3"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
+	"zclone/lib/gofakes3"
+	"zclone/fs"
+	"zclone/fs/operations"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
 )
 
 var (
@@ -27,7 +27,7 @@ var (
 
 // tempObjectPrefix is reserved for serve s3's temporary objects: an object
 // whose leaf name starts with it is hidden from S3 listings.
-const tempObjectPrefix = ".rclone_temp_"
+const tempObjectPrefix = ".zclone_temp_"
 
 // putObjectPrefix is prepended to the leaf name of the temporary object a
 // PutObject upload is written to before it is renamed into place.

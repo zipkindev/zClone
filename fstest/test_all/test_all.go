@@ -20,13 +20,13 @@ import (
 	"strings"
 	"time"
 
-	_ "github.com/rclone/rclone/backend/all" // import all fs
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configfile"
-	"github.com/rclone/rclone/fstest/runs"
-	"github.com/rclone/rclone/fstest/testserver"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/pacer"
+	_ "zclone/backend/all" // import all fs
+	"zclone/fs"
+	"zclone/fs/config/configfile"
+	"zclone/fstest/runs"
+	"zclone/fstest/testserver"
+	"zclone/lib/atexit"
+	"zclone/lib/pacer"
 )
 
 func init() {
@@ -41,11 +41,11 @@ func init() {
 	flag.DurationVar(&Opt.Timeout, "timeout", 60*time.Minute, "Maximum time to run each test for before giving up")
 	flag.BoolVar(&Opt.Race, "race", false, "If set run the tests under the race detector")
 	flag.StringVar(&Opt.ConfigFile, "config", "fstest/test_all/config.yaml", "Path to config file")
-	flag.StringVar(&Opt.OutputDir, "output", path.Join(os.TempDir(), "rclone-integration-tests"), "Place to store results")
+	flag.StringVar(&Opt.OutputDir, "output", path.Join(os.TempDir(), "zclone-integration-tests"), "Place to store results")
 	flag.StringVar(&Opt.EmailReport, "email", "", "Set to email the report to the address supplied")
 	flag.BoolVar(&Opt.DryRun, "dry-run", false, "Print commands which would be executed only")
-	flag.StringVar(&Opt.URLBase, "url-base", "https://pub.rclone.org/integration-tests/", "Base for the online version")
-	flag.StringVar(&Opt.UploadPath, "upload", "", "Set this to an rclone path to upload the results here")
+	flag.StringVar(&Opt.URLBase, "url-base", "", "Optional base URL for a published test report")
+	flag.StringVar(&Opt.UploadPath, "upload", "", "Set this to an zclone path to upload the results here")
 	flag.BoolVar(&Opt.Verbose, "verbose", false, "Set to enable verbose logging in the tests")
 	flag.IntVar(&Opt.ListRetries, "list-retries", -1, "Number or times to retry listing - set to override the default")
 }
@@ -63,7 +63,7 @@ func main() {
 	flag.Parse()
 	conf, err := runs.NewConfig(Opt.ConfigFile)
 	if err != nil {
-		fs.Log(nil, "test_all should be run from the root of the rclone source code")
+		fs.Log(nil, "test_all should be run from the root of the zclone source code")
 		fs.Fatal(nil, fmt.Sprint(err))
 	}
 	configfile.Install()
@@ -124,7 +124,7 @@ func main() {
 	}
 
 	// workaround for cache backend as we run simultaneous tests
-	_ = os.Setenv("RCLONE_CACHE_DB_WAIT_TIME", "30m")
+	_ = os.Setenv("ZCLONE_CACHE_DB_WAIT_TIME", "30m")
 
 	// start the tests
 	results := make(chan *runs.Run, len(testRuns))

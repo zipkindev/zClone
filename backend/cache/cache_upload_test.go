@@ -12,10 +12,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/backend/cache"
-	_ "github.com/rclone/rclone/backend/drive"
-	"github.com/rclone/rclone/fs"
 	"github.com/stretchr/testify/require"
+	"zclone/backend/cache"
+	_ "zclone/backend/drive"
+	"zclone/fs"
 )
 
 func TestInternalUploadTempDirCreated(t *testing.T) {

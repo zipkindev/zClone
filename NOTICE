@@ -1,0 +1,7 @@
+Zclone is a derivative work of rclone.
+
+Copyright (C) 2012 Nick Craig-Wood and contributors.
+
+The upstream copyright and MIT license are retained in COPYING. Third-party
+dependency licenses and notices are retained in vendor/ and in the locally
+maintained compatibility libraries under lib/.

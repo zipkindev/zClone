@@ -2,8 +2,8 @@
 package test
 
 import (
-	"github.com/rclone/rclone/cmd"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
 )
 
 func init() {
@@ -14,12 +14,12 @@ func init() {
 var Command = &cobra.Command{
 	Use:   "test <subcommand>",
 	Short: `Run a test command`,
-	Long: `Rclone test is used to run test commands.
+	Long: `Zclone test is used to run test commands.
 
 Select which test command you want with the subcommand, eg
 
 ` + "```console" + `
-rclone test memory remote:
+zclone test memory remote:
 ` + "```" + `
 
 Each subcommand has its own options which you can see in their help.

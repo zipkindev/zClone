@@ -11,12 +11,12 @@ import (
 	"strings"
 
 	"github.com/muesli/reflow/wordwrap"
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/bisync"
-	"github.com/rclone/rclone/fs"
 	"github.com/spf13/pflag"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
+	"zclone/cmd"
+	"zclone/cmd/bisync"
+	"zclone/fs"
 )
 
 // Output the help to stdout
@@ -42,8 +42,8 @@ func RcHelp() string {
 - path2 (required) - (string) a remote directory string e.g. ||drive:path2||
 - dryRun - (bool) dry-run mode
 `+GenerateParams()+`
-See [bisync command help](https://rclone.org/commands/rclone_bisync/)
-and [full bisync description](https://rclone.org/bisync/)
+See [bisync command help](//commands/zclone_bisync/)
+and [full bisync description](//bisync/)
 for more information.
 `), 76)
 }
@@ -69,7 +69,7 @@ func GenerateParams() string {
 		if flag.Hidden {
 			return
 		}
-		builder.WriteString(fmt.Sprintf("- %s - (%s) %s  \n", toCamel(flag.Name), flag.Value.Type(), flag.Usage))
+		builder.WriteString(fmt.Sprintf("- %s - (%s) %s\n", toCamel(flag.Name), flag.Value.Type(), flag.Usage))
 	}
 	commandDefinition, _, _ := cmd.Root.Find([]string{"bisync"})
 	commandDefinition.Flags().VisitAll(fn)

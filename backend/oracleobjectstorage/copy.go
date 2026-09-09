@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/oracle/oci-go-sdk/v65/objectstorage"
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 // ------------------------------------------------------------

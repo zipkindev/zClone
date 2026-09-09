@@ -6,10 +6,10 @@ import (
 	"context"
 	"os"
 
-	"github.com/rclone/rclone/fs/config/configmap"
+	"zclone/fs/config/configmap"
 )
 
-// A configmap.Getter to read from the environment RCLONE_CONFIG_backend_option_name
+// A configmap.Getter to read from the environment ZCLONE_CONFIG_backend_option_name
 type configEnvVars struct {
 	configName string
 	options    Options
@@ -26,7 +26,7 @@ func (c configEnvVars) Get(key string) (value string, ok bool) {
 	return value, ok
 }
 
-// A configmap.Getter to read from the environment RCLONE_option_name
+// A configmap.Getter to read from the environment ZCLONE_option_name
 type optionEnvVars struct {
 	prefix  string
 	options Options

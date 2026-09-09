@@ -26,7 +26,7 @@ func TestMountHelperArgs(t *testing.T) {
 	}}
 
 	for _, tc := range normalCases {
-		exe := []string{"rclone"}
+		exe := []string{"zclone"}
 		src := append(exe, tc.src...)
 		res, err := convertMountHelperArgs(src)
 

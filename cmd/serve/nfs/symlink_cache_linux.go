@@ -14,7 +14,7 @@ restored, the file handle mapping will be lost.
 3. These handles are looked up with open_by_handle_at() so no
 searching through directory trees is needed.
 
-Note that open_by_handle_at requires CAP_DAC_READ_SEARCH so rclone
+Note that open_by_handle_at requires CAP_DAC_READ_SEARCH so zclone
 will need to be run as root or with elevated permissions.
 
 Test with
@@ -34,8 +34,8 @@ import (
 	"path/filepath"
 	"syscall"
 
-	"github.com/rclone/rclone/fs"
 	"golang.org/x/sys/unix"
+	"zclone/fs"
 )
 
 // emptyPath is written instead of "" as symlinks can't be empty

@@ -47,7 +47,7 @@ func GetSupportedGOARM() int {
 	return 0
 }
 
-// GetArch tells the rclone executable's architecture target.
+// GetArch tells the zclone executable's architecture target.
 func GetArch() string {
 	// Get the running program's architecture target.
 	arch := runtime.GOARCH
@@ -60,7 +60,7 @@ func GetArch() string {
 	// the actual value of GOARM used for building this program, but we can
 	// check the value supported by the current CPU by calling GetSupportedGOARM.
 	// This means we return information about the compatibility level (GOARM
-	// value) supported, when the current rclone executable may in reality be
+	// value) supported, when the current zclone executable may in reality be
 	// built with a lower level.
 	//
 	// Note that the kernel architecture, as returned by "uname -m", is not

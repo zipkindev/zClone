@@ -16,14 +16,14 @@ import (
 	"github.com/atotto/clipboard"
 	"github.com/gdamore/tcell/v2"
 	runewidth "github.com/mattn/go-runewidth"
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/ncdu/scan"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/rivo/uniseg"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/cmd/ncdu/scan"
+	"zclone/fs"
+	"zclone/fs/fspath"
+	"zclone/fs/log"
+	"zclone/fs/operations"
 )
 
 func init() {
@@ -40,7 +40,7 @@ all my disk space?".
 {{< asciinema 157793 >}}
 
 To make the user interface it first scans the entire remote given and
-builds an in memory representation.  rclone ncdu can be used during
+builds an in memory representation.  zclone ncdu can be used during
 this scanning phase and you will see it building up the directory
 structure as it goes along.
 
@@ -69,15 +69,15 @@ e means this is an empty directory, i.e. contains no files (but
 ` + "```" + `
 
 This an homage to the [ncdu tool](https://dev.yorhel.nl/ncdu) but for
-rclone remotes.  It is missing lots of features at the moment
+zclone remotes.  It is missing lots of features at the moment
 but is useful as it stands. Unlike ncdu it does not show excluded files.
 
 Note that it might take some time to delete big files/directories. The
 UI won't respond in the meantime since the deletion is done synchronously.
 
 For a non-interactive listing of the remote, see the
-[tree](/commands/rclone_tree/) command. To just get the total size of
-the remote you can also use the [size](/commands/rclone_size/) command.`,
+[tree](/commands/zclone_tree/) command. To just get the total size of
+the remote you can also use the [size](/commands/zclone_size/) command.`,
 	Annotations: map[string]string{
 		"versionIntroduced": "v1.37",
 		"groups":            "Filter,Listing",
@@ -94,7 +94,7 @@ the remote you can also use the [size](/commands/rclone_size/) command.`,
 // helpText returns help text for ncdu
 func helpText() (tr []string) {
 	tr = []string{
-		"rclone ncdu",
+		"zclone ncdu",
 		" ↑,↓ or k,j to Move",
 		" →,l to enter",
 		" ←,h to return",
@@ -366,7 +366,7 @@ func (u *UI) Draw() {
 	u.s.Clear()
 
 	// Header line
-	u.Linef(0, 0, w, tcell.StyleDefault.Reverse(true), ' ', "rclone ncdu %s - use the arrow keys to navigate, press ? for help", fs.Version)
+	u.Linef(0, 0, w, tcell.StyleDefault.Reverse(true), ' ', "zclone ncdu %s - use the arrow keys to navigate, press ? for help", fs.Version)
 
 	// Directory line
 	u.Linef(0, 1, w, tcell.StyleDefault, '-', "-- %s ", u.path)

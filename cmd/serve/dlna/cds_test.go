@@ -9,11 +9,11 @@ import (
 	"testing"
 
 	"github.com/anacrolix/dms/soap"
-	localBackend "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/vfs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	localBackend "zclone/backend/local"
+	"zclone/fs/config/configmap"
+	"zclone/vfs"
 )
 
 func TestMediaWithResources(t *testing.T) {

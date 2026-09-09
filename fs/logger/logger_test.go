@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/rclone/rclone/fs/logger"
 	"github.com/rogpeppe/go-internal/testscript"
+	"zclone/fs/logger"
 )
 
 // TestMain drives the tests
@@ -18,7 +18,7 @@ func TestMain(m *testing.M) {
 	// https://bitfieldconsulting.com/golang/cli-testing
 	// https://pkg.go.dev/github.com/rogpeppe/go-internal@v1.11.0/testscript
 	testscript.Main(m, map[string]func(){
-		"rclone": logger.Main,
+		"zclone": logger.Main,
 	})
 }
 
@@ -33,7 +33,7 @@ func TestLogger(t *testing.T) {
 			// Fill src and dst with two overlapping trees of files so the
 			// scripts have a realistic mix of matching, differing and
 			// missing files to compare. This used to download two old
-			// rclone source archives from GitHub which made the tests fail
+			// zclone source archives from GitHub which made the tests fail
 			// whenever the network or GitHub was flaky.
 			if err := makeTestTrees(src, dst); err != nil {
 				return err

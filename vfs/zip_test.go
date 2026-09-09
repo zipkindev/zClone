@@ -10,9 +10,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/lib/random"
 	"github.com/stretchr/testify/require"
+	"zclone/fstest"
+	"zclone/lib/random"
 )
 
 func readZip(t *testing.T, buf *bytes.Buffer) *zip.Reader {

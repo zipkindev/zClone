@@ -12,18 +12,18 @@ import (
 	"testing"
 	"time"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/fs/walk"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/mockdir"
-	"github.com/rclone/rclone/fstest/mockobject"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/text/unicode/norm"
+	_ "zclone/backend/local"
+	"zclone/fs"
+	"zclone/fs/filter"
+	"zclone/fs/fserrors"
+	"zclone/fs/list"
+	"zclone/fs/walk"
+	"zclone/fstest"
+	"zclone/fstest/mockdir"
+	"zclone/fstest/mockobject"
 )
 
 // Some times used in the tests

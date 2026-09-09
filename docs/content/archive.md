@@ -22,16 +22,16 @@ The supported archive file types are cloud friendly - a single file
 can be found and downloaded without downloading the whole archive.
 
 If you just want to create, list or extract archives and don't want to
-mount them then you may find the `rclone archive` commands more
+mount them then you may find the `zclone archive` commands more
 convenient.
 
-- [rclone archive create](/commands/rclone_archive_create/)
-- [rclone archive list](/commands/rclone_archive_list/)
-- [rclone archive extract](/commands/rclone_archive_extract/)
+- [zclone archive create](/commands/zclone_archive_create/)
+- [zclone archive list](/commands/zclone_archive_list/)
+- [zclone archive extract](/commands/zclone_archive_extract/)
 
 These commands supports a wider range of non cloud friendly archives
-(but not squashfs) but can't be used for `rclone mount` or any other
-rclone commands (eg `rclone check`).
+(but not squashfs) but can't be used for `zclone mount` or any other
+zclone commands (eg `zclone check`).
 
 ## Configuration
 
@@ -46,7 +46,7 @@ be read out of them individually.
 For example
 
 ```
-$ rclone lsf s3:rclone/dir
+$ zclone lsf s3:zclone/dir
 100files.sqfs
 100files.zip
 ```
@@ -54,7 +54,7 @@ $ rclone lsf s3:rclone/dir
 Note that `100files.zip` and `100files.sqfs` are now directories:
 
 ```
-$ rclone lsf :archive:s3:rclone/dir
+$ zclone lsf :archive:s3:zclone/dir
 100files.sqfs/
 100files.zip/
 ```
@@ -62,7 +62,7 @@ $ rclone lsf :archive:s3:rclone/dir
 Which we can look inside:
 
 ```
-$ rclone lsf :archive:s3:rclone/dir/100files.zip/
+$ zclone lsf :archive:s3:zclone/dir/100files.zip/
 cofofiy5jun
 gigi
 hevupaz5z
@@ -85,13 +85,13 @@ The archive backend can also be used in a configuration file. Use the `remote` v
 ```
 [remote]
 type = archive
-remote = s3:rclone/dir/100files.zip
+remote = s3:zclone/dir/100files.zip
 ```
 
 Gives
 
 ```
-$ rclone lsf remote:
+$ zclone lsf remote:
 cofofiy5jun
 gigi
 hevupaz5z
@@ -105,7 +105,7 @@ kacak/
 Modification times are preserved with an accuracy depending on the archive type.
 
 ```
-$ rclone lsl --max-depth 1 :archive:s3:rclone/dir/100files.zip
+$ zclone lsl --max-depth 1 :archive:s3:zclone/dir/100files.zip
        12 2025-10-27 14:39:20.000000000 cofofiy5jun
        81 2025-10-27 14:39:20.000000000 gigi
        58 2025-10-27 14:39:20.000000000 hevupaz5z
@@ -126,7 +126,7 @@ Which hash is supported depends on the archive type. Zip files use
 CRC32, Squashfs don't support any hashes. For example:
 
 ```
-$ rclone hashsum crc32 :archive:s3:rclone/dir/100files.zip/
+$ zclone hashsum crc32 :archive:s3:zclone/dir/100files.zip/
 b2288554  cofofiy5jun
 a87e62b6  wose
 f90f630b  xade
@@ -144,7 +144,7 @@ Hashes will be checked when the file is read from the archive and used
 as part of syncing if possible.
 
 ```
-$ rclone copy -vv :archive:s3:rclone/dir/100files.zip /tmp/100files
+$ zclone copy -vv :archive:s3:zclone/dir/100files.zip /tmp/100files
 ...
 2025/10/27 14:56:44 DEBUG : kacak/turovat5c/yuyuquk: crc32 = abd05cc8 OK
 2025/10/27 14:56:44 DEBUG : kacak/turovat5c/yuyuquk.aeb661dc.partial: renamed to: kacak/turovat5c/yuyuquk
@@ -161,7 +161,7 @@ transmission. It typically uses compression (most commonly the DEFLATE
 algorithm) to reduce the overall size of the archived content. Zip
 files are supported natively by most modern operating systems.
 
-Rclone does not support the following advanced features of Zip files:
+Zclone does not support the following advanced features of Zip files:
 
 - Splitting large archives into smaller parts
 - Password protection
@@ -178,7 +178,7 @@ compressed, Squashfs is ideal for live CDs/USBs, embedded devices with
 limited storage, and software package distribution, as it saves space
 and ensures the integrity of the original files.
 
-Rclone supports the following squashfs compression formats:
+Zclone supports the following squashfs compression formats:
 
 - `Gzip`
 - `Lzma`
@@ -190,7 +190,7 @@ These are not yet working:
 - `Lzo` - Not yet supported
 - `Lz4` - Broken with "error decompressing: lz4: bad magic number"
 
-Rclone works fastest with large squashfs block sizes. For example:
+Zclone works fastest with large squashfs block sizes. For example:
 
 ```
 mksquashfs 100files 100files.sqfs -comp zstd -b 1M
@@ -200,7 +200,7 @@ mksquashfs 100files 100files.sqfs -comp zstd -b 1M
 
 Files in the archive backend are read only. It isn't possible to
 create archives with the archive backend yet. However you **can** create
-archives with [rclone archive create](/commands/rclone_archive_create/).
+archives with [zclone archive create](/commands/zclone_archive_create/).
 
 Only `.zip` and `.sqfs` archives are supported as these are the only
 common archiving formats which make it easy to read directory listings
@@ -258,7 +258,7 @@ equivalent to setting remote="remote:path".
 Properties:
 
 - Config:      remote
-- Env Var:     RCLONE_ARCHIVE_REMOTE
+- Env Var:     ZCLONE_ARCHIVE_REMOTE
 - Type:        string
 - Required:    false
 
@@ -273,7 +273,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_ARCHIVE_DESCRIPTION
+- Env Var:     ZCLONE_ARCHIVE_DESCRIPTION
 - Type:        string
 - Required:    false
 

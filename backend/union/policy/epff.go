@@ -4,8 +4,8 @@ import (
 	"context"
 	"path"
 
-	"github.com/rclone/rclone/backend/union/upstream"
-	"github.com/rclone/rclone/fs"
+	"zclone/backend/union/upstream"
+	"zclone/fs"
 )
 
 func init() {

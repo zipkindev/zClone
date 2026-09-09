@@ -8,8 +8,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/driveletter"
+	"zclone/fs/config/configmap"
+	"zclone/fs/driveletter"
 )
 
 const (
@@ -30,13 +30,13 @@ var (
 	errAfterQuote        = errors.New("expecting `:` or `,` or another quote after a quote")
 	errSyntax            = errors.New("syntax error in config string")
 
-	// configNameMatcher is a pattern to match an rclone config name
+	// configNameMatcher is a pattern to match an zclone config name
 	configNameMatcher = regexp.MustCompile(`^` + configNameRe + `$`)
 
-	// illegalPartOfConfigNameMatcher is a pattern to match a sequence of characters not allowed in an rclone config name
+	// illegalPartOfConfigNameMatcher is a pattern to match a sequence of characters not allowed in an zclone config name
 	illegalPartOfConfigNameMatcher = regexp.MustCompile(illegalPartOfConfigNameRe)
 
-	// remoteNameMatcher is a pattern to match an rclone remote name at the start of a config
+	// remoteNameMatcher is a pattern to match an zclone remote name at the start of a config
 	remoteNameMatcher = regexp.MustCompile(`^:?` + configNameRe + `(?::$|,)`)
 )
 

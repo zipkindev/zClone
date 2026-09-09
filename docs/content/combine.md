@@ -12,7 +12,7 @@ tree.
 For example you might have a remote for images on one provider:
 
 ```console
-$ rclone tree s3:imagesbucket
+$ zclone tree s3:imagesbucket
 /
 ├── image1.jpg
 └── image2.jpg
@@ -21,7 +21,7 @@ $ rclone tree s3:imagesbucket
 And a remote for files on another:
 
 ```console
-$ rclone tree drive:important/files
+$ zclone tree drive:important/files
 /
 ├── file1.txt
 └── file2.txt
@@ -31,7 +31,7 @@ The `combine` backend can join these together into a synthetic
 directory structure like this:
 
 ```console
-$ rclone tree combined:
+$ zclone tree combined:
 /
 ├── files
 │   ├── file1.txt
@@ -48,7 +48,7 @@ like this
 upstreams = images=s3:imagesbucket files=drive:important/files
 ```
 
-During the initial setup with `rclone config` you will specify the
+During the initial setup with `zclone config` you will specify the
 upstreams remotes as a space separated list. The upstream remotes can
 either be a local paths or other remotes.
 
@@ -58,7 +58,7 @@ Here is an example of how to make a combine called `remote` for the
 example above. First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -101,14 +101,14 @@ y/e/d> y
 
 ### Configuring for Google Drive Shared Drives
 
-Rclone has a convenience feature for making a combine backend for all
+Zclone has a convenience feature for making a combine backend for all
 the shared drives you have access to.
 
 Assuming your main (non shared drive) Google drive remote is called
 `drive:` you would run
 
 ```console
-rclone backend -o config drives drive:
+zclone backend -o config drives drive:
 ```
 
 This would produce something like this:
@@ -127,7 +127,7 @@ type = combine
 upstreams = "My Drive=My Drive:" "Test Drive=Test Drive:"
 ```
 
-If you then add that config to your config file (find it with `rclone
+If you then add that config to your config file (find it with `zclone
 config file`) then you can access all the shared drives in one place
 with the `AllDrives:` remote.
 
@@ -158,7 +158,7 @@ Embedded spaces can be added using quotes
 Properties:
 
 - Config:      upstreams
-- Env Var:     RCLONE_COMBINE_UPSTREAMS
+- Env Var:     ZCLONE_COMBINE_UPSTREAMS
 - Type:        SpaceSepList
 - Default:     
 
@@ -173,7 +173,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_COMBINE_DESCRIPTION
+- Env Var:     ZCLONE_COMBINE_DESCRIPTION
 - Type:        string
 - Required:    false
 

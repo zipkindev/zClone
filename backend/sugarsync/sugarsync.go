@@ -26,20 +26,20 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/backend/sugarsync/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/sugarsync/api"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
+	"zclone/lib/dircache"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
 /*
@@ -134,15 +134,15 @@ func init() {
 			return nil, fmt.Errorf("unknown state %q", config.State)
 		}, Options: []fs.Option{{
 			Name:      "app_id",
-			Help:      "Sugarsync App ID.\n\nLeave blank to use rclone's.",
+			Help:      "Sugarsync App ID.\n\nLeave blank to use zclone's.",
 			Sensitive: true,
 		}, {
 			Name:      "access_key_id",
-			Help:      "Sugarsync Access Key ID.\n\nLeave blank to use rclone's.",
+			Help:      "Sugarsync Access Key ID.\n\nLeave blank to use zclone's.",
 			Sensitive: true,
 		}, {
 			Name:      "private_access_key",
-			Help:      "Sugarsync Private Access Key.\n\nLeave blank to use rclone's.",
+			Help:      "Sugarsync Private Access Key.\n\nLeave blank to use zclone's.",
 			Sensitive: true,
 		}, {
 			Name:    "hard_delete",
@@ -150,31 +150,31 @@ func init() {
 			Default: false,
 		}, {
 			Name:      "refresh_token",
-			Help:      "Sugarsync refresh token.\n\nLeave blank normally, will be auto configured by rclone.",
+			Help:      "Sugarsync refresh token.\n\nLeave blank normally, will be auto configured by zclone.",
 			Advanced:  true,
 			Sensitive: true,
 		}, {
 			Name:      "authorization",
-			Help:      "Sugarsync authorization.\n\nLeave blank normally, will be auto configured by rclone.",
+			Help:      "Sugarsync authorization.\n\nLeave blank normally, will be auto configured by zclone.",
 			Advanced:  true,
 			Sensitive: true,
 		}, {
 			Name:     "authorization_expiry",
-			Help:     "Sugarsync authorization expiry.\n\nLeave blank normally, will be auto configured by rclone.",
+			Help:     "Sugarsync authorization expiry.\n\nLeave blank normally, will be auto configured by zclone.",
 			Advanced: true,
 		}, {
 			Name:      "user",
-			Help:      "Sugarsync user.\n\nLeave blank normally, will be auto configured by rclone.",
+			Help:      "Sugarsync user.\n\nLeave blank normally, will be auto configured by zclone.",
 			Advanced:  true,
 			Sensitive: true,
 		}, {
 			Name:      "root_id",
-			Help:      "Sugarsync root id.\n\nLeave blank normally, will be auto configured by rclone.",
+			Help:      "Sugarsync root id.\n\nLeave blank normally, will be auto configured by zclone.",
 			Advanced:  true,
 			Sensitive: true,
 		}, {
 			Name:      "deleted_id",
-			Help:      "Sugarsync deleted folder id.\n\nLeave blank normally, will be auto configured by rclone.",
+			Help:      "Sugarsync deleted folder id.\n\nLeave blank normally, will be auto configured by zclone.",
 			Advanced:  true,
 			Sensitive: true,
 		}, {
@@ -334,7 +334,7 @@ func (f *Fs) getAuthToken(ctx context.Context) error {
 	}
 
 	if authRequest.RefreshToken == "" {
-		return errors.New("no refresh token found - run `rclone config reconnect`")
+		return errors.New("no refresh token found - run `zclone config reconnect`")
 	}
 
 	var authResponse api.Authorization

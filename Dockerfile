@@ -1,53 +1,44 @@
-FROM golang:alpine AS builder
+# Supply approved, locally preloaded images explicitly. Omitting either value
+# fails before a builder can contact a registry.
+ARG GO_IMAGE
+ARG RUNTIME_IMAGE
+FROM ${GO_IMAGE} AS builder
 
 ARG CGO_ENABLED=0
+ARG INSTALL_BUILD_DEPS=0
 
-WORKDIR /go/src/github.com/rclone/rclone/
+WORKDIR /go/src/zclone/
 
 RUN echo "**** Set Go Environment Variables ****" && \
     go env -w GOCACHE=/root/.cache/go-build
 
-RUN echo "**** Install Dependencies ****" && \
-    apk add --no-cache \
-        make \
-        bash \
-        gawk \
-        git
-
-COPY go.mod .
-COPY go.sum .
-
-RUN echo "**** Download Go Dependencies ****" && \
-    go mod download -x
-
-RUN echo "**** Verify Go Dependencies ****" && \
-    go mod verify
+RUN if [ "$INSTALL_BUILD_DEPS" = 1 ]; then \
+		apk add --no-cache make bash gawk git; \
+	fi
 
 COPY . .
 
 RUN --mount=type=cache,target=/root/.cache/go-build,sharing=locked \
     echo "**** Build Binary ****" && \
-    make
+    make zclone
 
 RUN echo "**** Print Version Binary ****" && \
-    ./rclone version
+    ./build/zclone version
 
 # Begin final image
-FROM alpine:latest
+FROM ${RUNTIME_IMAGE}
+ARG INSTALL_RUNTIME_DEPS=0
 
-RUN echo "**** Install Dependencies ****" && \
-    apk add --no-cache \
-        ca-certificates \
-        fuse3 \
-        tzdata && \
-    echo "Enable user_allow_other in fuse" && \
-    echo "user_allow_other" >> /etc/fuse.conf
+RUN if [ "$INSTALL_RUNTIME_DEPS" = 1 ]; then \
+		apk add --no-cache ca-certificates fuse3 tzdata; \
+	fi && \
+	if [ -f /etc/fuse.conf ]; then echo "user_allow_other" >> /etc/fuse.conf; fi
 
-COPY --from=builder /go/src/github.com/rclone/rclone/rclone /usr/local/bin/
+COPY --from=builder /go/src/zclone/build/zclone /usr/local/bin/zclone
 
-RUN addgroup -g 1009 rclone && adduser -u 1009 -Ds /bin/sh -G rclone rclone
+RUN addgroup -g 1009 zclone && adduser -u 1009 -Ds /bin/sh -G zclone zclone
 
-ENTRYPOINT [ "rclone" ]
+ENTRYPOINT [ "zclone" ]
 
 WORKDIR /data
 ENV XDG_CONFIG_HOME=/config

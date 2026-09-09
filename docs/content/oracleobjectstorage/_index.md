@@ -1,6 +1,6 @@
 ---
 title: "Oracle Object Storage"
-description: "Rclone docs for Oracle Object Storage"
+description: "Zclone docs for Oracle Object Storage"
 type: page
 versionIntroduced: "v1.60"
 ---
@@ -19,18 +19,18 @@ You may put subdirectories in too, e.g. `remote:bucket/path/to/dir`.
 Sample command to transfer local artifacts to remote:bucket in oracle object storage:
 
 ```console
-rclone -vvv  --progress --stats-one-line --max-stats-groups 10 --log-format date,time,UTC,longfile --fast-list --buffer-size 256Mi --oos-no-check-bucket --oos-upload-cutoff 10Mi --multi-thread-cutoff 16Mi --multi-thread-streams 3000 --transfers 3000 --checkers 64  --retries 2  --oos-chunk-size 10Mi --oos-upload-concurrency 10000  --oos-attempt-resume-upload --oos-leave-parts-on-error sync ./artifacts  remote:bucket -vv
+zclone -vvv  --progress --stats-one-line --max-stats-groups 10 --log-format date,time,UTC,longfile --fast-list --buffer-size 256Mi --oos-no-check-bucket --oos-upload-cutoff 10Mi --multi-thread-cutoff 16Mi --multi-thread-streams 3000 --transfers 3000 --checkers 64  --retries 2  --oos-chunk-size 10Mi --oos-upload-concurrency 10000  --oos-attempt-resume-upload --oos-leave-parts-on-error sync ./artifacts  remote:bucket -vv
 ```
 
 ## Configuration
 
-Here is an example of making an oracle object storage configuration. `rclone config`
+Here is an example of making an oracle object storage configuration. `zclone config`
 walks you through it.
 
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -98,7 +98,7 @@ Option endpoint.
 Endpoint for Object storage API.
 Leave blank to use the default endpoint for the region.
 Enter a value. Press Enter to leave empty.
-endpoint> 
+endpoint>
 
 Option config_file.
 Full Path to OCI config file
@@ -140,29 +140,29 @@ y/e/d> y
 See all buckets
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 Create a new bucket
 
 ```console
-rclone mkdir remote:bucket
+zclone mkdir remote:bucket
 ```
 
 List the contents of a bucket
 
 ```console
-rclone ls remote:bucket
-rclone ls remote:bucket --max-depth 1
+zclone ls remote:bucket
+zclone ls remote:bucket --max-depth 1
 ```
 
 ## Authentication Providers
 
 OCI has various authentication methods. To learn more about authentication methods
 please refer [oci authentication methods](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdk_authentication_methods.htm)
-These choices can be specified in the rclone config file.
+These choices can be specified in the zclone config file.
 
-Rclone supports the following OCI authentication provider.
+Zclone supports the following OCI authentication provider.
 
 ```text
 User Principal
@@ -174,7 +174,7 @@ No authentication
 
 ### User Principal
 
-Sample rclone config file for Authentication Provider User Principal:
+Sample zclone config file for Authentication Provider User Principal:
 
 ```ini
 [oos]
@@ -202,14 +202,14 @@ Considerations:
 
 ### Instance Principal
 
-An OCI compute instance can be authorized to use rclone by using it's identity
+An OCI compute instance can be authorized to use zclone by using it's identity
 and certificates as an instance principal. With this approach no credentials
 have to be stored and managed.
 
-Sample rclone configuration file for Authentication Provider Instance Principal:
+Sample zclone configuration file for Authentication Provider Instance Principal:
 
 ```console
-[opc@rclone ~]$ cat ~/.config/rclone/rclone.conf
+[opc@zclone ~]$ cat ~/.config/zclone/zclone.conf
 [oos]
 type = oracleobjectstorage
 namespace = id<redacted>fn
@@ -239,7 +239,7 @@ Considerations:
 Resource principal auth is very similar to instance principal auth but used for
 resources that are not  compute instances such as
 [serverless functions](https://docs.oracle.com/en-us/iaas/Content/Functions/Concepts/functionsoverview.htm).
-To use resource principal ensure Rclone process is started with these environment
+To use resource principal ensure Zclone process is started with these environment
 variables set in its process.
 
 ```console
@@ -249,7 +249,7 @@ export OCI_RESOURCE_PRINCIPAL_PRIVATE_PEM=/usr/share/model-server/key.pem
 export OCI_RESOURCE_PRINCIPAL_RPST=/usr/share/model-server/security_token
 ```
 
-Sample rclone configuration file for Authentication Provider Resource Principal:
+Sample zclone configuration file for Authentication Provider Resource Principal:
 
 ```ini
 [oos]
@@ -262,10 +262,10 @@ provider = resource_principal_auth
 
 ### Workload Identity
 
-Workload Identity auth may be used when running Rclone from Kubernetes pod on
+Workload Identity auth may be used when running Zclone from Kubernetes pod on
 a Container Engine for Kubernetes (OKE) cluster. For more details on configuring
 Workload Identity, see [Granting Workloads Access to OCI Resources](https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contenggrantingworkloadaccesstoresources.htm).
-To use workload identity, ensure Rclone is started with these environment
+To use workload identity, ensure Zclone is started with these environment
 variables set in its process.
 
 ```console
@@ -276,7 +276,7 @@ export OCI_RESOURCE_PRINCIPAL_REGION=us-ashburn-1
 ### No authentication
 
 Public buckets do not require any authentication mechanism to read objects.
-Sample rclone configuration file for No authentication:
+Sample zclone configuration file for No authentication:
 
 ```ini
 [oos]
@@ -292,7 +292,7 @@ provider = no_auth
 The modification time is stored as metadata on the object as
 `opc-meta-mtime` as floating point since the epoch, accurate to 1 ns.
 
-If the modification time needs to be updated rclone will attempt to perform a server
+If the modification time needs to be updated zclone will attempt to perform a server
 side copy to update the modification if the object can be copied in a single part.
 In the case the object is larger than 5Gb, the object will be uploaded rather than
 copied.
@@ -304,13 +304,13 @@ The MD5 hash algorithm is supported.
 
 ### Multipart uploads
 
-rclone supports multipart uploads with OOS which means that it can
+zclone supports multipart uploads with OOS which means that it can
 upload files bigger than 5 GiB.
 
 Note that files uploaded *both* with multipart upload *and* through
 crypt remotes do not have MD5 sums.
 
-rclone switches from single part uploads to multipart uploads at the
+zclone switches from single part uploads to multipart uploads at the
 point specified by `--oos-upload-cutoff`.  This can be a maximum of 5 GiB
 and a minimum of 0 (ie always upload multipart files).
 
@@ -344,7 +344,7 @@ Choose your Auth Provider
 Properties:
 
 - Config:      provider
-- Env Var:     RCLONE_OOS_PROVIDER
+- Env Var:     ZCLONE_OOS_PROVIDER
 - Type:        string
 - Default:     "env_auth"
 - Examples:
@@ -355,8 +355,8 @@ Properties:
     - you’ll need to put in a config file your tenancy OCID, user OCID, region, the path, fingerprint to an API key.
     - https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm
   - "instance_principal_auth"
-    - use instance principals to authorize an instance to make API calls. 
-    - each instance has its own identity, and authenticates using the certificates that are read from instance metadata. 
+    - use instance principals to authorize an instance to make API calls.
+    - each instance has its own identity, and authenticates using the certificates that are read from instance metadata.
     - https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/callingservicesfrominstances.htm
   - "workload_identity_auth"
     - use workload identity to grant OCI Container Engine for Kubernetes workloads policy-driven access to OCI resources using OCI Identity and Access Management (IAM).
@@ -373,7 +373,7 @@ Object storage namespace
 Properties:
 
 - Config:      namespace
-- Env Var:     RCLONE_OOS_NAMESPACE
+- Env Var:     ZCLONE_OOS_NAMESPACE
 - Type:        string
 - Required:    true
 
@@ -386,7 +386,7 @@ List objects works without compartment OCID.
 Properties:
 
 - Config:      compartment
-- Env Var:     RCLONE_OOS_COMPARTMENT
+- Env Var:     ZCLONE_OOS_COMPARTMENT
 - Provider:    !no_auth
 - Type:        string
 - Required:    false
@@ -398,7 +398,7 @@ Object storage Region
 Properties:
 
 - Config:      region
-- Env Var:     RCLONE_OOS_REGION
+- Env Var:     ZCLONE_OOS_REGION
 - Type:        string
 - Required:    true
 
@@ -411,7 +411,7 @@ Leave blank to use the default endpoint for the region.
 Properties:
 
 - Config:      endpoint
-- Env Var:     RCLONE_OOS_ENDPOINT
+- Env Var:     ZCLONE_OOS_ENDPOINT
 - Type:        string
 - Required:    false
 
@@ -422,7 +422,7 @@ Path to OCI config file
 Properties:
 
 - Config:      config_file
-- Env Var:     RCLONE_OOS_CONFIG_FILE
+- Env Var:     ZCLONE_OOS_CONFIG_FILE
 - Provider:    user_principal_auth
 - Type:        string
 - Default:     "~/.oci/config"
@@ -437,7 +437,7 @@ Profile name inside the oci config file
 Properties:
 
 - Config:      config_profile
-- Env Var:     RCLONE_OOS_CONFIG_PROFILE
+- Env Var:     ZCLONE_OOS_CONFIG_PROFILE
 - Provider:    user_principal_auth
 - Type:        string
 - Default:     "Default"
@@ -456,7 +456,7 @@ The storage class to use when storing new objects in storage. https://docs.oracl
 Properties:
 
 - Config:      storage_tier
-- Env Var:     RCLONE_OOS_STORAGE_TIER
+- Env Var:     ZCLONE_OOS_STORAGE_TIER
 - Type:        string
 - Default:     "Standard"
 - Examples:
@@ -477,7 +477,7 @@ The minimum is 0 and the maximum is 5 GiB.
 Properties:
 
 - Config:      upload_cutoff
-- Env Var:     RCLONE_OOS_UPLOAD_CUTOFF
+- Env Var:     ZCLONE_OOS_UPLOAD_CUTOFF
 - Type:        SizeSuffix
 - Default:     200Mi
 
@@ -486,7 +486,7 @@ Properties:
 Chunk size to use for uploading.
 
 When uploading files larger than upload_cutoff or files with unknown
-size (e.g. from "rclone rcat" or uploaded with "rclone mount" they will be uploaded 
+size (e.g. from "zclone rcat" or uploaded with "zclone mount" they will be uploaded
 as multipart uploads using this chunk size.
 
 Note that "upload_concurrency" chunks of this size are buffered
@@ -495,7 +495,7 @@ in memory per transfer.
 If you are transferring large files over high-speed links and you have
 enough memory, then increasing this will speed up the transfers.
 
-Rclone will automatically increase the chunk size when uploading a
+Zclone will automatically increase the chunk size when uploading a
 large file of known size to stay below the 10,000 chunks limit.
 
 Files of unknown size are uploaded with the configured
@@ -511,7 +511,7 @@ statistics displayed with "-P" flag.
 Properties:
 
 - Config:      chunk_size
-- Env Var:     RCLONE_OOS_CHUNK_SIZE
+- Env Var:     ZCLONE_OOS_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     5Mi
 
@@ -524,14 +524,14 @@ when doing a multipart upload.
 
 OCI has max parts limit of 10,000 chunks.
 
-Rclone will automatically increase the chunk size when uploading a
+Zclone will automatically increase the chunk size when uploading a
 large file of a known size to stay below this number of chunks limit.
 
 
 Properties:
 
 - Config:      max_upload_parts
-- Env Var:     RCLONE_OOS_MAX_UPLOAD_PARTS
+- Env Var:     ZCLONE_OOS_MAX_UPLOAD_PARTS
 - Type:        int
 - Default:     10000
 
@@ -549,7 +549,7 @@ this may help to speed up the transfers.
 Properties:
 
 - Config:      upload_concurrency
-- Env Var:     RCLONE_OOS_UPLOAD_CONCURRENCY
+- Env Var:     ZCLONE_OOS_UPLOAD_CONCURRENCY
 - Type:        int
 - Default:     10
 
@@ -565,7 +565,7 @@ The minimum is 0 and the maximum is 5 GiB.
 Properties:
 
 - Config:      copy_cutoff
-- Env Var:     RCLONE_OOS_COPY_CUTOFF
+- Env Var:     ZCLONE_OOS_COPY_CUTOFF
 - Type:        SizeSuffix
 - Default:     4.656Gi
 
@@ -579,7 +579,7 @@ Copy is an asynchronous operation, specify timeout to wait for copy to succeed
 Properties:
 
 - Config:      copy_timeout
-- Env Var:     RCLONE_OOS_COPY_TIMEOUT
+- Env Var:     ZCLONE_OOS_COPY_TIMEOUT
 - Type:        Duration
 - Default:     1m0s
 
@@ -587,7 +587,7 @@ Properties:
 
 Don't store MD5 checksum with object metadata.
 
-Normally rclone will calculate the MD5 checksum of the input before
+Normally zclone will calculate the MD5 checksum of the input before
 uploading it so it can add it to metadata on the object. This is great
 for data integrity checking but can cause long delays for large files
 to start uploading.
@@ -595,7 +595,7 @@ to start uploading.
 Properties:
 
 - Config:      disable_checksum
-- Env Var:     RCLONE_OOS_DISABLE_CHECKSUM
+- Env Var:     ZCLONE_OOS_DISABLE_CHECKSUM
 - Type:        bool
 - Default:     false
 
@@ -608,7 +608,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_OOS_ENCODING
+- Env Var:     ZCLONE_OOS_ENCODING
 - Type:        Encoding
 - Default:     Slash,InvalidUtf8,Dot
 
@@ -625,7 +625,7 @@ additional costs if not cleaned up.
 Properties:
 
 - Config:      leave_parts_on_error
-- Env Var:     RCLONE_OOS_LEAVE_PARTS_ON_ERROR
+- Env Var:     ZCLONE_OOS_LEAVE_PARTS_ON_ERROR
 - Type:        bool
 - Default:     false
 
@@ -634,7 +634,7 @@ Properties:
 If true attempt to resume previously started multipart upload for the object.
 This will be helpful to speed up multipart transfers by resuming uploads from past session.
 
-WARNING: If chunk size differs in resumed session from past incomplete session, then the resumed multipart upload is 
+WARNING: If chunk size differs in resumed session from past incomplete session, then the resumed multipart upload is
 aborted and a new multipart upload is started with the new chunk size.
 
 The flag leave_parts_on_error must be true to resume and optimize to skip parts that were already uploaded successfully.
@@ -643,7 +643,7 @@ The flag leave_parts_on_error must be true to resume and optimize to skip parts 
 Properties:
 
 - Config:      attempt_resume_upload
-- Env Var:     RCLONE_OOS_ATTEMPT_RESUME_UPLOAD
+- Env Var:     ZCLONE_OOS_ATTEMPT_RESUME_UPLOAD
 - Type:        bool
 - Default:     false
 
@@ -652,7 +652,7 @@ Properties:
 If set, don't attempt to check the bucket exists or create it.
 
 This can be useful when trying to minimise the number of transactions
-rclone does if you know the bucket exists already.
+zclone does if you know the bucket exists already.
 
 It can also be needed if the user you are using does not have bucket
 creation permissions.
@@ -661,7 +661,7 @@ creation permissions.
 Properties:
 
 - Config:      no_check_bucket
-- Env Var:     RCLONE_OOS_NO_CHECK_BUCKET
+- Env Var:     ZCLONE_OOS_NO_CHECK_BUCKET
 - Type:        bool
 - Default:     false
 
@@ -673,7 +673,7 @@ with the object. Please note only one of sse_customer_key_file|sse_customer_key|
 Properties:
 
 - Config:      sse_customer_key_file
-- Env Var:     RCLONE_OOS_SSE_CUSTOMER_KEY_FILE
+- Env Var:     ZCLONE_OOS_SSE_CUSTOMER_KEY_FILE
 - Type:        string
 - Required:    false
 - Examples:
@@ -684,13 +684,13 @@ Properties:
 
 To use SSE-C, the optional header that specifies the base64-encoded 256-bit encryption key to use to
 encrypt or  decrypt the data. Please note only one of sse_customer_key_file|sse_customer_key|sse_kms_key_id is
-needed. For more information, see Using Your Own Keys for Server-Side Encryption 
+needed. For more information, see Using Your Own Keys for Server-Side Encryption
 (https://docs.cloud.oracle.com/Content/Object/Tasks/usingyourencryptionkeys.htm)
 
 Properties:
 
 - Config:      sse_customer_key
-- Env Var:     RCLONE_OOS_SSE_CUSTOMER_KEY
+- Env Var:     ZCLONE_OOS_SSE_CUSTOMER_KEY
 - Type:        string
 - Required:    false
 - Examples:
@@ -700,13 +700,13 @@ Properties:
 #### --oos-sse-customer-key-sha256
 
 If using SSE-C, The optional header that specifies the base64-encoded SHA256 hash of the encryption
-key. This value is used to check the integrity of the encryption key. see Using Your Own Keys for 
+key. This value is used to check the integrity of the encryption key. see Using Your Own Keys for
 Server-Side Encryption (https://docs.cloud.oracle.com/Content/Object/Tasks/usingyourencryptionkeys.htm).
 
 Properties:
 
 - Config:      sse_customer_key_sha256
-- Env Var:     RCLONE_OOS_SSE_CUSTOMER_KEY_SHA256
+- Env Var:     ZCLONE_OOS_SSE_CUSTOMER_KEY_SHA256
 - Type:        string
 - Required:    false
 - Examples:
@@ -723,7 +723,7 @@ Please note only one of sse_customer_key_file|sse_customer_key|sse_kms_key_id is
 Properties:
 
 - Config:      sse_kms_key_id
-- Env Var:     RCLONE_OOS_SSE_KMS_KEY_ID
+- Env Var:     ZCLONE_OOS_SSE_KMS_KEY_ID
 - Type:        string
 - Required:    false
 - Examples:
@@ -739,7 +739,7 @@ Using Your Own Keys for Server-Side Encryption (https://docs.cloud.oracle.com/Co
 Properties:
 
 - Config:      sse_customer_algorithm
-- Env Var:     RCLONE_OOS_SSE_CUSTOMER_ALGORITHM
+- Env Var:     ZCLONE_OOS_SSE_CUSTOMER_ALGORITHM
 - Type:        string
 - Required:    false
 - Examples:
@@ -753,11 +753,11 @@ Properties:
 If set this will decompress gzip encoded objects.
 
 It is possible to upload objects to object storage with
-"Content-Encoding: gzip" set. Normally rclone will download these
+"Content-Encoding: gzip" set. Normally zclone will download these
 files as compressed objects.
 
-If this flag is set then rclone will decompress these files with
-"Content-Encoding: gzip" as they are received. This means that rclone
+If this flag is set then zclone will decompress these files with
+"Content-Encoding: gzip" as they are received. This means that zclone
 can't check the size and hash but the file contents will be
 decompressed.
 
@@ -765,7 +765,7 @@ decompressed.
 Properties:
 
 - Config:      decompress
-- Env Var:     RCLONE_OOS_DECOMPRESS
+- Env Var:     ZCLONE_OOS_DECOMPRESS
 - Type:        bool
 - Default:     false
 
@@ -776,7 +776,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_OOS_DESCRIPTION
+- Env Var:     ZCLONE_OOS_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -804,12 +804,12 @@ Here are the commands specific to the oracleobjectstorage backend.
 Run them with:
 
 ```console
-rclone backend COMMAND remote:
+zclone backend COMMAND remote:
 ```
 
 The help below will explain what arguments each command takes.
 
-See the [backend](/commands/rclone_backend/) command for more
+See the [backend](/commands/zclone_backend/) command for more
 info on how to pass options and arguments.
 
 These can be run on a running backend using the rc command
@@ -820,7 +820,7 @@ These can be run on a running backend using the rc command
 change the name of an object.
 
 ```console
-rclone backend rename remote: [options] [<arguments>+]
+zclone backend rename remote: [options] [<arguments>+]
 ```
 
 This command can be used to rename a object.
@@ -828,7 +828,7 @@ This command can be used to rename a object.
 Usage example:
 
 ```console
-rclone backend rename oos:bucket relative-object-path-under-bucket object-new-name
+zclone backend rename oos:bucket relative-object-path-under-bucket object-new-name
 ```
 
 ### list-multipart-uploads
@@ -836,7 +836,7 @@ rclone backend rename oos:bucket relative-object-path-under-bucket object-new-na
 List the unfinished multipart uploads.
 
 ```console
-rclone backend list-multipart-uploads remote: [options] [<arguments>+]
+zclone backend list-multipart-uploads remote: [options] [<arguments>+]
 ```
 
 This command lists the unfinished multipart uploads in JSON format.
@@ -844,7 +844,7 @@ This command lists the unfinished multipart uploads in JSON format.
 Usage example:
 
 ```console
-rclone backend list-multipart-uploads oos:bucket/path/to/object
+zclone backend list-multipart-uploads oos:bucket/path/to/object
 ```
 
 It returns a dictionary of buckets with values as lists of unfinished
@@ -872,7 +872,7 @@ a bucket or with a bucket and path.
 Remove unfinished multipart uploads.
 
 ```console
-rclone backend cleanup remote: [options] [<arguments>+]
+zclone backend cleanup remote: [options] [<arguments>+]
 ```
 
 This command removes unfinished multipart uploads of age greater than
@@ -884,11 +884,11 @@ what it would do.
 Usage examples:
 
 ```console
-rclone backend cleanup oos:bucket/path/to/object
-rclone backend cleanup -o max-age=7w oos:bucket/path/to/object
+zclone backend cleanup oos:bucket/path/to/object
+zclone backend cleanup -o max-age=7w oos:bucket/path/to/object
 ```
 
-Durations are parsed as per the rest of rclone, 2h, 7d, 7w etc.
+Durations are parsed as per the rest of zclone, 2h, 7d, 7w etc.
 
 Options:
 
@@ -899,7 +899,7 @@ Options:
 Restore objects from Archive to Standard storage.
 
 ```console
-rclone backend restore remote: [options] [<arguments>+]
+zclone backend restore remote: [options] [<arguments>+]
 ```
 
 This command can be used to restore one or more objects from Archive to
@@ -908,20 +908,20 @@ Standard storage.
 Usage examples:
 
 ```console
-rclone backend restore oos:bucket/path/to/directory -o hours=HOURS
-rclone backend restore oos:bucket -o hours=HOURS
+zclone backend restore oos:bucket/path/to/directory -o hours=HOURS
+zclone backend restore oos:bucket -o hours=HOURS
 ```
 
 This flag also obeys the filters. Test first with --interactive/-i or --dry-run flags
 
 ```console
-rclone --interactive backend restore --include "*.txt" oos:bucket/path -o hours=72
+zclone --interactive backend restore --include "*.txt" oos:bucket/path -o hours=72
 ```
 
 All the objects shown will be marked for restore, then:
 
 ```console
-rclone backend restore --include "*.txt" oos:bucket/path -o hours=72
+zclone backend restore --include "*.txt" oos:bucket/path -o hours=72
 ```
 
 It returns a list of status dictionaries with Object Name and Status keys.

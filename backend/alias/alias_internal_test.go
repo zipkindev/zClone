@@ -8,11 +8,11 @@ import (
 	"sort"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/local" // pull in test backend
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configfile"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local" // pull in test backend
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configfile"
 )
 
 var (

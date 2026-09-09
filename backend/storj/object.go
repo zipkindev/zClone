@@ -9,10 +9,10 @@ import (
 	"path"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/bucket"
 	"golang.org/x/text/unicode/norm"
+	"zclone/fs"
+	"zclone/fs/hash"
+	"zclone/lib/bucket"
 
 	"storj.io/uplink"
 )
@@ -37,7 +37,7 @@ func newObjectFromUplink(f *Fs, relative string, object *uplink.Object) *Object 
 	// fallback to the server time.
 	modified := object.System.Created
 
-	if modifiedStr, ok := object.Custom["rclone:mtime"]; ok {
+	if modifiedStr, ok := object.Custom["zclone:mtime"]; ok {
 		var err error
 
 		modified, err = time.Parse(time.RFC3339Nano, modifiedStr)
@@ -171,7 +171,7 @@ func (o *Object) Open(ctx context.Context, options ...fs.OpenOption) (_ io.ReadC
 
 // Update in to the object with the modTime given of the given size
 //
-// When called from outside an Fs by rclone, src.Size() will always be >= 0.
+// When called from outside an Fs by zclone, src.Size() will always be >= 0.
 // But for unknown-sized objects (indicated by src.Size() == -1), Upload should either
 // return an error or update the object properly (rather than e.g. calling panic).
 func (o *Object) Update(ctx context.Context, in io.Reader, src fs.ObjectInfo, options ...fs.OpenOption) (err error) {

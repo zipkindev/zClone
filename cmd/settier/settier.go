@@ -5,9 +5,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs/operations"
 )
 
 func init() {
@@ -30,19 +30,19 @@ inaccessible.true
 You can use it to tier single object
 
 ` + "```console" + `
-rclone settier Cool remote:path/file
+zclone settier Cool remote:path/file
 ` + "```" + `
 
-Or use rclone filters to set tier on only specific files
+Or use zclone filters to set tier on only specific files
 
 ` + "```console" + `
-rclone --include "*.txt" settier Hot remote:path/dir
+zclone --include "*.txt" settier Hot remote:path/dir
 ` + "```" + `
 
 Or just provide remote directory and all files in directory will be tiered
 
 ` + "```console" + `
-rclone settier tier remote:path/dir
+zclone settier tier remote:path/dir
 ` + "```",
 	Annotations: map[string]string{
 		"versionIntroduced": "v1.44",

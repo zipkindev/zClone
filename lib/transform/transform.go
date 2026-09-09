@@ -20,11 +20,11 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/lib/encoder"
 	"golang.org/x/text/encoding/charmap"
 	"golang.org/x/text/unicode/norm"
+	"zclone/fs"
+	"zclone/fs/fserrors"
+	"zclone/lib/encoder"
 )
 
 //go:embed transform.md

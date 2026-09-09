@@ -1,5 +1,5 @@
 // Package gitannex provides the "gitannex" command, which enables [git-annex]
-// to communicate with rclone by implementing the [external special remote
+// to communicate with zclone by implementing the [external special remote
 // protocol]. The protocol is line delimited and spoken over stdin and stdout.
 //
 // # Milestones
@@ -16,7 +16,7 @@
 // [git-annex]: https://git-annex.branchable.com/
 // [external special remote protocol]: https://git-annex.branchable.com/design/external_special_remote_protocol/
 // [simple export interface]: https://git-annex.branchable.com/design/external_special_remote_protocol/export_and_import_appendix/
-// [issue #7625]: https://github.com/rclone/rclone/issues/7625
+// [issue #7625]: /
 package gitannex
 
 import (
@@ -30,15 +30,15 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/operations"
 )
 
 const subcommandName string = "gitannex"
-const uniqueCommandName string = "git-annex-remote-rclone-builtin"
+const uniqueCommandName string = "git-annex-remote-zclone-builtin"
 
 //go:embed gitannex.md
 var gitannexHelp string
@@ -50,7 +50,7 @@ func init() {
 
 // maybeTransformArgs returns a modified version of `args` with the "gitannex"
 // subcommand inserted when `args` indicates that the program was executed as
-// "git-annex-remote-rclone-builtin". One way this can happen is when rclone is
+// "git-annex-remote-zclone-builtin". One way this can happen is when zclone is
 // invoked via symlink. Otherwise, returns `args`.
 func maybeTransformArgs(args []string) []string {
 	if len(args) == 0 || filepath.Base(args[0]) != uniqueCommandName {
@@ -123,8 +123,8 @@ type server struct {
 
 	configsDone            bool
 	configPrefix           string
-	configRcloneRemoteName string
-	configRcloneLayout     string
+	configZcloneRemoteName string
+	configZcloneLayout     string
 }
 
 func (s *server) sendMsg(msg string) {
@@ -242,13 +242,13 @@ func (s *server) handleInitRemote() error {
 		return fmt.Errorf("failed to get configs: %w", err)
 	}
 
-	if err := validateRemoteName(s.configRcloneRemoteName); err != nil {
+	if err := validateRemoteName(s.configZcloneRemoteName); err != nil {
 		s.sendMsg(fmt.Sprintf("INITREMOTE-FAILURE %s", err))
 		return fmt.Errorf("failed to init remote: %w", err)
 	}
 
-	if mode := parseLayoutMode(s.configRcloneLayout); mode == layoutModeUnknown {
-		err := fmt.Errorf("unknown layout mode: %s", s.configRcloneLayout)
+	if mode := parseLayoutMode(s.configZcloneLayout); mode == layoutModeUnknown {
+		err := fmt.Errorf("unknown layout mode: %s", s.configZcloneLayout)
 		s.sendMsg(fmt.Sprintf("INITREMOTE-FAILURE %s", err))
 		return fmt.Errorf("failed to init remote: %w", err)
 	}
@@ -260,11 +260,11 @@ func (s *server) handleInitRemote() error {
 func (s *server) mustSetConfigValue(id configID, value string) {
 	switch id {
 	case configRemoteName:
-		s.configRcloneRemoteName = value
+		s.configZcloneRemoteName = value
 	case configPrefix:
 		s.configPrefix = value
 	case configLayout:
-		s.configRcloneLayout = value
+		s.configZcloneLayout = value
 	default:
 		panic(fmt.Errorf("unhandled configId: %v", id))
 	}
@@ -350,13 +350,13 @@ func (s *server) handleTransfer(message *messageParser) error {
 		return fmt.Errorf("error getting configs: %w", err)
 	}
 
-	layout := parseLayoutMode(s.configRcloneLayout)
+	layout := parseLayoutMode(s.configZcloneLayout)
 	if layout == layoutModeUnknown {
 		s.sendMsg(fmt.Sprintf("TRANSFER-FAILURE %s", argKey))
-		return fmt.Errorf("error parsing layout mode: %q", s.configRcloneLayout)
+		return fmt.Errorf("error parsing layout mode: %q", s.configZcloneLayout)
 	}
 
-	remoteFsString, err := buildFsString(s.queryDirhash, layout, argKey, s.configRcloneRemoteName, s.configPrefix)
+	remoteFsString, err := buildFsString(s.queryDirhash, layout, argKey, s.configZcloneRemoteName, s.configPrefix)
 	if err != nil {
 		s.sendMsg(fmt.Sprintf("TRANSFER-FAILURE %s", argKey))
 		return fmt.Errorf("error building fs string: %w", err)
@@ -419,13 +419,13 @@ func (s *server) handleCheckPresent(message *messageParser) error {
 		return fmt.Errorf("error getting configs: %s", err)
 	}
 
-	layout := parseLayoutMode(s.configRcloneLayout)
+	layout := parseLayoutMode(s.configZcloneLayout)
 	if layout == layoutModeUnknown {
 		s.sendMsg(fmt.Sprintf("CHECKPRESENT-FAILURE %s", argKey))
-		return fmt.Errorf("error parsing layout mode: %q", s.configRcloneLayout)
+		return fmt.Errorf("error parsing layout mode: %q", s.configZcloneLayout)
 	}
 
-	remoteFsString, err := buildFsString(s.queryDirhash, layout, argKey, s.configRcloneRemoteName, s.configPrefix)
+	remoteFsString, err := buildFsString(s.queryDirhash, layout, argKey, s.configZcloneRemoteName, s.configPrefix)
 	if err != nil {
 		s.sendMsg(fmt.Sprintf("CHECKPRESENT-FAILURE %s", argKey))
 		return fmt.Errorf("error building fs string: %w", err)
@@ -477,13 +477,13 @@ func (s *server) handleRemove(message *messageParser) error {
 		return errors.New("failed to parse key for REMOVE")
 	}
 
-	layout := parseLayoutMode(s.configRcloneLayout)
+	layout := parseLayoutMode(s.configZcloneLayout)
 	if layout == layoutModeUnknown {
 		s.sendMsg(fmt.Sprintf("REMOVE-FAILURE %s", argKey))
-		return fmt.Errorf("error parsing layout mode: %q", s.configRcloneLayout)
+		return fmt.Errorf("error parsing layout mode: %q", s.configZcloneLayout)
 	}
 
-	remoteFsString, err := buildFsString(s.queryDirhash, layout, argKey, s.configRcloneRemoteName, s.configPrefix)
+	remoteFsString, err := buildFsString(s.queryDirhash, layout, argKey, s.configZcloneRemoteName, s.configPrefix)
 	if err != nil {
 		s.sendMsg(fmt.Sprintf("REMOVE-FAILURE %s", argKey))
 		return fmt.Errorf("error building fs string: %w", err)

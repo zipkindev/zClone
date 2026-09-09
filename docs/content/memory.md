@@ -1,6 +1,6 @@
 ---
 title: "Memory"
-description: "Rclone docs for Memory backend"
+description: "Zclone docs for Memory backend"
 versionIntroduced: "v1.51"
 ---
 
@@ -15,7 +15,7 @@ s3). Because it has no parameters you can just use it with the
 
 ## Configuration
 
-You can configure it as a remote like this with `rclone config` too if
+You can configure it as a remote like this with `zclone config` too if
 you want to:
 
 ```text
@@ -33,7 +33,7 @@ XX / Memory
    \ "memory"
 [snip]
 Storage> memory
-** See help for memory backend at: https://rclone.org/memory/ **
+** See help for memory backend at: //memory/ **
 
 Remote config
 
@@ -48,12 +48,12 @@ y/e/d> y
 ```
 
 Because the memory backend isn't persistent it is most useful for
-testing or with an rclone server or rclone mount, e.g.
+testing or with an zclone server or zclone mount, e.g.
 
 ```console
-rclone mount :memory: /mnt/tmp
-rclone serve webdav :memory:
-rclone serve sftp :memory:
+zclone mount :memory: /mnt/tmp
+zclone serve webdav :memory:
+zclone serve sftp :memory:
 ```
 
 ### Modification times and hashes
@@ -90,7 +90,7 @@ Probably most easily used by using the connection string syntax:
 Properties:
 
 - Config:      discard
-- Env Var:     RCLONE_MEMORY_DISCARD
+- Env Var:     ZCLONE_MEMORY_DISCARD
 - Type:        bool
 - Default:     false
 
@@ -101,7 +101,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_MEMORY_DESCRIPTION
+- Env Var:     ZCLONE_MEMORY_DESCRIPTION
 - Type:        string
 - Required:    false
 

@@ -13,15 +13,15 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/backend/union/common"
-	"github.com/rclone/rclone/backend/union/policy"
-	"github.com/rclone/rclone/backend/union/upstream"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/walk"
+	"zclone/backend/union/common"
+	"zclone/backend/union/policy"
+	"zclone/backend/union/upstream"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
+	"zclone/fs/walk"
 )
 
 // Register with Fs

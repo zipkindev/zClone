@@ -6,11 +6,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/operations"
 )
 
 var (
@@ -29,8 +29,8 @@ var commandDefinition = &cobra.Command{
 	Long: `Reads from standard input (stdin) and copies it to a single remote file.
 
 ` + "```console" + `
-echo "hello world" | rclone rcat remote:path/to/file
-ffmpeg - | rclone rcat remote:path/to/file
+echo "hello world" | zclone rcat remote:path/to/file
+ffmpeg - | zclone rcat remote:path/to/file
 ` + "```" + `
 
 If the remote file already exists, it will be overwritten.
@@ -55,7 +55,7 @@ then the transfer will likely fail.
 Note that the upload cannot be retried because the data is not stored.
 If the backend supports multipart uploading then individual chunks can
 be retried. If you need to transfer a lot of data, you may be better
-off caching it locally and then ` + "`rclone move`" + ` it to the
+off caching it locally and then ` + "`zclone move`" + ` it to the
 destination which can use retries.`,
 	Annotations: map[string]string{
 		"versionIntroduced": "v1.38",

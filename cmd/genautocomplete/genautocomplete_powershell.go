@@ -6,9 +6,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs"
 )
 
 func init() {
@@ -16,14 +16,14 @@ func init() {
 }
 
 // powerShellInvokeLine is the line in the Cobra generated PowerShell completion
-// script that captures rclone's output through a pipeline.
+// script that captures zclone's output through a pipeline.
 const powerShellInvokeLine = `Invoke-Expression -OutVariable out "$RequestComp" 2>&1 | Out-Null`
 
 // powerShellUTF8Fix forces the captured output to be decoded as UTF-8. When
 // PowerShell captures a child process' stdout through a pipeline it decodes the
 // bytes using [Console]::OutputEncoding, which on non-UTF-8 systems (for
 // example PowerShell 5.1 on a Windows install with an OEM code page such as
-// CP852) corrupts the UTF-8 that rclone emits. Setting the encoding to UTF-8 is
+// CP852) corrupts the UTF-8 that zclone emits. Setting the encoding to UTF-8 is
 // safe on PowerShell 7+, where it is already the default.
 const powerShellUTF8Fix = `[Console]::OutputEncoding = [System.Text.Encoding]::UTF8`
 
@@ -45,13 +45,13 @@ func patchPowerShellCompletion(script string) string {
 
 var powershellCommandDefinition = &cobra.Command{
 	Use:   "powershell [output_file]",
-	Short: `Output powershell completion script for rclone.`,
+	Short: `Output powershell completion script for zclone.`,
 	Long: `Generate the autocompletion script for powershell.
 
 To load completions in your current shell session:
 
 ` + "```console" + `
-rclone completion powershell | Out-String | Invoke-Expression
+zclone completion powershell | Out-String | Invoke-Expression
 ` + "```" + `
 
 To load completions for every new session, add the output of the above command

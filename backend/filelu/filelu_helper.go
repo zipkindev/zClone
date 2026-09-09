@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
+	"zclone/fs"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
 )
 
 // errFileNotFound represent file not found error

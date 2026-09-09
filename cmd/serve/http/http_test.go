@@ -15,16 +15,16 @@ import (
 	"testing"
 	"time"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/cmd/serve/proxy"
-	"github.com/rclone/rclone/cmd/serve/servetest"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/rc"
-	libhttp "github.com/rclone/rclone/lib/http"
-	"github.com/rclone/rclone/vfs/vfscommon"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	"zclone/cmd/serve/proxy"
+	"zclone/cmd/serve/servetest"
+	"zclone/fs"
+	"zclone/fs/filter"
+	"zclone/fs/rc"
+	libhttp "zclone/lib/http"
+	"zclone/vfs/vfscommon"
 )
 
 type zipEntry struct {

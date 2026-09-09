@@ -9,7 +9,7 @@
 
    Install go fuzz
 
-   go get -u github.com/dvyukov/go-fuzz/go-fuzz github.com/dvyukov/go-fuzz/go-fuzz-build
+   Install approved local copies of go-fuzz and go-fuzz-build before running this helper.
 
    Compile and fuzz
 

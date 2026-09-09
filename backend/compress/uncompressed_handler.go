@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/chunkedreader"
+	"zclone/fs"
+	"zclone/fs/chunkedreader"
 )
 
 // uncompressedModeHandler implements compressionModeHandler for uncompressed files

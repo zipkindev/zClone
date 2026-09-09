@@ -21,25 +21,25 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/rclone/rclone/backend/mailru/api"
-	"github.com/rclone/rclone/backend/mailru/mrhash"
+	"zclone/backend/mailru/api"
+	"zclone/backend/mailru/mrhash"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fs/operations"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/fs/object"
+	"zclone/fs/operations"
 
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/oauthutil"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/readers"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/lib/encoder"
+	"zclone/lib/oauthutil"
+	"zclone/lib/pacer"
+	"zclone/lib/readers"
+	"zclone/lib/rest"
 
 	"golang.org/x/oauth2"
 )
@@ -92,7 +92,7 @@ func init() {
 			Name: "pass",
 			Help: `Password.
 
-This must be an app password - rclone will not work with your normal
+This must be an app password - zclone will not work with your normal
 password. See the Configuration section in the docs for how to make an
 app password.
 `,
@@ -108,9 +108,9 @@ This feature is called "speedup" or "put by hash". It is especially efficient
 in case of generally available files like popular books, video or audio clips,
 because files are searched by hash in all accounts of all mailru users.
 It is meaningless and ineffective if source file is unique or encrypted.
-Please note that rclone may need local memory and disk space to calculate
+Please note that zclone may need local memory and disk space to calculate
 content hash in advance and decide whether full upload is required.
-Also, if rclone does not know file size in advance (e.g. in case of
+Also, if zclone does not know file size in advance (e.g. in case of
 streaming or partial uploads), it will not even try this optimization.`,
 			Examples: []fs.OptionExample{{
 				Value: "true",
@@ -190,7 +190,7 @@ Reason is that preliminary hashing can exhaust your RAM or disk space.`,
 			Hide:     fs.OptionHideBoth,
 			Help: `HTTP user agent used internally by client.
 
-Defaults to "rclone/VERSION" or "--user-agent" provided on command line.`,
+Defaults to "zclone/VERSION" or "--user-agent" provided on command line.`,
 		}, {
 			Name:     "quirks",
 			Default:  "",
@@ -383,7 +383,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 				root = ""
 			}
 			f.root = root
-			// Return fs that points to the parent and signal rclone to do filtering
+			// Return fs that points to the parent and signal zclone to do filtering
 			return f, fs.ErrorIsFile
 		}
 	}
@@ -412,7 +412,7 @@ func (q *quirks) parseQuirks(option string) {
 			// Remove this quirk when the "bin" protocol support is complete.
 			q.binlist = true
 		case "atomicmkdir":
-			// At the moment rclone requires Mkdir to return success if the
+			// At the moment zclone requires Mkdir to return success if the
 			// directory already exists. However, such programs as borgbackup
 			// use mkdir as a locking primitive and depend on its atomicity.
 			// Remove this quirk when the above issue is investigated.
@@ -473,7 +473,7 @@ func tokenIsValid(t *oauth2.Token) bool {
 
 // reAuthorize is called after getting 403 (access denied) from the server.
 // It handles the case when user has changed password since a previous
-// rclone invocation and obtains a new access token, if needed.
+// zclone invocation and obtains a new access token, if needed.
 func (f *Fs) reAuthorize(opts *rest.Opts, origErr error) error {
 	// lock and recheck the flag to ensure authorize() is attempted only once
 	f.authMu.Lock()
@@ -634,7 +634,7 @@ func (f *Fs) readItemMetaData(ctx context.Context, path string) (entry fs.DirEnt
 	return
 }
 
-// itemToDirEntry converts API item to rclone directory entry
+// itemToDirEntry converts API item to zclone directory entry
 // The dirSize return value is:
 //
 //	<0 - for a file or in case of error
@@ -1108,7 +1108,7 @@ func (f *Fs) CreateDir(ctx context.Context, path string) error {
 }
 
 // Mkdir creates the container (and its parents) if it doesn't exist.
-// Normally it ignores the ErrorDirAlreadyExist, as required by rclone tests.
+// Normally it ignores the ErrorDirAlreadyExist, as required by zclone tests.
 // Nevertheless, such programs as borgbackup or restic use mkdir as a locking
 // primitive and depend on its atomicity, i.e. mkdir should fail if directory
 // already exists. As a workaround, users can add string "atomicmkdir" in the

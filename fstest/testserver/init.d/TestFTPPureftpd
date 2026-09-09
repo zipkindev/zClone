@@ -3,14 +3,14 @@
 set -e
 
 NAME=pureftpd
-USER=rclone
+USER=zclone
 PASS=AcridSpiesBooks2
 
 . $(dirname "$0")/docker.bash
 
 start() {
     docker run --rm -d --name $NAME \
-           -e "FTP_USER_NAME=rclone" \
+           -e "FTP_USER_NAME=zclone" \
            -e "FTP_USER_PASS=$PASS" \
            -e "FTP_USER_HOME=/data" \
            -e "FTP_MAX_CLIENTS=50" \
@@ -21,7 +21,7 @@ start() {
     echo type=ftp
     echo host=$(docker_ip)
     echo user=$USER
-    echo pass=$(rclone obscure $PASS)
+    echo pass=$(zclone obscure $PASS)
     echo encoding=BackSlash,Ctl,Del,Dot,RightSpace,Slash,SquareBracket
     echo _connect=$(docker_ip):21
 }

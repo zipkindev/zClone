@@ -213,7 +213,7 @@ func (c *GoogleDrive) Calculate(state State) time.Duration {
 // delay at all between successful calls, but backs off in the default fashion in response
 // to any errors.
 // The assumption is that errors should be exceedingly rare (S3 seems to have largely solved
-// the sort of stability questions rclone is likely to run into), and in the happy case
+// the sort of stability questions zclone is likely to run into), and in the happy case
 // it can handle calls with no delays between them.
 //
 // Basically defaultPacer, but with some handling of sleepTime going to/from 0ms

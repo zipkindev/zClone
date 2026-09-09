@@ -16,9 +16,9 @@ import (
 
 	"github.com/anacrolix/dms/dlna"
 	"github.com/anacrolix/dms/upnp"
-	"github.com/rclone/rclone/cmd/serve/dlna/upnpav"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/vfs"
+	"zclone/cmd/serve/dlna/upnpav"
+	"zclone/fs"
+	"zclone/vfs"
 )
 
 type contentDirectoryService struct {

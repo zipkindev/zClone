@@ -17,18 +17,18 @@ import (
 	"strings"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/cmd/serve/proxy"
-	"github.com/rclone/rclone/cmd/serve/servetest"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/vfs/vfscommon"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/net/webdav"
+	_ "zclone/backend/local"
+	"zclone/cmd/serve/proxy"
+	"zclone/cmd/serve/servetest"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/obscure"
+	"zclone/fs/filter"
+	"zclone/fs/rc"
+	"zclone/vfs/vfscommon"
 )
 
 const (
@@ -68,7 +68,7 @@ func TestWebDav(t *testing.T) {
 		// Config for the backend we'll use to connect to the server
 		config := configmap.Simple{
 			"type":   "webdav",
-			"vendor": "rclone",
+			"vendor": "zclone",
 			"url":    w.server.URLs()[0],
 			"user":   testUser,
 			"pass":   obscure.MustObscure(testPass),
@@ -388,12 +388,12 @@ func mkcol(t *testing.T, baseURL, path string) {
 }
 
 // TestMoveDefaultsToOverwrite is a regression test for
-// https://github.com/rclone/rclone/issues/9496
+// https://zclone/issues/9496
 //
 // RFC 4918 section 10.6 requires that when the Overwrite header is omitted
 // from a COPY or MOVE request, the resource MUST behave as if Overwrite: T
 // had been sent. The upstream golang.org/x/net/webdav library mis-handles
-// the MOVE case (see https://github.com/golang/go/issues/66059), so rclone
+// the MOVE case (see https://github.com/golang/go/issues/66059), so zclone
 // normalises the header before delegating so the default matches the RFC.
 func TestMoveDefaultsToOverwrite(t *testing.T) {
 	testURL := startWritableServer(t)
@@ -417,7 +417,7 @@ func TestMoveDefaultsToOverwrite(t *testing.T) {
 		"expected 2xx, got %d", resp.StatusCode)
 }
 
-// TestMoveOverwriteFalseStillRejects ensures the rclone normalisation only
+// TestMoveOverwriteFalseStillRejects ensures the zclone normalisation only
 // fills in a missing Overwrite header and never overrides an explicit
 // Overwrite: F sent by the client.
 func TestMoveOverwriteFalseStillRejects(t *testing.T) {

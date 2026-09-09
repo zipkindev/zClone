@@ -1,44 +1,10 @@
 ---
-title: "Contact"
-description: "Contact the rclone project"
+title: "Project contact"
+description: "Local Zclone distribution support information."
 ---
 
-# Contact the rclone project
+# Project contact
 
-## Forum
-
-Forum for questions and general discussion:
-
-- <https://forum.rclone.org>
-
-## Business support
-
-For business support or sponsorship enquiries please see:
-
-- <https://rclone.com/>
-- <sponsorship@rclone.com>
-
-## GitHub repository
-
-The project's repository is located at:
-
-- <https://github.com/rclone/rclone>
-
-There you can file bug reports or contribute with pull requests.
-
-## Twitter
-
-You can also follow Nick on twitter for rclone announcements:
-
-- [@njcw](https://twitter.com/njcw)
-
-## Email
-
-Or if all else fails or you want to ask something private or
-confidential
-
-- <info@rclone.com>
-
-Please don't email requests for help to this address - those are
-better directed to the forum unless you'd like to sign up for business
-support.
+This source distribution has no hosted forum, support mailbox, issue tracker,
+or central website. Keep support, security reporting, and contribution
+processes within the organization that maintains this checkout.

@@ -1,6 +1,6 @@
 //go:build linux || (darwin && amd64)
 
-// Package mount2 implements a FUSE mounting system for rclone remotes.
+// Package mount2 implements a FUSE mounting system for zclone remotes.
 package mount2
 
 import (
@@ -10,9 +10,9 @@ import (
 
 	fusefs "github.com/hanwen/go-fuse/v2/fs"
 	"github.com/hanwen/go-fuse/v2/fuse"
-	"github.com/rclone/rclone/cmd/mountlib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/vfs"
+	"zclone/cmd/mountlib"
+	"zclone/fs"
+	"zclone/vfs"
 )
 
 func init() {
@@ -27,7 +27,7 @@ func mountOptions(fsys *FS, f fs.Fs, opt *mountlib.Options) (mountOpts *fuse.Mou
 	mountOpts = &fuse.MountOptions{
 		AllowOther:         fsys.opt.AllowOther,
 		FsName:             opt.DeviceName,
-		Name:               "rclone",
+		Name:               "zclone",
 		DisableXAttrs:      true,
 		Debug:              fsys.opt.DebugFUSE,
 		MaxReadAhead:       int(fsys.opt.MaxReadAhead),

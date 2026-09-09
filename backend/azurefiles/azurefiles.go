@@ -43,15 +43,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
-	"github.com/rclone/rclone/backend/azureblob/auth"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/readers"
+	"zclone/backend/azureblob/auth"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/lib/encoder"
+	"zclone/lib/readers"
 )
 
 const (
@@ -104,12 +104,12 @@ in memory.`,
 			Help: strings.ReplaceAll(`Max size for streamed files.
 
 Azure files needs to know in advance how big the file will be. When
-rclone doesn't know it uses this value instead.
+zclone doesn't know it uses this value instead.
 
-This will be used when rclone is streaming data, the most common uses are:
+This will be used when zclone is streaming data, the most common uses are:
 
-- Uploading files with |--vfs-cache-mode off| with |rclone mount|
-- Using |rclone rcat|
+- Uploading files with |--vfs-cache-mode off| with |zclone mount|
+- Using |zclone rcat|
 - Copying files with unknown length
 
 You will need this much free space in the share as the file will be this size temporarily.
@@ -286,7 +286,7 @@ func (f *Fs) fileClient(remote string) *file.Client {
 // it returns the error fs.ErrorObjectNotFound.
 //
 // Does not return ErrorIsDir when a directory exists instead of file. since the documentation
-// for [rclone.fs.Fs.NewObject] rqeuires no extra work to determine whether it is directory
+// for [zclone.fs.Fs.NewObject] rqeuires no extra work to determine whether it is directory
 //
 // This initiates a network request and returns an error if object is not found.
 func (f *Fs) NewObject(ctx context.Context, remote string) (fs.Object, error) {

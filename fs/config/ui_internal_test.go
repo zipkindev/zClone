@@ -21,22 +21,22 @@ func TestRenderHelpForTerminal(t *testing.T) {
 		{
 			name: "root relative link",
 			help: "See the [encoding section in the overview](/overview/#encoding) for more info.",
-			want: "See the encoding section in the overview (https://rclone.org/overview/#encoding) for more info.",
+			want: "See the encoding section in the overview (local documentation: /overview/#encoding) for more info.",
 		},
 		{
 			name: "root relative link without anchor",
-			help: "See [rclone serve sftp](/commands/rclone_serve_sftp) for details.",
-			want: "See rclone serve sftp (https://rclone.org/commands/rclone_serve_sftp) for details.",
+			help: "See [zclone serve sftp](/commands/zclone_serve_sftp) for details.",
+			want: "See zclone serve sftp (local documentation: /commands/zclone_serve_sftp) for details.",
 		},
 		{
 			name: "multiple links",
 			help: "[the time option docs](/docs/#time-options) and [authentication docs](/azureblob#authentication).",
-			want: "the time option docs (https://rclone.org/docs/#time-options) and authentication docs (https://rclone.org/azureblob#authentication).",
+			want: "the time option docs (local documentation: /docs/#time-options) and authentication docs (local documentation: /azureblob#authentication).",
 		},
 		{
 			name: "absolute url left untouched",
-			help: "See [rclone forum](https://forum.rclone.org/) for help.",
-			want: "See [rclone forum](https://forum.rclone.org/) for help.",
+			help: "See [zclone forum](/contact/) for help.",
+			want: "See zclone forum (local documentation: /contact/) for help.",
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {

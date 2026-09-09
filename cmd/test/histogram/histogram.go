@@ -8,11 +8,11 @@ import (
 	"os"
 	"path"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/test"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/walk"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/cmd/test"
+	"zclone/fs"
+	"zclone/fs/walk"
 )
 
 func init() {
@@ -26,7 +26,7 @@ var commandDefinition = &cobra.Command{
 in filenames in the remote:path specified.
 
 The data doesn't contain any identifying information but is useful for
-the rclone developers when developing filename compression.`,
+the zclone developers when developing filename compression.`,
 	Annotations: map[string]string{
 		"versionIntroduced": "v1.55",
 	},

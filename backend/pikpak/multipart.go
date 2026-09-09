@@ -12,15 +12,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
-	"github.com/rclone/rclone/backend/pikpak/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/chunksize"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/pool"
 	"golang.org/x/sync/errgroup"
+	"zclone/backend/pikpak/api"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/chunksize"
+	"zclone/fs/fserrors"
+	"zclone/lib/atexit"
+	"zclone/lib/pacer"
+	"zclone/lib/pool"
 )
 
 const (

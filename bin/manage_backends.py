@@ -4,7 +4,7 @@ Manage the backend yaml files in docs/data/backends
 
 usage: manage_backends.py [-h] {create,features,update,help} [files ...]
 
-Manage rclone backend YAML files.
+Manage zclone backend YAML files.
 
 positional arguments:
   {create,features,update,help}
@@ -114,7 +114,7 @@ def test_server(remote):
     # Configure the server with environment variables
     env_keys = []
     for key, value in out.items():
-        env_key = f"RCLONE_CONFIG_{remote_name.upper()}_{key.upper()}"
+        env_key = f"ZCLONE_CONFIG_{remote_name.upper()}_{key.upper()}"
         env_keys.append(env_key)
         os.environ[env_key] = value
     for key,var in os.environ.items():
@@ -170,20 +170,20 @@ def get_backend_name_from_file(filepath):
     name, _ = os.path.splitext(basename)
     return name.title()
 
-def fetch_rclone_features(remote_str):
+def fetch_zclone_features(remote_str):
     """
-    Runs `rclone backend features remote:` and returns the JSON object.
+    Runs `zclone backend features remote:` and returns the JSON object.
     """
-    cmd = ["rclone", "backend", "features", remote_str]
+    cmd = ["zclone", "backend", "features", remote_str]
     try:
         with test_server(remote_str):
             result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         return json.loads(result.stdout)
     except subprocess.CalledProcessError as e:
-        print(f"Error running rclone: {e.stderr}")
+        print(f"Error running zclone: {e.stderr}")
         return None
     except FileNotFoundError:
-        print("Error: 'rclone' command not found in PATH.")
+        print("Error: 'zclone' command not found in PATH.")
         sys.exit(1)
 
 # --- Verbs ---
@@ -251,22 +251,22 @@ def do_features(files):
             continue
 
         print(f"[{filepath}] Fetching features for remote: '{remote}'...")
-        rclone_data = fetch_rclone_features(remote)
+        zclone_data = fetch_zclone_features(remote)
 
-        if not rclone_data:
+        if not zclone_data:
             print(f"Failed to fetch data for {filepath}")
             continue
 
         # Process Features (Dict -> Sorted List of True keys)
-        features_dict = rclone_data.get('Features', {})
+        features_dict = zclone_data.get('Features', {})
         # Filter only true values and sort keys
         feature_list = sorted([k for k, v in features_dict.items() if v])
         
         # Process Hashes
-        hashes_list = rclone_data.get('Hashes', [])
+        hashes_list = zclone_data.get('Hashes', [])
         
         # Process Precision
-        precision = rclone_data.get('Precision')
+        precision = zclone_data.get('Precision')
 
         # Update data
         data['features'] = feature_list
@@ -278,7 +278,7 @@ def do_features(files):
 # --- Main CLI ---
 
 def main():
-    parser = argparse.ArgumentParser(description="Manage rclone backend YAML files.")
+    parser = argparse.ArgumentParser(description="Manage zclone backend YAML files.")
     parser.add_argument("verb", choices=["create", "features", "update", "help"], help="Action to perform")
     parser.add_argument("files", nargs="*", help="List of YAML files to operate on")
 

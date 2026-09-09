@@ -3,5 +3,5 @@
 
 //go:build plan9
 
-// Package archive implements 'rclone archive list'.
+// Package archive implements 'zclone archive list'.
 package list

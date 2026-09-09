@@ -20,7 +20,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rclone/rclone/lib/file"
+	"zclone/lib/file"
 )
 
 // Interprets err into a vfs error

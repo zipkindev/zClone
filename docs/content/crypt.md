@@ -6,37 +6,37 @@ versionIntroduced: "v1.33"
 
 # Crypt
 
-Rclone `crypt` remotes encrypt and decrypt other remotes.
+Zclone `crypt` remotes encrypt and decrypt other remotes.
 
-A remote of type `crypt` does not access a [storage system](https://rclone.org/overview/)
+A remote of type `crypt` does not access a [storage system](//overview/)
 directly, but instead wraps another remote, which in turn accesses
-the storage system. This is similar to how [alias](https://rclone.org/alias/),
-[union](https://rclone.org/union/), [chunker](https://rclone.org/chunker/)
+the storage system. This is similar to how [alias](//alias/),
+[union](//union/), [chunker](//chunker/)
 and a few others work. It makes the usage very flexible, as you can
 add a layer, in this case an encryption layer, on top of any other
-backend, even in multiple layers. Rclone's functionality
+backend, even in multiple layers. Zclone's functionality
 can be used as with any other remote, for example you can
-[mount](https://rclone.org/commands/rclone_mount/) a crypt remote.
+[mount](//commands/zclone_mount/) a crypt remote.
 
 Accessing a storage system through a crypt remote realizes client-side
 encryption, which makes it safe to keep your data in a location you do
 not trust will not get compromised.
-When working against the `crypt` remote, rclone will automatically
+When working against the `crypt` remote, zclone will automatically
 encrypt (before uploading) and decrypt (after downloading) on your local
 system as needed on the fly, leaving the data encrypted at rest in the
 wrapped remote. If you access the storage system using an application
-other than rclone, or access the wrapped remote directly using rclone,
+other than zclone, or access the wrapped remote directly using zclone,
 there will not be any encryption/decryption: Downloading existing content
 will just give you the encrypted (scrambled) format, and anything you
 upload will *not* become encrypted.
 
 The encryption is a secret-key encryption (also called symmetric key encryption)
 algorithm, where a password (or pass phrase) is used to generate real encryption
-key. The password can be supplied by user, or you may chose to let rclone
+key. The password can be supplied by user, or you may chose to let zclone
 generate one. It will be stored in the configuration file, in a lightly obscured
 form. If you are in an environment where you are not able to keep your
 configuration secured, you should add
-[configuration encryption](https://rclone.org/docs/#configuration-encryption)
+[configuration encryption](//docs/#configuration-encryption)
 as protection. As long as you have this configuration file, you will be able to
 decrypt your data. Without the configuration file, as long as you remember
 the password (or keep it in a safe place), you can re-create the configuration
@@ -47,10 +47,10 @@ See below for guidance to [changing password](#changing-password).
 Encryption uses [cryptographic salt](https://en.wikipedia.org/wiki/Salt_(cryptography)),
 to permute the encryption key so that the same string may be encrypted in
 different ways. When configuring the crypt remote it is optional to enter a salt,
-or to let rclone generate a unique salt. If omitted, rclone uses a built-in unique
+or to let zclone generate a unique salt. If omitted, zclone uses a built-in unique
 string. Normally in cryptography, the salt is stored together with the encrypted
-content, and do not have to be memorized by the user. This is not the case in rclone,
-because rclone does not store any additional information on the remotes. Use of
+content, and do not have to be memorized by the user. This is not the case in zclone,
+because zclone does not store any additional information on the remotes. Use of
 custom salt is effectively a second password that must be memorized.
 
 [File content](#file-encryption) encryption is performed using
@@ -65,7 +65,7 @@ possible to be turned off.
 Here is an example of how to make a remote called `secret`.
 
 To use `crypt`, first set up the underlying remote. Follow the
-`rclone config` instructions for the specific backend.
+`zclone config` instructions for the specific backend.
 
 Before configuring the crypt remote, check the underlying remote is
 working. In this example the underlying remote is called `remote`.
@@ -73,13 +73,13 @@ We will configure a path `path` within this remote to contain the
 encrypted content. Anything inside `remote:path` will be encrypted
 and anything outside will not.
 
-Configure `crypt` using `rclone config`. In this example the `crypt`
+Configure `crypt` using `zclone config`. In this example the `crypt`
 remote is called `secret`, to differentiate it from the underlying
 `remote`.
 
 When you are done you can use the crypt remote named `secret` just
-as you would with any other remote, e.g. `rclone copy D:\docs secret:\docs`,
-and rclone will encrypt and decrypt as needed on the fly.
+as you would with any other remote, e.g. `zclone copy D:\docs secret:\docs`,
+and zclone will encrypt and decrypt as needed on the fly.
 If you access the wrapped remote `remote:path` directly you will bypass
 the encryption, and anything you read will be in encrypted form, and
 anything you write will be unencrypted. To avoid issues it is best to
@@ -101,7 +101,7 @@ XX / Encrypt/Decrypt a remote
    \ "crypt"
 [snip]
 Storage> crypt
-** See help for crypt backend at: https://rclone.org/crypt/ **
+** See help for crypt backend at: //crypt/ **
 
 Remote to encrypt/decrypt.
 Normally should contain a ':' and a path, eg "myremote:path/to/dir",
@@ -174,23 +174,23 @@ d) Delete this remote
 y/e/d>
 ```
 
-**Important** The crypt password stored in `rclone.conf` is lightly
+**Important** The crypt password stored in `zclone.conf` is lightly
 obscured. That only protects it from cursory inspection. It is not
-secure unless [configuration encryption](https://rclone.org/docs/#configuration-encryption)
-of `rclone.conf` is specified.
+secure unless [configuration encryption](//docs/#configuration-encryption)
+of `zclone.conf` is specified.
 
-A long passphrase is recommended, or `rclone config` can generate a
+A long passphrase is recommended, or `zclone config` can generate a
 random one.
 
 The obscured password is created using AES-CTR with a static key. The
 IV (nonce) is stored verbatim at the beginning of the obscured password. This
-static key is shared between all versions of rclone.
+static key is shared between all versions of zclone.
 
-If you reconfigure rclone with the same passwords/passphrases
+If you reconfigure zclone with the same passwords/passphrases
 elsewhere it will be compatible, but the obscured version will be different
 due to the different salt.
 
-Rclone does not encrypt
+Zclone does not encrypt
 
 - file length - this can be calculated within 16 bytes
 - modification time - used for syncing
@@ -198,7 +198,7 @@ Rclone does not encrypt
 ### Specifying the remote
 
 When configuring the remote to encrypt/decrypt, you may specify any
-string that rclone accepts as a source/destination of other commands.
+string that zclone accepts as a source/destination of other commands.
 
 The primary use case is to specify the path into an already configured
 remote (e.g. `remote:path/to/dir` or `remote:bucket`), such that
@@ -207,20 +207,20 @@ data in a remote untrusted location can be stored encrypted.
 You may also specify a local filesystem path, such as
 `/path/to/dir` on Linux, `C:\path\to\dir` on Windows. By creating
 a crypt remote pointing to such a local filesystem path, you can
-use rclone as a utility for pure local file encryption, for example
+use zclone as a utility for pure local file encryption, for example
 to keep encrypted files on a removable USB drive.
 
-**Note**: A string which do not contain a `:` will by rclone be treated
+**Note**: A string which do not contain a `:` will by zclone be treated
 as a relative path in the local filesystem. For example, if you enter
 the name `remote` without the trailing `:`, it will be treated as
 a subdirectory of the current directory with name "remote".
 
-If a path `remote:path/to/dir` is specified, rclone stores encrypted
+If a path `remote:path/to/dir` is specified, zclone stores encrypted
 files in `path/to/dir` on the remote. With file name encryption, files
 saved to `secret:subdir/subfile` are stored in the unencrypted path
 `path/to/dir` but the `subdir/subpath` element is encrypted.
 
-The path you specify does not have to exist, rclone will create
+The path you specify does not have to exist, zclone will create
 it when needed.
 
 If you intend to use the wrapped remote both directly for keeping
@@ -230,13 +230,13 @@ directory within the wrapped remote. If you use a bucket-based storage
 system (e.g. Swift, S3, Google Compute Storage, B2) it is generally
 advisable to wrap the crypt remote around a specific bucket (`s3:bucket`).
 If wrapping around the entire root of the storage (`s3:`), and use the
-optional file name encryption, rclone will encrypt the bucket name.
+optional file name encryption, zclone will encrypt the bucket name.
 
 ### Changing password
 
 Should the password, or the configuration file containing a lightly obscured
 form of the password, be compromised, you need to re-encrypt your data with
-a new password. Since rclone uses secret-key encryption, where the encryption
+a new password. Since zclone uses secret-key encryption, where the encryption
 key is generated directly from the password kept on the client, it is not
 possible to change the password/key of already encrypted content. Just changing
 the password configured for an existing crypt remote means you will no longer
@@ -252,21 +252,21 @@ configured crypt remote (or delete and re-create the crypt configuration),
 and then re-upload everything from the alternative location.
 - If you have enough space on the storage system you can create a new crypt
 remote pointing to a separate directory on the same backend, and then use
-rclone to copy everything from the original crypt remote to the new,
+zclone to copy everything from the original crypt remote to the new,
 effectively decrypting everything on the fly using the old password and
 re-encrypting using the new password. When done, delete the original crypt
-remote directory and finally the rclone crypt configuration with the old password.
+remote directory and finally the zclone crypt configuration with the old password.
 All data will be streamed from the storage system and back, so you will
 get half the bandwidth and be charged twice if you have upload and download quota
 on the storage system.
 
 **Note**: A security problem related to the random password generator
-was fixed in rclone version 1.53.3 (released 2020-11-19). Passwords generated
-by rclone config in version 1.49.0 (released 2019-08-26) to 1.53.2
+was fixed in zclone version 1.53.3 (released 2020-11-19). Passwords generated
+by zclone config in version 1.49.0 (released 2019-08-26) to 1.53.2
 (released 2020-10-26) are not considered secure and should be changed.
-If you made up your own password, or used rclone version older than 1.49.0 or
+If you made up your own password, or used zclone version older than 1.49.0 or
 newer than 1.53.2 to generate it, you are *not* affected by this issue.
-See [issue #4783](https://github.com/rclone/rclone/issues/4783) for more
+See [issue #4783](/) for more
 details, and a tool you can use to check if you are affected.
 
 ### Example
@@ -288,8 +288,8 @@ plaintext/
 Copy these to the remote, and list them
 
 ```console
-$ rclone -q copy plaintext secret:
-$ rclone -q ls secret:
+$ zclone -q copy plaintext secret:
+$ zclone -q ls secret:
         7 file1.txt
         6 file0.txt
         8 subdir/file2.txt
@@ -300,7 +300,7 @@ $ rclone -q ls secret:
 The crypt remote looks like
 
 ```console
-$ rclone -q ls remote:path
+$ zclone -q ls remote:path
        55 hagjclgavj2mbiqm6u6cnjjqcg
        54 v05749mltvv1tf4onltun46gls
        57 86vhrsv86mpbtd3a0akjuqslj8/dlj7fkq4kdq72emafg7a7s41uo
@@ -311,7 +311,7 @@ $ rclone -q ls remote:path
 The directory structure is preserved
 
 ```console
-$ rclone -q ls secret:subdir
+$ zclone -q ls secret:subdir
         8 file2.txt
         9 file3.txt
        10 subsubdir/file4.txt
@@ -322,7 +322,7 @@ names. This prevents the cloud provider attempting to interpret file
 content.
 
 ```console
-$ rclone -q ls remote:path
+$ zclone -q ls remote:path
        54 file0.txt.bin
        57 subdir/file3.txt.bin
        56 subdir/file2.txt.bin
@@ -350,7 +350,7 @@ Standard
 Obfuscation
 
 This is a simple "rotate" of the filename, with each file having a rot
-distance based on the filename. Rclone stores the distance at the
+distance based on the filename. Zclone stores the distance at the
 beginning of the filename. A file called "hello" may become "53.jgnnq".
 
 Obfuscation is not a strong encryption of filenames, but hinders
@@ -371,7 +371,7 @@ Obfuscation cannot be relied upon for strong protection.
 - identical files names will have identical uploaded names
 
 Cloud storage systems have limits on file name length and
-total path length which rclone is more likely to breach using
+total path length which zclone is more likely to breach using
 "Standard" file name encryption.  Where file names are 143 or fewer
 characters in length issues should not be encountered, irrespective of
 cloud storage provider.
@@ -384,7 +384,7 @@ For cloud storage systems using UTF-16 to store file names internally
 (e.g. OneDrive, Dropbox, Box), `base32768` can be used to drastically reduce
 file name length.
 
-An alternative, future rclone file name encryption mode may tolerate
+An alternative, future zclone file name encryption mode may tolerate
 backend provider path length limits.
 
 ### Directory name encryption
@@ -414,8 +414,8 @@ depends on that.
 Hashes are not stored for crypt. However the data integrity is
 protected by an extremely strong crypto authenticator.
 
-Use the `rclone cryptcheck` command to check the
-integrity of an encrypted remote instead of `rclone check` which can't
+Use the `zclone cryptcheck` command to check the
+integrity of an encrypted remote instead of `zclone check` which can't
 check the checksums properly.
 
 <!-- autogenerated options start - DO NOT EDIT - instead edit fs.RegInfo in backend/crypt/crypt.go and run make backenddocs to verify --> <!-- markdownlint-disable-line line-length -->
@@ -433,7 +433,7 @@ Normally should contain a ':' and a path, e.g. "myremote:path/to/dir",
 Properties:
 
 - Config:      remote
-- Env Var:     RCLONE_CRYPT_REMOTE
+- Env Var:     ZCLONE_CRYPT_REMOTE
 - Type:        string
 - Required:    true
 
@@ -444,7 +444,7 @@ How to encrypt the filenames.
 Properties:
 
 - Config:      filename_encryption
-- Env Var:     RCLONE_CRYPT_FILENAME_ENCRYPTION
+- Env Var:     ZCLONE_CRYPT_FILENAME_ENCRYPTION
 - Type:        string
 - Default:     "standard"
 - Examples:
@@ -466,7 +466,7 @@ NB If filename_encryption is "off" then this option will do nothing.
 Properties:
 
 - Config:      directory_name_encryption
-- Env Var:     RCLONE_CRYPT_DIRECTORY_NAME_ENCRYPTION
+- Env Var:     ZCLONE_CRYPT_DIRECTORY_NAME_ENCRYPTION
 - Type:        bool
 - Default:     true
 - Examples:
@@ -479,12 +479,12 @@ Properties:
 
 Password or pass phrase for encryption.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      password
-- Env Var:     RCLONE_CRYPT_PASSWORD
+- Env Var:     ZCLONE_CRYPT_PASSWORD
 - Type:        string
 - Required:    true
 
@@ -495,12 +495,12 @@ Password or pass phrase for salt.
 Optional but recommended.
 Should be different to the previous password.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      password2
-- Env Var:     RCLONE_CRYPT_PASSWORD2
+- Env Var:     ZCLONE_CRYPT_PASSWORD2
 - Type:        string
 - Required:    false
 
@@ -520,13 +520,13 @@ pointing to the same backend you can use it.
 This can be used, for example, to change file name encryption type
 without re-uploading all the data. Just make two crypt backends
 pointing to two different directories with the single changed
-parameter and use rclone move to move the files between the crypt
+parameter and use zclone move to move the files between the crypt
 remotes.
 
 Properties:
 
 - Config:      server_side_across_configs
-- Env Var:     RCLONE_CRYPT_SERVER_SIDE_ACROSS_CONFIGS
+- Env Var:     ZCLONE_CRYPT_SERVER_SIDE_ACROSS_CONFIGS
 - Type:        bool
 - Default:     false
 
@@ -545,7 +545,7 @@ names, or for debugging purposes.
 Properties:
 
 - Config:      show_mapping
-- Env Var:     RCLONE_CRYPT_SHOW_MAPPING
+- Env Var:     ZCLONE_CRYPT_SHOW_MAPPING
 - Type:        bool
 - Default:     false
 
@@ -556,7 +556,7 @@ Option to either encrypt file data or leave it unencrypted.
 Properties:
 
 - Config:      no_data_encryption
-- Env Var:     RCLONE_CRYPT_NO_DATA_ENCRYPTION
+- Env Var:     ZCLONE_CRYPT_NO_DATA_ENCRYPTION
 - Type:        bool
 - Default:     false
 - Examples:
@@ -576,7 +576,7 @@ recover as much of the file as possible.
 Properties:
 
 - Config:      pass_bad_blocks
-- Env Var:     RCLONE_CRYPT_PASS_BAD_BLOCKS
+- Env Var:     ZCLONE_CRYPT_PASS_BAD_BLOCKS
 - Type:        bool
 - Default:     false
 
@@ -584,7 +584,7 @@ Properties:
 
 If set, this will raise an error when crypt comes across a filename that can't be decrypted.
 
-(By default, rclone will just log a NOTICE and continue as normal.)
+(By default, zclone will just log a NOTICE and continue as normal.)
 This can happen if encrypted and unencrypted files are stored in the same
 directory (which is not recommended.) It may also indicate a more serious
 problem that should be investigated.
@@ -592,7 +592,7 @@ problem that should be investigated.
 Properties:
 
 - Config:      strict_names
-- Env Var:     RCLONE_CRYPT_STRICT_NAMES
+- Env Var:     ZCLONE_CRYPT_STRICT_NAMES
 - Type:        bool
 - Default:     false
 
@@ -607,7 +607,7 @@ length and if it's case sensitive.
 Properties:
 
 - Config:      filename_encoding
-- Env Var:     RCLONE_CRYPT_FILENAME_ENCODING
+- Env Var:     ZCLONE_CRYPT_FILENAME_ENCODING
 - Type:        string
 - Default:     "base32"
 - Examples:
@@ -629,7 +629,7 @@ when the path length is critical.
 Properties:
 
 - Config:      suffix
-- Env Var:     RCLONE_CRYPT_SUFFIX
+- Env Var:     ZCLONE_CRYPT_SUFFIX
 - Type:        string
 - Default:     ".bin"
 
@@ -640,7 +640,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_CRYPT_DESCRIPTION
+- Env Var:     ZCLONE_CRYPT_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -657,12 +657,12 @@ Here are the commands specific to the crypt backend.
 Run them with:
 
 ```console
-rclone backend COMMAND remote:
+zclone backend COMMAND remote:
 ```
 
 The help below will explain what arguments each command takes.
 
-See the [backend](/commands/rclone_backend/) command for more
+See the [backend](/commands/zclone_backend/) command for more
 info on how to pass options and arguments.
 
 These can be run on a running backend using the rc command
@@ -673,7 +673,7 @@ These can be run on a running backend using the rc command
 Encode the given filename(s).
 
 ```console
-rclone backend encode remote: [options] [<arguments>+]
+zclone backend encode remote: [options] [<arguments>+]
 ```
 
 This encodes the filenames given as arguments returning a list of
@@ -682,8 +682,8 @@ strings of the encoded results.
 Usage examples:
 
 ```console
-rclone backend encode crypt: file1 [file2...]
-rclone rc backend/command command=encode fs=crypt: file1 [file2...]
+zclone backend encode crypt: file1 [file2...]
+zclone rc backend/command command=encode fs=crypt: file1 [file2...]
 ```
 
 ### decode
@@ -691,7 +691,7 @@ rclone rc backend/command command=encode fs=crypt: file1 [file2...]
 Decode the given filename(s).
 
 ```console
-rclone backend decode remote: [options] [<arguments>+]
+zclone backend decode remote: [options] [<arguments>+]
 ```
 
 This decodes the filenames given as arguments returning a list of
@@ -701,8 +701,8 @@ inputs are invalid.
 Usage examples:
 
 ```console
-rclone backend decode crypt: encryptedfile1 [encryptedfile2...]
-rclone rc backend/command command=decode fs=crypt: encryptedfile1 [encryptedfile2...]
+zclone backend decode crypt: encryptedfile1 [encryptedfile2...]
+zclone rc backend/command command=decode fs=crypt: encryptedfile1 [encryptedfile2...]
 ```
 
 <!-- autogenerated options stop -->
@@ -710,13 +710,13 @@ rclone rc backend/command command=decode fs=crypt: encryptedfile1 [encryptedfile
 ## Backing up an encrypted remote
 
 If you wish to backup an encrypted remote, it is recommended that you use
-`rclone sync` on the encrypted files, and make sure the passwords are
+`zclone sync` on the encrypted files, and make sure the passwords are
 the same in the new encrypted remote.
 
 This will have the following advantages
 
-- `rclone sync` will check the checksums while copying
-- you can use `rclone check` between the encrypted remotes
+- `zclone sync` will check the checksums while copying
+- you can use `zclone check` between the encrypted remotes
 - you don't decrypt and encrypt unnecessarily
 
 For example, let's say you have your original remote at `remote:` with
@@ -728,13 +728,13 @@ as `eremote:`.
 To sync the two remotes you would do
 
 ```console
-rclone sync --interactive remote:crypt remote2:crypt
+zclone sync --interactive remote:crypt remote2:crypt
 ```
 
 And to check the integrity you would do
 
 ```console
-rclone check remote:crypt remote2:crypt
+zclone check remote:crypt remote2:crypt
 ```
 
 ## File formats
@@ -746,7 +746,7 @@ has a header and is divided into chunks.
 
 #### Header
 
-- 8 bytes magic string `RCLONE\x00\x00`
+- 8 bytes magic string `ZCLONE\x00\x00`
 - 24 bytes Nonce (IV)
 
 The initial nonce is generated from the operating systems crypto
@@ -816,9 +816,9 @@ This means that
 A version string of the form `-vYYYY-MM-DD-HHMMSS-NNN` on the end of a
 file name (as added by `--b2-versions` / `--s3-versions`) is left in
 plain text so that versioned files can be found. Directory names are
-encrypted in full. Rclone before v1.76 left such a suffix in plain
+encrypted in full. Zclone before v1.76 left such a suffix in plain
 text on directory names too, so a directory named like this created by
-an older rclone will appear in listings with a warning but can't be
+an older zclone will appear in listings with a warning but can't be
 opened or removed until renamed on the underlying remote to the name
 given in the warning.
 
@@ -832,21 +832,21 @@ encoding is modified in two ways:
 - it becomes lower case (no-one likes upper case filenames!)
 - we strip the padding character `=`
 
-`base32` is used rather than the more efficient `base64` so rclone can be
+`base32` is used rather than the more efficient `base64` so zclone can be
 used on case insensitive remotes (e.g. Windows, Box, Dropbox, Onedrive etc).
 
 ### Key derivation
 
-Rclone uses `scrypt` with parameters `N=16384, r=8, p=1` with an
+Zclone uses `scrypt` with parameters `N=16384, r=8, p=1` with an
 optional user supplied salt (password2) to derive the 32+32+16 = 80
 bytes of key material required.  If the user doesn't supply a salt
-then rclone uses an internal one.
+then zclone uses an internal one.
 
-`scrypt` makes it impractical to mount a dictionary attack on rclone
+`scrypt` makes it impractical to mount a dictionary attack on zclone
 encrypted data.  For full protection against this you should always use
 a salt.
 
 ## See Also
 
-- [rclone cryptdecode](/commands/rclone_cryptdecode/) - Show forward/reverse
+- [zclone cryptdecode](/commands/zclone_cryptdecode/) - Show forward/reverse
 mapping of encrypted filenames.

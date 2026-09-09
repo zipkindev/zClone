@@ -1,11 +1,11 @@
 ---
 title: "Documentation"
-description: "Rclone Usage"
+description: "Zclone Usage"
 ---
 
 # Usage
 
-Rclone is a command line program to manage files on cloud storage.
+Zclone is a command line program to manage files on cloud storage.
 After [download](/downloads/) and [install](/install), continue
 here to learn how to use it: Initial [configuration](#configure),
 what the [basic syntax](#basic-syntax) looks like, describes the
@@ -14,16 +14,16 @@ and more.
 
 ## Configure
 
-First, you'll need to configure rclone.  As the object storage systems
+First, you'll need to configure zclone.  As the object storage systems
 have quite complicated authentication these are kept in a config file.
 (See the [`--config`](#config-string) entry for how to find the config
 file and choose its location.)
 
-The easiest way to make the config is to run rclone with the config
+The easiest way to make the config is to run zclone with the config
 option:
 
 ```console
-rclone config
+zclone config
 ```
 
 See the following for detailed instructions for
@@ -100,15 +100,15 @@ See the following for detailed instructions for
 
 ## Basic syntax
 
-Rclone syncs a directory tree from one storage system to another.
+Zclone syncs a directory tree from one storage system to another.
 
 Its syntax is like this
 
 ```console
-rclone subcommand [options] <parameters> <parameters...>
+zclone subcommand [options] <parameters> <parameters...>
 ```
 
-A `subcommand` is an rclone operation required (e.g. `sync`,
+A `subcommand` is an zclone operation required (e.g. `sync`,
 `copy`, `ls`).
 
 An `option` is a single letter flag (e.g. `-v`) or a group of single
@@ -120,10 +120,10 @@ interpreted as an option so if you need to add a parameter which
 starts with a `-` then put a `--` on its own first, eg
 
 ```console
-rclone lsf -- -directory-starting-with-dash
+zclone lsf -- -directory-starting-with-dash
 ```
 
-A `parameter` is usually a file path or [rclone remote](#syntax-of-remote-paths),
+A `parameter` is usually a file path or [zclone remote](#syntax-of-remote-paths),
 eg `/path/to/file` or `remote:path/to/file` but it can be other things -
 the `subcommand` help will tell you what.
 
@@ -134,62 +134,62 @@ storage system in the config file then the sub path, e.g.
 You can define as many storage paths as you like in the config file.
 
 Please use the [`--interactive`/`-i`](#interactive) flag while
-learning rclone to avoid accidental data loss.
+learning zclone to avoid accidental data loss.
 
 ## Subcommands
 
-rclone uses a system of subcommands. For example
+zclone uses a system of subcommands. For example
 
 ```console
-rclone ls remote:path # lists a remote
-rclone copy /local/path remote:path # copies /local/path to the remote
-rclone sync --interactive /local/path remote:path # syncs /local/path to the remote
+zclone ls remote:path # lists a remote
+zclone copy /local/path remote:path # copies /local/path to the remote
+zclone sync --interactive /local/path remote:path # syncs /local/path to the remote
 ```
 
-The main rclone commands with most used first
+The main zclone commands with most used first
 
 <!-- markdownlint-capture -->
 <!-- markdownlint-disable line-length -->
-- [rclone config](/commands/rclone_config/) - Enter an interactive configurationsession.
-- [rclone copy](/commands/rclone_copy/) - Copy files from source to dest, skipping already copied.
-- [rclone sync](/commands/rclone_sync/) - Make source and dest identical, modifying destination only.
-- [rclone bisync](/commands/rclone_bisync/) - [Bidirectional synchronization](/bisync/) between two paths.
-- [rclone move](/commands/rclone_move/) - Move files from source to dest.
-- [rclone delete](/commands/rclone_delete/) - Remove the contents of path.
-- [rclone purge](/commands/rclone_purge/) - Remove the path and all of its contents.
-- [rclone mkdir](/commands/rclone_mkdir/) - Make the path if it doesn't already exist.
-- [rclone rmdir](/commands/rclone_rmdir/) - Remove the path.
-- [rclone rmdirs](/commands/rclone_rmdirs/) - Remove any empty directories under the path.
-- [rclone check](/commands/rclone_check/) - Check if the files in the source and destination match.
-- [rclone ls](/commands/rclone_ls/) - List all the objects in the path with size and path.
-- [rclone lsd](/commands/rclone_lsd/) - List all directories/containers/buckets in the path.
-- [rclone lsl](/commands/rclone_lsl/) - List all the objects in the path with size, modification time and path.
-- [rclone md5sum](/commands/rclone_md5sum/) - Produce an md5sum file for all the objects in the path.
-- [rclone sha1sum](/commands/rclone_sha1sum/) - Produce a sha1sum file for all the objects in the path.
-- [rclone size](/commands/rclone_size/) - Return the total size and number of objects in remote:path.
-- [rclone version](/commands/rclone_version/) - Show the version number.
-- [rclone cleanup](/commands/rclone_cleanup/) - Clean up the remote if possible.
-- [rclone dedupe](/commands/rclone_dedupe/) - Interactively find duplicate files and delete/rename them.
-- [rclone authorize](/commands/rclone_authorize/) - Remote authorization.
-- [rclone cat](/commands/rclone_cat/) - Concatenate any files and send them to stdout.
-- [rclone copyto](/commands/rclone_copyto/) - Copy files from source to dest, skipping already copied.
-- [rclone completion](/commands/rclone_completion/) - Output shell completion scripts for rclone.
-- [rclone gendocs](/commands/rclone_gendocs/) - Output markdown docs for rclone to the directory supplied.
-- [rclone listremotes](/commands/rclone_listremotes/) - List all the remotes in the config file.
-- [rclone mount](/commands/rclone_mount/) - Mount the remote as a mountpoint.
-- [rclone moveto](/commands/rclone_moveto/) - Move file or directory from source to dest.
-- [rclone obscure](/commands/rclone_obscure/) - Obscure password for use in the rclone.conf
-- [rclone cryptcheck](/commands/rclone_cryptcheck/) - Check the integrity of an encrypted remote.
-- [rclone about](/commands/rclone_about/) - Get quota information from the remote.
+- [zclone config](/commands/zclone_config/) - Enter an interactive configurationsession.
+- [zclone copy](/commands/zclone_copy/) - Copy files from source to dest, skipping already copied.
+- [zclone sync](/commands/zclone_sync/) - Make source and dest identical, modifying destination only.
+- [zclone bisync](/commands/zclone_bisync/) - [Bidirectional synchronization](/bisync/) between two paths.
+- [zclone move](/commands/zclone_move/) - Move files from source to dest.
+- [zclone delete](/commands/zclone_delete/) - Remove the contents of path.
+- [zclone purge](/commands/zclone_purge/) - Remove the path and all of its contents.
+- [zclone mkdir](/commands/zclone_mkdir/) - Make the path if it doesn't already exist.
+- [zclone rmdir](/commands/zclone_rmdir/) - Remove the path.
+- [zclone rmdirs](/commands/zclone_rmdirs/) - Remove any empty directories under the path.
+- [zclone check](/commands/zclone_check/) - Check if the files in the source and destination match.
+- [zclone ls](/commands/zclone_ls/) - List all the objects in the path with size and path.
+- [zclone lsd](/commands/zclone_lsd/) - List all directories/containers/buckets in the path.
+- [zclone lsl](/commands/zclone_lsl/) - List all the objects in the path with size, modification time and path.
+- [zclone md5sum](/commands/zclone_md5sum/) - Produce an md5sum file for all the objects in the path.
+- [zclone sha1sum](/commands/zclone_sha1sum/) - Produce a sha1sum file for all the objects in the path.
+- [zclone size](/commands/zclone_size/) - Return the total size and number of objects in remote:path.
+- [zclone version](/commands/zclone_version/) - Show the version number.
+- [zclone cleanup](/commands/zclone_cleanup/) - Clean up the remote if possible.
+- [zclone dedupe](/commands/zclone_dedupe/) - Interactively find duplicate files and delete/rename them.
+- [zclone authorize](/commands/zclone_authorize/) - Remote authorization.
+- [zclone cat](/commands/zclone_cat/) - Concatenate any files and send them to stdout.
+- [zclone copyto](/commands/zclone_copyto/) - Copy files from source to dest, skipping already copied.
+- [zclone completion](/commands/zclone_completion/) - Output shell completion scripts for zclone.
+- [zclone gendocs](/commands/zclone_gendocs/) - Output markdown docs for zclone to the directory supplied.
+- [zclone listremotes](/commands/zclone_listremotes/) - List all the remotes in the config file.
+- [zclone mount](/commands/zclone_mount/) - Mount the remote as a mountpoint.
+- [zclone moveto](/commands/zclone_moveto/) - Move file or directory from source to dest.
+- [zclone obscure](/commands/zclone_obscure/) - Obscure password for use in the zclone.conf
+- [zclone cryptcheck](/commands/zclone_cryptcheck/) - Check the integrity of an encrypted remote.
+- [zclone about](/commands/zclone_about/) - Get quota information from the remote.
 <!-- markdownlint-restore -->
 
 See the [commands index](/commands/) for the full list.
 
 ## Copying single files
 
-rclone normally syncs or copies directories.  However, if the source
-remote points to a file, rclone will just copy that file.  The
-destination remote must point to a directory - rclone will give the
+zclone normally syncs or copies directories.  However, if the source
+remote points to a file, zclone will just copy that file.  The
+destination remote must point to a directory - zclone will give the
 error `Failed to create file system for "remote:file": is a file not a
 directory` if it isn't.
 
@@ -197,7 +197,7 @@ For example, suppose you have a remote with a file in called
 `test.jpg`, then you could copy just that file like this
 
 ```console
-rclone copy remote:test.jpg /tmp/download
+zclone copy remote:test.jpg /tmp/download
 ```
 
 The file `test.jpg` will be placed inside `/tmp/download`.
@@ -205,7 +205,7 @@ The file `test.jpg` will be placed inside `/tmp/download`.
 This is equivalent to specifying
 
 ```console
-rclone copy --files-from /tmp/files remote: /tmp/download
+zclone copy --files-from /tmp/files remote: /tmp/download
 ```
 
 Where `/tmp/files` contains the single line
@@ -220,14 +220,14 @@ memory.
 
 ## Syntax of remote paths
 
-The syntax of the paths passed to the rclone command are as follows.
+The syntax of the paths passed to the zclone command are as follows.
 
 ### /path/to/dir
 
 This refers to the local file system.
 
 On Windows `\` may be used instead of `/` in local paths **only**,
-non local paths must use `/`. See [local filesystem](https://rclone.org/local/#paths-on-windows)
+non local paths must use `/`. See [local filesystem](//local/#paths-on-windows)
 documentation for more about Windows-specific paths.
 
 These paths needn't start with a leading `/` - if they don't then they
@@ -236,7 +236,7 @@ will be relative to the current directory.
 ### remote:path/to/dir
 
 This refers to a directory `path/to/dir` on `remote:` as defined in
-the config file (configured with `rclone config`).
+the config file (configured with `zclone config`).
 
 ### remote:/path/to/dir
 
@@ -257,25 +257,25 @@ the command line (or in environment variables).
 Here are some examples:
 
 ```console
-rclone lsd --http-url https://pub.rclone.org :http:
+zclone lsd --http-url / :http:
 ```
 
-To list all the directories in the root of `https://pub.rclone.org/`.
+To list all the directories in the root of `/
 
 ```console
-rclone lsf --http-url https://example.com :http:path/to/dir
+zclone lsf --http-url https://example.com :http:path/to/dir
 ```
 
 To list files and directories in `https://example.com/path/to/dir/`
 
 ```console
-rclone copy --http-url https://example.com :http:path/to/dir /tmp/dir
+zclone copy --http-url https://example.com :http:path/to/dir /tmp/dir
 ```
 
 To copy files and directories in `https://example.com/path/to/dir` to `/tmp/dir`.
 
 ```console
-rclone copy --sftp-host example.com :sftp:path/to/dir /tmp/dir
+zclone copy --sftp-host example.com :sftp:path/to/dir /tmp/dir
 ```
 
 To copy files and directories from `example.com` in the relative
@@ -285,14 +285,14 @@ directory `path/to/dir` to `/tmp/dir` using sftp.
 
 The above examples can also be written using a connection string
 syntax, so instead of providing the arguments as command line
-parameters `--http-url https://pub.rclone.org` they are provided as
+parameters `--http-url /` they are provided as
 part of the remote specification as a kind of connection string.
 
 ```console
-rclone lsd ":http,url='https://pub.rclone.org':"
-rclone lsf ":http,url='https://example.com':path/to/dir"
-rclone copy ":http,url='https://example.com':path/to/dir" /tmp/dir
-rclone copy :sftp,host=example.com:path/to/dir /tmp/dir
+zclone lsd ":http,url='/':"
+zclone lsf ":http,url='https://example.com':path/to/dir"
+zclone copy ":http,url='https://example.com':path/to/dir" /tmp/dir
+zclone copy :sftp,host=example.com:path/to/dir /tmp/dir
 ```
 
 These can apply to modify existing remotes as well as create new
@@ -300,7 +300,7 @@ remotes with the on the fly syntax. This example is equivalent to
 adding the `--drive-shared-with-me` parameter to the remote `gdrive:`.
 
 ```console
-rclone lsf "gdrive,shared_with_me:path/to/dir"
+zclone lsf "gdrive,shared_with_me:path/to/dir"
 ```
 
 The major advantage to using the connection string style syntax is
@@ -311,13 +311,13 @@ work** because the `--drive-shared-with-me` flag applies to both the
 source and the destination.
 
 ```console
-rclone copy --drive-shared-with-me gdrive:shared-file.txt gdrive:
+zclone copy --drive-shared-with-me gdrive:shared-file.txt gdrive:
 ```
 
 However using the connection string syntax, this does work.
 
 ```console
-rclone copy "gdrive,shared_with_me:shared-file.txt" gdrive:
+zclone copy "gdrive,shared_with_me:shared-file.txt" gdrive:
 ```
 
 Note that the connection string only affects the options of the immediate
@@ -326,7 +326,7 @@ following command **will not work** as intended, because
 `shared_with_me` is ignored by the crypt backend:
 
 ```console
-rclone copy "gdriveCrypt,shared_with_me:shared-file.txt" gdriveCrypt:
+zclone copy "gdriveCrypt,shared_with_me:shared-file.txt" gdriveCrypt:
 ```
 
 The connection strings have the following syntax
@@ -354,18 +354,18 @@ remote,parameter="with""quote",parameter2='with''quote':path/to/dir
 This will make `parameter` be `with"quote` and `parameter2` be
 `with'quote`.
 
-If you leave off the `=parameter` then rclone will substitute `=true`
+If you leave off the `=parameter` then zclone will substitute `=true`
 which works very well with flags. For example, to use s3 configured in
 the environment you could use:
 
 ```console
-rclone lsd :s3,env_auth:
+zclone lsd :s3,env_auth:
 ```
 
 Which is equivalent to
 
 ```console
-rclone lsd :s3,env_auth=true:
+zclone lsd :s3,env_auth=true:
 ```
 
 Note that on the command line you might need to surround these
@@ -377,7 +377,7 @@ which aren't, but if you aren't sure then enclose them in `"` and use
 `'` as the inside quote. This syntax works on all OSes.
 
 ```console
-rclone copy ":http,url='https://example.com':path/to/dir" /tmp/dir
+zclone copy ":http,url='https://example.com':path/to/dir" /tmp/dir
 ```
 
 On Linux/macOS some characters are still interpreted inside `"`
@@ -386,20 +386,20 @@ contain those you can swap the roles of `"` and `'` thus. (This syntax
 does not work on Windows.)
 
 ```console
-rclone copy ':http,url="https://example.com":path/to/dir' /tmp/dir
+zclone copy ':http,url="https://example.com":path/to/dir' /tmp/dir
 ```
 
-You can use [rclone config string](/commands/rclone_config_string/) to
+You can use [zclone config string](/commands/zclone_config_string/) to
 convert a remote into a connection string.
 
 #### Connection strings, config and logging
 
 If you supply extra configuration to a backend by command line flag,
-environment variable or connection string then rclone will add a
+environment variable or connection string then zclone will add a
 suffix based on the hash of the config to the name of the remote, eg
 
 ```console
-rclone -vv lsf --s3-chunk-size 20M s3:
+zclone -vv lsf --s3-chunk-size 20M s3:
 ```
 
 Has the log message
@@ -408,7 +408,7 @@ Has the log message
 DEBUG : s3: detected overridden config - adding "{Srj1p}" suffix to name
 ```
 
-This is so rclone can tell the modified remote apart from the
+This is so zclone can tell the modified remote apart from the
 unmodified remote when caching the backends.
 
 This should only be noticeable in the logs.
@@ -416,7 +416,7 @@ This should only be noticeable in the logs.
 This means that on the fly backends such as
 
 ```console
-rclone -vv lsf :s3,env_auth:
+zclone -vv lsf :s3,env_auth:
 ```
 
 Will get their own names
@@ -433,16 +433,16 @@ Remote names are case sensitive, and must adhere to the following rules:
 - May not start with `-` or space.
 - May not end with space.
 
-Starting with rclone version 1.61, any Unicode numbers and letters are allowed,
+Starting with zclone version 1.61, any Unicode numbers and letters are allowed,
 while in older versions it was limited to plain ASCII (0-9, A-Z, a-z). If you use
-the same rclone configuration from different shells, which may be configured with
+the same zclone configuration from different shells, which may be configured with
 different character encoding, you must be cautious to use characters that are
 possible to write in all of them. This is mostly a problem on Windows, where
 the console traditionally uses a non-Unicode character set - defined
 by the so-called "code page".
 
 Do not use single character names on Windows as it creates ambiguity with Windows
-drives' names, e.g.: remote called `C` is indistinguishable from `C` drive. Rclone
+drives' names, e.g.: remote called `C` is indistinguishable from `C` drive. Zclone
 will always assume that single letter name refers to a drive.
 
 ## Adding global configuration to a remote {#globalconfig}
@@ -466,7 +466,7 @@ same time.
 This is very useful for overriding networking config needed for just for that
 remote. For example, say you have a remote which needs `--no-check-certificate`
 as it is running on test infrastructure without a proper certificate. You could
-supply the `--no-check-certificate` flag to rclone, but this will affect **all**
+supply the `--no-check-certificate` flag to zclone, but this will affect **all**
 the remotes. To make it just affect this remote you use an override. You could
 put this in the config file:
 
@@ -518,7 +518,7 @@ set just before the remote is created.
 
 This is useful for parameters (eg sync parameters) which can't be set as an
 `override`. For example, say you have a remote where you would always like to
-use the `--checksum` flag. You could supply the `--checksum` flag to rclone on
+use the `--checksum` flag. You could supply the `--checksum` flag to zclone on
 every command line, but instead you could put this in the config file:
 
 ```ini
@@ -536,7 +536,7 @@ Note how the global flag name loses its initial `--` and gets `-` replaced with
 
 Any global variable can be set like this and it is exactly equivalent to using
 the equivalent flag on the command line. This means it will affect all uses of
-rclone.
+zclone.
 
 If two remotes set the same global variable then the first one instantiated will
 be overridden by the second one. A `global.var` will override all other config
@@ -556,13 +556,13 @@ If your names have spaces or shell metacharacters (e.g. `*`, `?`, `$`,
 `'`, `"`, etc.) then you must quote them.  Use single quotes `'` by default.
 
 ```console
-rclone copy 'Important files?' remote:backup
+zclone copy 'Important files?' remote:backup
 ```
 
 If you want to send a `'` you will need to use `"`, e.g.
 
 ```console
-rclone copy "O'Reilly Reviews" remote:backup
+zclone copy "O'Reilly Reviews" remote:backup
 ```
 
 The rules for quoting metacharacters are complicated and if you want
@@ -574,19 +574,19 @@ shell.
 If your names have spaces in you need to put them in `"`, e.g.
 
 ```bat
-rclone copy "E:\folder name\folder name\folder name" remote:backup
+zclone copy "E:\folder name\folder name\folder name" remote:backup
 ```
 
 If you are using the root directory on its own then don't quote it
-(see [#464](https://github.com/rclone/rclone/issues/464) for why), e.g.
+(see [#464](/) for why), e.g.
 
 ```bat
-rclone copy E:\ remote:backup
+zclone copy E:\ remote:backup
 ```
 
 ## Copying files or directories with `:` in the names
 
-rclone uses `:` to mark a remote name.  This is, however, a valid
+zclone uses `:` to mark a remote name.  This is, however, a valid
 filename component in non-Windows OSes.  The remote name parser will
 only search for a `:` up to the first `/` so if you need to act on a
 file or directory like this then use the full path starting with a
@@ -595,13 +595,13 @@ file or directory like this then use the full path starting with a
 So to sync a directory called `sync:me` to a remote called `remote:` use
 
 ```console
-rclone sync --interactive ./sync:me remote:path
+zclone sync --interactive ./sync:me remote:path
 ```
 
 or
 
 ```console
-rclone sync --interactive /full/path/to/sync:me remote:path
+zclone sync --interactive /full/path/to/sync:me remote:path
 ```
 
 ## Server-side copy
@@ -609,14 +609,14 @@ rclone sync --interactive /full/path/to/sync:me remote:path
 Most remotes (but not all - see [the
 overview](/overview/#optional-features)) support server-side copy.
 
-This means if you want to copy one folder to another then rclone won't
+This means if you want to copy one folder to another then zclone won't
 download all the files and re-upload them; it will instruct the server
 to copy them in place.
 
 Eg
 
 ```console
-rclone copy s3:oldbucket s3:newbucket
+zclone copy s3:oldbucket s3:newbucket
 ```
 
 Will copy the contents of `oldbucket` to `newbucket` without
@@ -637,17 +637,17 @@ same.
 This can be used when scripting to make aged backups efficiently, e.g.
 
 ```console
-rclone sync --interactive remote:current-backup remote:previous-backup
-rclone sync --interactive /path/to/files remote:current-backup
+zclone sync --interactive remote:current-backup remote:previous-backup
+zclone sync --interactive /path/to/files remote:current-backup
 ```
 
 ## Metadata support {#metadata}
 
 Metadata is data about a file (or directory) which isn't the contents
-of the file (or directory). Normally rclone only preserves the
+of the file (or directory). Normally zclone only preserves the
 modification time and the content (MIME) type where possible.
 
-Rclone supports preserving all the available metadata on files and
+Zclone supports preserving all the available metadata on files and
 directories when using the `--metadata` or `-M` flag.
 
 Exactly what metadata is supported and what that support means depends
@@ -658,12 +658,12 @@ in their docs and are listed in the [features table](/overview/#features)
 Some backends don't support metadata, some only support metadata on
 files and some support metadata on both files and directories.
 
-Rclone only supports a one-time sync of metadata. This means that
+Zclone only supports a one-time sync of metadata. This means that
 metadata will be synced from the source object to the destination
 object only when the source object has changed and needs to be
 re-uploaded. If the metadata subsequently changes on the source object
 without changing the object itself then it won't be synced to the
-destination object. This is in line with the way rclone syncs
+destination object. This is in line with the way zclone syncs
 `Content-Type` without the `--metadata` flag.
 
 Using `--metadata` when syncing from local to local will preserve file
@@ -678,11 +678,11 @@ The [--metadata-mapper](#metadata-mapper) flag can be used to pass the
 name of a program in which can transform metadata when it is being
 copied from source to destination.
 
-Rclone supports `--metadata-set` and `--metadata-mapper` when doing
+Zclone supports `--metadata-set` and `--metadata-mapper` when doing
 server-side `Move` and server-side `Copy`, but not when doing server
 side `DirMove` (renaming a directory) as this would involve recursing
 into the directory. Note that you can disable `DirMove` with
-`--disable DirMove` and rclone will revert back to using `Move` for
+`--disable DirMove` and zclone will revert back to using `Move` for
 each individual object where `--metadata-set` and `--metadata-mapper`
 are supported.
 
@@ -709,7 +709,7 @@ back to s3, the Content-Type will be set correctly.
 
 ### Metadata framework
 
-Rclone implements a metadata framework which can read metadata from an
+Zclone implements a metadata framework which can read metadata from an
 object and write it to the object when (and only when) it is being
 uploaded.
 
@@ -730,7 +730,7 @@ Where possible the key names are standardized, so, for example, it is
 possible to copy object metadata from s3 to azureblob for example and
 metadata will be translated appropriately.
 
-Some backends have limits on the size of the metadata and rclone will
+Some backends have limits on the size of the metadata and zclone will
 give errors on upload if they are exceeded.
 
 ### Metadata preservation
@@ -779,7 +779,7 @@ way of reading those already.
 
 ## Options
 
-Rclone has a number of options to control its behaviour. These are
+Zclone has a number of options to control its behaviour. These are
 documented below, and in the [flags](/flags) page.
 
 Options that take parameters can have the values passed in two ways,
@@ -789,7 +789,7 @@ options behave slightly differently to the other options in that
 it to `false`.  It is also possible to specify `--boolean=false` or
 `--boolean=true`.  Note that `--boolean false` is not valid - this is
 parsed as `--boolean` and the `false` is parsed as an extra command
-line argument for rclone.
+line argument for zclone.
 
 String values that are recognized as special identifiers, e.g. the
 name of the log level to set with option `--log-level`, are case
@@ -861,8 +861,8 @@ See also [--human-readable](#human-readable).
 
 ### --backup-dir string
 
-When using [sync](/commands/rclone_sync/), [copy](/commands/rclone_copy/) or
-[move](/commands/rclone_move/), any files which would have been overwritten
+When using [sync](/commands/zclone_sync/), [copy](/commands/zclone_copy/) or
+[move](/commands/zclone_move/), any files which would have been overwritten
 or deleted are moved in their original hierarchy into this directory.
 
 If `--suffix` is set, then the moved files will have the suffix added
@@ -877,14 +877,14 @@ excluded by a filter rule.
 For example
 
 ```console
-rclone sync --interactive /path/to/local remote:current --backup-dir remote:old
+zclone sync --interactive /path/to/local remote:current --backup-dir remote:old
 ```
 
 will sync `/path/to/local` to `remote:current`, but for any files
 which would have been updated or deleted will be stored in
 `remote:old`.
 
-If running rclone from a script you might want to use today's date as
+If running zclone from a script you might want to use today's date as
 the directory name passed to `--backup-dir` to store the old files, or
 you might want to pass `--suffix` with today's date. This can be done
 with `--suffix $(date +%F)` in bash, and
@@ -899,8 +899,8 @@ IPv4 address (1.2.3.4), an IPv6 address (1234::789A) or host name.  If
 the host name doesn't resolve or resolves to more than one IP address
 it will give an error.
 
-You can use `--bind 0.0.0.0` to force rclone to use IPv4 addresses and
-`--bind ::0` to force rclone to use IPv6 addresses.
+You can use `--bind 0.0.0.0` to force zclone to use IPv4 addresses and
+`--bind ::0` to force zclone to use IPv6 addresses.
 
 ### --bwlimit BwTimetable
 
@@ -934,7 +934,7 @@ this would limit the upload bandwidth to 10 MiB/s but the download
 bandwidth would be unlimited.
 
 When specified as above the bandwidth limits last for the duration of
-run of the rclone binary.
+run of the zclone binary.
 
 It is also possible to specify a "timetable" of limits, which will
 cause certain limits to be applied at certain times. To specify a
@@ -999,25 +999,25 @@ being the non HTTP backends, `ftp`, `sftp` and `storj`).
 
 Note that the units are **Byte/s**, not **bit/s**. Typically
 connections are measured in bit/s - to convert divide by 8. For
-example, let's say you have a 10 Mbit/s connection and you wish rclone
+example, let's say you have a 10 Mbit/s connection and you wish zclone
 to use half of it - 5 Mbit/s. This is 5/8 = 0.625 MiB/s so you would
-use a `--bwlimit 0.625M` parameter for rclone.
+use a `--bwlimit 0.625M` parameter for zclone.
 
 On Unix systems (Linux, macOS, …) the bandwidth limiter can be toggled by
-sending a `SIGUSR2` signal to rclone. This allows to remove the limitations
-of a long running rclone transfer and to restore it back to the value specified
-with `--bwlimit` quickly when needed. Assuming there is only one rclone instance
+sending a `SIGUSR2` signal to zclone. This allows to remove the limitations
+of a long running zclone transfer and to restore it back to the value specified
+with `--bwlimit` quickly when needed. Assuming there is only one zclone instance
 running, you can toggle the limiter like this:
 
 ```console
-kill -SIGUSR2 $(pidof rclone)
+kill -SIGUSR2 $(pidof zclone)
 ```
 
-If you configure rclone with a [remote control](/rc) then you can use
+If you configure zclone with a [remote control](/rc) then you can use
 change the bwlimit dynamically:
 
 ```console
-rclone rc core/bwlimit rate=1M
+zclone rc core/bwlimit rate=1M
 ```
 
 ### --bwlimit-file BwTimetable
@@ -1043,7 +1043,7 @@ will use this much memory for buffering.
 
 When using `mount` or `cmount` each open file descriptor will use this much
 memory for buffering.
-See the [mount](/commands/rclone_mount/#vfs-file-buffering) documentation for
+See the [mount](/commands/zclone_mount/#vfs-file-buffering) documentation for
 more details.
 
 Set to `0` to disable the buffering for the minimum memory usage.
@@ -1053,31 +1053,31 @@ Note that the memory allocation of the buffers is influenced by the
 
 ### --cache-dir string
 
-Specify the directory rclone will use for caching, to override
+Specify the directory zclone will use for caching, to override
 the default.
 
 Default value is depending on operating system:
 
-- Windows `%LocalAppData%\rclone`, if `LocalAppData` is defined.
-- macOS `$HOME/Library/Caches/rclone` if `HOME` is defined.
-- Unix `$XDG_CACHE_HOME/rclone` if `XDG_CACHE_HOME` is defined, else
-  `$HOME/.cache/rclone` if `HOME` is defined.
-- Fallback (on all OS) to `$TMPDIR/rclone`, where `TMPDIR` is the value
+- Windows `%LocalAppData%\zclone`, if `LocalAppData` is defined.
+- macOS `$HOME/Library/Caches/zclone` if `HOME` is defined.
+- Unix `$XDG_CACHE_HOME/zclone` if `XDG_CACHE_HOME` is defined, else
+  `$HOME/.cache/zclone` if `HOME` is defined.
+- Fallback (on all OS) to `$TMPDIR/zclone`, where `TMPDIR` is the value
   from [--temp-dir](#temp-dir-string).
 
-You can use the [config paths](/commands/rclone_config_paths/)
+You can use the [config paths](/commands/zclone_config_paths/)
 command to see the current value.
 
-Cache directory is heavily used by the [VFS File Caching](/commands/rclone_mount/#vfs-file-caching)
-mount feature, but also by [serve](/commands/rclone_serve/), [GUI](/gui) and
-other parts of rclone.
+Cache directory is heavily used by the [VFS File Caching](/commands/zclone_mount/#vfs-file-caching)
+mount feature, but also by [serve](/commands/zclone_serve/), [GUI](/gui) and
+other parts of zclone.
 
 ### --check-first
 
-If this flag is set then in a [sync](/commands/rclone_sync/),
-[copy](/commands/rclone_copy/) or [move](/commands/rclone_move/), rclone
+If this flag is set then in a [sync](/commands/zclone_sync/),
+[copy](/commands/zclone_copy/) or [move](/commands/zclone_move/), zclone
 will do all the checks to see whether files need to be transferred before
-doing any of the transfers. Normally rclone would start running
+doing any of the transfers. Normally zclone would start running
 transfers as soon as possible.
 
 This flag can be useful on IO limited systems where transfers
@@ -1086,8 +1086,8 @@ interfere with checking.
 It can also be useful to ensure perfect ordering when using
 `--order-by`.
 
-If both `--check-first` and `--order-by` are set when doing `rclone move`
-then rclone will use the transfer thread to delete source files which
+If both `--check-first` and `--order-by` are set when doing `zclone move`
+then zclone will use the transfer thread to delete source files which
 don't need transferring. This will enable perfect ordering of the
 transfers and deletes but will cause the transfer stats to have more
 items in than expected.
@@ -1099,8 +1099,8 @@ objects to transfer is held in memory before the transfers start.
 ### --checkers int
 
 Originally controlling just the number of file checkers to run in parallel,
-e.g. by `rclone copy`. Now a fairly universal parallelism control
-used by `rclone` in several places.
+e.g. by `zclone copy`. Now a fairly universal parallelism control
+used by `zclone` in several places.
 
 Note: checkers do the equality checking of files during a sync.
 For some storage systems (e.g. S3, Swift, Dropbox) this can take
@@ -1117,8 +1117,8 @@ while monitoring your server health and file checking throughput.
 
 ### -c, --checksum
 
-Normally rclone will look at modification time and size of files to
-see if they are equal.  If you set this flag then rclone will check
+Normally zclone will look at modification time and size of files to
+see if they are equal.  If you set this flag then zclone will check
 the file hash and size to determine if files are equal.
 
 This is useful when the remote doesn't support setting modified time
@@ -1129,10 +1129,10 @@ same hash type on the object, e.g. Drive and Swift. For details of which
 remotes support which hash type see the table in the [overview
 section](/overview/).
 
-Eg `rclone --checksum sync s3:/bucket swift:/bucket` would run much
+Eg `zclone --checksum sync s3:/bucket swift:/bucket` would run much
 quicker than without the `--checksum` flag.
 
-When using this flag, rclone won't update mtimes of remote files if
+When using this flag, zclone won't update mtimes of remote files if
 they are incorrect as it would normally.
 
 ### --color AUTO|NEVER|ALWAYS
@@ -1147,8 +1147,8 @@ Specify when colors (and other ANSI codes) should be added to the output.
 
 ### --compare-dest stringArray
 
-When using [sync](/commands/rclone_sync/), [copy](/commands/rclone_copy/) or
-[move](/commands/rclone_move/), the specified paths are checked in addition
+When using [sync](/commands/zclone_sync/), [copy](/commands/zclone_copy/) or
+[move](/commands/zclone_move/), the specified paths are checked in addition
 to the destination for files. If a file identical to the source is found, that
 file is **not** copied from source. This is useful to copy just files that
 have changed since the last backup.
@@ -1160,24 +1160,24 @@ See `--copy-dest` and `--backup-dir`.
 
 ### --config string
 
-Specify the location of the rclone configuration file, to override
-the default. E.g. `rclone config --config="rclone.conf"`.
+Specify the location of the zclone configuration file, to override
+the default. E.g. `zclone config --config="zclone.conf"`.
 
 The exact default is a bit complex to describe, due to changes
-introduced through different versions of rclone while preserving
+introduced through different versions of zclone while preserving
 backwards compatibility, but in most cases it is as simple as:
 
-- `%APPDATA%/rclone/rclone.conf` on Windows
-- `~/.config/rclone/rclone.conf` on other
+- `%APPDATA%/zclone/zclone.conf` on Windows
+- `~/.config/zclone/zclone.conf` on other
 
-The complete logic is as follows: Rclone will look for an existing
+The complete logic is as follows: Zclone will look for an existing
 configuration file in any of the following locations, in priority order:
 
-1. `rclone.conf` (in program directory, where rclone executable is)
-2. `%APPDATA%/rclone/rclone.conf` (only on Windows)
-3. `$XDG_CONFIG_HOME/rclone/rclone.conf` (on all systems, including Windows)
-4. `~/.config/rclone/rclone.conf` (see below for explanation of ~ symbol)
-5. `~/.rclone.conf`
+1. `zclone.conf` (in program directory, where zclone executable is)
+2. `%APPDATA%/zclone/zclone.conf` (only on Windows)
+3. `$XDG_CONFIG_HOME/zclone/zclone.conf` (on all systems, including Windows)
+4. `~/.config/zclone/zclone.conf` (see below for explanation of ~ symbol)
+5. `~/.zclone.conf`
 
 If no existing configuration file is found, then a new one will be created
 in the following location:
@@ -1185,9 +1185,9 @@ in the following location:
 - On Windows: Location 2 listed above, except in the unlikely event
   that `APPDATA` is not defined, then location 4 is used instead.
 - On Unix: Location 3 if `XDG_CONFIG_HOME` is defined, else location 4.
-- Fallback to location 5 (on all OS), when the rclone directory cannot be
+- Fallback to location 5 (on all OS), when the zclone directory cannot be
   created, but if also a home directory was not found then path
-  `.rclone.conf` relative to current working directory will be used as
+  `.zclone.conf` relative to current working directory will be used as
   a final resort.
 
 The `~` symbol in paths above represent the home directory of the current user
@@ -1197,30 +1197,30 @@ on any OS, and the value is defined as following:
 - On Unix: `$HOME` if defined, else by looking up current user in OS-specific user
   database (e.g. passwd file), or else use the result from shell command `cd && pwd`.
 
-If you run `rclone config file` you will see where the default location is for
-you. Running `rclone config touch` will ensure a configuration file exists,
+If you run `zclone config file` you will see where the default location is for
+you. Running `zclone config touch` will ensure a configuration file exists,
 creating an empty one in the default location if there is none.
 
-The fact that an existing file `rclone.conf` in the same directory
-as the rclone executable is always preferred, means that it is easy
-to run in "portable" mode by downloading rclone executable to a
-writable directory and then create an empty file `rclone.conf` in the
+The fact that an existing file `zclone.conf` in the same directory
+as the zclone executable is always preferred, means that it is easy
+to run in "portable" mode by downloading zclone executable to a
+writable directory and then create an empty file `zclone.conf` in the
 same directory.
 
 If the location is set to empty string `""` or path to a file
 with name `notfound`, or the os null device represented by value `NUL` on
-Windows and `/dev/null` on Unix systems, then rclone will keep the
+Windows and `/dev/null` on Unix systems, then zclone will keep the
 configuration file in memory only.
 
 You may see a log message "Config file not found - using defaults" if there is
-no configuration file. This can be suppressed, e.g. if you are using rclone
+no configuration file. This can be suppressed, e.g. if you are using zclone
 entirely with [on the fly remotes](/docs/#backend-path-to-dir), by using
 memory-only configuration file or by creating an empty configuration file, as
 described above.
 
 The file format is basic [INI](https://en.wikipedia.org/wiki/INI_file#Format):
 Sections of text, led by a `[section]` header and followed by
-`key=value` entries on separate lines. In rclone each remote is
+`key=value` entries on separate lines. In zclone each remote is
 represented by its own section, where the section name defines the
 name of the remote. Options are specified as the `key=value` entries,
 where the key is the option name without the `--backend-` prefix,
@@ -1228,7 +1228,7 @@ in lowercase and with `_` instead of `-`. E.g. option `--mega-hard-delete`
 corresponds to key `hard_delete`. Only backend options can be specified.
 A special, and required, key `type` identifies the [storage system](/overview/),
 where the value is the internal lowercase name as returned by command
-`rclone help backends`. Comments are indicated by `;` or `#` at the
+`zclone help backends`. Comments are indicated by `;` or `#` at the
 beginning of a line.
 
 Example:
@@ -1240,30 +1240,30 @@ user = you@example.com
 pass = PDPcQVVjVtzFY-GTdDFozqBhTdsPg3qH
 ```
 
-Note that passwords are in [obscured](/commands/rclone_obscure/)
+Note that passwords are in [obscured](/commands/zclone_obscure/)
 form. Also, many storage systems uses token-based authentication instead
 of passwords, and this requires additional steps. It is easier, and safer,
-to use the interactive command `rclone config` instead of manually
+to use the interactive command `zclone config` instead of manually
 editing the configuration file.
 
 The configuration file will typically contain login information, and
 should therefore have restricted permissions so that only the current user
-can read it. Rclone tries to ensure this when it writes the file.
+can read it. Zclone tries to ensure this when it writes the file.
 You may also choose to [encrypt](#configuration-encryption) the file.
 
 When token-based authentication are used, the configuration file
-must be writable, because rclone needs to update the tokens inside it.
+must be writable, because zclone needs to update the tokens inside it.
 
-To reduce risk of corrupting an existing configuration file, rclone
+To reduce risk of corrupting an existing configuration file, zclone
 will not write directly to it when saving changes. Instead it will
 first write to a new, temporary, file. If a configuration file already
 existed, it will (on Unix systems) try to mirror its permissions to
 the new file. Then it will rename the existing file to a temporary
-name as backup. Next, rclone will rename the new file to the correct name,
+name as backup. Next, zclone will rename the new file to the correct name,
 before finally cleaning up by deleting the backup file.
 
-If the configuration file path used by rclone is a symbolic link, then
-this will be evaluated and rclone will write to the resolved path, instead
+If the configuration file path used by zclone is a symbolic link, then
+this will be evaluated and zclone will write to the resolved path, instead
 of overwriting the symbolic link. Temporary files used in the process
 (described above) will be written to the same parent directory as that
 of the resolved configuration file, but if this directory is also a
@@ -1275,14 +1275,14 @@ written to the location of the directory symbolic link.
 Set the connection timeout. This should be in go time format which
 looks like `5s` for 5 seconds, `10m` for 10 minutes, or `3h30m`.
 
-The connection timeout is the amount of time rclone will wait for a
+The connection timeout is the amount of time zclone will wait for a
 connection to go through to a remote object storage system.  It is
 `1m` by default.
 
 ### --copy-dest stringArray
 
-When using [sync](/commands/rclone_sync/), [copy](/commands/rclone_copy/) or
-[move](/commands/rclone_move/), the specified paths are checked in addition
+When using [sync](/commands/zclone_sync/), [copy](/commands/zclone_copy/) or
+[move](/commands/zclone_move/), the specified paths are checked in addition
 to the destination for files. This part is the same as `--compare-dest`, but
 the difference is that with `--copy-dest`, if a file identical to the source
 is found, that file is server-side copied from the specified paths to the
@@ -1298,20 +1298,20 @@ See `--compare-dest` and `--backup-dir`.
 
 Mode to run dedupe command in.  One of `interactive`, `skip`, `first`,
 `newest`, `oldest`, `largest`, `smallest`, `rename` `list`.  The default
-is `interactive`.   See the [dedupe](/commands/rclone_dedupe/) command
+is `interactive`.   See the [dedupe](/commands/zclone_dedupe/) command
 for more information as to what these options mean.
 
 ### --default-time Time
 
-If a file or directory does have a modification time rclone can read
-then rclone will display this fixed time instead.
+If a file or directory does have a modification time zclone can read
+then zclone will display this fixed time instead.
 
 The default is `2000-01-01 00:00:00 UTC`. This can be configured in
 any of the ways shown in [time options](#time-options).
 
 For example `--default-time 2020-06-01` to set the default time to the
 1st of June 2020 or `--default-time 0s` to set the default time to the
-time rclone started up.
+time zclone started up.
 
 ### --disable string
 
@@ -1333,7 +1333,7 @@ To see a list of which features can be disabled use:
 The features a remote has can be seen in JSON format with:
 
 ```console
-rclone backend features remote:
+zclone backend features remote:
 ```
 
 See the overview [features](/overview/#features) and
@@ -1356,7 +1356,7 @@ This flag can be useful for debugging and in exceptional circumstances
 
 ### --disable-http2
 
-This stops rclone from trying to use HTTP/2 if available. This can
+This stops zclone from trying to use HTTP/2 if available. This can
 sometimes speed up transfers due to a
 [problem in the Go standard library](https://github.com/golang/go/issues/37373).
 
@@ -1373,7 +1373,7 @@ support ([RFC 8622](https://tools.ietf.org/html/rfc8622)).
 For example, if you configured QoS on router to handle LE properly. Running:
 
 ```console
-rclone copy --dscp LE from:/from to:/to
+zclone copy --dscp LE from:/from to:/to
 ```
 
 would make the priority lower than usual internet flows.
@@ -1382,9 +1382,9 @@ This option has no effect on Windows (see [golang/go#42728](https://github.com/g
 
 ### -n, --dry-run
 
-Do a trial run with no permanent changes.  Use this to see what rclone
+Do a trial run with no permanent changes.  Use this to see what zclone
 would do without actually doing it.  Useful when setting up the
-[sync](/commands/rclone_sync/) command which deletes files in the destination.
+[sync](/commands/zclone_sync/) command which deletes files in the destination.
 
 ### --expect-continue-timeout Duration
 
@@ -1401,10 +1401,10 @@ The default is `1s`.  Set to `0` to disable.
 
 ### --error-on-no-transfer
 
-By default, rclone will exit with return code 0 if there were no errors.
+By default, zclone will exit with return code 0 if there were no errors.
 
-This option allows rclone to return exit code 9 if no files were transferred
-between the source and destination. This allows using rclone in scripts, and
+This option allows zclone to return exit code 9 if no files were transferred
+between the source and destination. This allows using zclone in scripts, and
 triggering follow-on actions if data was copied, or skipping if not.
 
 NB: Enabling this option turns a usually non-fatal error into a potentially
@@ -1433,22 +1433,22 @@ downloading the file and re-uploading it. To avoid this, do not use `--fix-case`
 
 ### --fs-cache-expire-duration Duration
 
-When using rclone via the API rclone caches created remotes for 5
+When using zclone via the API zclone caches created remotes for 5
 minutes by default in the "fs cache". This means that if you do
-repeated actions on the same remote then rclone won't have to build it
+repeated actions on the same remote then zclone won't have to build it
 again from scratch, which makes it more efficient.
 
 This flag sets the time that the remotes are cached for. If you set it
-to `0` (or negative) then rclone won't cache the remotes at all.
+to `0` (or negative) then zclone won't cache the remotes at all.
 
 Note that if you use some flags, eg `--backup-dir` and if this is set
-to `0` rclone may build two remotes (one for the source or destination
+to `0` zclone may build two remotes (one for the source or destination
 and one for the `--backup-dir` where it may have only built one
 before.
 
 ### --fs-cache-expire-interval Duration
 
-This controls how often rclone checks for cached remotes to expire.
+This controls how often zclone checks for cached remotes to expire.
 See the `--fs-cache-expire-duration` documentation above for more
 info. The default is 60s, set to 0 to disable expiry.
 
@@ -1465,7 +1465,7 @@ supported by `--header-upload` and `--header-download` so may be used
 as a workaround for those with care.
 
 ```console
-rclone ls remote:test --header "X-Rclone: Foo" --header "X-LetMeIn: Yes"
+zclone ls remote:test --header "X-Zclone: Foo" --header "X-LetMeIn: Yes"
 ```
 
 ### --header-download stringArray
@@ -1474,10 +1474,10 @@ Add an HTTP header for all download transactions. The flag can be repeated to
 add multiple headers.
 
 ```console
-rclone sync --interactive s3:test/src ~/dst --header-download "X-Amz-Meta-Test: Foo" --header-download "X-Amz-Meta-Test2: Bar"
+zclone sync --interactive s3:test/src ~/dst --header-download "X-Amz-Meta-Test: Foo" --header-download "X-Amz-Meta-Test2: Bar"
 ```
 
-See GitHub issue [#59](https://github.com/rclone/rclone/issues/59) for
+See GitHub issue [#59](/) for
 currently supported backends.
 
 ### --header-upload stringArray
@@ -1486,10 +1486,10 @@ Add an HTTP header for all upload transactions. The flag can be repeated to add
 multiple headers.
 
 ```console
-rclone sync --interactive ~/src s3:test/dst --header-upload "Content-Disposition: attachment; filename='cool.html'" --header-upload "X-Amz-Meta-Test: FooBar"
+zclone sync --interactive ~/src s3:test/dst --header-upload "Content-Disposition: attachment; filename='cool.html'" --header-upload "X-Amz-Meta-Test: FooBar"
 ```
 
-See GitHub issue [#59](https://github.com/rclone/rclone/issues/59) for
+See GitHub issue [#59](/) for
 currently supported backends.
 
 ### --http-proxy string
@@ -1497,18 +1497,18 @@ currently supported backends.
 Use this option to set an HTTP proxy for all HTTP based services to
 use.
 
-Rclone also supports the standard HTTP proxy environment variables
+Zclone also supports the standard HTTP proxy environment variables
 which it will pick up automatically. The is the way the HTTP proxy
 will normally be set but this flag can be used to override it.
 
 ### --human-readable
 
-Rclone commands output values for sizes (e.g. number of bytes) and
+Zclone commands output values for sizes (e.g. number of bytes) and
 counts (e.g. number of files) either as *raw* numbers, or
 in *human-readable* format.
 
 In human-readable format the values are scaled to larger units, indicated with
-a suffix shown after the value, and rounded to three decimals. Rclone consistently
+a suffix shown after the value, and rounded to three decimals. Zclone consistently
 uses binary units (powers of 2) for sizes and decimal units (powers of 10) for counts.
 The unit prefix for size is according to IEC standard notation, e.g. `Ki` for kibi.
 Used with byte unit, `1 KiB` means 1024 Byte. In list type of output, only the
@@ -1516,33 +1516,33 @@ unit prefix appended to the value (e.g. `9.762Ki`), while in more textual output
 the full unit is shown (e.g. `9.762 KiB`). For counts the SI standard notation is
 used, e.g. prefix `k` for kilo. Used with file counts, `1k` means 1000 files.
 
-The various [list](/commands/rclone_ls/) commands output raw numbers by default.
+The various [list](/commands/zclone_ls/) commands output raw numbers by default.
 Option `--human-readable` will make them output values in human-readable format
 instead (with the short unit prefix).
 
-The [about](/commands/rclone_about/) command outputs human-readable by default,
+The [about](/commands/zclone_about/) command outputs human-readable by default,
 with a command-specific option `--full` to output the raw numbers instead.
 
-Command [size](/commands/rclone_size/) outputs both human-readable and raw numbers
+Command [size](/commands/zclone_size/) outputs both human-readable and raw numbers
 in the same output.
 
-The [tree](/commands/rclone_tree/) command also considers `--human-readable`, but
+The [tree](/commands/zclone_tree/) command also considers `--human-readable`, but
 it will not use the exact same notation as the other commands: It rounds to one
 decimal, and uses single letter suffix, e.g. `K` instead of `Ki`. The reason for
 this is that it relies on an external library.
 
-The interactive command [ncdu](/commands/rclone_ncdu/) shows human-readable by
+The interactive command [ncdu](/commands/zclone_ncdu/) shows human-readable by
 default, and responds to key `u` for toggling human-readable format.
 
 ### --ignore-case-sync
 
-Using this option will cause rclone to ignore the case of the files
+Using this option will cause zclone to ignore the case of the files
 when synchronizing so files will not be copied/synced when the
 existing filenames are the same, even if the casing is different.
 
 ### --ignore-checksum
 
-Normally rclone will check that the checksums of transferred files
+Normally zclone will check that the checksums of transferred files
 match, and give an error "corrupted on transfer" if they don't.
 
 You can use this option to skip that check.  You should only use it if
@@ -1551,7 +1551,7 @@ sure you might want to transfer potentially corrupted data.
 
 ### --ignore-existing
 
-Using this option will make rclone unconditionally skip all files
+Using this option will make zclone unconditionally skip all files
 that exist on the destination, no matter the content of these files.
 
 While this isn't a generally recommended option, it can be useful
@@ -1564,24 +1564,24 @@ exists on the destination.
 
 ### --ignore-size
 
-Normally rclone will look at modification time and size of files to
-see if they are equal.  If you set this flag then rclone will check
+Normally zclone will look at modification time and size of files to
+see if they are equal.  If you set this flag then zclone will check
 only the modification time.  If `--checksum` is set then it only
 checks the checksum.
 
-It will also cause rclone to skip verifying the sizes are the same
+It will also cause zclone to skip verifying the sizes are the same
 after transfer.
 
 This can be useful for transferring files to and from OneDrive which
 occasionally misreports the size of image files (see
-[#399](https://github.com/rclone/rclone/issues/399) for more info).
+[#399](/) for more info).
 
 ### -I, --ignore-times
 
-Using this option will cause rclone to unconditionally upload all
+Using this option will cause zclone to unconditionally upload all
 files regardless of the state of files on the destination.
 
-Normally rclone would skip any files that have the same
+Normally zclone would skip any files that have the same
 modification time and are the same size (or have the same checksum if
 using `--checksum`).
 
@@ -1592,14 +1592,14 @@ modification.
 
 With this option set, files will be created and deleted as requested,
 but existing files will never be updated.  If an existing file does
-not match between the source and destination, rclone will give the error
+not match between the source and destination, zclone will give the error
 `Source and destination exist but do not match: immutable file modified`.
 
-Note that only commands which transfer files (e.g. [sync](/commands/rclone_sync/),
-[copy](/commands/rclone_copy/) or [move](/commands/rclone_move/)) are affected
+Note that only commands which transfer files (e.g. [sync](/commands/zclone_sync/),
+[copy](/commands/zclone_copy/) or [move](/commands/zclone_move/)) are affected
 by this behavior, and only modification is disallowed.  Files may still be deleted
-explicitly (e.g. [delete](/commands/rclone_delete/), [purge](/commands/rclone_purge/))
-or implicitly (e.g. [sync](/commands/rclone_sync/), [move](/commands/rclone_move/)).
+explicitly (e.g. [delete](/commands/zclone_delete/), [purge](/commands/zclone_purge/))
+or implicitly (e.g. [sync](/commands/zclone_sync/), [move](/commands/zclone_move/)).
 Use `copy --immutable` if it is desired to avoid deletion as well as modification.
 
 This can be useful as an additional layer of protection for immutable
@@ -1608,7 +1608,7 @@ implies corruption and should not be propagated.
 
 ### --inplace {#inplace}
 
-The `--inplace` flag changes the behaviour of rclone when uploading
+The `--inplace` flag changes the behaviour of zclone when uploading
 files to some backends (backends with the `PartialUploads` feature
 flag set) such as:
 
@@ -1617,7 +1617,7 @@ flag set) such as:
 - sftp
 - pcloud
 
-Without `--inplace` (the default) rclone will first upload to a
+Without `--inplace` (the default) zclone will first upload to a
 temporary file with an extension like this, where `XXXXXX` represents a
 hash of the source file's fingerprint and `.partial` is
 [--partial-suffix](#partial-suffix) value (`.partial` by default).
@@ -1626,10 +1626,10 @@ hash of the source file's fingerprint and `.partial` is
 original-file-name.XXXXXX.partial
 ```
 
-(rclone will make sure the final name is no longer than 100 characters
+(zclone will make sure the final name is no longer than 100 characters
 by truncating the `original-file-name` part if necessary).
 
-When the upload is complete, rclone will rename the `.partial` file to
+When the upload is complete, zclone will rename the `.partial` file to
 the correct name, overwriting any existing file at that point. If the
 upload fails then the `.partial` file will be deleted.
 
@@ -1637,7 +1637,7 @@ This prevents other users of the backend from seeing partially
 uploaded files in their new names and prevents overwriting the old
 file until the new one is completely uploaded.
 
-If the `--inplace` flag is supplied, rclone will upload directly to
+If the `--inplace` flag is supplied, zclone will upload directly to
 the final name without creating a `.partial` file.
 
 This means that an incomplete file will be visible in the directory
@@ -1650,27 +1650,27 @@ Note that on the local file system if you don't use `--inplace` hard
 links (Unix only) will be broken. And if you do use `--inplace` you
 won't be able to update in use executables.
 
-Note also that versions of rclone prior to v1.63.0 behave as if the
+Note also that versions of zclone prior to v1.63.0 behave as if the
 `--inplace` flag is always supplied.
 
 ### -i, --interactive {#interactive}
 
-This flag can be used to tell rclone that you wish a manual
+This flag can be used to tell zclone that you wish a manual
 confirmation before destructive operations.
 
-It is **recommended** that you use this flag while learning rclone
-especially with `rclone sync`.
+It is **recommended** that you use this flag while learning zclone
+especially with `zclone sync`.
 
 For example
 
 ```console
-$ rclone delete --interactive /tmp/dir
-rclone: delete "important-file.txt"?
+$ zclone delete --interactive /tmp/dir
+zclone: delete "important-file.txt"?
 y) Yes, this is OK (default)
 n) No, skip this
 s) Skip all delete operations with no more questions
 !) Do all delete operations with no more questions
-q) Exit rclone now.
+q) Exit zclone now.
 y/n/s/!/q> n
 ```
 
@@ -1682,14 +1682,14 @@ The options mean
 - `n`: **No**, do not do this operation. You'll be asked every time unless
   you choose `s` or `!`.
 - `s`: **Skip** all the following operations of this type with no more
-  questions. This takes effect until rclone exits. If there are any
+  questions. This takes effect until zclone exits. If there are any
   different kind of operations you'll be prompted for them.
 - `!`: **Do all** the following operations with no more
-  questions. Useful if you've decided that you don't mind rclone doing
-  that kind of operation. This takes effect until rclone exits . If
+  questions. Useful if you've decided that you don't mind zclone doing
+  that kind of operation. This takes effect until zclone exits . If
   there are any different kind of operations you'll be prompted for
   them.
-- `q`: **Quit** rclone now, just in case!
+- `q`: **Quit** zclone now, just in case!
 
 ### --leave-root
 
@@ -1697,13 +1697,13 @@ During rmdirs it will not remove root directory, even if it's empty.
 
 ### -l, --links
 
-Normally rclone will ignore symlinks or junction points (which behave
+Normally zclone will ignore symlinks or junction points (which behave
 like symlinks under Windows). Ignored files won't be copied, moved or
 deleted in a sync.
 
-If you supply this flag then rclone will copy symbolic links from any
+If you supply this flag then zclone will copy symbolic links from any
 supported backend backend, and store them as text files, with a
-`.rclonelink` suffix in the destination.
+`.zclonelink` suffix in the destination.
 
 The text file will contain the target of the symbolic link.
 
@@ -1714,10 +1714,10 @@ required.
 
 ### --list-cutoff int {#list-cutoff}
 
-When syncing rclone needs to sort directory entries before comparing
-them. Below this threshold (1,000,000) by default, rclone will store
+When syncing zclone needs to sort directory entries before comparing
+them. Below this threshold (1,000,000) by default, zclone will store
 the directory entries in memory. 1,000,000 entries will take approx
-1GB of RAM to store. Above this threshold rclone will store directory
+1GB of RAM to store. Above this threshold zclone will store directory
 entries on disk and sort them without using a lot of memory.
 
 Doing this is slightly less efficient then sorting them in memory and
@@ -1727,18 +1727,18 @@ millions of entries in a directory.
 
 ### --log-file string
 
-Log all of rclone's output to a file. This is not active by default.
+Log all of zclone's output to a file. This is not active by default.
 This can be useful for tracking down problems with syncs in
 combination with the `-v` flag.  See the [logging](#logging) section
 for more info.
 
-If the file exists, then rclone will append to it.
+If the file exists, then zclone will append to it.
 
-Note that if you are using the `logrotate` program to manage rclone's
-logs, then you should use the `copytruncate` option as rclone doesn't
+Note that if you are using the `logrotate` program to manage zclone's
+logs, then you should use the `copytruncate` option as zclone doesn't
 have a signal to rotate logs.
 
-Alternatively you can use the options below to manage rclone's built
+Alternatively you can use the options below to manage zclone's built
 in log rotation.
 
 ### --log-file-max-size SizeSuffix
@@ -1754,20 +1754,20 @@ ignored.
 For example if the following flags are in use
 
 ```console
-rclone --log-file rclone.log --log-file-max-size 1M --log-file-max-backups 3
+zclone --log-file zclone.log --log-file-max-size 1M --log-file-max-backups 3
 ```
 
 Then this will create log files which look like this
 
 ```console
 $ ls -l
--rw-------  1 user user  1048491 Apr 11 17:15 rclone-2025-04-11T17-15-29.998.log
--rw-------  1 user user  1048511 Apr 11 17:15 rclone-2025-04-11T17-15-30.467.log
--rw-------  1 user user  1048559 Apr 11 17:15 rclone-2025-04-11T17-15-30.543.log
--rw-------  1 user user   521602 Apr 11 17:15 rclone.log
+-rw-------  1 user user  1048491 Apr 11 17:15 zclone-2025-04-11T17-15-29.998.log
+-rw-------  1 user user  1048511 Apr 11 17:15 zclone-2025-04-11T17-15-30.467.log
+-rw-------  1 user user  1048559 Apr 11 17:15 zclone-2025-04-11T17-15-30.543.log
+-rw-------  1 user user   521602 Apr 11 17:15 zclone.log
 ```
 
-The file `rclone.log` being the current one.
+The file `zclone.log` being the current one.
 
 ### --log-file-compress
 
@@ -1799,7 +1799,7 @@ Comma separated list of log format options. The accepted options are:
 - `UTC` - Make the logs in UTC not localtime.
 - `longfile` - Adds the source file and line number of the log statement.
 - `shortfile` - Adds the source file and line number of the log statement.
-- `pid` - Add the process ID to the log - useful with `rclone mount --daemon`.
+- `pid` - Add the process ID to the log - useful with `zclone mount --daemon`.
 - `nolevel` - Don't add the level to the log.
 - `json` - Equivalent to adding `--use-json-log`
 
@@ -1809,10 +1809,10 @@ The default log format is `"date,time"`.
 
 ### --log-level LogLevel
 
-This sets the log level for rclone.  The default log level is `NOTICE`.
+This sets the log level for zclone.  The default log level is `NOTICE`.
 
 `DEBUG` is equivalent to `-vv`. It outputs lots of debug info - useful
-for bug reports and really finding out what rclone is doing.
+for bug reports and really finding out what zclone is doing.
 
 `INFO` is equivalent to `-v`. It outputs information about each transfer
 and prints stats once a minute by default.
@@ -1833,15 +1833,15 @@ the normal logs. These will be logged in JSON format as described
 below regardless of what format the main logs are configured for.
 
 The Windows event log only has 3 levels of severity `Info`, `Warning`
-and `Error`. If enabled we map rclone levels like this.
+and `Error`. If enabled we map zclone levels like this.
 
 - `Error` ← `ERROR` (and above)
 - `Warning` ←  `WARNING` (note that this level is defined but not currently used).
 - `Info` ← `NOTICE`, `INFO` and `DEBUG`.
 
-Rclone will declare its log source as "rclone" if it is has enough
+Zclone will declare its log source as "zclone" if it is has enough
 permissions to create the registry key needed. If not then logs will
-appear as "Application". You can run `rclone version --windows-event-log-level DEBUG`
+appear as "Application". You can run `zclone version --windows-event-log-level DEBUG`
 once as administrator to create the registry key in advance.
 
 **Note** that the `--windows-event-log-level` level must be greater (more
@@ -1849,7 +1849,7 @@ severe) than or equal to the `--log-level`. For example to log DEBUG
 to a log file but ERRORs to the event log you would use
 
 ```text
---log-file rclone.log --log-level DEBUG --windows-event-log-level ERROR
+--log-file zclone.log --log-level DEBUG --windows-event-log-level ERROR
 ```
 
 This option is only supported Windows platforms.
@@ -1919,7 +1919,7 @@ returned from the rc call [core/stats](/rc/#core-stats).
 
 ### --low-level-retries int
 
-This controls the number of low level retries rclone does.
+This controls the number of low level retries zclone does.
 
 A low level retry is used to retry a failing operation - typically one
 HTTP request.  This might be uploading a chunk of a big file for
@@ -1928,7 +1928,7 @@ flag.
 
 This shouldn't need to be changed from the default in normal operations.
 However, if you get a lot of low level retries you may wish
-to reduce the value so rclone moves on to a high level retry (see the
+to reduce the value so zclone moves on to a high level retry (see the
 `--retries` flag) quicker.
 
 Disable low level retries with `--low-level-retries 1`.
@@ -1942,11 +1942,11 @@ This can be set arbitrarily large.  It will only use memory when the
 queue is in use.  Note that it will use in the order of N KiB of memory
 when the backlog is in use.
 
-Setting this large allows rclone to calculate how many files are
+Setting this large allows zclone to calculate how many files are
 pending more accurately, give a more accurate estimated finish
 time and make `--order-by` work more accurately.
 
-Setting this small will make rclone more synchronous to the listings
+Setting this small will make zclone more synchronous to the listings
 of the remote which may be desirable.
 
 Setting this to a negative number will make the backlog as large as
@@ -1998,23 +1998,23 @@ uploads to limit the number of simultaneous parts being transferred.
 
 ### --max-delete int
 
-This tells rclone not to delete more than N files.  If that limit is
-exceeded then a fatal error will be generated and rclone will stop the
+This tells zclone not to delete more than N files.  If that limit is
+exceeded then a fatal error will be generated and zclone will stop the
 operation in progress.
 
 ### --max-delete-size SizeSuffix
 
-Rclone will stop deleting files when the total size of deletions has
+Zclone will stop deleting files when the total size of deletions has
 reached the size specified. It defaults to off.
 
 If that limit is exceeded then a fatal error will be generated and
-rclone will stop the operation in progress.
+zclone will stop the operation in progress.
 
 ### --max-depth int
 
 This modifies the recursion depth for all the commands except purge.
 
-So if you do `rclone --max-depth 1 ls remote:path` you will see only
+So if you do `zclone --max-depth 1 ls remote:path` you will see only
 the files in the top level directory.  Using `--max-depth 2` means you
 will see all the files in first two directory levels and so on.
 
@@ -2030,47 +2030,47 @@ what will happen.
 
 ### --max-duration Duration
 
-Rclone will stop transferring when it has run for the
+Zclone will stop transferring when it has run for the
 duration specified.
 Defaults to off.
 
 When the limit is reached all transfers will stop immediately.
 Use `--cutoff-mode` to modify this behaviour.
 
-Rclone will exit with exit code 10 if the duration limit is reached.
+Zclone will exit with exit code 10 if the duration limit is reached.
 
 ### --max-transfer SizeSuffix
 
-Rclone will stop transferring when it has reached the size specified.
+Zclone will stop transferring when it has reached the size specified.
 Defaults to off.
 
 When the limit is reached all transfers will stop immediately.
 Use `--cutoff-mode` to modify this behaviour.
 
-Rclone will exit with exit code 8 if the transfer limit is reached.
+Zclone will exit with exit code 8 if the transfer limit is reached.
 
 ### --cutoff-mode HARD|SOFT|CAUTIOUS
 
 Configure the behavior of `--max-transfer` and `--max-duration`.
 
-`HARD` will stop transferring immediately when rclone reaches the limit.
+`HARD` will stop transferring immediately when zclone reaches the limit.
 This is the default.
 
-`SOFT` will stop starting new transfers when rclone reaches the limit.
+`SOFT` will stop starting new transfers when zclone reaches the limit.
 
-`CAUTIOUS` will try to prevent rclone from reaching the limit. Only applicable
+`CAUTIOUS` will try to prevent zclone from reaching the limit. Only applicable
 for `--max-transfer`.
 
 ### -M, --metadata
 
-Setting this flag enables rclone to copy the metadata from the source
+Setting this flag enables zclone to copy the metadata from the source
 to the destination. For local backends this is ownership, permissions,
 xattr etc. See the [metadata section](#metadata) for more info.
 
 ### --metadata-mapper SpaceSepList {#metadata-mapper}
 
 If you supply the parameter `--metadata-mapper /path/to/program` then
-rclone will use that program to map metadata from source object to
+zclone will use that program to map metadata from source object to
 destination object.
 
 The argument to this flag should be a command with an optional space separated
@@ -2172,8 +2172,8 @@ o = { "Metadata": metadata }
 json.dump(o, sys.stdout, indent="\t")
 ```
 
-You can find this example (slightly expanded) in the rclone source code at
-[bin/test_metadata_mapper.py](https://github.com/rclone/rclone/blob/master/bin/test_metadata_mapper.py).
+You can find this example (slightly expanded) in the zclone source code at
+[bin/test_metadata_mapper.py](/).
 
 If you want to see the input to the metadata mapper and the output
 returned from it in the log you can use `-vv --dump mapper`.
@@ -2201,7 +2201,7 @@ This command line flag allows you to override that computed default.
 
 ### --multi-thread-write-buffer-size SizeSuffix
 
-When transferring with multiple threads, rclone will buffer the specified
+When transferring with multiple threads, zclone will buffer the specified
 number of bytes in memory before writing to disk for each thread.
 
 This can improve performance if the underlying filesystem does not deal
@@ -2229,7 +2229,7 @@ In this case the value of this option is used (default 64Mi).
 ### --multi-thread-cutoff SizeSuffix {#multi-thread-cutoff}
 
 When transferring files above specified size  to capable backends,
-rclone will use multiple threads to transfer the file (default 256M).
+zclone will use multiple threads to transfer the file (default 256M).
 
 Capable backends are marked in the
 [overview](/overview/#optional-features) as `MultithreadUpload`. (They
@@ -2238,10 +2238,10 @@ internal interfaces). These include include, `local`, `s3`,
 `azureblob`, `b2`, `oracleobjectstorage` and `smb` at the time of
 writing.
 
-On the local disk, rclone preallocates the file (using
+On the local disk, zclone preallocates the file (using
 `fallocate(FALLOC_FL_KEEP_SIZE)` on unix or `NTSetInformationFile` on
 Windows both of which takes no time) then each thread writes directly
-into the file at the correct place. This means that rclone won't
+into the file at the correct place. This means that zclone won't
 create fragmented or sparse files and there won't be any assembly time
 at the end of the transfer.
 
@@ -2250,10 +2250,10 @@ The number of threads used to transfer is controlled by
 
 Use `-vv` if you wish to see info about the threads.
 
-This will work with the [sync](/commands/rclone_sync/), [copy](/commands/rclone_copy/)
-and [move](/commands/rclone_move/) commands, and friends
-[copyto](/commands/rclone_copyto/), [moveto](/commands/rclone_moveto/).
-Multi thread transfers will be used with `rclone mount` and `rclone serve`
+This will work with the [sync](/commands/zclone_sync/), [copy](/commands/zclone_copy/)
+and [move](/commands/zclone_move/) commands, and friends
+[copyto](/commands/zclone_copyto/), [moveto](/commands/zclone_moveto/).
+Multi thread transfers will be used with `zclone mount` and `zclone serve`
 if `--vfs-cache-mode` is set to `writes` or above.
 
 Most multi-thread transfers do not take additional memory, but some do
@@ -2291,15 +2291,15 @@ number of transfers instead if it is larger than the value of
 ### --name-transform stringArray
 
 `--name-transform` introduces path name transformations for
-`rclone copy`, `rclone sync`, and `rclone move`. These transformations
+`zclone copy`, `zclone sync`, and `zclone move`. These transformations
 enable modifications to source and destination file names by applying
 prefixes, suffixes, and other alterations during transfer operations.
-For detailed docs and examples, see [`convmv`](/commands/rclone_convmv/).
+For detailed docs and examples, see [`convmv`](/commands/zclone_convmv/).
 
 ### --no-check-dest
 
 The `--no-check-dest` can be used with `move` or `copy` and it causes
-rclone not to check the destination at all when copying files.
+zclone not to check the destination at all when copying files.
 
 This means that:
 
@@ -2315,13 +2315,13 @@ This is a specialized flag which should be ignored by most users!
 
 ### --no-gzip-encoding
 
-Don't set `Accept-Encoding: gzip`.  This means that rclone won't ask
+Don't set `Accept-Encoding: gzip`.  This means that zclone won't ask
 the server for compressed files automatically. Useful if you've set
 the server to return files with `Content-Encoding: gzip` but you
 uploaded compressed files.
 
 There is no need to set this in normal operation, and doing so will
-decrease the network transfer efficiency of rclone.
+decrease the network transfer efficiency of zclone.
 
 ### --no-traverse
 
@@ -2332,14 +2332,14 @@ you supply it with `sync`.
 
 If you are only copying a small number of files (or are filtering most
 of the files) and/or have a large number of files on the destination
-then `--no-traverse` will stop rclone listing the destination and save
+then `--no-traverse` will stop zclone listing the destination and save
 time.
 
 However, if you are copying a large number of files, especially if you
 are doing a copy where lots of the files under consideration haven't
 changed and won't need copying then you shouldn't use `--no-traverse`.
 
-See [rclone copy](/commands/rclone_copy/) for an example of how to use it.
+See [zclone copy](/commands/zclone_copy/) for an example of how to use it.
 
 ### --no-unicode-normalization
 
@@ -2357,7 +2357,7 @@ treated as unique characters.
 
 ### --no-update-modtime
 
-When using this flag, rclone won't update modification times of remote
+When using this flag, zclone won't update modification times of remote
 files if they are incorrect as it would normally.
 
 This can be used if the remote is being synced with another tool also
@@ -2365,13 +2365,13 @@ This can be used if the remote is being synced with another tool also
 
 ### --no-update-dir-modtime
 
-When using this flag, rclone won't update modification times of remote
+When using this flag, zclone won't update modification times of remote
 directories if they are incorrect as it would normally.
 
 ### --order-by string
 
 The `--order-by` flag controls the order in which files in the backlog
-are processed in `rclone sync`, `rclone copy` and `rclone move`.
+are processed in `zclone sync`, `zclone copy` and `zclone move`.
 
 The order by string is constructed like this.  The first part
 describes what aspect is being measured:
@@ -2427,7 +2427,7 @@ means that it may transfer some files out of the order specified if
 - there are no files in the backlog or the source has not been fully scanned yet
 - there are more than [--max-backlog](#max-backlog-int) files in the backlog
 
-Rclone will do its best to transfer the best file it has so in
+Zclone will do its best to transfer the best file it has so in
 practice this should not cause a problem.  Think of `--order-by` as
 being more of a best efforts flag rather than a perfect ordering.
 
@@ -2437,7 +2437,7 @@ transferring first before transferring any.
 
 ### --partial-suffix string {#partial-suffix}
 
-When [--inplace](#inplace) is not used, it causes rclone to use
+When [--inplace](#inplace) is not used, it causes zclone to use
 the `--partial-suffix` as suffix for temporary files.
 
 Suffix length limit is 16 characters.
@@ -2447,8 +2447,8 @@ The default is `.partial`.
 ### --password-command SpaceSepList {#password-command}
 
 This flag supplies a program which should supply the config password
-when run. This is an alternative to rclone prompting for the password
-or setting the `RCLONE_CONFIG_PASS` variable. It is also used when
+when run. This is an alternative to zclone prompting for the password
+or setting the `ZCLONE_CONFIG_PASS` variable. It is also used when
 setting the config password for the first time.
 
 The argument to this should be a command with a space separated list
@@ -2466,17 +2466,17 @@ Eg
 ```
 
 Note that when changing the configuration password the environment
-variable `RCLONE_PASSWORD_CHANGE=1` will be set. This can be used to
+variable `ZCLONE_PASSWORD_CHANGE=1` will be set. This can be used to
 distinguish initial decryption of the config file from the new
 password.
 
 See the [Configuration Encryption](#configuration-encryption) for more info.
 
-See a [Windows PowerShell example on the Wiki](https://github.com/rclone/rclone/wiki/Windows-Powershell-use-rclone-password-command-for-Config-file-password).
+See a [Windows PowerShell example on the Wiki](/).
 
 ### -P, --progress
 
-This flag makes rclone update the stats in a static block in the
+This flag makes zclone update the stats in a static block in the
 terminal providing a realtime overview of the transfer.
 
 Any log messages will scroll above the static block.  Log messages
@@ -2504,7 +2504,7 @@ to the terminal title.
 
 ### -q, --quiet
 
-This flag will limit rclone's output to error messages only.
+This flag will limit zclone's output to error messages only.
 
 ### --refresh-times
 
@@ -2518,28 +2518,28 @@ you now wish to correct them.
 This flag is **only** useful for destinations which don't support
 hashes (e.g. `crypt`).
 
-This can be used any of the sync commands [sync](/commands/rclone_sync/),
-[copy](/commands/rclone_copy/) or [move](/commands/rclone_move/).
+This can be used any of the sync commands [sync](/commands/zclone_sync/),
+[copy](/commands/zclone_copy/) or [move](/commands/zclone_move/).
 
 To use this flag you will need to be doing a modification time sync
 (so not using `--size-only` or `--checksum`). The flag will have no
 effect when using `--size-only` or `--checksum`.
 
-If this flag is used when rclone comes to upload a file it will check
+If this flag is used when zclone comes to upload a file it will check
 to see if there is an existing file on the destination. If this file
 matches the source with size (and checksum if available) but has a
-differing timestamp then instead of re-uploading it, rclone will
+differing timestamp then instead of re-uploading it, zclone will
 update the timestamp on the destination file. If the checksum does not
-match rclone will upload the new file. If the checksum is absent (e.g.
-on a `crypt` backend) then rclone will update the timestamp.
+match zclone will upload the new file. If the checksum is absent (e.g.
+on a `crypt` backend) then zclone will update the timestamp.
 
 Note that some remotes can't set the modification time without
 re-uploading the file so this flag is less useful on them.
 
-Normally if you are doing a modification time sync rclone will update
+Normally if you are doing a modification time sync zclone will update
 modification times without `--refresh-times` provided that the remote
 supports checksums **and** the checksums match on the file. However if the
-checksums are absent then rclone will upload the file rather than
+checksums are absent then zclone will upload the file rather than
 setting the timestamp as this is the safe behaviour.
 
 ### --retries int
@@ -2567,24 +2567,24 @@ between two remotes which use the same backend but are configured
 differently.
 
 Note that this isn't enabled by default because it isn't easy for
-rclone to tell if it will work between any two configurations.
+zclone to tell if it will work between any two configurations.
 
 ### --size-only
 
-Normally rclone will look at modification time and size of files to
-see if they are equal.  If you set this flag then rclone will check
+Normally zclone will look at modification time and size of files to
+see if they are equal.  If you set this flag then zclone will check
 only the size.
 
 This can be useful transferring files from Dropbox which have been
 modified by the desktop sync client which doesn't set checksums of
-modification times in the same way as rclone.
+modification times in the same way as zclone.
 
 ### --stats Duration
 
 Commands which transfer data
-([sync](/commands/rclone_sync/), [copy](/commands/rclone_copy/),
-[copyto](/commands/rclone_copyto/), [move](/commands/rclone_move/),
-[moveto](/commands/rclone_moveto/)) will print data transfer stats at
+([sync](/commands/zclone_sync/), [copy](/commands/zclone_copy/),
+[copyto](/commands/zclone_copyto/), [move](/commands/zclone_move/),
+[moveto](/commands/zclone_moveto/)) will print data transfer stats at
 regular intervals to show their progress.
 
 This sets the interval.
@@ -2620,18 +2620,18 @@ you want them to then use `--stats-log-level NOTICE`.  See the
 
 ### --stats-one-line
 
-When this is specified, rclone condenses the stats into a single line
+When this is specified, zclone condenses the stats into a single line
 showing the most important stats only.
 
 ### --stats-one-line-date
 
-When this is specified, rclone enables the single-line stats and prepends
+When this is specified, zclone enables the single-line stats and prepends
 <!-- markdownlint-disable-next-line no-space-in-code -->
 the display with a date string. The default is `2006/01/02 15:04:05 - `
 
 ### --stats-one-line-date-format string
 
-When this is specified, rclone enables the single-line stats and prepends
+When this is specified, zclone enables the single-line stats and prepends
 the display with a user-supplied date string. The date string MUST be
 enclosed in quotes. Follow [golang specs](https://golang.org/pkg/time/#Time.Format)
 for date formatting syntax.
@@ -2650,8 +2650,8 @@ equals 1,048,576 bit/s and not 1,000,000 bit/s.
 
 ### --suffix string
 
-When using [sync](/commands/rclone_sync/), [copy](/commands/rclone_copy/) or
-[move](/commands/rclone_move/) any files which would have been
+When using [sync](/commands/zclone_sync/), [copy](/commands/zclone_copy/) or
+[move](/commands/zclone_move/) any files which would have been
 overwritten or deleted will have the suffix added to them.  If there
 is a file with the same path (after the suffix has been added), then
 it will be overwritten.
@@ -2665,23 +2665,23 @@ or with `--backup-dir`. See `--backup-dir` for more info.
 For example
 
 ```console
-rclone copy --interactive /path/to/local/file remote:current --suffix .bak
+zclone copy --interactive /path/to/local/file remote:current --suffix .bak
 ```
 
 will copy `/path/to/local` to `remote:current`, but for any files
 which would have been updated or deleted have .bak added.
 
-If using `rclone sync` with `--suffix` and without `--backup-dir` then
+If using `zclone sync` with `--suffix` and without `--backup-dir` then
 it is recommended to put a filter rule in excluding the suffix
 otherwise the `sync` will delete the backup files.
 
 ```console
-rclone sync --interactive /path/to/local/file remote:current --suffix .bak --exclude "*.bak"
+zclone sync --interactive /path/to/local/file remote:current --suffix .bak --exclude "*.bak"
 ```
 
 ### --suffix-keep-extension
 
-When using `--suffix`, setting this causes rclone put the SUFFIX
+When using `--suffix`, setting this causes zclone put the SUFFIX
 before the extension of the files that it backs up rather than after.
 
 So let's say we had `--suffix -2019-01-01`, without the flag `file.txt`
@@ -2699,7 +2699,7 @@ backed up to `file.badextension-2019-01-01.gz`.
 
 On capable OSes (not Windows or Plan9) send all log output to syslog.
 
-This can be useful for running rclone in a script or `rclone mount`.
+This can be useful for running zclone in a script or `zclone mount`.
 
 ### --syslog-facility string
 
@@ -2709,7 +2709,7 @@ facility is `DAEMON`.
 
 ### --temp-dir string
 
-Specify the directory rclone will use for temporary files, to override
+Specify the directory zclone will use for temporary files, to override
 the default. Make sure the directory exists and have accessible permissions.
 
 By default the operating system's temp directory will be used:
@@ -2722,7 +2722,7 @@ When overriding the default with this option, the specified path will be
 set as value of environment variable `TMPDIR` on Unix systems
 and `TMP` and `TEMP` on Windows.
 
-You can use the [config paths](/commands/rclone_config_paths/)
+You can use the [config paths](/commands/zclone_config_paths/)
 command to see the current value.
 
 ### --tpslimit float
@@ -2735,15 +2735,15 @@ will depend on the backend. For HTTP based backends it is an HTTP
 PUT/GET/POST/etc and its response. For FTP/SFTP it is a round trip
 transaction over TCP.
 
-For example, to limit rclone to 10 transactions per second use
+For example, to limit zclone to 10 transactions per second use
 `--tpslimit 10`, or to 1 transaction every 2 seconds use `--tpslimit
 0.5`.
 
-Use this when the number of transactions per second from rclone is
+Use this when the number of transactions per second from zclone is
 causing a problem with the cloud storage provider (e.g. getting you
 banned or rate limited).
 
-This can be very useful for `rclone mount` to control the behaviour of
+This can be very useful for `zclone mount` to control the behaviour of
 applications using it.
 
 This limit applies to all HTTP based backends and to the FTP and SFTP
@@ -2756,11 +2756,11 @@ See also `--tpslimit-burst`.
 Max burst of transactions for `--tpslimit` (default `1`).
 
 Normally `--tpslimit` will do exactly the number of transaction per
-second specified.  However if you supply `--tps-burst` then rclone can
+second specified.  However if you supply `--tps-burst` then zclone can
 save up some transactions from when it was idle giving a burst of up
 to the parameter supplied.
 
-For example if you provide `--tpslimit-burst 10` then if rclone has
+For example if you provide `--tpslimit-burst 10` then if zclone has
 been idle for more than 10*`--tpslimit` then it can do 10 transactions
 very quickly before they are limited again.
 
@@ -2769,28 +2769,28 @@ changing the long term average number of transactions per second.
 
 ### --track-renames
 
-By default, rclone doesn't keep track of renamed files, so if you
-rename a file locally then sync it to a remote, rclone will delete the
+By default, zclone doesn't keep track of renamed files, so if you
+rename a file locally then sync it to a remote, zclone will delete the
 old file on the remote and upload a new copy.
 
-An rclone sync with `--track-renames` runs like a normal sync, but keeps
+An zclone sync with `--track-renames` runs like a normal sync, but keeps
 track of objects which exist in the destination but not in the source
 (which would normally be deleted), and which objects exist in the
 source but not the destination (which would normally be transferred).
 These objects are then candidates for renaming.
 
-After the sync, rclone matches up the source only and destination only
+After the sync, zclone matches up the source only and destination only
 objects using the `--track-renames-strategy` specified and either
 renames the destination object or transfers the source and deletes the
 destination object. `--track-renames` is stateless like all of
-rclone's syncs.
+zclone's syncs.
 
 To use this flag the destination must support server-side copy or
 server-side move, and to use a hash based `--track-renames-strategy`
 (the default) the source and the destination must have a compatible
 hash.
 
-If the destination does not support server-side copy or move, rclone
+If the destination does not support server-side copy or move, zclone
 will fall back to the default behaviour and log an error level message
 to the console.
 
@@ -2852,7 +2852,7 @@ there were IO errors`.
 ### --fast-list
 
 When doing anything which involves a directory listing (e.g. `sync`,
-`copy`, `ls` - in fact nearly every command), rclone has different
+`copy`, `ls` - in fact nearly every command), zclone has different
 strategies to choose from.
 
 The basic strategy is to list one directory and processes it before using
@@ -2863,7 +2863,7 @@ it is fast for operations involving processing of the list results.
 
 Some backends provide the support for an alternative strategy, where all
 files beneath a directory can be listed in one (or a small number) of
-transactions. Rclone supports this alternative strategy through an optional
+transactions. Zclone supports this alternative strategy through an optional
 backend feature called [`ListR`](/overview/#listr). You can see in the storage
 system overview documentation's [optional features](/overview/#optional-features)
 section which backends it is enabled for (these tend to be the bucket-based
@@ -2871,9 +2871,9 @@ ones, e.g. S3, B2, GCS, Swift). This strategy requires fewer transactions
 for highly recursive operations, which is important on backends where this
 is charged or heavily rate limited. It may be faster (due to fewer transactions)
 or slower (because it can't be parallelized) depending on different parameters,
-and may require more memory if rclone has to keep the whole listing in memory.
+and may require more memory if zclone has to keep the whole listing in memory.
 
-Which listing strategy rclone picks for a given operation is complicated, but
+Which listing strategy zclone picks for a given operation is complicated, but
 in general it tries to choose the best possible. It will prefer `ListR` in
 situations where it doesn't need to store the listed files in memory, e.g.
 for unlimited recursive `ls` command variants. In other situations it will
@@ -2881,21 +2881,21 @@ prefer `List`, e.g. for `sync` and `copy`, where it needs to keep the listed
 files in memory, and is performing operations on them where parallelization
 may be a huge advantage.
 
-Rclone is not able to take all relevant parameters into account for deciding
+Zclone is not able to take all relevant parameters into account for deciding
 the best strategy, and therefore allows you to influence the choice in two ways:
-You can stop rclone from using `ListR` by disabling the feature, using the
+You can stop zclone from using `ListR` by disabling the feature, using the
 [--disable](#disable-string) option (`--disable ListR`), or you can
-allow rclone to use `ListR` where it would normally choose not to do so due to
-higher memory usage, using the `--fast-list` option. Rclone should always
+allow zclone to use `ListR` where it would normally choose not to do so due to
+higher memory usage, using the `--fast-list` option. Zclone should always
 produce identical results either way. Using `--disable ListR` or `--fast-list`
-on a remote which doesn't support `ListR` does nothing, rclone will just ignore
+on a remote which doesn't support `ListR` does nothing, zclone will just ignore
 it.
 
 A rule of thumb is that if you pay for transactions and can fit your entire
 sync listing into memory, then `--fast-list` is recommended. If you have a
 very big sync to do, then don't use `--fast-list`, otherwise you will run out
 of memory. Run some tests and compare before you decide, and if in doubt then
-just leave the default, let rclone decide, i.e. not use `--fast-list`.
+just leave the default, let zclone decide, i.e. not use `--fast-list`.
 
 ### --timeout Duration
 
@@ -2916,7 +2916,7 @@ Look at --multi-thread-streams if you would like to control single file transfer
 
 ### -u, --update
 
-This forces rclone to skip any files which exist on the destination
+This forces zclone to skip any files which exist on the destination
 and have a modified time that is newer than the source file.
 
 This can be useful in avoiding needless transfers when transferring to
@@ -2946,13 +2946,13 @@ time skew window may still result in additional transfers for safety.
 
 ### --use-mmap
 
-If this flag is set then rclone will use anonymous memory allocated by
+If this flag is set then zclone will use anonymous memory allocated by
 mmap on Unix based platforms and VirtualAlloc on Windows for its
 transfer buffers (size controlled by `--buffer-size`).  Memory
 allocated like this does not go on the Go heap and can be returned to
 the OS immediately when it is finished with.
 
-If this flag is not set then rclone will allocate and free the buffers
+If this flag is not set then zclone will allocate and free the buffers
 using the Go memory allocator which may use more memory as memory
 pages are returned less aggressively to the OS.
 
@@ -2962,7 +2962,7 @@ disabled by default; in the future it may be enabled by default.
 ### --use-server-modtime
 
 Some object-store backends (e.g, Swift, S3) do not preserve file modification
-times (modtime). On these backends, rclone stores the original modtime as
+times (modtime). On these backends, zclone stores the original modtime as
 additional metadata on the object. By default it will make an API call to
 retrieve the metadata when the modtime is needed by an operation.
 
@@ -2982,15 +2982,15 @@ again, which is probably not what you want.
 
 ### -v, -vv, --verbose
 
-With `-v` rclone will tell you about each file that is transferred and
+With `-v` zclone will tell you about each file that is transferred and
 a small number of significant events.
 
-With `-vv` rclone will become very verbose telling you about every
+With `-vv` zclone will become very verbose telling you about every
 file it considers and transfers.  Please send bug reports with a log
 with this setting.
 
 When setting verbosity as an environment variable, use
-`RCLONE_VERBOSE=1` or `RCLONE_VERBOSE=2` for `-v` and `-vv` respectively.
+`ZCLONE_VERBOSE=1` or `ZCLONE_VERBOSE=2` for `-v` and `-vv` respectively.
 
 ### -V, --version
 
@@ -2998,15 +2998,15 @@ Prints the version number
 
 ## SSL/TLS options
 
-The outgoing SSL/TLS connections rclone makes can be controlled with
+The outgoing SSL/TLS connections zclone makes can be controlled with
 these options.  For example this can be very useful with the HTTP or
-WebDAV backends. Rclone HTTP servers have their own set of
+WebDAV backends. Zclone HTTP servers have their own set of
 configuration for SSL/TLS which you can find in their documentation.
 
 ### --ca-cert stringArray
 
 This loads the PEM encoded certificate authority certificates and uses
-it to verify the certificates of the servers rclone connects to.
+it to verify the certificates of the servers zclone connects to.
 
 If you have generated certificates signed with a local CA then you
 will need this flag to connect to servers using those certificates.
@@ -3036,7 +3036,7 @@ Supported types are:
 This can be used to supply an optional password to decrypt the client key file.
 
 **NB** the password should be obscured so it should be the output of
-`rclone obscure YOURPASSWORD`.
+`zclone obscure YOURPASSWORD`.
 
 ### --no-check-certificate
 
@@ -3054,16 +3054,16 @@ This option defaults to `false`.
 
 Your configuration file contains information for logging in to
 your cloud services. This means that you should keep your
-`rclone.conf` file in a secure location.
+`zclone.conf` file in a secure location.
 
 If you are in an environment where that isn't possible, you can
 add a password to your configuration. This means that you will
-have to supply the password every time you start rclone.
+have to supply the password every time you start zclone.
 
-To add a password to your rclone configuration, execute `rclone config`.
+To add a password to your zclone configuration, execute `zclone config`.
 
 ```console
-$ rclone config
+$ zclone config
 Current remotes:
 
 e) Edit existing remote
@@ -3095,7 +3095,7 @@ q) Quit to main menu
 c/u/q>
 ```
 
-Your configuration is now encrypted, and every time you start rclone
+Your configuration is now encrypted, and every time you start zclone
 you will have to supply the password. See below for details.
 In the same menu, you can change the password or completely remove
 encryption from your configuration.
@@ -3104,39 +3104,39 @@ There is no way to recover the configuration if you lose your password.
 
 You can also use
 
-- [rclone config encryption set](/commands/rclone_config_encryption_set/)
+- [zclone config encryption set](/commands/zclone_config_encryption_set/)
   to set the config encryption directly
-- [rclone config encryption remove](/commands/rclone_config_encryption_remove/)
+- [zclone config encryption remove](/commands/zclone_config_encryption_remove/)
   to remove it
-- [rclone config encryption check](/commands/rclone_config_encryption_check/)
+- [zclone config encryption check](/commands/zclone_config_encryption_check/)
   to check that it is encrypted properly.
 
-rclone uses [nacl secretbox](https://godoc.org/golang.org/x/crypto/nacl/secretbox)
+zclone uses [nacl secretbox](https://godoc.org/golang.org/x/crypto/nacl/secretbox)
 which in turn uses XSalsa20 and Poly1305 to encrypt and authenticate
 your configuration with secret-key cryptography.
 The password is SHA-256 hashed, which produces the key for secretbox.
 The hashed password is not stored.
 
 While this provides very good security, we do not recommend storing
-your encrypted rclone configuration in public if it contains sensitive
+your encrypted zclone configuration in public if it contains sensitive
 information, maybe except if you use a very strong password.
 
-If it is safe in your environment, you can set the `RCLONE_CONFIG_PASS`
+If it is safe in your environment, you can set the `ZCLONE_CONFIG_PASS`
 environment variable to contain your password, in which case it will be
 used for decrypting the configuration.
 
 You can set this for a session from a script.  For unix like systems
-save this to a file called `set-rclone-password`:
+save this to a file called `set-zclone-password`:
 
 ```sh
 #!/bin/echo Source this file don't run it
 
-read -s RCLONE_CONFIG_PASS
-export RCLONE_CONFIG_PASS
+read -s ZCLONE_CONFIG_PASS
+export ZCLONE_CONFIG_PASS
 ```
 
 Then source the file when you want to use it.  From the shell you
-would do `source set-rclone-password`.  It will then ask you for the
+would do `source set-zclone-password`.  It will then ask you for the
 password and set it in the environment variable.
 
 An alternate means of supplying the password is to provide a script
@@ -3144,34 +3144,34 @@ which will retrieve the password and print on standard output.  This
 script should have a fully specified path name and not rely on any
 environment variables.  The script is supplied either via
 [`--password-command="..."`](#password-command) command line argument or via the
-`RCLONE_PASSWORD_COMMAND` environment variable.
+`ZCLONE_PASSWORD_COMMAND` environment variable.
 
 One useful example of this is using the `passwordstore` application
 to retrieve the password:
 
 ```console
-export RCLONE_PASSWORD_COMMAND="pass rclone/config"
+export ZCLONE_PASSWORD_COMMAND="pass zclone/config"
 ```
 
 If the `passwordstore` password manager holds the password for the
-rclone configuration, using the script method means the password
+zclone configuration, using the script method means the password
 is primarily protected by the `passwordstore` system, and is never
 embedded in the clear in scripts, nor available for examination
 using the standard commands available.  It is quite possible with
-long running rclone sessions for copies of passwords to be innocently
+long running zclone sessions for copies of passwords to be innocently
 captured in log files or terminal scroll buffers, etc.  Using the
 script method of supplying the password enhances the security of
 the config password considerably.
 
-If you are running rclone inside a script, unless you are using the
+If you are running zclone inside a script, unless you are using the
 `--password-command` method, you might want to disable
 password prompts. To do that, pass the parameter
-`--ask-password=false` to rclone. This will make rclone fail instead
-of asking for a password if `RCLONE_CONFIG_PASS` doesn't contain
+`--ask-password=false` to zclone. This will make zclone fail instead
+of asking for a password if `ZCLONE_CONFIG_PASS` doesn't contain
 a valid password, and `--password-command` has not been supplied.
 
 Whenever running commands that may be affected by options in a
-configuration file, rclone will look for an existing file according
+configuration file, zclone will look for an existing file according
 to the rules described [above](#config-string), and load any it
 finds. If an encrypted file is found, this includes decrypting it,
 with the possible consequence of a password prompt. When executing
@@ -3184,7 +3184,7 @@ that do not operate on backends, e.g. `completion`. However,
 it will be relevant for commands that do operate on backends in
 general, but are used without referencing a stored remote, e.g.
 listing local filesystem paths, or
-[connection strings](#connection-strings): `rclone --config="" ls .`
+[connection strings](#connection-strings): `zclone --config="" ls .`
 
 ### Configuration encryption cheatsheet
 
@@ -3196,13 +3196,13 @@ at rest or transfer. Detailed instructions for popular OSes:
 - Generate and store a password
 
   ```console
-  security add-generic-password -a rclone -s config -w $(openssl rand -base64 40)
+  security add-generic-password -a zclone -s config -w $(openssl rand -base64 40)
   ```
 
 - Add the retrieval instruction to your `.zprofile` / `.profile`
 
   ```console
-  export RCLONE_PASSWORD_COMMAND="/usr/bin/security find-generic-password -a rclone -s config -w"
+  export ZCLONE_PASSWORD_COMMAND="/usr/bin/security find-generic-password -a zclone -s config -w"
   ```
 
 #### Linux
@@ -3210,18 +3210,18 @@ at rest or transfer. Detailed instructions for popular OSes:
 - Prerequisite: Linux doesn't come with a default password manager. Let's install
     the "pass" utility using a package manager, e.g. `apt install pass`,
     `yum install pass`, [etc.](https://www.passwordstore.org/#download);
-    then initialize a password store: `pass init rclone`.
+    then initialize a password store: `pass init zclone`.
 
 - Generate and store a password
 
   ```console
-  echo $(openssl rand -base64 40) | pass insert -m rclone/config
+  echo $(openssl rand -base64 40) | pass insert -m zclone/config
   ```
 
 - Add the retrieval instruction
 
   ```console
-  export RCLONE_PASSWORD_COMMAND="/usr/bin/pass rclone/config"
+  export ZCLONE_PASSWORD_COMMAND="/usr/bin/pass zclone/config"
   ```
 
 #### Windows
@@ -3229,24 +3229,24 @@ at rest or transfer. Detailed instructions for popular OSes:
 - Generate and store a password
 
   ```powershell
-  New-Object -TypeName PSCredential -ArgumentList "rclone", (ConvertTo-SecureString -String ([System.Web.Security.Membership]::GeneratePassword(40, 10)) -AsPlainText -Force) | Export-Clixml -Path "rclone-credential.xml"
+  New-Object -TypeName PSCredential -ArgumentList "zclone", (ConvertTo-SecureString -String ([System.Web.Security.Membership]::GeneratePassword(40, 10)) -AsPlainText -Force) | Export-Clixml -Path "zclone-credential.xml"
   ```
 
 - Add the password retrieval instruction
 
   ```powershell
-  [Environment]::SetEnvironmentVariable("RCLONE_PASSWORD_COMMAND", "[System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR((Import-Clixml -Path "rclone-credential.xml").Password))")
+  [Environment]::SetEnvironmentVariable("ZCLONE_PASSWORD_COMMAND", "[System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR((Import-Clixml -Path "zclone-credential.xml").Password))")
   ```
 
 #### Encrypt the config file (all systems)
 
-- Execute `rclone config`, and select option `s) Set configuration password`
+- Execute `zclone config`, and select option `s) Set configuration password`
 
 - Add/update the password from previous steps
 
 ## Developer options
 
-These options are useful when developing or debugging rclone.  There
+These options are useful when developing or debugging zclone.  There
 are also some more remote specific options which aren't documented
 here which are used for testing.  These start with remote name e.g.
 `--drive-test-option` - see the docs for the remote in question.
@@ -3278,7 +3278,7 @@ The available flags are:
   headers. This means the output will probably contain sensitive information.
   Use `headers` to dump without `Authorization:` headers. Can be very verbose.
   Useful for debugging only. This flag also makes the debug log of the config
-  process (e.g. `rclone config -vv`) show answers to questions, passwords and
+  process (e.g. `zclone config -vv`) show answers to questions, passwords and
   tokens which are otherwise redacted.
 - `bodies` dumps HTTP headers and bodies. May contain sensitive info.
   Can be very verbose.  Useful for debugging only. Note that the bodies
@@ -3350,7 +3350,7 @@ See the [filtering section](/filtering/).
 
 ## Remote control
 
-For the remote control options and for instructions on how to remote control rclone:
+For the remote control options and for instructions on how to remote control zclone:
 
 - `--rc`
 - Anything starting with `--rc-`
@@ -3359,44 +3359,44 @@ See [the remote control section](/rc/).
 
 ## Logging
 
-rclone has 4 levels of logging, `ERROR`, `NOTICE`, `INFO` and `DEBUG`.
+zclone has 4 levels of logging, `ERROR`, `NOTICE`, `INFO` and `DEBUG`.
 
-By default, rclone logs to standard error.  This means you can redirect
-standard error and still see the normal output of rclone commands (e.g.
-`rclone ls`).
+By default, zclone logs to standard error.  This means you can redirect
+standard error and still see the normal output of zclone commands (e.g.
+`zclone ls`).
 
-By default, rclone will produce `Error` and `Notice` level messages.
+By default, zclone will produce `Error` and `Notice` level messages.
 
-If you use the `-q` flag, rclone will only produce `Error` messages.
+If you use the `-q` flag, zclone will only produce `Error` messages.
 
-If you use the `-v` flag, rclone will produce `Error`, `Notice` and
+If you use the `-v` flag, zclone will produce `Error`, `Notice` and
 `Info` messages.
 
-If you use the `-vv` flag, rclone will produce `Error`, `Notice`,
+If you use the `-vv` flag, zclone will produce `Error`, `Notice`,
 `Info` and `Debug` messages.
 
 You can also control the log levels with the `--log-level` flag.
 
-If you use the `--log-file` option, rclone will redirect `Error`,
+If you use the `--log-file` option, zclone will redirect `Error`,
 `Info` and `Debug` messages along with standard error to a file.
 
-If you use the `--syslog` flag then rclone will log to syslog and the
+If you use the `--syslog` flag then zclone will log to syslog and the
 `--syslog-facility` control which facility it uses.
 
-Rclone prefixes all log messages with their level in capitals, e.g. INFO
+Zclone prefixes all log messages with their level in capitals, e.g. INFO
 which makes it easy to grep the log file for different kinds of
 information.
 
 ## Metrics
 
-Rclone can publish metrics in the OpenMetrics/Prometheus format.
+Zclone can publish metrics in the OpenMetrics/Prometheus format.
 
 To enable the metrics endpoint, use the `--metrics-addr` flag. Metrics can
 also be published on the `--rc-addr` port if the `--rc` flag and
-`--rc-enable-metrics` flags are supplied or if using rclone rcd
+`--rc-enable-metrics` flags are supplied or if using zclone rcd
 `--rc-enable-metrics`
 
-Rclone provides extensive configuration options for the metrics HTTP endpoint.
+Zclone provides extensive configuration options for the metrics HTTP endpoint.
 These settings are grouped under the Metrics section and have a prefix
 `--metrics-*`.
 
@@ -3407,21 +3407,21 @@ parameters.
 
 ## Exit code
 
-If any errors occur during the command execution, rclone will exit with a
-non-zero exit code.  This allows scripts to detect when rclone
+If any errors occur during the command execution, zclone will exit with a
+non-zero exit code.  This allows scripts to detect when zclone
 operations have failed.
 
-During the startup phase, rclone will exit immediately if an error is
+During the startup phase, zclone will exit immediately if an error is
 detected in the configuration.  There will always be a log message
 immediately before exiting.
 
-When rclone is running it will accumulate errors as it goes along, and
+When zclone is running it will accumulate errors as it goes along, and
 only exit with a non-zero exit code if (after retries) there were
 still failed transfers.  For every error counted there will be a high
 priority log message (visible with `-q`) showing the message and
 which file caused the problem. A high priority message is also shown
 when starting a retry so the user can see that any previous error
-messages may not be valid after the retry. If rclone has done a retry
+messages may not be valid after the retry. If zclone has done a retry
 it will log a high priority message if the retry was successful.
 
 ### List of exit codes
@@ -3442,34 +3442,34 @@ it will log a high priority message if the retry was successful.
 
 ## Environment variables
 
-Rclone can be configured entirely using environment variables.  These
+Zclone can be configured entirely using environment variables.  These
 can be used to set defaults for options or config file entries.
 
 ### Options
 
-Every option in rclone can have its default set by environment
+Every option in zclone can have its default set by environment
 variable.
 
 To find the name of the environment variable, first, take the long
 option name, strip the leading `--`, change `-` to `_`, make
-upper case and prepend `RCLONE_`.
+upper case and prepend `ZCLONE_`.
 
 For example, to always set `--stats 5s`, set the environment variable
-`RCLONE_STATS=5s`.  If you set stats on the command line this will
+`ZCLONE_STATS=5s`.  If you set stats on the command line this will
 override the environment variable setting.
 
 Or to always use the trash in drive `--drive-use-trash`, set
-`RCLONE_DRIVE_USE_TRASH=true`.
+`ZCLONE_DRIVE_USE_TRASH=true`.
 
 Verbosity is slightly different, the environment variable
-equivalent of `--verbose` or `-v` is `RCLONE_VERBOSE=1`,
-or for `-vv`, `RCLONE_VERBOSE=2`.
+equivalent of `--verbose` or `-v` is `ZCLONE_VERBOSE=1`,
+or for `-vv`, `ZCLONE_VERBOSE=2`.
 
 The same parser is used for the options and the environment variables
 so they take exactly the same form.
 
 The options set by environment variables can be seen with the `-vv` flag,
-e.g. `rclone version -vv`.
+e.g. `zclone version -vv`.
 
 Options that can appear multiple times (type `stringArray`) are
 treated slightly differently as environment variables can only be
@@ -3479,10 +3479,10 @@ string. For example
 
 | Environment variable | Equivalent options |
 |----------------------|--------------------|
-| `RCLONE_EXCLUDE="*.jpg"` | `--exclude "*.jpg"` |
-| `RCLONE_EXCLUDE="*.jpg,*.png"` | `--exclude "*.jpg"` `--exclude "*.png"` |
-| `RCLONE_EXCLUDE='"*.jpg","*.png"'` | `--exclude "*.jpg"` `--exclude "*.png"` |
-| `RCLONE_EXCLUDE='"/directory with comma , in it /**"'` | `--exclude "/directory with comma , in it /**" |
+| `ZCLONE_EXCLUDE="*.jpg"` | `--exclude "*.jpg"` |
+| `ZCLONE_EXCLUDE="*.jpg,*.png"` | `--exclude "*.jpg"` `--exclude "*.png"` |
+| `ZCLONE_EXCLUDE='"*.jpg","*.png"'` | `--exclude "*.jpg"` `--exclude "*.png"` |
+| `ZCLONE_EXCLUDE='"/directory with comma , in it /**"'` | `--exclude "/directory with comma , in it /**" |
 
 If `stringArray` options are defined as environment variables **and**
 options on the command line then all the values will be used.
@@ -3494,7 +3494,7 @@ remote basis. The names of the config items are documented in the page
 for each backend.
 
 To find the name of the environment variable, you need to set, take
-`RCLONE_CONFIG_` + name of remote + `_` + name of config file option
+`ZCLONE_CONFIG_` + name of remote + `_` + name of config file option
 and make it all uppercase.
 Note one implication here is the remote's name must be
 convertible into a valid environment variable name,
@@ -3504,12 +3504,12 @@ For example, to configure an S3 remote named `mys3:` without a config
 file (using unix ways of setting environment variables):
 
 ```console
-$ export RCLONE_CONFIG_MYS3_TYPE=s3
-$ export RCLONE_CONFIG_MYS3_ACCESS_KEY_ID=XXX
-$ export RCLONE_CONFIG_MYS3_SECRET_ACCESS_KEY=XXX
-$ rclone lsd mys3:
+$ export ZCLONE_CONFIG_MYS3_TYPE=s3
+$ export ZCLONE_CONFIG_MYS3_ACCESS_KEY_ID=XXX
+$ export ZCLONE_CONFIG_MYS3_SECRET_ACCESS_KEY=XXX
+$ zclone lsd mys3:
           -1 2016-09-21 12:54:21        -1 my-bucket
-$ rclone listremotes | grep mys3
+$ zclone listremotes | grep mys3
 mys3:
 ```
 
@@ -3524,22 +3524,22 @@ as seen from example above it will be listed and can be accessed in
 lowercase, while you can also refer to the same remote in uppercase:
 
 ```console
-$ rclone lsd mys3:
+$ zclone lsd mys3:
           -1 2016-09-21 12:54:21        -1 my-bucket
-$ rclone lsd MYS3:
+$ zclone lsd MYS3:
           -1 2016-09-21 12:54:21        -1 my-bucket
 ```
 
 Note that you can only set the options of the immediate backend,
-so RCLONE_CONFIG_MYS3CRYPT_ACCESS_KEY_ID has no effect, if myS3Crypt is
-a crypt remote based on an S3 remote. However RCLONE_S3_ACCESS_KEY_ID will
+so ZCLONE_CONFIG_MYS3CRYPT_ACCESS_KEY_ID has no effect, if myS3Crypt is
+a crypt remote based on an S3 remote. However ZCLONE_S3_ACCESS_KEY_ID will
 set the access key of all remotes using S3, including myS3Crypt.
 
-Note also that now rclone has [connection strings](#connection-strings),
+Note also that now zclone has [connection strings](#connection-strings),
 it is probably easier to use those instead which makes the above example
 
 ```console
-rclone lsd :s3,access_key_id=XXX,secret_access_key=XXX:
+zclone lsd :s3,access_key_id=XXX,secret_access_key=XXX:
 ```
 
 ### Precedence
@@ -3549,29 +3549,29 @@ this order and the first one with a value is used.
 
 - Parameters in connection strings, e.g. `myRemote,skip_links:`
 - Flag values as supplied on the command line, e.g. `--skip-links`
-- Remote specific environment vars, e.g. `RCLONE_CONFIG_MYREMOTE_SKIP_LINKS`
+- Remote specific environment vars, e.g. `ZCLONE_CONFIG_MYREMOTE_SKIP_LINKS`
   (see above).
-- Backend-specific environment vars, e.g. `RCLONE_LOCAL_SKIP_LINKS`.
-- Backend generic environment vars, e.g. `RCLONE_SKIP_LINKS`.
+- Backend-specific environment vars, e.g. `ZCLONE_LOCAL_SKIP_LINKS`.
+- Backend generic environment vars, e.g. `ZCLONE_SKIP_LINKS`.
 - Config file, e.g. `skip_links = true`.
 - Default values, e.g. `false` - these can't be changed.
 
 So if both `--skip-links` is supplied on the command line and an
-environment variable `RCLONE_LOCAL_SKIP_LINKS` is set, the command line
+environment variable `ZCLONE_LOCAL_SKIP_LINKS` is set, the command line
 flag will take preference.
 
 The backend configurations set by environment variables can be seen with the
-`-vv` flag, e.g. `rclone about myRemote: -vv`.
+`-vv` flag, e.g. `zclone about myRemote: -vv`.
 
 For non backend configuration the order is as follows:
 
 - Flag values as supplied on the command line, e.g. `--stats 5s`.
-- Environment vars, e.g. `RCLONE_STATS=5s`.
+- Environment vars, e.g. `ZCLONE_STATS=5s`.
 - Default values, e.g. `1m` - these can't be changed.
 
 ### Other environment variables
 
-- `RCLONE_CONFIG_PASS` set to contain your config file password (see
+- `ZCLONE_CONFIG_PASS` set to contain your config file password (see
   [Configuration Encryption](#configuration-encryption) section)
 - `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY` (or the lowercase versions thereof).
   - `HTTPS_PROXY` takes precedence over `HTTP_PROXY` for https requests.
@@ -3581,8 +3581,8 @@ For non backend configuration the order is as follows:
   The primary method for looking up username is OS-specific: Windows API on
   Windows, real user ID in /etc/passwd on Unix systems. In the documentation
   the current username is simply referred to as `$USER`.
-- `RCLONE_CONFIG_DIR` - rclone **sets** this variable for use in config files
+- `ZCLONE_CONFIG_DIR` - zclone **sets** this variable for use in config files
   and sub processes to point to the directory holding the config file.
 
 The options set by environment variables can be seen with the `-vv` and
-`--log-level=DEBUG` flags, e.g. `rclone version -vv`.
+`--log-level=DEBUG` flags, e.g. `zclone version -vv`.

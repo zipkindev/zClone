@@ -13,14 +13,14 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/march"
-	"github.com/rclone/rclone/lib/readers"
 	"golang.org/x/text/unicode/norm"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/filter"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/fs/march"
+	"zclone/lib/readers"
 )
 
 // checkFn is the type of the checking function used in CheckFn()
@@ -609,7 +609,7 @@ func ParseSumFile(ctx context.Context, sumFile fs.Object) (HashSums, error) {
 			continue
 		}
 
-		// We've standardised on lower case checksums in rclone internals.
+		// We've standardised on lower case checksums in zclone internals.
 		hashes[file] = strings.ToLower(sum)
 	}
 

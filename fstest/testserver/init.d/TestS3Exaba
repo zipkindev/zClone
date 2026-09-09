@@ -12,7 +12,7 @@ WEBUIPORT=28636
 
 start() {
     docker run --rm -d --name $NAME \
-           -e "CLUSTER_NAME=rclone" \
+           -e "CLUSTER_NAME=zclone" \
            -e "CLUSTER_SIZE_GB=20" \
            -p 127.0.0.1:${PORT}:9000 \
            -p 127.0.0.1:${WEBUIPORT}:9006 \

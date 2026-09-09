@@ -1,8 +1,8 @@
-// Package exitcode exports rclone's exit status numbers.
+// Package exitcode exports zclone's exit status numbers.
 package exitcode
 
 const (
-	// Success is returned when rclone finished without error.
+	// Success is returned when zclone finished without error.
 	Success = iota
 	// UncategorizedError is returned for any error not categorised otherwise.
 	UncategorizedError

@@ -1,6 +1,6 @@
 ---
 title: "Koofr"
-description: "Rclone docs for Koofr"
+description: "Zclone docs for Koofr"
 versionIntroduced: "v1.47"
 ---
 
@@ -13,14 +13,14 @@ Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 ## Configuration
 
 The initial setup for Koofr involves creating an application password for
-rclone. You can do that by opening the Koofr
+zclone. You can do that by opening the Koofr
 [web application](https://app.koofr.net/app/admin/preferences/password),
-giving the password a nice name like `rclone` and clicking on generate.
+giving the password a nice name like `zclone` and clicking on generate.
 
 Here is an example of how to make a remote called `koofr`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -56,7 +56,7 @@ Your user name.
 Enter a value.
 user> USERNAME
 Option password.
-Your password for rclone (generate one at https://app.koofr.net/app/admin/preferences/password).
+Your password for zclone (generate one at https://app.koofr.net/app/admin/preferences/password).
 Choose an alternative below.
 y) Yes, type in my own password
 g) Generate random password
@@ -87,24 +87,24 @@ You can choose to edit advanced config in order to enter your own service URL
 if you use an on-premise or white label Koofr instance, or choose an alternative
 mount instead of your primary storage.
 
-Once configured you can then use `rclone` like this:
+Once configured you can then use `zclone` like this:
 
 List directories in top level of your Koofr
 
 ```console
-rclone lsd koofr:
+zclone lsd koofr:
 ```
 
 List all the files in your Koofr
 
 ```console
-rclone ls koofr:
+zclone ls koofr:
 ```
 
 To copy a local directory to an Koofr directory called backup
 
 ```console
-rclone copy /home/source koofr:backup
+zclone copy /home/source koofr:backup
 ```
 
 ### Restricted filename characters
@@ -131,7 +131,7 @@ Choose your storage provider.
 Properties:
 
 - Config:      provider
-- Env Var:     RCLONE_KOOFR_PROVIDER
+- Env Var:     ZCLONE_KOOFR_PROVIDER
 - Type:        string
 - Required:    false
 - Examples:
@@ -149,7 +149,7 @@ The Koofr API endpoint to use.
 Properties:
 
 - Config:      endpoint
-- Env Var:     RCLONE_KOOFR_ENDPOINT
+- Env Var:     ZCLONE_KOOFR_ENDPOINT
 - Provider:    other
 - Type:        string
 - Required:    true
@@ -161,20 +161,20 @@ Your user name.
 Properties:
 
 - Config:      user
-- Env Var:     RCLONE_KOOFR_USER
+- Env Var:     ZCLONE_KOOFR_USER
 - Type:        string
 - Required:    true
 
 #### --koofr-password
 
-Your password for rclone generate one at https://app.koofr.net/app/admin/preferences/password.
+Your password for zclone generate one at https://app.koofr.net/app/admin/preferences/password.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      password
-- Env Var:     RCLONE_KOOFR_PASSWORD
+- Env Var:     ZCLONE_KOOFR_PASSWORD
 - Provider:    koofr
 - Type:        string
 - Required:    true
@@ -192,7 +192,7 @@ If omitted, the primary mount is used.
 Properties:
 
 - Config:      mountid
-- Env Var:     RCLONE_KOOFR_MOUNTID
+- Env Var:     ZCLONE_KOOFR_MOUNTID
 - Type:        string
 - Required:    false
 
@@ -205,7 +205,7 @@ Set this to false if you use a mount ID that points to a Dropbox or Amazon Drive
 Properties:
 
 - Config:      setmtime
-- Env Var:     RCLONE_KOOFR_SETMTIME
+- Env Var:     ZCLONE_KOOFR_SETMTIME
 - Type:        bool
 - Default:     true
 
@@ -218,7 +218,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_KOOFR_ENCODING
+- Env Var:     ZCLONE_KOOFR_ENCODING
 - Type:        Encoding
 - Default:     Slash,BackSlash,Del,Ctl,InvalidUtf8,Dot
 
@@ -229,7 +229,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_KOOFR_DESCRIPTION
+- Env Var:     ZCLONE_KOOFR_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -255,7 +255,7 @@ storage service run by [Digi.ro](https://www.digi.ro/) that provides a Koofr API
 Here is an example of how to make a remote called `ds`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -291,7 +291,7 @@ Your user name.
 Enter a value.
 user> USERNAME
 Option password.
-Your password for rclone (generate one at https://storage.rcs-rds.ro/app/admin/preferences/password).
+Your password for zclone (generate one at https://storage.rcs-rds.ro/app/admin/preferences/password).
 Choose an alternative below.
 y) Yes, type in my own password
 g) Generate random password
@@ -326,7 +326,7 @@ connect to.
 Here is an example of how to make a remote called `other`. First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -366,7 +366,7 @@ Your user name.
 Enter a value.
 user> USERNAME
 Option password.
-Your password for rclone (generate one at your service's settings page).
+Your password for zclone (generate one at your service's settings page).
 Choose an alternative below.
 y) Yes, type in my own password
 g) Generate random password

@@ -42,25 +42,25 @@ import (
 	awsconfig "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/rclone/rclone/backend/pikpak/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/oauthutil"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/lib/readers"
-	"github.com/rclone/rclone/lib/rest"
 	"golang.org/x/oauth2"
+	"zclone/backend/pikpak/api"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/atexit"
+	"zclone/lib/dircache"
+	"zclone/lib/encoder"
+	"zclone/lib/oauthutil"
+	"zclone/lib/pacer"
+	"zclone/lib/random"
+	"zclone/lib/readers"
+	"zclone/lib/rest"
 )
 
 // Constants
@@ -96,7 +96,7 @@ var (
 	}
 )
 
-// pikpakAutorize retrieves OAuth token using user/pass and save it to rclone.conf
+// pikpakAutorize retrieves OAuth token using user/pass and save it to zclone.conf
 func pikpakAuthorize(ctx context.Context, opt *Options, name string, m configmap.Mapper) error {
 	if opt.Username == "" {
 		return errors.New("no username")
@@ -203,7 +203,7 @@ Defaults to "%s" or "--pikpak-user-agent" provided on command line.`, defaultUse
 			Help: `ID of the root folder.
 Leave blank normally.
 
-Fill in for rclone to use a non root folder as its starting point.
+Fill in for zclone to use a non root folder as its starting point.
 `,
 			Advanced:  true,
 			Sensitive: true,
@@ -248,7 +248,7 @@ in memory.
 If you are transferring large files over high-speed links and you have
 enough memory, then increasing this will speed up the transfers.
 
-Rclone will automatically increase the chunk size when uploading a
+Zclone will automatically increase the chunk size when uploading a
 large file of known size to stay below the 10,000 chunks limit.
 
 Increasing the chunk size decreases the accuracy of the progress
@@ -670,7 +670,7 @@ func NewFs(ctx context.Context, name, path string, m configmap.Mapper) (fs.Fs, e
 		f.features.Fill(ctx, &tempF)
 		// XXX: update the old f here instead of returning tempF, since
 		// `features` were already filled with functions having *f as a receiver.
-		// See https://github.com/rclone/rclone/issues/2182
+		// See /
 		f.dirCache = tempF.dirCache
 		f.root = tempF.root
 		// return an error with an fs which points to the parent
@@ -1347,7 +1347,7 @@ func (f *Fs) Copy(ctx context.Context, src fs.Object, remote string) (dst fs.Obj
 		dstDir, _ := dircache.SplitPath(remote)
 		dstObj.remote = path.Join(dstDir, srcLeaf)
 		if conflict, err = f.readMetaDataForPath(ctx, dstObj.remote); err == nil {
-			tmpName := conflict.Name + "-rclone-copy-" + random.String(8)
+			tmpName := conflict.Name + "-zclone-copy-" + random.String(8)
 			if _, err = f.renameObject(ctx, conflict.ID, tmpName); err != nil {
 				return nil, fmt.Errorf("copy: couldn't rename conflicting file: %w", err)
 			}
@@ -1695,8 +1695,8 @@ var commandHelp = []fs.CommandHelp{{
 Usage examples:
 
 ` + "```console" + `
-rclone backend addurl pikpak:dirpath url
-rclone backend addurl pikpak:dirpath url -o name=custom_filename.zip
+zclone backend addurl pikpak:dirpath url
+zclone backend addurl pikpak:dirpath url -o name=custom_filename.zip
 ` + "```" + `
 
 Downloads will be stored in 'dirpath'. If 'dirpath' is invalid,
@@ -1712,8 +1712,8 @@ download will fallback to default 'My Pack' folder.`,
 Usage examples:
 
 ` + "```console" + `
-rclone backend decompress pikpak:dirpath {filename} -o password=password
-rclone backend decompress pikpak:dirpath {filename} -o delete-src-file
+zclone backend decompress pikpak:dirpath {filename} -o password=password
+zclone backend decompress pikpak:dirpath {filename} -o delete-src-file
 ` + "```" + `
 
 An optional argument 'filename' can be specified for a file located in
@@ -2033,7 +2033,7 @@ func (o *Object) upload(ctx context.Context, in io.Reader, src fs.ObjectInfo, wi
 	}
 
 	// We have to fall back to upload + rename
-	tempName := "rcloneTemp" + random.String(8)
+	tempName := "zcloneTemp" + random.String(8)
 	info, err := o.fs.upload(ctx, in, tempName, dirID, gcid, size, options...)
 	if err != nil {
 		return err

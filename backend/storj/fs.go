@@ -12,14 +12,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/bucket"
 	"golang.org/x/text/unicode/norm"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/lib/bucket"
 
 	"storj.io/uplink"
 	"storj.io/uplink/edge"
@@ -272,7 +272,7 @@ func (f *Fs) connect(ctx context.Context) (project *uplink.Project, err error) {
 	defer fs.Debugf(f, "connected: %+v", err)
 
 	cfg := uplink.Config{
-		UserAgent: "rclone",
+		UserAgent: "zclone",
 	}
 
 	project, err = cfg.OpenProject(ctx, f.access)
@@ -289,7 +289,7 @@ func (f *Fs) absolute(relative string) (bucketName, bucketPath string) {
 	bn, bp := bucket.Split(path.Join(f.root, relative))
 
 	// NOTE: Technically libuplink does not care about the encoding. It is
-	// happy to work with them as opaque byte sequences. However, rclone
+	// happy to work with them as opaque byte sequences. However, zclone
 	// has a test that requires two paths with the same normalized form
 	// (but different un-normalized forms) to point to the same file. This
 	// means we have to normalize before we interact with libuplink.
@@ -371,7 +371,7 @@ func (f *Fs) listBuckets(ctx context.Context) (entries fs.DirEntries, err error)
 
 // newDirEntry creates a directory entry from an uplink object.
 //
-// NOTE: Getting the exact behavior required by rclone is somewhat tricky. The
+// NOTE: Getting the exact behavior required by zclone is somewhat tricky. The
 // path manipulation here is necessary to cover all the different ways the
 // filesystem and object could be initialized and combined.
 func (f *Fs) newDirEntry(relative, prefix string, object *uplink.Object) fs.DirEntry {
@@ -522,7 +522,7 @@ func (f *Fs) NewObject(ctx context.Context, relative string) (_ fs.Object, err e
 
 // Put in to the remote path with the modTime given of the given size
 //
-// When called from outside an Fs by rclone, src.Size() will always be >= 0.
+// When called from outside an Fs by zclone, src.Size() will always be >= 0.
 // But for unknown-sized objects (indicated by src.Size() == -1), Put should
 // either return an error or upload it properly (rather than e.g. calling
 // panic).
@@ -561,7 +561,7 @@ func (f *Fs) put(ctx context.Context, in io.Reader, src fs.ObjectInfo, remote st
 	}()
 
 	err = upload.SetCustomMetadata(ctx, uplink.CustomMetadata{
-		"rclone:mtime": src.ModTime(ctx).Format(time.RFC3339Nano),
+		"zclone:mtime": src.ModTime(ctx).Format(time.RFC3339Nano),
 	})
 	if err != nil {
 		return nil, err
@@ -570,8 +570,8 @@ func (f *Fs) put(ctx context.Context, in io.Reader, src fs.ObjectInfo, remote st
 	_, err = io.Copy(upload, in)
 	if err != nil {
 		if errors.Is(err, uplink.ErrBucketNotFound) {
-			// Rclone assumes the backend will create the bucket if not existing yet.
-			// Here we create the bucket and return a retry error for rclone to retry the upload.
+			// Zclone assumes the backend will create the bucket if not existing yet.
+			// Here we create the bucket and return a retry error for zclone to retry the upload.
 			_, err = f.project.EnsureBucket(ctx, bucketName)
 			if err != nil {
 				return nil, err
@@ -588,8 +588,8 @@ func (f *Fs) put(ctx context.Context, in io.Reader, src fs.ObjectInfo, remote st
 	err = upload.Commit()
 	if err != nil {
 		if errors.Is(err, uplink.ErrBucketNotFound) {
-			// Rclone assumes the backend will create the bucket if not existing yet.
-			// Here we create the bucket and return a retry error for rclone to retry the upload.
+			// Zclone assumes the backend will create the bucket if not existing yet.
+			// Here we create the bucket and return a retry error for zclone to retry the upload.
 			_, err = f.project.EnsureBucket(ctx, bucketName)
 			if err != nil {
 				return nil, err
@@ -693,7 +693,7 @@ func (f *Fs) Rmdir(ctx context.Context, relative string) (err error) {
 
 // newPrefix returns a new prefix for listing conforming to the libuplink
 // requirements. In particular, libuplink requires a trailing slash for
-// listings, but rclone does not always provide one. Further, depending on how
+// listings, but zclone does not always provide one. Further, depending on how
 // the path was initially path normalization may have removed it (e.g. a
 // trailing slash from the CLI is removed before it ever gets to the backend
 // code).
@@ -844,7 +844,7 @@ func (f *Fs) PublicLink(ctx context.Context, remote string, expire fs.Duration, 
 		return "", errors.New("path must be specified")
 	}
 
-	// Rclone requires that a link is only generated if the remote path exists
+	// Zclone requires that a link is only generated if the remote path exists
 	if key == "" {
 		_, err := f.project.StatBucket(ctx, bucket)
 		if err != nil {

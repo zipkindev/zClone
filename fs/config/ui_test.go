@@ -10,13 +10,13 @@ import (
 	"os"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configfile"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/rc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configfile"
+	"zclone/fs/config/obscure"
+	"zclone/fs/rc"
 )
 
 var simpleOptions = []fs.Option{{
@@ -33,8 +33,8 @@ func testConfigFile(t *testing.T, options []fs.Option, configFileName string) fu
 	ctx := context.Background()
 	ci := fs.GetConfig(ctx)
 	config.ClearConfigPassword()
-	_ = os.Unsetenv("_RCLONE_CONFIG_KEY_FILE")
-	_ = os.Unsetenv("RCLONE_CONFIG_PASS")
+	_ = os.Unsetenv("_ZCLONE_CONFIG_KEY_FILE")
+	_ = os.Unsetenv("ZCLONE_CONFIG_PASS")
 	// create temp config file
 	tempFile, err := os.CreateTemp("", configFileName)
 	assert.NoError(t, err)
@@ -78,8 +78,8 @@ func testConfigFile(t *testing.T, options []fs.Option, configFileName string) fu
 		*ci = oldConfig
 		config.SetData(oldConfigFile)
 
-		_ = os.Unsetenv("_RCLONE_CONFIG_KEY_FILE")
-		_ = os.Unsetenv("RCLONE_CONFIG_PASS")
+		_ = os.Unsetenv("_ZCLONE_CONFIG_KEY_FILE")
+		_ = os.Unsetenv("ZCLONE_CONFIG_PASS")
 	}
 }
 

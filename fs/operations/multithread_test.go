@@ -9,17 +9,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fstest/mockfs"
-	"github.com/rclone/rclone/fstest/mockobject"
-	"github.com/rclone/rclone/lib/random"
+	"zclone/fs/accounting"
+	"zclone/fs/hash"
+	"zclone/fs/object"
+	"zclone/fstest/mockfs"
+	"zclone/fstest/mockobject"
+	"zclone/lib/random"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fstest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fstest"
 )
 
 func TestDoMultiThreadCopy(t *testing.T) {

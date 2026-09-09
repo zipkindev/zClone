@@ -1,6 +1,6 @@
 ---
 title: "Quatrix"
-description: "Rclone docs for Quatrix"
+description: "Zclone docs for Quatrix"
 versionIntroduced: "v1.63.2"
 ---
 
@@ -23,7 +23,7 @@ See complete [Swagger documentation for Quatrix](https://docs.maytech.net/quatri
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -59,36 +59,36 @@ d) Delete this remote
 y/e/d> y
 ```
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 List directories in top level of your Quatrix
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your Quatrix
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 To copy a local directory to an Quatrix directory called backup
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
 ### API key validity
 
 API Key is created with no expiration date. It will be valid until you delete or
 deactivate it in your account. After disabling, the API Key can be enabled back.
-If the API Key was deleted and a new key was created, you can update it in rclone
+If the API Key was deleted and a new key was created, you can update it in zclone
 config. The same happens if the hostname was changed.
 
 ```console
-$ rclone config
+$ zclone config
 Current remotes:
 
 Name                 Type
@@ -148,7 +148,7 @@ equal to `.` or `..` nor contain `/` , `\` or non-printable ascii.
 
 ### Transfers
 
-For files above 50 MiB rclone will use a chunked transfer. Rclone will upload
+For files above 50 MiB zclone will use a chunked transfer. Zclone will upload
 up to `--transfers` chunks at the same time (shared among all multipart uploads).
 Chunks are buffered in memory, and the minimal chunk size is 10_000_000 bytes by
 default, and it can be changed in the advanced configuration, so increasing `--transfers`
@@ -164,7 +164,7 @@ equal `minimal_chunk_size`.
 
 ### Deleting files
 
-Files you delete with rclone will end up in Trash and be stored there for 30 days.
+Files you delete with zclone will end up in Trash and be stored there for 30 days.
 Quatrix also provides an API to permanently delete files and an API to empty the
 Trash so that you can remove files permanently from your account.
 
@@ -180,7 +180,7 @@ API key for accessing Quatrix account
 Properties:
 
 - Config:      api_key
-- Env Var:     RCLONE_QUATRIX_API_KEY
+- Env Var:     ZCLONE_QUATRIX_API_KEY
 - Type:        string
 - Required:    true
 
@@ -191,7 +191,7 @@ Host name of Quatrix account
 Properties:
 
 - Config:      host
-- Env Var:     RCLONE_QUATRIX_HOST
+- Env Var:     ZCLONE_QUATRIX_HOST
 - Type:        string
 - Required:    true
 
@@ -208,7 +208,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_QUATRIX_ENCODING
+- Env Var:     ZCLONE_QUATRIX_ENCODING
 - Type:        Encoding
 - Default:     Slash,BackSlash,Del,Ctl,InvalidUtf8,Dot
 
@@ -219,7 +219,7 @@ Wanted upload time for one chunk
 Properties:
 
 - Config:      effective_upload_time
-- Env Var:     RCLONE_QUATRIX_EFFECTIVE_UPLOAD_TIME
+- Env Var:     ZCLONE_QUATRIX_EFFECTIVE_UPLOAD_TIME
 - Type:        string
 - Default:     "4s"
 
@@ -230,7 +230,7 @@ The minimal size for one chunk
 Properties:
 
 - Config:      minimal_chunk_size
-- Env Var:     RCLONE_QUATRIX_MINIMAL_CHUNK_SIZE
+- Env Var:     ZCLONE_QUATRIX_MINIMAL_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     9.537Mi
 
@@ -241,7 +241,7 @@ The maximal summary for all chunks. It should not be less than 'transfers'*'mini
 Properties:
 
 - Config:      maximal_summary_chunk_size
-- Env Var:     RCLONE_QUATRIX_MAXIMAL_SUMMARY_CHUNK_SIZE
+- Env Var:     ZCLONE_QUATRIX_MAXIMAL_SUMMARY_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     95.367Mi
 
@@ -252,7 +252,7 @@ Delete files permanently rather than putting them into the trash
 Properties:
 
 - Config:      hard_delete
-- Env Var:     RCLONE_QUATRIX_HARD_DELETE
+- Env Var:     ZCLONE_QUATRIX_HARD_DELETE
 - Type:        bool
 - Default:     false
 
@@ -263,7 +263,7 @@ Skip project folders in operations
 Properties:
 
 - Config:      skip_project_folders
-- Env Var:     RCLONE_QUATRIX_SKIP_PROJECT_FOLDERS
+- Env Var:     ZCLONE_QUATRIX_SKIP_PROJECT_FOLDERS
 - Type:        bool
 - Default:     false
 
@@ -274,7 +274,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_QUATRIX_DESCRIPTION
+- Env Var:     ZCLONE_QUATRIX_DESCRIPTION
 - Type:        string
 - Required:    false
 

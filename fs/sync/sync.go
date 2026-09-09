@@ -12,16 +12,16 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/march"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/errcount"
-	"github.com/rclone/rclone/lib/transform"
 	"golang.org/x/sync/errgroup"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/filter"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/fs/march"
+	"zclone/fs/operations"
+	"zclone/lib/errcount"
+	"zclone/lib/transform"
 )
 
 // ErrorMaxDurationReached defines error when transfer duration is reached

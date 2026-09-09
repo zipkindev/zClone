@@ -1,4 +1,4 @@
-// Rclone as a wasm library
+// Zclone as a wasm library
 //
 // This library exports the core rc functionality
 
@@ -16,17 +16,17 @@ import (
 	"runtime"
 	"syscall/js"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/rc"
+	"zclone/fs"
+	"zclone/fs/rc"
 
 	// Core functionality we need
-	_ "github.com/rclone/rclone/fs/operations"
-	_ "github.com/rclone/rclone/fs/sync"
+	_ "zclone/fs/operations"
+	_ "zclone/fs/sync"
 
-	//	_ "github.com/rclone/rclone/backend/all" // import all backends
+	//	_ "zclone/backend/all" // import all backends
 
 	// Backends
-	_ "github.com/rclone/rclone/backend/memory"
+	_ "zclone/backend/memory"
 )
 
 var (

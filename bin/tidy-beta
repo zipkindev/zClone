@@ -14,8 +14,8 @@ else
     echo "Use '$0 $version delete' to actually delete files"
 fi
 
-rclone ${dry_run} -vv -P --checkers 16 --transfers 16 delete \
+zclone ${dry_run} -vv -P --checkers 16 --transfers 16 delete \
        --fast-list \
        --include "/${version}**" \
        --include "/branch/*/${version}**" \
-       beta.rclone.org:
+       beta.zclone.org:

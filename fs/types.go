@@ -10,7 +10,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/rclone/rclone/fs/hash"
+	"zclone/fs/hash"
 )
 
 // Fs is the interface a cloud storage system must provide
@@ -38,7 +38,7 @@ type Fs interface {
 
 	// Put in to the remote path with the modTime given of the given size
 	//
-	// When called from outside an Fs by rclone, src.Size() will always be >= 0.
+	// When called from outside an Fs by zclone, src.Size() will always be >= 0.
 	// But for unknown-sized objects (indicated by src.Size() == -1), Put should either
 	// return an error or upload it properly (rather than e.g. calling panic).
 	//
@@ -91,7 +91,7 @@ type Object interface {
 
 	// Update in to the object with the modTime given of the given size
 	//
-	// When called from outside an Fs by rclone, src.Size() will always be >= 0.
+	// When called from outside an Fs by zclone, src.Size() will always be >= 0.
 	// But for unknown-sized objects (indicated by src.Size() == -1), Upload should either
 	// return an error or update the object properly (rather than e.g. calling panic).
 	Update(ctx context.Context, in io.Reader, src ObjectInfo, options ...OpenOption) error
@@ -315,7 +315,7 @@ type ListRCallback func(entries DirEntries) error
 // with ListR or page through a directory with ListP
 type ListRFn func(ctx context.Context, dir string, callback ListRCallback) error
 
-// Flagger describes the interface rclone config types flags must satisfy
+// Flagger describes the interface zclone config types flags must satisfy
 type Flagger interface {
 	// These are from pflag.Value which we don't want to pull in here
 	String() string
@@ -324,7 +324,7 @@ type Flagger interface {
 	json.Unmarshaler
 }
 
-// FlaggerNP describes the interface rclone config types flags must
+// FlaggerNP describes the interface zclone config types flags must
 // satisfy as non-pointers
 //
 // These are from pflag.Value and need to be tested against

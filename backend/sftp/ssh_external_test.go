@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
 	"github.com/stretchr/testify/assert"
+	"zclone/fs"
 )
 
 // TestSSHExternalWaitMultipleCalls verifies that calling Wait() multiple times

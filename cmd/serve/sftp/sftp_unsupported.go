@@ -3,7 +3,7 @@
 
 //go:build plan9
 
-// Package sftp implements an SFTP server to serve an rclone VFS
+// Package sftp implements an SFTP server to serve an zclone VFS
 package sftp
 
 import "github.com/spf13/cobra"

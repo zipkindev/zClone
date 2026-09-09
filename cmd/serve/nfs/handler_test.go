@@ -8,13 +8,13 @@ import (
 	"io"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	nfs "github.com/willscott/go-nfs"
+	_ "zclone/backend/local"
+	"zclone/fs"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
 )
 
 // newTestHandler builds a Handler backed by a writable local-filesystem VFS

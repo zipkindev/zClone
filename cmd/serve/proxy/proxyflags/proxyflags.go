@@ -2,9 +2,9 @@
 package proxyflags
 
 import (
-	"github.com/rclone/rclone/cmd/serve/proxy"
-	"github.com/rclone/rclone/fs/config/flags"
 	"github.com/spf13/pflag"
+	"zclone/cmd/serve/proxy"
+	"zclone/fs/config/flags"
 )
 
 // AddFlags adds the non filing system specific flags to the command

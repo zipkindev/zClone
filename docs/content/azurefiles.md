@@ -1,6 +1,6 @@
 ---
 title: "Microsoft Azure Files Storage"
-description: "Rclone docs for Microsoft Azure Files Storage"
+description: "Zclone docs for Microsoft Azure Files Storage"
 versionIntroduced: "v1.65"
 ---
 
@@ -15,7 +15,7 @@ Here is an example of making a Microsoft Azure Files Storage
 configuration.  For a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -86,31 +86,31 @@ d) Delete this remote
 y/e/d> 
 ```
 
-Once configured you can use rclone.
+Once configured you can use zclone.
 
 See all files in the top level:
 
 ```console
-rclone lsf remote:
+zclone lsf remote:
 ```
 
 Make a new directory in the root:
 
 ```console
-rclone mkdir remote:dir
+zclone mkdir remote:dir
 ```
 
 Recursively List the contents:
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 Sync `/home/local/directory` to the remote directory, deleting any
 excess files in the directory.
 
 ```console
-rclone sync --interactive /home/local/directory remote:dir
+zclone sync --interactive /home/local/directory remote:dir
 ```
 
 ### Modified time
@@ -160,11 +160,11 @@ as these have to be uploaded with the file.
 ### Authentication {#authentication}
 
 There are a number of ways of supplying credentials for Azure Files
-Storage. Rclone tries them in the order of the sections below.
+Storage. Zclone tries them in the order of the sections below.
 
 #### Env Auth
 
-If the `env_auth` config parameter is `true` then rclone will pull
+If the `env_auth` config parameter is `true` then zclone will pull
 credentials from the environment or runtime.
 
 It tries these authentication methods in this order:
@@ -177,7 +177,7 @@ These are described in the following sections
 
 ##### Env Auth: 1. Environment Variables
 
-If `env_auth` is set and environment variables are present rclone
+If `env_auth` is set and environment variables are present zclone
 authenticates a service principal with a secret or certificate, or a
 user with a password, depending on which environment variable are set.
 It reads configuration from these variables, in the following order:
@@ -227,7 +227,7 @@ section](#use_msi).
 
 If you are operating in disconnected clouds, or private clouds such as
 Azure Stack you may want to set `disable_instance_discovery = true`.
-This determines whether rclone requests Microsoft Entra instance
+This determines whether zclone requests Microsoft Entra instance
 metadata from `https://login.microsoft.com/` before authenticating.
 Setting this to `true` will skip this request, making you responsible
 for ensuring the configured authority is valid and trustworthy.
@@ -242,16 +242,16 @@ For example if you were to login with a service principal like this:
 az login --service-principal -u XXX -p XXX --tenant XXX
 ```
 
-Then you could access rclone resources like this:
+Then you could access zclone resources like this:
 
 ```console
-rclone lsf :azurefiles,env_auth,account=ACCOUNT:
+zclone lsf :azurefiles,env_auth,account=ACCOUNT:
 ```
 
 Or
 
 ```console
-rclone lsf --azurefiles-env-auth --azurefiles-account=ACCOUNT :azurefiles:
+zclone lsf --azurefiles-env-auth --azurefiles-account=ACCOUNT :azurefiles:
 ```
 
 #### Account and Shared Key
@@ -269,7 +269,7 @@ To use it leave `account`, `key` and "sas_url" blank and fill in `connection_str
 
 #### Service principal with client secret
 
-If these variables are set, rclone will authenticate with a service principal
+If these variables are set, zclone will authenticate with a service principal
 with a client secret.
 
 - `tenant`: ID of the service principal's tenant. Also called its "directory" ID.
@@ -281,7 +281,7 @@ The credentials can also be placed in a file using the
 
 #### Service principal with certificate
 
-If these variables are set, rclone will authenticate with a service principal
+If these variables are set, zclone will authenticate with a service principal
 with certificate.
 
 - `tenant`: ID of the service principal's tenant. Also called its "directory" ID.
@@ -294,11 +294,11 @@ with certificate.
   authentication. When set to "true" or "1", authentication requests include
   the x5c header.
 
-**NB** `client_certificate_password` must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** `client_certificate_password` must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 #### User with username and password
 
-If these variables are set, rclone will authenticate with username and password.
+If these variables are set, zclone will authenticate with username and password.
 
 - `tenant`: (optional) tenant to authenticate in. Defaults to "organizations".
 - `client_id`: client ID of the application the user will authenticate to
@@ -312,7 +312,7 @@ authentication, and the application must already have user or admin
 consent. This credential can only authenticate work and school
 accounts; it can't authenticate Microsoft accounts.
 
-**NB** `password` must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** `password` must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 #### Managed Service Identity Credentials {#use_msi}
 
@@ -329,7 +329,7 @@ set, this is is equivalent to using `env_auth`.
 
 #### Federated Identity Credentials
 
-If these variables are set, rclone will authenticate with federated identity.
+If these variables are set, zclone will authenticate with federated identity.
 
 - `tenant`: tenant ID of of the storage
 - `client_id`: client ID of the application the user will authenticate to storage
@@ -370,7 +370,7 @@ environment variable `AZURE_STORAGE_ACCOUNT_NAME` if possible.
 Properties:
 
 - Config:      account
-- Env Var:     RCLONE_AZUREFILES_ACCOUNT
+- Env Var:     ZCLONE_AZUREFILES_ACCOUNT
 - Type:        string
 - Required:    false
 
@@ -383,7 +383,7 @@ See the [authentication docs](/azureblob#authentication) for full info.
 Properties:
 
 - Config:      env_auth
-- Env Var:     RCLONE_AZUREFILES_ENV_AUTH
+- Env Var:     ZCLONE_AZUREFILES_ENV_AUTH
 - Type:        bool
 - Default:     false
 
@@ -396,7 +396,7 @@ Leave blank to use SAS URL or Emulator.
 Properties:
 
 - Config:      key
-- Env Var:     RCLONE_AZUREFILES_KEY
+- Env Var:     ZCLONE_AZUREFILES_KEY
 - Type:        string
 - Required:    false
 
@@ -409,7 +409,7 @@ Leave blank if using account/key or Emulator.
 Properties:
 
 - Config:      sas_url
-- Env Var:     RCLONE_AZUREFILES_SAS_URL
+- Env Var:     ZCLONE_AZUREFILES_SAS_URL
 - Type:        string
 - Required:    false
 
@@ -423,7 +423,7 @@ Connection string for the storage. Leave blank if using other auth methods.
 Properties:
 
 - Config:      connection_string
-- Env Var:     RCLONE_AZUREFILES_CONNECTION_STRING
+- Env Var:     ZCLONE_AZUREFILES_CONNECTION_STRING
 - Type:        string
 - Required:    false
 
@@ -440,7 +440,7 @@ Set this if using
 Properties:
 
 - Config:      tenant
-- Env Var:     RCLONE_AZUREFILES_TENANT
+- Env Var:     ZCLONE_AZUREFILES_TENANT
 - Type:        string
 - Required:    false
 
@@ -457,7 +457,7 @@ Set this if using
 Properties:
 
 - Config:      client_id
-- Env Var:     RCLONE_AZUREFILES_CLIENT_ID
+- Env Var:     ZCLONE_AZUREFILES_CLIENT_ID
 - Type:        string
 - Required:    false
 
@@ -472,7 +472,7 @@ Set this if using
 Properties:
 
 - Config:      client_secret
-- Env Var:     RCLONE_AZUREFILES_CLIENT_SECRET
+- Env Var:     ZCLONE_AZUREFILES_CLIENT_SECRET
 - Type:        string
 - Required:    false
 
@@ -487,7 +487,7 @@ Set this if using
 Properties:
 
 - Config:      client_certificate_path
-- Env Var:     RCLONE_AZUREFILES_CLIENT_CERTIFICATE_PATH
+- Env Var:     ZCLONE_AZUREFILES_CLIENT_CERTIFICATE_PATH
 - Type:        string
 - Required:    false
 
@@ -501,12 +501,12 @@ Optionally set this if using
 And the certificate has a password.
 
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      client_certificate_password
-- Env Var:     RCLONE_AZUREFILES_CLIENT_CERTIFICATE_PASSWORD
+- Env Var:     ZCLONE_AZUREFILES_CLIENT_CERTIFICATE_PASSWORD
 - Type:        string
 - Required:    false
 
@@ -520,7 +520,7 @@ This is required and is the name of the share to access.
 Properties:
 
 - Config:      share_name
-- Env Var:     RCLONE_AZUREFILES_SHARE_NAME
+- Env Var:     ZCLONE_AZUREFILES_SHARE_NAME
 - Type:        string
 - Required:    false
 
@@ -543,7 +543,7 @@ Optionally set this if using
 Properties:
 
 - Config:      client_send_certificate_chain
-- Env Var:     RCLONE_AZUREFILES_CLIENT_SEND_CERTIFICATE_CHAIN
+- Env Var:     ZCLONE_AZUREFILES_CLIENT_SEND_CERTIFICATE_CHAIN
 - Type:        bool
 - Default:     false
 
@@ -558,7 +558,7 @@ Set this if using
 Properties:
 
 - Config:      username
-- Env Var:     RCLONE_AZUREFILES_USERNAME
+- Env Var:     ZCLONE_AZUREFILES_USERNAME
 - Type:        string
 - Required:    false
 
@@ -570,12 +570,12 @@ Set this if using
 - User with username and password
 
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      password
-- Env Var:     RCLONE_AZUREFILES_PASSWORD
+- Env Var:     ZCLONE_AZUREFILES_PASSWORD
 - Type:        string
 - Required:    false
 
@@ -593,14 +593,14 @@ Leave blank normally. Needed only if you want to use a service principal instead
 See ["Create an Azure service principal"](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) and ["Assign an Azure role for access to blob data"](https://docs.microsoft.com/en-us/azure/storage/common/storage-auth-aad-rbac-cli) pages for more details.
 
 It may be more convenient to put the credentials directly into the
-rclone config file under the `client_id`, `tenant` and `client_secret`
+zclone config file under the `client_id`, `tenant` and `client_secret`
 keys instead of setting `service_principal_file`.
 
 
 Properties:
 
 - Config:      service_principal_file
-- Env Var:     RCLONE_AZUREFILES_SERVICE_PRINCIPAL_FILE
+- Env Var:     ZCLONE_AZUREFILES_SERVICE_PRINCIPAL_FILE
 - Type:        string
 - Required:    false
 
@@ -611,7 +611,7 @@ Skip requesting Microsoft Entra instance metadata
 This should be set true only by applications authenticating in
 disconnected clouds, or private clouds such as Azure Stack.
 
-It determines whether rclone requests Microsoft Entra instance
+It determines whether zclone requests Microsoft Entra instance
 metadata from `https://login.microsoft.com/` before
 authenticating.
 
@@ -622,7 +622,7 @@ for ensuring the configured authority is valid and trustworthy.
 Properties:
 
 - Config:      disable_instance_discovery
-- Env Var:     RCLONE_AZUREFILES_DISABLE_INSTANCE_DISCOVERY
+- Env Var:     ZCLONE_AZUREFILES_DISABLE_INSTANCE_DISCOVERY
 - Type:        bool
 - Default:     false
 
@@ -642,7 +642,7 @@ msi_client_id, or msi_mi_res_id parameters.
 Properties:
 
 - Config:      use_msi
-- Env Var:     RCLONE_AZUREFILES_USE_MSI
+- Env Var:     ZCLONE_AZUREFILES_USE_MSI
 - Type:        bool
 - Default:     false
 
@@ -655,7 +655,7 @@ Leave blank if msi_client_id or msi_mi_res_id specified.
 Properties:
 
 - Config:      msi_object_id
-- Env Var:     RCLONE_AZUREFILES_MSI_OBJECT_ID
+- Env Var:     ZCLONE_AZUREFILES_MSI_OBJECT_ID
 - Type:        string
 - Required:    false
 
@@ -668,7 +668,7 @@ Leave blank if msi_object_id or msi_mi_res_id specified.
 Properties:
 
 - Config:      msi_client_id
-- Env Var:     RCLONE_AZUREFILES_MSI_CLIENT_ID
+- Env Var:     ZCLONE_AZUREFILES_MSI_CLIENT_ID
 - Type:        string
 - Required:    false
 
@@ -681,7 +681,7 @@ Leave blank if msi_client_id or msi_object_id specified.
 Properties:
 
 - Config:      msi_mi_res_id
-- Env Var:     RCLONE_AZUREFILES_MSI_MI_RES_ID
+- Env Var:     ZCLONE_AZUREFILES_MSI_MI_RES_ID
 - Type:        string
 - Required:    false
 
@@ -694,7 +694,7 @@ Leave blank if using real azure storage endpoint.
 Properties:
 
 - Config:      use_emulator
-- Env Var:     RCLONE_AZUREFILES_USE_EMULATOR
+- Env Var:     ZCLONE_AZUREFILES_USE_EMULATOR
 - Type:        bool
 - Default:     false
 
@@ -714,7 +714,7 @@ Don't set env_auth at the same time.
 Properties:
 
 - Config:      use_az
-- Env Var:     RCLONE_AZUREFILES_USE_AZ
+- Env Var:     ZCLONE_AZUREFILES_USE_AZ
 - Type:        bool
 - Default:     false
 
@@ -727,7 +727,7 @@ Leave blank normally.
 Properties:
 
 - Config:      endpoint
-- Env Var:     RCLONE_AZUREFILES_ENDPOINT
+- Env Var:     ZCLONE_AZUREFILES_ENDPOINT
 - Type:        string
 - Required:    false
 
@@ -742,7 +742,7 @@ in memory.
 Properties:
 
 - Config:      chunk_size
-- Env Var:     RCLONE_AZUREFILES_CHUNK_SIZE
+- Env Var:     ZCLONE_AZUREFILES_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     4Mi
 
@@ -764,7 +764,7 @@ in memory.
 Properties:
 
 - Config:      upload_concurrency
-- Env Var:     RCLONE_AZUREFILES_UPLOAD_CONCURRENCY
+- Env Var:     ZCLONE_AZUREFILES_UPLOAD_CONCURRENCY
 - Type:        int
 - Default:     16
 
@@ -773,12 +773,12 @@ Properties:
 Max size for streamed files.
 
 Azure files needs to know in advance how big the file will be. When
-rclone doesn't know it uses this value instead.
+zclone doesn't know it uses this value instead.
 
-This will be used when rclone is streaming data, the most common uses are:
+This will be used when zclone is streaming data, the most common uses are:
 
-- Uploading files with `--vfs-cache-mode off` with `rclone mount`
-- Using `rclone rcat`
+- Uploading files with `--vfs-cache-mode off` with `zclone mount`
+- Using `zclone rcat`
 - Copying files with unknown length
 
 You will need this much free space in the share as the file will be this size temporarily.
@@ -787,7 +787,7 @@ You will need this much free space in the share as the file will be this size te
 Properties:
 
 - Config:      max_stream_size
-- Env Var:     RCLONE_AZUREFILES_MAX_STREAM_SIZE
+- Env Var:     ZCLONE_AZUREFILES_MAX_STREAM_SIZE
 - Type:        SizeSuffix
 - Default:     10Gi
 
@@ -800,7 +800,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_AZUREFILES_ENCODING
+- Env Var:     ZCLONE_AZUREFILES_ENCODING
 - Type:        Encoding
 - Default:     Slash,LtGt,DoubleQuote,Colon,Question,Asterisk,Pipe,BackSlash,Del,Ctl,RightPeriod,InvalidUtf8,Dot
 
@@ -811,7 +811,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_AZUREFILES_DESCRIPTION
+- Env Var:     ZCLONE_AZUREFILES_DESCRIPTION
 - Type:        string
 - Required:    false
 

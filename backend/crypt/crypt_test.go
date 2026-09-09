@@ -7,13 +7,13 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/rclone/rclone/backend/crypt"
-	_ "github.com/rclone/rclone/backend/drive" // for integration tests
-	_ "github.com/rclone/rclone/backend/local"
-	_ "github.com/rclone/rclone/backend/swift" // for integration tests
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
+	"zclone/backend/crypt"
+	_ "zclone/backend/drive" // for integration tests
+	_ "zclone/backend/local"
+	_ "zclone/backend/swift" // for integration tests
+	"zclone/fs/config/obscure"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
 )
 
 // TestIntegration runs integration tests against the remote
@@ -34,7 +34,7 @@ func TestStandardBase32(t *testing.T) {
 	if *fstest.RemoteName != "" {
 		t.Skip("Skipping as -remote set")
 	}
-	tempdir := filepath.Join(os.TempDir(), "rclone-crypt-test-standard")
+	tempdir := filepath.Join(os.TempDir(), "zclone-crypt-test-standard")
 	name := "TestCrypt"
 	fstests.Run(t, &fstests.Opt{
 		RemoteName: name + ":",
@@ -55,7 +55,7 @@ func TestStandardBase64(t *testing.T) {
 	if *fstest.RemoteName != "" {
 		t.Skip("Skipping as -remote set")
 	}
-	tempdir := filepath.Join(os.TempDir(), "rclone-crypt-test-standard")
+	tempdir := filepath.Join(os.TempDir(), "zclone-crypt-test-standard")
 	name := "TestCrypt"
 	fstests.Run(t, &fstests.Opt{
 		RemoteName: name + ":",
@@ -77,7 +77,7 @@ func TestStandardBase32768(t *testing.T) {
 	if *fstest.RemoteName != "" {
 		t.Skip("Skipping as -remote set")
 	}
-	tempdir := filepath.Join(os.TempDir(), "rclone-crypt-test-standard")
+	tempdir := filepath.Join(os.TempDir(), "zclone-crypt-test-standard")
 	name := "TestCrypt"
 	fstests.Run(t, &fstests.Opt{
 		RemoteName: name + ":",
@@ -100,7 +100,7 @@ func TestOff(t *testing.T) {
 	if *fstest.RemoteName != "" {
 		t.Skip("Skipping as -remote set")
 	}
-	tempdir := filepath.Join(os.TempDir(), "rclone-crypt-test-off")
+	tempdir := filepath.Join(os.TempDir(), "zclone-crypt-test-off")
 	name := "TestCrypt2"
 	fstests.Run(t, &fstests.Opt{
 		RemoteName: name + ":",
@@ -125,7 +125,7 @@ func TestObfuscate(t *testing.T) {
 	if runtime.GOOS == "darwin" {
 		t.Skip("Skipping on macOS as obfuscating control characters makes filenames macOS can't cope with")
 	}
-	tempdir := filepath.Join(os.TempDir(), "rclone-crypt-test-obfuscate")
+	tempdir := filepath.Join(os.TempDir(), "zclone-crypt-test-obfuscate")
 	name := "TestCrypt3"
 	fstests.Run(t, &fstests.Opt{
 		RemoteName: name + ":",
@@ -151,7 +151,7 @@ func TestNoDataObfuscate(t *testing.T) {
 	if runtime.GOOS == "darwin" {
 		t.Skip("Skipping on macOS as obfuscating control characters makes filenames macOS can't cope with")
 	}
-	tempdir := filepath.Join(os.TempDir(), "rclone-crypt-test-obfuscate")
+	tempdir := filepath.Join(os.TempDir(), "zclone-crypt-test-obfuscate")
 	name := "TestCrypt4"
 	fstests.Run(t, &fstests.Opt{
 		RemoteName: name + ":",

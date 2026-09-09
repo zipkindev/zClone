@@ -10,7 +10,7 @@ import (
 	"sync"
 
 	colorable "github.com/mattn/go-colorable"
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 // VT100 codes

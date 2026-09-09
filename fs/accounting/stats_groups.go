@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/rclone/rclone/fs/rc"
+	"zclone/fs/rc"
 
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 const globalStats = "global_stats"
@@ -75,7 +75,7 @@ func init() {
 		Help: `
 This returns all available stats:
 
-	rclone rc core/stats
+	zclone rc core/stats
 
 If group is not provided then summed up stats for all groups will be
 returned.
@@ -93,7 +93,7 @@ Returns the following values:
 	"checks": number of files checked,
 	"deletedDirs": number of directories deleted,
 	"deletes" : number of files deleted,
-	"elapsedTime": time in floating point seconds since rclone was started,
+	"elapsedTime": time in floating point seconds since zclone was started,
 	"errors": number of errors,
 	"eta": estimated time in seconds until the group completes,
 	"fatalError": boolean whether there has been at least one fatal error,
@@ -159,7 +159,7 @@ func init() {
 		Help: `
 This returns stats about completed transfers:
 
-	rclone rc core/transferred
+	zclone rc core/transferred
 
 If group is not provided then completed transfers for all groups will be
 returned.

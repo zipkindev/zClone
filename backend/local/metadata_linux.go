@@ -10,8 +10,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/rclone/rclone/fs"
 	"golang.org/x/sys/unix"
+	"zclone/fs"
 )
 
 var (

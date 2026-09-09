@@ -1,6 +1,6 @@
 //go:build cmount && ((linux && cgo) || (darwin && cgo) || (freebsd && cgo) || (openbsd && cgo) || windows) && (!race || !windows)
 
-// Package cmount implements a FUSE mounting system for rclone remotes.
+// Package cmount implements a FUSE mounting system for zclone remotes.
 //
 // FIXME this doesn't work with the race detector under Windows either
 // hanging or producing lots of differences.
@@ -11,9 +11,9 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/rclone/rclone/fstest/testy"
-	"github.com/rclone/rclone/vfs/vfscommon"
-	"github.com/rclone/rclone/vfs/vfstest"
+	"zclone/fstest/testy"
+	"zclone/vfs/vfscommon"
+	"zclone/vfs/vfstest"
 )
 
 func TestMount(t *testing.T) {

@@ -1,0 +1,19 @@
+[Unit]
+Description=Docker Volume Plugin for zclone
+Requires=docker.service
+Before=docker.service
+After=network.target
+Requires=docker-volume-zclone.socket
+After=docker-volume-zclone.socket
+
+[Service]
+ExecStart=/usr/bin/zclone serve docker
+ExecStartPre=/bin/mkdir -p /var/lib/docker-volumes/zclone
+ExecStartPre=/bin/mkdir -p /var/lib/docker-plugins/zclone/config
+ExecStartPre=/bin/mkdir -p /var/lib/docker-plugins/zclone/cache
+Environment=ZCLONE_CONFIG=/var/lib/docker-plugins/zclone/config/zclone.conf
+Environment=ZCLONE_CACHE_DIR=/var/lib/docker-plugins/zclone/cache
+Environment=ZCLONE_VERBOSE=1
+
+[Install]
+WantedBy=multi-user.target

@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 // Handler is the standard handler for the logging.
@@ -28,9 +28,9 @@ var Handler = defaultHandler()
 // but it is important we have a logger running regardless of whether
 // InitLogging has been called yet or not.
 //
-// Note that this only sets rclone's private logger via fs.SetLogger
+// Note that this only sets zclone's private logger via fs.SetLogger
 // so that importing this package has no side effects on the
-// process-wide default slog logger. The CLI and other rclone-as-a-
+// process-wide default slog logger. The CLI and other zclone-as-a-
 // program entry points pick up the default logger redirection in
 // InitLogging instead.
 func defaultHandler() *OutputHandler {
@@ -42,7 +42,7 @@ func defaultHandler() *OutputHandler {
 	// Create our handler
 	h := NewOutputHandler(os.Stderr, opts, logFormatDate|logFormatTime)
 
-	// Set rclone's internal logger so rclone logging works
+	// Set zclone's internal logger so zclone logging works
 	fs.SetLogger(h)
 
 	return h
@@ -60,7 +60,7 @@ var slogNames = map[slog.Level]string{
 	fs.SlogLevelEmergency: "EMERGENCY",
 }
 
-// Convert a slog level to string using rclone's extra levels
+// Convert a slog level to string using zclone's extra levels
 func slogLevelToString(level slog.Level) string {
 	levelStr := slogNames[level]
 	if levelStr == "" {
@@ -85,7 +85,7 @@ func mapLogLevelNames(groups []string, a slog.Attr) slog.Attr {
 // isLogFrame reports whether frame belongs to the logging machinery
 // and so should be skipped when finding the real caller.
 //
-// rclone's own log packages are matched by file path, but the standard
+// zclone's own log packages are matched by file path, but the standard
 // library log/slog package is matched by function name: under -trimpath
 // its path is rewritten to "log/slog/logger.go", which neither file
 // check catches.
@@ -165,7 +165,7 @@ func (h *OutputHandler) getFormat() logFormat {
 // NewOutputHandler creates a new OutputHandler with the specified flags.
 //
 // This is designed to use log/slog but produce output which is
-// backwards compatible with previous rclone versions.
+// backwards compatible with previous zclone versions.
 //
 // If opts is nil, default options are used, with Level set to
 // slog.LevelInfo.

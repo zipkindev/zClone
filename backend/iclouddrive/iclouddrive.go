@@ -14,15 +14,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/fserrors"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/fserrors"
 
-	"github.com/rclone/rclone/backend/iclouddrive/api"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
+	"zclone/backend/iclouddrive/api"
+	"zclone/fs/hash"
+	"zclone/lib/dircache"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
 
 	"golang.org/x/text/unicode/norm"
 )
@@ -46,6 +46,9 @@ const (
 	maxSleep      = 2 * time.Second
 	decayConstant = 2
 )
+
+// serverSideCopyAvailable remains false until the iCloud copy endpoint is reliable.
+var serverSideCopyAvailable = false
 
 // Options defines the configuration for this backend
 type Options struct {
@@ -281,8 +284,11 @@ func (f *Fs) Precision() time.Duration {
 //
 //nolint:all
 func (f *Fs) Copy(ctx context.Context, src fs.Object, remote string) (fs.Object, error) {
-	// ICloud cooy endpoint is broken. Once they fixed it this can be re-enabled.
-	return nil, fs.ErrorCantCopy
+	// The iCloud copy endpoint is unreliable. Keep the implementation below
+	// available for future validation without advertising server-side copy.
+	if !serverSideCopyAvailable {
+		return nil, fs.ErrorCantCopy
+	}
 
 	// note: so many calls its only just faster then a reupload for big files.
 	srcObj, ok := src.(*Object)
@@ -364,7 +370,7 @@ func (f *Fs) Copy(ctx context.Context, src fs.Object, remote string) (fs.Object,
 
 // Put in to the remote path with the modTime given of the given size
 //
-// When called from outside an Fs by rclone, src.Size() will always be >= 0.
+// When called from outside an Fs by zclone, src.Size() will always be >= 0.
 // But for unknown-sized objects (indicated by src.Size() == -1), Put should either
 // return an error or upload it properly (rather than e.g. calling panic).
 //

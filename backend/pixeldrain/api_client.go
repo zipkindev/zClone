@@ -11,9 +11,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/fs"
+	"zclone/fs/fserrors"
+	"zclone/lib/rest"
 )
 
 // FilesystemPath is the object which is returned from the pixeldrain API when
@@ -175,8 +175,8 @@ func paramsFromMetadata(meta fs.Metadata) (params url.Values) {
 // nodeToObject converts a single FilesystemNode API response to an object. The
 // node is usually a single element from a directory listing
 func (f *Fs) nodeToObject(node FilesystemNode) (o *Object) {
-	// Trim the path prefix. The path prefix is hidden from rclone during all
-	// operations. Saving it here would confuse rclone a lot. So instead we
+	// Trim the path prefix. The path prefix is hidden from zclone during all
+	// operations. Saving it here would confuse zclone a lot. So instead we
 	// strip it here and add it back for every API request we need to perform
 	node.Path = strings.TrimPrefix(node.Path, f.pathPrefix)
 	// The server stores modtimes with millisecond precision, but

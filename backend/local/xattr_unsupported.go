@@ -4,7 +4,7 @@
 
 package local
 
-import "github.com/rclone/rclone/fs"
+import "zclone/fs"
 
 const (
 	xattrSupported = false

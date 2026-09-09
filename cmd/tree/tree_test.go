@@ -6,11 +6,11 @@ import (
 	"testing"
 
 	"github.com/a8m/tree"
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fstest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	"zclone/fs"
+	"zclone/fstest"
 )
 
 func TestTree(t *testing.T) {

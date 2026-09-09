@@ -8,9 +8,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/rc"
 	"golang.org/x/time/rate"
+	"zclone/fs"
+	"zclone/fs/rc"
 )
 
 // TokenBucket holds the global token bucket limiter
@@ -251,21 +251,21 @@ a single bandwidth limit entry or a pair of upload:download bandwidth.
 
 Eg
 
-    rclone rc core/bwlimit rate=off
+    zclone rc core/bwlimit rate=off
     {
         "bytesPerSecond": -1,
         "bytesPerSecondTx": -1,
         "bytesPerSecondRx": -1,
         "rate": "off"
     }
-    rclone rc core/bwlimit rate=1M
+    zclone rc core/bwlimit rate=1M
     {
         "bytesPerSecond": 1048576,
         "bytesPerSecondTx": 1048576,
         "bytesPerSecondRx": 1048576,
         "rate": "1M"
     }
-    rclone rc core/bwlimit rate=1M:100k
+    zclone rc core/bwlimit rate=1M:100k
     {
         "bytesPerSecond": 1048576,
         "bytesPerSecondTx": 1048576,
@@ -276,7 +276,7 @@ Eg
 
 If the rate parameter is not supplied then the bandwidth is queried
 
-    rclone rc core/bwlimit
+    zclone rc core/bwlimit
     {
         "bytesPerSecond": 1048576,
         "bytesPerSecondTx": 1048576,

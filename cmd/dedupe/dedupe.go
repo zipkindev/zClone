@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/operations"
 )
 
 var (
@@ -41,7 +41,7 @@ duplicate hashes instead which will work on any backend which supports
 at least one hash. This can be used to find files with duplicate
 content. This is known as deduping by hash.
 
-If deduping by name, first rclone will merge directories with the same
+If deduping by name, first zclone will merge directories with the same
 name.  It will do this iteratively until all the identically named
 directories have been merged.
 
@@ -57,8 +57,8 @@ to be identical. If you use the ` + "`--size-only`" + ` flag then files
 will be considered identical if they have the same size (any hash will be
 ignored). This can be useful on crypt backends which do not support hashes.
 
-Next rclone will resolve the remaining duplicates. Exactly which
-action is taken depends on the dedupe mode. By default, rclone will
+Next zclone will resolve the remaining duplicates. Exactly which
+action is taken depends on the dedupe mode. By default, zclone will
 interactively query the user for each one.
 
 **Important**: Since this can cause data loss, test first with the
@@ -69,7 +69,7 @@ Here is an example run.
 Before - with duplicates
 
 ` + "```console" + `
-$ rclone lsl drive:dupes
+$ zclone lsl drive:dupes
   6048320 2016-03-05 16:23:16.798000000 one.txt
   6048320 2016-03-05 16:23:11.775000000 one.txt
    564374 2016-03-05 16:23:06.731000000 one.txt
@@ -82,7 +82,7 @@ $ rclone lsl drive:dupes
 Now the ` + "`dedupe`" + ` session
 
 ` + "```console" + `
-$ rclone dedupe drive:dupes
+$ zclone dedupe drive:dupes
 2016/03/05 16:24:37 Google drive root 'dupes': Looking for duplicates using interactive mode.
 one.txt: Found 4 files with duplicate names
 one.txt: Deleting 2/3 identical duplicates (MD5 "1eedaa9fe86fd4b8632e2ac549403b36")
@@ -112,7 +112,7 @@ two-3.txt: renamed from: two.txt
 The result being
 
 ` + "```console" + `
-$ rclone lsl drive:dupes
+$ zclone lsl drive:dupes
   6048320 2016-03-05 16:23:16.798000000 one.txt
    564374 2016-03-05 16:22:52.118000000 two-1.txt
   6048320 2016-03-05 16:22:46.185000000 two-2.txt
@@ -136,13 +136,13 @@ For example, to rename all the identically named photos in your Google Photos
 directory, do
 
 ` + "```console" + `
-rclone dedupe --dedupe-mode rename "drive:Google Photos"
+zclone dedupe --dedupe-mode rename "drive:Google Photos"
 ` + "```" + `
 
 Or
 
 ` + "```console" + `
-rclone dedupe rename "drive:Google Photos"
+zclone dedupe rename "drive:Google Photos"
 ` + "```",
 	Annotations: map[string]string{
 		"versionIntroduced": "v1.27",

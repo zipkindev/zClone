@@ -1,6 +1,6 @@
 ---
 title: "Documentation"
-description: "Rclone Changelog"
+description: "Zclone Changelog"
 ---
 <!-- markdownlint-disable line-length -->
 
@@ -8,7 +8,7 @@ description: "Rclone Changelog"
 
 ## v1.75.0 - 2026-07-31
 
-[See commits](https://github.com/rclone/rclone/compare/v1.74.0...v1.75.0)
+[See commits](/)
 
 - New S3 Providers
   - [Scality](/s3/#scality) (RING / ARTESCA)
@@ -83,10 +83,10 @@ description: "Rclone Changelog"
     - Fix config_template_file and config_template being ignored via config/create (hexbinoct)
     - Fix normalization when obscuring passwords (Nick Craig-Wood)
   - docker serve: Fix plugin timeout on restart when volumes have active mounts (Nick Craig-Wood)
-  - fs: Fix passwords and tokens appearing in the debug log during rclone config (Nick Craig-Wood)
+  - fs: Fix passwords and tokens appearing in the debug log during zclone config (Nick Craig-Wood)
   - gui: Fix cross-origin API requests when bound to a wildcard address (FTCHD)
   - hash: Fix xxh128 hasher size (Yuhang Cao)
-  - log: Fix side effects when importing rclone as a library (Sven Rebhan)
+  - log: Fix side effects when importing zclone as a library (Sven Rebhan)
   - march
     - Fix unnecessarily listing dst directory when src listing finished (Nick Craig-Wood)
     - Fix goroutine leak on completed async rc jobs (Yash Anil)
@@ -195,7 +195,7 @@ description: "Rclone Changelog"
   - Add Zero Services (ZERO-Z3) provider (Zero Services GmbH)
   - Add Scality (RING / ARTESCA) provider (Dzmitry Nianakhau)
 - Seafile
-  - Fix rclone sync files with identical size again and again (TowyTowy)
+  - Fix zclone sync files with identical size again and again (TowyTowy)
 - SFTP
   - Add `--sftp-pin-host-key` - Trust On First Use host key pinning (Nick Craig-Wood)
   - Add `--sftp-encoding` support (Puneet Dixit)
@@ -231,7 +231,7 @@ description: "Rclone Changelog"
 
 ## v1.74.4 - 2026-07-08
 
-[See commits](https://github.com/rclone/rclone/compare/v1.74.3...v1.74.4)
+[See commits](/)
 
 - Bug Fixes
   - accounting
@@ -273,11 +273,11 @@ description: "Rclone Changelog"
 - Drive
   - Warn when non-exportable Google documents are skipped (Nick Craig-Wood)
   - Fix stray %!(EXTRA) in unexportable google document log message (Nick Craig-Wood)
-  - Warn when using rclone's shared client_id (Nick Craig-Wood)
+  - Warn when using zclone's shared client_id (Nick Craig-Wood)
 - Filelu
   - Fix recursive listing path handling and file filtering (kingston125)
 - Googlephotos
-  - Warn when using rclone's shared client_id (Nick Craig-Wood)
+  - Warn when using zclone's shared client_id (Nick Craig-Wood)
 - Mega
   - Wait for server events after upload, delete and move (Nick Craig-Wood)
   - Fix hard deleted files reappearing in listings (Nick Craig-Wood)
@@ -294,7 +294,7 @@ description: "Rclone Changelog"
 
 ## v1.74.3 - 2026-06-05
 
-[See commits](https://github.com/rclone/rclone/compare/v1.74.2...v1.74.3)
+[See commits](/)
 
 - Bug Fixes
   - rc
@@ -325,7 +325,7 @@ description: "Rclone Changelog"
 
 ## v1.74.2 - 2026-05-22
 
-[See commits](https://github.com/rclone/rclone/compare/v1.74.1...v1.74.2)
+[See commits](/)
 
 - Bug Fixes
   - build
@@ -376,7 +376,7 @@ description: "Rclone Changelog"
 
 ## v1.74.1 - 2026-05-08
 
-[See commits](https://github.com/rclone/rclone/compare/v1.74.0...v1.74.1)
+[See commits](/)
 
 - Bug Fixes
   - bisync: Fix retryable without `--resync` error message when `--resync` has a critical failure (Gustavo V. F.)
@@ -401,8 +401,8 @@ description: "Rclone Changelog"
   - Fix large file uploads landing in drive root instead of configured folder (Nick Craig-Wood)
   - Fix uploads of 100..200M files (Nick Craig-Wood)
 - Protondrive
-  - Route HTTP through rclone's transport (Nick Craig-Wood)
-  - Route library logging through rclone's logger (Nick Craig-Wood)
+  - Route HTTP through zclone's transport (Nick Craig-Wood)
+  - Route library logging through zclone's logger (Nick Craig-Wood)
   - Fix segfault when copying files missing revision metadata (Nick Craig-Wood)
 - S3
   - Fix STS call per request by caching AssumeRole credentials (Nick Craig-Wood)
@@ -410,7 +410,7 @@ description: "Rclone Changelog"
 
 ## v1.74.0 - 2026-05-01
 
-[See commits](https://github.com/rclone/rclone/compare/v1.73.0...v1.74.0)
+[See commits](/)
 
 - New backends
   - [Huawei Drive](/huaweidrive/) (王一赫)
@@ -422,7 +422,7 @@ description: "Rclone Changelog"
     - [UCloud US3](/s3/#us3) (jinkeyuu)
     - [Zadara](/s3/#zadara) (Shlomi Avihou)
 - New commands
-  - [gui](/gui/): launch new embedded web based GUI for basic rclone operations (FTCHD, Nick Craig-Wood)
+  - [gui](/gui/): launch new embedded web based GUI for basic zclone operations (FTCHD, Nick Craig-Wood)
 - New Features
   - build
     - Update `golang.org/x/image/webp` to v0.39.0 to fix CVE-2026-33813 (Nick Craig-Wood)
@@ -432,7 +432,7 @@ description: "Rclone Changelog"
     - Modernize Go code with go fix for go1.25 (Nick Craig-Wood)
     - Fix `loong64` and `s390x` build (Suyun)
   - docs
-    - Modernize rclone.org site design (Nick Craig-Wood)
+    - Modernize zclone.org site design (Nick Craig-Wood)
     - fixes (albertony, Enduriel, Jason, Luke Cyca, mathieulongtin, Nick Craig-Wood, SyoBoN)
   - fshttp: Add `--dump curl` for dumping HTTP requests as curl commands (Nick Craig-Wood)
   - graphics: Optimise images losslessly with ImageOptim (Leon Brocard)
@@ -459,7 +459,7 @@ description: "Rclone Changelog"
     - Fix flaky TestBisyncConcurrent by increasing random name entropy (Nick Craig-Wood)
     - Fix integration tests after sftp log changes (Nick Craig-Wood)
   - copyurl: Fix ignored `--upload-headers` and `--download-headers` (Andriy Senyshyn)
-  - librclone/ctest: Add Windows support and fix memory management (BizaNator)
+  - libzclone/ctest: Add Windows support and fix memory management (BizaNator)
   - log: Fix data race on OutputHandler.format field (Nick Craig-Wood)
   - operations
     - Multithread copy: grab memory before making go routines (Nick Craig-Wood)
@@ -539,7 +539,7 @@ description: "Rclone Changelog"
 
 ## v1.73.5 - 2026-04-19
 
-[See commits](https://github.com/rclone/rclone/compare/v1.73.4...v1.73.5)
+[See commits](/)
 
 - Bug Fixes
   - operations: Add AuthRequired to operations/fsinfo to prevent backend creation CVE-2026-41179 (Nick Craig-Wood)
@@ -559,7 +559,7 @@ description: "Rclone Changelog"
 
 ## v1.73.4 - 2026-04-08
 
-[See commits](https://github.com/rclone/rclone/compare/v1.73.3...v1.73.4)
+[See commits](/)
 
 - Bug Fixes
   - build
@@ -586,7 +586,7 @@ description: "Rclone Changelog"
 
 ## v1.73.3 - 2026-03-23
 
-[See commits](https://github.com/rclone/rclone/compare/v1.73.2...v1.73.3)
+[See commits](/)
 
 - Bug Fixes
   - build
@@ -594,7 +594,7 @@ description: "Rclone Changelog"
     - Update to github.com/buger/jsonparser 1.1.2 to fix GHSA-6g7g-w4f8-9c9x (dependabot[bot])
   - doc fixes
     - Added text to the label showing version-introduced info (Jan-Philipp Reßler)
-    - Clarify Filen password change requires updating both password and API key in rclone config (Jason)
+    - Clarify Filen password change requires updating both password and API key in zclone config (Jason)
     - s3: clarify multi tenant support for Cubbit (Marco Ferretti)
     - jottacloud: Fix broken link (albertony)
   - lib/rest: Fix URLPathEscapeAll breaking WebDAV servers (eg nzbdav) with strict path matching (Andrew Furman)
@@ -602,7 +602,7 @@ description: "Rclone Changelog"
 
 ## v1.73.2 - 2026-03-06
 
-[See commits](https://github.com/rclone/rclone/compare/v1.73.1...v1.73.2)
+[See commits](/)
 
 - Bug Fixes
   - build
@@ -627,7 +627,7 @@ description: "Rclone Changelog"
 
 ## v1.73.1 - 2026-02-17
 
-[See commits](https://github.com/rclone/rclone/compare/v1.73.0...v1.73.1)
+[See commits](/)
 
 - Bug Fixes
   - accounting: Fix missing server side stats from core/stats rc (Nick Craig-Wood)
@@ -654,7 +654,7 @@ description: "Rclone Changelog"
 
 ## v1.73.0 - 2026-01-30
 
-[See commits](https://github.com/rclone/rclone/compare/v1.72.0...v1.73.0)
+[See commits](/)
 
 - New backends
   - [Shade](/shade/) (jhasse-shade)
@@ -712,7 +712,7 @@ description: "Rclone Changelog"
 
 ## v1.72.1 - 2025-12-10
 
-[See commits](https://github.com/rclone/rclone/compare/v1.72.0...v1.72.1)
+[See commits](/)
 
 - Bug Fixes
   - build: update to go1.25.5 to fix [CVE-2025-61729](https://pkg.go.dev/vuln/GO-2025-4155)
@@ -728,7 +728,7 @@ description: "Rclone Changelog"
 
 ## v1.72.0 - 2025-11-21
 
-[See commits](https://github.com/rclone/rclone/compare/v1.71.0...v1.72.0)
+[See commits](/)
 
 - New backends
   - [Archive](/archive) backend to read archives on cloud storage. (Nick Craig-Wood)
@@ -741,9 +741,9 @@ description: "Rclone Changelog"
   - [Servercore Object Storage](/s3/#servercore) (dougal)
   - [SpectraLogic](/s3/#spectralogic) (dougal)
 - New commands
-  - [rclone archive](/commands/rclone_archive/): command to create and read archive files (Fawzib Rojas)
-  - [rclone config string](/commands/rclone_config_string/): for making connection strings (Nick Craig-Wood)
-  - [rclone test speed](/commands/rclone_test_speed/): Add command to test a specified remotes speed (dougal)
+  - [zclone archive](/commands/zclone_archive/): command to create and read archive files (Fawzib Rojas)
+  - [zclone config string](/commands/zclone_config_string/): for making connection strings (Nick Craig-Wood)
+  - [zclone test speed](/commands/zclone_test_speed/): Add command to test a specified remotes speed (dougal)
 - New Features
   - backends: many backends have has a paged listing (`ListP`) interface added
     - this enables progress when listing large directories and reduced memory usage
@@ -766,7 +766,7 @@ description: "Rclone Changelog"
     - Add [job/batch](/rc/#job-batch) for sending batches of rc commands to run concurrently (Nick Craig-Wood)
     - Add `runningIds` and `finishedIds` to [job/list](/rc/#job-list) (n4n5)
     - Add `osVersion`, `osKernel` and `osArch` to [core/version](/rc/#core-version) (Nick Craig-Wood)
-    - Make sure fatal errors run via the rc don't crash rclone (Nick Craig-Wood)
+    - Make sure fatal errors run via the rc don't crash zclone (Nick Craig-Wood)
     - Add `executeId` to job statuses in [job/list](/rc/#job-list) (Nikolay Kiryanov)
     - `config/unlock`: rename parameter to `configPassword` accept old as well (Nick Craig-Wood)
   - serve http: Download folders as zip (dougal)
@@ -811,7 +811,7 @@ description: "Rclone Changelog"
   - Add support for Let's Go Cloud (from MediaMarkt) as a whitelabel service (albertony)
   - Add support for MediaMarkt Cloud as a whitelabel service (albertony)
   - Added support for traditional oauth authentication also for the main service (albertony)
-  - Abort attempts to run unsupported rclone authorize command (albertony)
+  - Abort attempts to run unsupported zclone authorize command (albertony)
   - Improved token refresh handling (albertony)
   - Fix legacy authentication (albertony)
   - Fix authentication for whitelabel services from Elkjøp subsidiaries (albertony)
@@ -852,7 +852,7 @@ description: "Rclone Changelog"
 
 ## v1.71.2 - 2025-10-20
 
-[See commits](https://github.com/rclone/rclone/compare/v1.71.1...v1.71.2)
+[See commits](/)
 
 - Bug Fixes
   - build
@@ -875,7 +875,7 @@ description: "Rclone Changelog"
 
 ## v1.71.1 - 2025-09-24
 
-[See commits](https://github.com/rclone/rclone/compare/v1.71.0...v1.71.1)
+[See commits](/)
 
 - Bug Fixes
   - bisync: Fix error handling for renamed conflicts (nielash)
@@ -900,7 +900,7 @@ description: "Rclone Changelog"
 
 ## v1.71.0 - 2025-08-22
 
-[See commits](https://github.com/rclone/rclone/compare/v1.70.0...v1.71.0)
+[See commits](/)
 
 - New S3 providers
   - [Exaba](/s3/#exaba) (Nick Craig-Wood)
@@ -919,7 +919,7 @@ description: "Rclone Changelog"
     - Set default shell to bash in build.yml (Ross Smith II)
   - config
     - Make parsing of `Duration` options consistent (albertony)
-    - Add error if `RCLONE_CONFIG_PASS` was supplied it but didn't decrypt the config (n4n5)
+    - Add error if `ZCLONE_CONFIG_PASS` was supplied it but didn't decrypt the config (n4n5)
   - copy, copyto: Implement logger flags to store result of sync (Marvin Rösch)
   - doc fixes (albertony, Ali Zein Yousuf, Binbin Qian, curlwget, Ed Craig-Wood, jinjingroad, Lucas Bremgartner, n4n5, Nick Craig-Wood)
   - hash: Add support for BLAKE3, XXH3, XXH128 (albertony)
@@ -931,7 +931,7 @@ description: "Rclone Changelog"
   - log: Add log rotation options when using [`--log-file`](/docs/#log-file-string) (Nick Craig-Wood)
   - move, moveto: Implement logger flags to store result of sync (Marvin Rösch)
   - pool: Unify memory between multipart and asyncreader to use one pool (Nick Craig-Wood)
-  - purge: Exit with a fatal error if filters are set on `rclone purge` (Nick Craig-Wood)
+  - purge: Exit with a fatal error if filters are set on `zclone purge` (Nick Craig-Wood)
   - rc
     - Add `config/unlock` to unlock the config file (n4n5)
     - Fix `config/listremotes` to send an empty array instead of nil (n4n5)
@@ -1005,7 +1005,7 @@ description: "Rclone Changelog"
 
 ## v1.70.3 - 2025-07-09
 
-[See commits](https://github.com/rclone/rclone/compare/v1.70.2...v1.70.3)
+[See commits](/)
 
 - Bug Fixes
   - check: Fix difference report (was reporting error counts) (albertony)
@@ -1024,7 +1024,7 @@ description: "Rclone Changelog"
 
 ## v1.70.2 - 2025-06-27
 
-[See commits](https://github.com/rclone/rclone/compare/v1.70.1...v1.70.2)
+[See commits](/)
 
 - Bug Fixes
   - convmv: Make --dry-run logs less noisy (nielash)
@@ -1039,7 +1039,7 @@ description: "Rclone Changelog"
 
 ## v1.70.1 - 2025-06-19
 
-[See commits](https://github.com/rclone/rclone/compare/v1.70.0...v1.70.1)
+[See commits](/)
 
 - Bug Fixes
   - convmv: Fix spurious "error running command echo" on Windows (Nick Craig-Wood)
@@ -1047,7 +1047,7 @@ description: "Rclone Changelog"
 
 ## v1.70.0 - 2025-06-17
 
-[See commits](https://github.com/rclone/rclone/compare/v1.69.0...v1.70.0)
+[See commits](/)
 
 - New backends
   - [DOI](/doi/) (Flora Thiebaut)
@@ -1056,7 +1056,7 @@ description: "Rclone Changelog"
     - [MEGA S4](/s3/#mega) (Nick Craig-Wood)
     - [Pure Storage FlashBlade](/s3/#pure-storage-flashblade) (Jeremy Daer)
 - New commands
-  - [convmv](/commands/rclone_convmv/): for moving and transforming files (nielash)
+  - [convmv](/commands/zclone_convmv/): for moving and transforming files (nielash)
 - New Features
   - Add [`--max-connections`](/docs/#max-connections-n) to control maximum backend concurrency (Nick Craig-Wood)
   - Add [`--max-buffer-memory`](/docs/#max-buffer-memory) to limit total buffer memory usage (Nick Craig-Wood)
@@ -1072,7 +1072,7 @@ description: "Rclone Changelog"
   - cmd/authorize: Show required arguments in help text (simwai)
   - cmd/config: add `--no-output` option (Jess)
   - cmd/gitannex
-    - Tweak parsing of "rcloneremotename" config (Dan McArdle)
+    - Tweak parsing of "zcloneremotename" config (Dan McArdle)
     - Permit remotes with options (Dan McArdle)
     - Reject unknown layout modes in INITREMOTE (Dan McArdle)
   - docker image: Add label org.opencontainers.image.source for release notes in Renovate dependency updates (Robin Schneider)
@@ -1163,7 +1163,7 @@ description: "Rclone Changelog"
 
 ## v1.69.3 - 2025-05-21
 
-[See commits](https://github.com/rclone/rclone/compare/v1.69.2...v1.69.3)
+[See commits](/)
 
 - Bug Fixes
   - build: Reapply update github.com/golang-jwt/jwt/v5 from 5.2.1 to 5.2.2 to fix CVE-2025-30204 (dependabot[bot])
@@ -1171,7 +1171,7 @@ description: "Rclone Changelog"
 
 ## v1.69.2 - 2025-05-01
 
-[See commits](https://github.com/rclone/rclone/compare/v1.69.1...v1.69.2)
+[See commits](/)
 
 - Bug fixes
   - accounting: Fix percentDiff calculation -- (Anagh Kumar Baranwal)
@@ -1183,7 +1183,7 @@ description: "Rclone Changelog"
     - Update golang.org/x/net to 0.36.0. to fix CVE-2025-22869 (dependabot[bot])
     - Stop building with go < go1.23 as security updates forbade it (Nick Craig-Wood)
     - Fix docker plugin build (Anagh Kumar Baranwal)
-  - cmd: Fix crash if rclone is invoked without any arguments (Janne Hellsten)
+  - cmd: Fix crash if zclone is invoked without any arguments (Janne Hellsten)
   - config: Read configuration passwords from stdin even when terminated with EOF (Samantha Bowen)
   - doc fixes (Andrew Kreimer, Danny Garside, eccoisle, Ed Craig-Wood, emyarod, jack, Jugal Kishore, Markus Gerstel, Michael Kebe, Nick Craig-Wood, simonmcnair, simwai, Zachary Vorhies)
   - fs: Fix corruption of SizeSuffix with "B" suffix in config (eg --min-size) (Nick Craig-Wood)
@@ -1191,7 +1191,7 @@ description: "Rclone Changelog"
   - object: Fix memory object out of bounds Seek (Nick Craig-Wood)
   - operations: Fix call fmt.Errorf with wrong err (alingse)
   - rc
-    - Disable the metrics server when running `rclone rc` (hiddenmarten)
+    - Disable the metrics server when running `zclone rc` (hiddenmarten)
     - Fix debug/* commands not being available over unix sockets (Nick Craig-Wood)
   - serve nfs: Fix unlikely crash (Nick Craig-Wood)
   - stats: Fix the speed not getting updated after a pause in the processing (Anagh Kumar Baranwal)
@@ -1215,7 +1215,7 @@ description: "Rclone Changelog"
 
 ## v1.69.1 - 2025-02-14
 
-[See commits](https://github.com/rclone/rclone/compare/v1.69.0...v1.69.1)
+[See commits](/)
 
 - Bug Fixes
   - lib/oauthutil: Fix redirect URL mismatch errors (Nick Craig-Wood)
@@ -1241,7 +1241,7 @@ description: "Rclone Changelog"
 
 ## v1.69.0 - 2025-01-12
 
-[See commits](https://github.com/rclone/rclone/compare/v1.68.0...v1.69.0)
+[See commits](/)
 
 - New backends
   - [ICloud Drive](/iclouddrive/) (lostb1t)
@@ -1251,10 +1251,10 @@ description: "Rclone Changelog"
     - [Selectel](/s3/#selectel) (Nick Craig-Wood)
 - Security fixes
   - serve sftp: Resolve CVE-2024-45337 - Misuse of ServerConfig.PublicKeyCallback may cause authorization bypass (dependabot)
-    - Rclone was **not** vulnerable to this.
+    - Zclone was **not** vulnerable to this.
     - See <https://github.com/advisories/GHSA-v778-237x-gjrc>
   - build: Update golang.org/x/net to v0.33.0 to fix CVE-2024-45338 - Non-linear parsing of case-insensitive content (Nick Craig-Wood)
-    - Rclone was **not** vulnerable to this.
+    - Zclone was **not** vulnerable to this.
     - See <https://github.com/advisories/GHSA-w32m-9786-jp63>
 - New Features
   - accounting: Write the current bwlimit to the log on SIGUSR2 (Nick Craig-Wood)
@@ -1268,7 +1268,7 @@ description: "Rclone Changelog"
   - fs: Make `--links` flag global and add new `--local-links` and `--vfs-links` flags (Nick Craig-Wood)
   - http servers: Disable automatic authentication skipping for unix sockets in http servers (Moises Lima)
     - This was making it impossible to use unix sockets with an proxy
-    - This might now cause rclone to need authentication where it didn't before
+    - This might now cause zclone to need authentication where it didn't before
   - oauthutil: add support for OAuth client credential flow (Martin Hassack, Nick Craig-Wood)
   - operations: make log messages consistent for mkdir/rmdir at INFO level (Nick Craig-Wood)
   - rc: Add `relative` to [vfs/queue-set-expiry](/rc/#vfs-queue-set-expiry) (Nick Craig-Wood)
@@ -1313,7 +1313,7 @@ description: "Rclone Changelog"
   - Fix panic when decoding corrupted PEM from JWT file (Nick Craig-Wood)
 - Drive
   - Add support for markdown format (Noam Ross)
-  - Implement `rclone backend rescue` to rescue orphaned files (Nick Craig-Wood)
+  - Implement `zclone backend rescue` to rescue orphaned files (Nick Craig-Wood)
 - Dropbox
   - Fix server side copying over existing object (Nick Craig-Wood)
   - Fix return status when full to be fatal error (Nick Craig-Wood)
@@ -1335,7 +1335,7 @@ description: "Rclone Changelog"
   - Fix time precision for OneDrive personal (Nick Craig-Wood)
   - Fix server side copying over existing object (Nick Craig-Wood)
 - Opendrive
-  - Add `rclone about` support to backend (quiescens)
+  - Add `zclone about` support to backend (quiescens)
 - Oracle Object Storage
   - Make specifying `compartmentid` optional (Manoj Ghosh)
   - Quit multipart uploads if the context is cancelled (Nick Craig-Wood)
@@ -1374,12 +1374,12 @@ description: "Rclone Changelog"
 
 ## v1.68.2 - 2024-11-15
 
-[See commits](https://github.com/rclone/rclone/compare/v1.68.1...v1.68.2)
+[See commits](/)
 
 - Security fixes
   - local backend: CVE-2024-52522: fix permission and ownership on symlinks with `--links` and `--metadata` (Nick Craig-Wood)
     - Only affects users using `--metadata` and `--links` and copying files to the local backend
-    - See <https://github.com/rclone/rclone/security/advisories/GHSA-hrxh-9w67-g4cv>
+    - See </>
   - build: bump github.com/golang-jwt/jwt/v4 from 4.5.0 to 4.5.1 (dependabot)
     - This is an issue in a dependency which is used for JWT certificates
     - See <https://github.com/golang-jwt/jwt/security/advisories/GHSA-29wx-vh33-7x7r>
@@ -1404,7 +1404,7 @@ description: "Rclone Changelog"
 
 ## v1.68.1 - 2024-09-24
 
-[See commits](https://github.com/rclone/rclone/compare/v1.68.0...v1.68.1)
+[See commits](/)
 
 - Bug Fixes
   - build: Fix docker release build (ttionya)
@@ -1419,11 +1419,11 @@ description: "Rclone Changelog"
 - Pikpak
   - Fix login issue where token retrieval fails (wiserain)
 - S3
-  - Fix rclone ignoring static credentials when `env_auth=true` (Nick Craig-Wood)
+  - Fix zclone ignoring static credentials when `env_auth=true` (Nick Craig-Wood)
 
 ## v1.68.0 - 2024-09-08
 
-[See commits](https://github.com/rclone/rclone/compare/v1.67.0...v1.68.0)
+[See commits](/)
 
 - New backends
   - [Files.com](/filescom) (Sam Harrison)
@@ -1432,9 +1432,9 @@ description: "Rclone Changelog"
 - Changed backends
   - [S3](/s3/) backend updated to use [AWS SDKv2](https://github.com/aws/aws-sdk-go-v2) as v1 is now unsupported.
     - The matrix of providers and auth methods is huge and there could be problems with obscure combinations.
-    - Please report problems in a [new issue](https://github.com/rclone/rclone/issues/new/choose) on Github.
+    - Please report problems in a [new issue](/) on Github.
 - New commands
-  - [config encryption](/commands/rclone_config_encryption/): set, remove and check to manage config file encryption (Nick Craig-Wood)
+  - [config encryption](/commands/zclone_config_encryption/): set, remove and check to manage config file encryption (Nick Craig-Wood)
 - New Features
   - build
     - Update to go1.23 and make go1.21 the minimum required version (Nick Craig-Wood)
@@ -1476,16 +1476,16 @@ description: "Rclone Changelog"
     - Implement on disk cache for file handles selected with `--nfs-cache-type` (Nick Craig-Wood)
     - Add tracing to filesystem calls (Nick Craig-Wood)
     - Mask unimplemented error from chmod (Nick Craig-Wood)
-    - Unify the nfs library logging with rclone's logging better (Nick Craig-Wood)
+    - Unify the nfs library logging with zclone's logging better (Nick Craig-Wood)
     - Fix incorrect user id and group id exported to NFS (Nick Craig-Wood)
   - serve s3
     - Implement `--auth-proxy` (Sawjan Gurung)
-    - Update to AWS SDKv2 by updating `github.com/rclone/gofakes3` (Nick Craig-Wood)
+    - Update the local S3 compatibility library for AWS SDKv2 (Nick Craig-Wood)
 - Bug Fixes
   - bisync: Fix sync time problems with backends that round time (eg Dropbox) (nielash)
   - serve dlna: Fix panic: invalid argument to Int63n (Nick Craig-Wood)
 - VFS
-  - Add [--vfs-read-chunk-streams](/commands/rclone_mount/#vfs-read-chunk-streams-0-1) to parallel read chunks from files (Nick Craig-Wood)
+  - Add [--vfs-read-chunk-streams](/commands/zclone_mount/#vfs-read-chunk-streams-0-1) to parallel read chunks from files (Nick Craig-Wood)
     - This can increase mount performance on high bandwidth or large latency links
   - Fix cache encoding with special characters (URenko)
 - Local
@@ -1545,14 +1545,14 @@ description: "Rclone Changelog"
 
 ## v1.67.0 - 2024-06-14
 
-[See commits](https://github.com/rclone/rclone/compare/v1.66.0...v1.67.0)
+[See commits](/)
 
 - New backends
   - [uloz.to](/ulozto/) (iotmaestro)
   - New S3 providers
     - [Magalu Object Storage](/s3/#magalu) (Bruno Fernandes)
 - New commands
-  - [gitannex](/commands/rclone_gitannex/): Enables git-annex to store and retrieve content from an rclone remote (Dan McArdle)
+  - [gitannex](/commands/zclone_gitannex/): Enables git-annex to store and retrieve content from an zclone remote (Dan McArdle)
 - New Features
   - accounting: Add deleted files total size to status summary line (Kyle Reynolds)
   - build
@@ -1698,13 +1698,13 @@ description: "Rclone Changelog"
 
 ## v1.66.0 - 2024-03-10
 
-[See commits](https://github.com/rclone/rclone/compare/v1.65.0...v1.66.0)
+[See commits](/)
 
 - Major features
-  - Rclone will now sync directory modification times if the backend supports it.
+  - Zclone will now sync directory modification times if the backend supports it.
     - This can be disabled with [--no-update-dir-modtime](/docs/#no-update-dir-modtime)
     - See [the overview](/overview/#features) and look for the `D` flags in the `ModTime` column to see which backends support it.
-  - Rclone will now sync directory metadata if the backend supports it when `-M`/`--metadata` is in use.
+  - Zclone will now sync directory metadata if the backend supports it when `-M`/`--metadata` is in use.
     - See [the overview](/overview/#features) and look for the `D` flags in the `Metadata` column to see which backends support it.
   - Bisync has received many updates see below for more details or [bisync's changelog](/bisync/#changelog)
 - Removed backends
@@ -1725,8 +1725,8 @@ description: "Rclone Changelog"
   - lsjson: Make metadata appear for directories (Nick Craig-Wood)
   - rc
     - Add `srcFs` and `dstFs` to `core/stats` and `core/transferred` stats (Nick Craig-Wood)
-    - Add `operations/hashsum` to the rc as `rclone hashsum` equivalent (Nick Craig-Wood)
-    - Add `config/paths` to the rc as `rclone config paths` equivalent (Nick Craig-Wood)
+    - Add `operations/hashsum` to the rc as `zclone hashsum` equivalent (Nick Craig-Wood)
+    - Add `config/paths` to the rc as `zclone config paths` equivalent (Nick Craig-Wood)
   - sync
     - Optionally report list of synced paths to file (nielash)
     - Implement directory sync for mod times and metadata (Nick Craig-Wood)
@@ -1868,7 +1868,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.65.2 - 2024-01-24
 
-[See commits](https://github.com/rclone/rclone/compare/v1.65.1...v1.65.2)
+[See commits](/)
 
 - Bug Fixes
   - build: bump github.com/cloudflare/circl from 1.3.6 to 1.3.7 (dependabot)
@@ -1876,11 +1876,11 @@ instead of of `--size-only`, when `check` is not available.
 - VFS
   - Fix stale data when using `--vfs-cache-mode` full (Nick Craig-Wood)
 - Azure Blob
-  - **IMPORTANT** Fix data corruption bug - see [#7590](https://github.com/rclone/rclone/issues/7590) (Nick Craig-Wood)
+  - **IMPORTANT** Fix data corruption bug - see [#7590](/) (Nick Craig-Wood)
 
 ## v1.65.1 - 2024-01-08
 
-[See commits](https://github.com/rclone/rclone/compare/v1.65.0...v1.65.1)
+[See commits](/)
 
 - Bug Fixes
   - build
@@ -1891,7 +1891,7 @@ instead of of `--size-only`, when `check` is not available.
   - accounting: fix stats to show server side transfers (Nick Craig-Wood)
   - doc fixes (albertony, ben-ba, Eli Orzitzer, emyarod, keongalvin, rarspace01)
   - nfsmount: Compile for all unix oses, add `--sudo` and fix error/option handling (Nick Craig-Wood)
-  - operations: Fix files moved by rclone move not being counted as transfers (Nick Craig-Wood)
+  - operations: Fix files moved by zclone move not being counted as transfers (Nick Craig-Wood)
   - oauthutil: Avoid panic when `*token` and `*ts.token` are the same (rkonfj)
   - serve s3: Fix listing oddities (Nick Craig-Wood)
 - VFS
@@ -1899,11 +1899,11 @@ instead of of `--size-only`, when `check` is not available.
 - Azurefiles
   - Fix storage base url (Oksana)
 - Crypt
-  - Fix rclone move a file over itself deleting the file (Nick Craig-Wood)
+  - Fix zclone move a file over itself deleting the file (Nick Craig-Wood)
 - Chunker
-  - Fix rclone move a file over itself deleting the file (Nick Craig-Wood)
+  - Fix zclone move a file over itself deleting the file (Nick Craig-Wood)
 - Compress
-  - Fix rclone move a file over itself deleting the file (Nick Craig-Wood)
+  - Fix zclone move a file over itself deleting the file (Nick Craig-Wood)
 - Dropbox
   - Fix used space on dropbox team accounts (Nick Craig-Wood)
 - FTP
@@ -1911,7 +1911,7 @@ instead of of `--size-only`, when `check` is not available.
 - Googlephotos
   - Fix nil pointer exception when batch failed (Nick Craig-Wood)
 - Hasher
-  - Fix rclone move a file over itself deleting the file (Nick Craig-Wood)
+  - Fix zclone move a file over itself deleting the file (Nick Craig-Wood)
   - Fix invalid memory address error when MaxAge == 0 (nielash)
 - Onedrive
   - Fix error listing: unknown object type `<nil>` (Nick Craig-Wood)
@@ -1926,18 +1926,18 @@ instead of of `--size-only`, when `check` is not available.
 - Smb
   - Fix shares not listed by updating go-smb2 (halms)
 - Union
-  - Fix rclone move a file over itself deleting the file (Nick Craig-Wood)
+  - Fix zclone move a file over itself deleting the file (Nick Craig-Wood)
 
 ## v1.65.0 - 2023-11-26
 
-[See commits](https://github.com/rclone/rclone/compare/v1.64.0...v1.65.0)
+[See commits](/)
 
 - New backends
   - Azure Files (karan, moongdal, Nick Craig-Wood)
   - ImageKit (Abhinav Dhiman)
   - Linkbox (viktor, Nick Craig-Wood)
 - New commands
-  - `serve s3`: Let rclone act as an S3 compatible server (Mikubill, Artur Neumann, Saw-jan, Nick Craig-Wood)
+  - `serve s3`: Let zclone act as an S3 compatible server (Mikubill, Artur Neumann, Saw-jan, Nick Craig-Wood)
   - `nfsmount`: mount command to provide mount mechanism on macOS without FUSE (Saleh Dindar)
   - `serve nfs`: to serve a remote for use by `nfsmount` (Saleh Dindar)
 - New Features
@@ -1978,7 +1978,7 @@ instead of of `--size-only`, when `check` is not available.
 - Azure Blob
   - Add support for cold tier (Ivan Yanitra)
 - B2
-  - Implement "rclone backend lifecycle" to read and set bucket lifecycles (Nick Craig-Wood)
+  - Implement "zclone backend lifecycle" to read and set bucket lifecycles (Nick Craig-Wood)
   - Implement `--b2-lifecycle` to control lifecycle when creating buckets (Nick Craig-Wood)
   - Fix listing all buckets when not needed (Nick Craig-Wood)
   - Fix multi-thread upload with copyto going to wrong name (Nick Craig-Wood)
@@ -1997,7 +1997,7 @@ instead of of `--size-only`, when `check` is not available.
   - Fix integration tests by enabling metadata support from the context (Nick Craig-Wood)
 - Dropbox
   - Factor batcher into lib/batcher (Nick Craig-Wood)
-  - Fix missing encoding for rclone purge (Nick Craig-Wood)
+  - Fix missing encoding for zclone purge (Nick Craig-Wood)
 - Google Cloud Storage
   - Fix 400 Bad request errors when using multi-thread copy (Nick Craig-Wood)
 - Googlephotos
@@ -2028,11 +2028,11 @@ instead of of `--size-only`, when `check` is not available.
   - Fix incorrect `about` size by switching to `github.com/cloudsoda/go-smb2` fork (Nick Craig-Wood)
   - Fix modtime of multithread uploads by setting PartialUploads (Nick Craig-Wood)
 - WebDAV
-  - Added an rclone vendor to work with `rclone serve webdav` (Adithya Kumar)
+  - Added an zclone vendor to work with `zclone serve webdav` (Adithya Kumar)
 
 ## v1.64.2 - 2023-10-19
 
-[See commits](https://github.com/rclone/rclone/compare/v1.64.1...v1.64.2)
+[See commits](/)
 
 - Bug Fixes
   - selfupdate: Fix "invalid hashsum signature" error (Nick Craig-Wood)
@@ -2040,7 +2040,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.64.1 - 2023-10-17
 
-[See commits](https://github.com/rclone/rclone/compare/v1.64.0...v1.64.1)
+[See commits](/)
 
 - Bug Fixes
   - cmd: Make `--progress` output logs in the same format as without (Nick Craig-Wood)
@@ -2077,7 +2077,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.64.0 - 2023-09-11
 
-[See commits](https://github.com/rclone/rclone/compare/v1.63.0...v1.64.0)
+[See commits](/)
 
 - New backends
   - [Proton Drive](/protondrive/) (Chun-Hung Tseng)
@@ -2096,7 +2096,7 @@ instead of of `--size-only`, when `check` is not available.
     - In memory buffering has been unified between all backends and should share memory better.
     - See [--multi-thread docs](/docs/#multi-thread-cutoff) for more info
 - New commands
-  - `rclone config redacted` support mechanism for showing redacted config (Nick Craig-Wood)
+  - `zclone config redacted` support mechanism for showing redacted config (Nick Craig-Wood)
 - New Features
   - accounting
     - Show server side stats in own lines and not as bytes transferred (Nick Craig-Wood)
@@ -2120,7 +2120,7 @@ instead of of `--size-only`, when `check` is not available.
   - fs
     - Use atomic types everywhere (Roberto Ricci)
     - When `--max-transfer` limit is reached exit with code (10) (kapitainsky)
-    - Add rclone completion powershell - basic implementation only (Nick Craig-Wood)
+    - Add zclone completion powershell - basic implementation only (Nick Craig-Wood)
   - http servers: Allow CORS to be set with `--allow-origin` flag (yuudi)
   - lib/rest: Remove unnecessary `nil` check (Eng Zer Jun)
   - ncdu: Add keybinding to rescan filesystem (eNV25)
@@ -2128,7 +2128,7 @@ instead of of `--size-only`, when `check` is not available.
     - Add `executeId` to job listings (yuudi)
     - Add `core/du` to measure local disk usage (Nick Craig-Wood)
     - Add `operations/settier` to API (Drew Stinnett)
-  - rclone test info: Add `--check-base32768` flag to check can store all base32768 characters (Nick Craig-Wood)
+  - zclone test info: Add `--check-base32768` flag to check can store all base32768 characters (Nick Craig-Wood)
   - rmdirs: Remove directories concurrently controlled by `--checkers` (Nick Craig-Wood)
 - Bug Fixes
   - accounting: Don't stop calculating average transfer speed until the operation is complete (Jacob Hands)
@@ -2156,7 +2156,7 @@ instead of of `--size-only`, when `check` is not available.
   - Fix purging with directory markers (Nick Craig-Wood)
 - B2
   - Implement `OpenChunkWriter` and multi-thread uploads (Nick Craig-Wood)
-  - Fix rclone link when object path contains special characters (Alishan Ladhani)
+  - Fix zclone link when object path contains special characters (Alishan Ladhani)
 - Box
   - Add polling support (David Sze)
   - Add `--box-impersonate` to impersonate a user ID (Nick Craig-Wood)
@@ -2182,14 +2182,14 @@ instead of of `--size-only`, when `check` is not available.
 - Opendrive
   - Fix List on a just deleted and remade directory (Nick Craig-Wood)
 - Oracleobjectstorage
-  - Use rclone's rate limiter in multipart transfers (Manoj Ghosh)
+  - Use zclone's rate limiter in multipart transfers (Manoj Ghosh)
   - Implement `OpenChunkWriter` and multi-thread uploads (Manoj Ghosh)
 - S3
   - Refactor multipart upload to use `OpenChunkWriter` and `ChunkWriter` (Vitor Gomes)
   - Factor generic multipart upload into `lib/multipart` (Nick Craig-Wood)
   - Fix purging of root directory with `--s3-directory-markers` (Nick Craig-Wood)
-  - Add `rclone backend set` command to update the running config (Nick Craig-Wood)
-  - Add `rclone backend restore-status` command (Nick Craig-Wood)
+  - Add `zclone backend set` command to update the running config (Nick Craig-Wood)
+  - Add `zclone backend restore-status` command (Nick Craig-Wood)
 - SFTP
   - Stop uploads re-using the same ssh connection to improve performance (Nick Craig-Wood)
   - Add `--sftp-ssh` to specify an external ssh binary to use (Nick Craig-Wood)
@@ -2211,14 +2211,14 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.63.1 - 2023-07-17
 
-[See commits](https://github.com/rclone/rclone/compare/v1.63.0...v1.63.1)
+[See commits](/)
 
 - Bug Fixes
   - build: Fix macos builds for versions < 12 (Anagh Kumar Baranwal)
   - dirtree: Fix performance with large directories of directories and `--fast-list` (Nick Craig-Wood)
   - operations
     - Fix deadlock when using `lsd`/`ls` with `--progress` (Nick Craig-Wood)
-    - Fix `.rclonelink` files not being converted back to symlinks (Nick Craig-Wood)
+    - Fix `.zclonelink` files not being converted back to symlinks (Nick Craig-Wood)
   - doc fixes (Dean Attali, Mahad, Nick Craig-Wood, Sawada Tsunayoshi, Vladislav Vorobev)
 - Local
   - Fix partial directory read for corrupted filesystem (Nick Craig-Wood)
@@ -2232,7 +2232,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.63.0 - 2023-06-30
 
-[See commits](https://github.com/rclone/rclone/compare/v1.62.0...v1.63.0)
+[See commits](/)
 
 - New backends
   - [Pikpak](/pikpak/) (wiserain)
@@ -2248,8 +2248,8 @@ instead of of `--size-only`, when `check` is not available.
     - This behaviour will also happen if the backend is wrapped, for example `sftp` wrapped with `crypt`.
   - The [s3](/s3/#s3-directory-markers), [azureblob](/azureblob/#azureblob-directory-markers) and [gcs](/googlecloudstorage/#gcs-directory-markers) backends now support directory markers so empty directories are supported (Jānis Bebrītis, Nick Craig-Wood)
   - The [--default-time](/docs/#default-time-time) flag now controls the unknown modification time of files/dirs (Nick Craig-Wood)
-    - If a file or directory does not have a modification time rclone can read then rclone will display this fixed time instead.
-    - For the old behaviour use `--default-time 0s` which will set this time to the time rclone started up.
+    - If a file or directory does not have a modification time zclone can read then zclone will display this fixed time instead.
+    - For the old behaviour use `--default-time 0s` which will set this time to the time zclone started up.
 - New Features
   - build
     - Modernise linters in use and fixup all affected code (albertony)
@@ -2264,7 +2264,7 @@ instead of of `--size-only`, when `check` is not available.
     - Add `size` to JSON logs when moving or copying an object (Nick Craig-Wood)
     - Allow boolean features to be enabled with `--disable !Feature` (Nick Craig-Wood)
   - genautocomplete: Rename to `completion` with alias to the old name (Nick Craig-Wood)
-  - librclone: Added example on using `librclone` with Go (alankrit)
+  - libzclone: Added example on using `libzclone` with Go (alankrit)
   - lsjson: Make `--stat` more efficient (Nick Craig-Wood)
   - operations
     - Implement `--multi-thread-write-buffer-size` for speed improvements on downloads (Paulo Schreiner)
@@ -2295,7 +2295,7 @@ instead of of `--size-only`, when `check` is not available.
 - Mount
   - Add `--mount-case-insensitive` to force the mount to be case insensitive (Nick Craig-Wood)
   - Removed unnecessary byte slice allocation for reads (Anagh Kumar Baranwal)
-  - Clarify rclone mount error when installed via homebrew (Nick Craig-Wood)
+  - Clarify zclone mount error when installed via homebrew (Nick Craig-Wood)
   - Added _netdev to the example mount so it gets treated as a remote-fs rather than local-fs (Anagh Kumar Baranwal)
 - Mount2
   - Updated go-fuse version (Anagh Kumar Baranwal)
@@ -2309,7 +2309,7 @@ instead of of `--size-only`, when `check` is not available.
   - Fix backends being Shutdown too early when startup takes a long time (Nick Craig-Wood)
 - Local
   - Fix filtering of symlinks with `-l`/`--links` flag (Nick Craig-Wood)
-  - Fix /path/to/file.rclonelink when `-l`/`--links` is in use (Nick Craig-Wood)
+  - Fix /path/to/file.zclonelink when `-l`/`--links` is in use (Nick Craig-Wood)
   - Fix crash with `--metadata` on Android (Nick Craig-Wood)
 - Cache
   - Fix backends shutting down when in use when used via the rc (Nick Craig-Wood)
@@ -2353,7 +2353,7 @@ instead of of `--size-only`, when `check` is not available.
 - Onedrive
   - Add `--onedrive-av-override` flag to download files flagged as virus (Nick Craig-Wood)
   - Fix quickxorhash on 32 bit architectures (Nick Craig-Wood)
-  - Report any list errors during `rclone cleanup` (albertony)
+  - Report any list errors during `zclone cleanup` (albertony)
 - Putio
   - Fix uploading to the wrong object on Update with overridden remote name (Nick Craig-Wood)
   - Fix modification times not being preserved for server side copy and move (Nick Craig-Wood)
@@ -2403,7 +2403,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.62.2 - 2023-03-16
 
-[See commits](https://github.com/rclone/rclone/compare/v1.62.1...v1.62.2)
+[See commits](/)
 
 - Bug Fixes
   - docker volume plugin: Add missing fuse3 dependency (Nick Craig-Wood)
@@ -2413,7 +2413,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.62.1 - 2023-03-15
 
-[See commits](https://github.com/rclone/rclone/compare/v1.62.0...v1.62.1)
+[See commits](/)
 
 - Bug Fixes
   - docker: Add missing fuse3 dependency (cycneuramus)
@@ -2422,7 +2422,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.62.0 - 2023-03-14
 
-[See commits](https://github.com/rclone/rclone/compare/v1.61.0...v1.62.0)
+[See commits](/)
 
 - New Features
   - accounting: Make checkers show what they are doing (Nick Craig-Wood)
@@ -2518,15 +2518,15 @@ instead of of `--size-only`, when `check` is not available.
   - Allow SPN (service principal name) to be configured (Nick Craig-Wood)
   - Check smb connection is closed (happyxhw)
 - Storj
-  - Implement `rclone link` (Kaloyan Raev)
-  - Implement `rclone purge` (Kaloyan Raev)
+  - Implement `zclone link` (Kaloyan Raev)
+  - Implement `zclone purge` (Kaloyan Raev)
   - Update satellite urls and labels (Kaloyan Raev)
 - WebDAV
   - Fix interop with davrods server (Nick Craig-Wood)
 
 ## v1.61.1 - 2022-12-23
 
-[See commits](https://github.com/rclone/rclone/compare/v1.61.0...v1.61.1)
+[See commits](/)
 
 - Bug Fixes
   - docs:
@@ -2547,7 +2547,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.61.0 - 2022-12-20
 
-[See commits](https://github.com/rclone/rclone/compare/v1.60.0...v1.61.0)
+[See commits](/)
 
 - New backends
   - New S3 providers
@@ -2555,7 +2555,7 @@ instead of of `--size-only`, when `check` is not available.
 - New Features
   - build: Add vulnerability testing using govulncheck (albertony)
   - cmd: Enable `SIGINFO` (Ctrl-T) handler on FreeBSD, NetBSD, OpenBSD and Dragonfly BSD (x3-apptech)
-  - config: Add [config/setpath](/rc/#config-setpath) for setting config path via rc/librclone (Nick Craig-Wood)
+  - config: Add [config/setpath](/rc/#config-setpath) for setting config path via rc/libzclone (Nick Craig-Wood)
   - dedupe
     - Count Checks in the stats while scanning for duplicates (Nick Craig-Wood)
     - Make dedupe obey the filters (Nick Craig-Wood)
@@ -2569,7 +2569,7 @@ instead of of `--size-only`, when `check` is not available.
     - Add global flag `--color` to control terminal colors (Kevin Verstaen)
   - fspath: Allow unicode numbers and letters in remote names (albertony)
   - lib/file: Improve error message for creating dir on non-existent network host on windows (albertony)
-  - lib/http: Finish port of rclone servers to `lib/http` (Tom Mombourquette, Nick Craig-Wood)
+  - lib/http: Finish port of zclone servers to `lib/http` (Tom Mombourquette, Nick Craig-Wood)
   - lib/oauthutil: Improved usability of config flows needing web browser (Ole Frost)
   - ncdu
     - Add support for modification time (albertony)
@@ -2577,7 +2577,7 @@ instead of of `--size-only`, when `check` is not available.
     - Rework to use tcell directly instead of the termbox wrapper (eNV25)
   - rc: Add commands to set [GC Percent](/rc/#debug-set-gc-percent) & [Memory Limit](/rc/#debug-set-soft-memory-limit) (go 1.19+) (Anagh Kumar Baranwal)
   - rcat: Preserve metadata when Copy falls back to Rcat (Nick Craig-Wood)
-  - rcd: Refactor rclone rc server to use `lib/http` (Nick Craig-Wood)
+  - rcd: Refactor zclone rc server to use `lib/http` (Nick Craig-Wood)
   - rcserver: Avoid generating default credentials with htpasswd (Kamui)
   - restic: Refactor to use `lib/http` (Nolan Woods)
   - serve http: Support unix sockets and multiple listeners (Tom Mombourquette)
@@ -2642,7 +2642,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.60.1 - 2022-11-17
 
-[See commits](https://github.com/rclone/rclone/compare/v1.60.0...v1.60.1)
+[See commits](/)
 
 - Bug Fixes
   - lib/cache: Fix alias backend shutting down too soon (Nick Craig-Wood)
@@ -2651,10 +2651,10 @@ instead of of `--size-only`, when `check` is not available.
     - Update faq.md with bisync (Samuel Johnson)
     - Corrected download links in windows install docs (coultonluke)
     - Add direct download link for windows arm64 (albertony)
-    - Remove link to rclone slack as it is no longer supported (Nick Craig-Wood)
+    - Remove link to zclone slack as it is no longer supported (Nick Craig-Wood)
     - Faq: how to use a proxy server that requires a username and password (asdffdsazqqq)
     - Oracle-object-storage: doc fix (Manoj Ghosh)
-    - Fix typo `remove` in rclone_serve_restic command (Joda Stößer)
+    - Fix typo `remove` in zclone_serve_restic command (Joda Stößer)
     - Fix character that was incorrectly interpreted as markdown (Clément Notin)
 - VFS
   - Fix deadlock caused by cache cleaner and upload finishing (Nick Craig-Wood)
@@ -2676,7 +2676,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.60.0 - 2022-10-21
 
-[See commits](https://github.com/rclone/rclone/compare/v1.59.0...v1.60.0)
+[See commits](/)
 
 - New backends
   - [Oracle object storage](/oracleobjectstorage/) (Manoj Ghosh)
@@ -2690,7 +2690,7 @@ instead of of `--size-only`, when `check` is not available.
     - Install.sh: fix arm-v7 download (Ole Frost)
   - fs: Warn the user when using an existing remote name without a colon (Nick Craig-Wood)
   - httplib: Add `--xxx-min-tls-version` option to select minimum TLS version for HTTP servers (Robert Newson)
-  - librclone: Add PHP bindings and test program (Jordi Gonzalez Muñoz)
+  - libzclone: Add PHP bindings and test program (Jordi Gonzalez Muñoz)
   - operations
     - Add `--server-side-across-configs` global flag for any backend (Nick Craig-Wood)
     - Optimise `--copy-dest` and `--compare-dest` (Nick Craig-Wood)
@@ -2752,7 +2752,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.59.2 - 2022-09-15
 
-[See commits](https://github.com/rclone/rclone/compare/v1.59.1...v1.59.2)
+[See commits](/)
 
 - Bug Fixes
   - config: Move locking to fix fatal error: concurrent map read and map write (Nick Craig-Wood)
@@ -2767,7 +2767,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.59.1 - 2022-08-08
 
-[See commits](https://github.com/rclone/rclone/compare/v1.59.0...v1.59.1)
+[See commits](/)
 
 - Bug Fixes
   - accounting: Fix panic in core/stats-reset with unknown group (Nick Craig-Wood)
@@ -2804,7 +2804,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.59.0 - 2022-07-09
 
-[See commits](https://github.com/rclone/rclone/compare/v1.58.0...v1.59.0)
+[See commits](/)
 
 - New backends
   - [Combine](/combine) multiple remotes in one directory tree (Nick Craig-Wood)
@@ -2816,7 +2816,7 @@ instead of of `--size-only`, when `check` is not available.
     - [Huawei OBS](/s3/#huawei-obs) (m00594701)
     - [IDrive e2](/s3/#idrive-e2) (vyloy)
 - New commands
-  - [test makefile](/commands/rclone_test_makefile/): Create a single file for testing (Nick Craig-Wood)
+  - [test makefile](/commands/zclone_test_makefile/): Create a single file for testing (Nick Craig-Wood)
 - New Features
   - [Metadata framework](/docs/#metadata) to read and write system and user metadata on backends (Nick Craig-Wood)
     - Implemented initially for `local`, `s3` and `internetarchive` backends
@@ -2865,7 +2865,7 @@ instead of of `--size-only`, when `check` is not available.
   - Fix fs cache unpin (Martin Czygan)
   - Set proper exit code for errors that are not low-level retried (e.g. size/timestamp changing) (albertony)
 - Mount
-  - Support `windows/arm64` (may still be problems - see [#5828](https://github.com/rclone/rclone/issues/5828)) (Nick Craig-Wood)
+  - Support `windows/arm64` (may still be problems - see [#5828](/)) (Nick Craig-Wood)
   - Log IO errors at ERROR level (Nick Craig-Wood)
   - Ignore `_netdev` mount argument (Hugal31)
 - VFS
@@ -2963,7 +2963,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.58.1 - 2022-04-29
 
-[See commits](https://github.com/rclone/rclone/compare/v1.58.0...v1.58.1)
+[See commits](/)
 
 - Bug Fixes
   - build: Update github.com/billziss-gh to github.com/winfsp (Nick Craig-Wood)
@@ -3005,7 +3005,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.58.0 - 2022-03-18
 
-[See commits](https://github.com/rclone/rclone/compare/v1.57.0...v1.58.0)
+[See commits](/)
 
 - New backends
   - [Akamai Netstorage](/netstorage) (Nil Alexandrov)
@@ -3015,7 +3015,7 @@ instead of of `--size-only`, when `check` is not available.
   - [bisync](/bisync/) - experimental bidirectional cloud sync (Ivan Andreev, Chris Nelson)
 - New Features
   - build
-    - Add `windows/arm64` build (`rclone mount` not supported yet) (Nick Craig-Wood)
+    - Add `windows/arm64` build (`zclone mount` not supported yet) (Nick Craig-Wood)
     - Raise minimum go version to go1.15 (Nick Craig-Wood)
   - config: Allow dot in remote names and improve config editing (albertony)
   - dedupe: Add quit as a choice in interactive mode (albertony)
@@ -3023,7 +3023,7 @@ instead of of `--size-only`, when `check` is not available.
   - filter: Add [`{{ regexp }}` syntax](/filtering/#regexp) to pattern matches (Nick Craig-Wood)
   - fshttp: Add prometheus metrics for HTTP status code (Michał Matczuk)
   - hashsum: Support creating hash from data received on stdin (albertony)
-  - librclone
+  - libzclone
     - Allow empty string or null input instead of empty json object (albertony)
     - Add support for mount commands (albertony)
   - operations: Add server-side moves to stats (Ole Frost)
@@ -3033,7 +3033,7 @@ instead of of `--size-only`, when `check` is not available.
 - Bug Fixes
   - build
     - Fix ARM architecture version in .deb packages after nfpm change (Nick Craig-Wood)
-    - Hard fork `github.com/jlaffaye/ftp` to fix `go get github.com/rclone/rclone` (Nick Craig-Wood)
+    - Hard fork `github.com/jlaffaye/ftp` to fix `go get zclone` (Nick Craig-Wood)
   - oauthutil: Fix crash when webbrowser requests `/robots.txt` (Nick Craig-Wood)
   - operations: Fix goroutine leak in case of copy retry (Ankur Gupta)
   - rc:
@@ -3117,7 +3117,7 @@ instead of of `--size-only`, when `check` is not available.
   - Fix multipart upload with `--no-head` flag (Nick Craig-Wood)
   - Simplify content length processing in s3 with download url (Logeshwaran Murugesan)
 - SFTP
-  - Add rclone to list of supported `md5sum`/`sha1sum` commands to look for (albertony)
+  - Add zclone to list of supported `md5sum`/`sha1sum` commands to look for (albertony)
   - Refactor so we only have one way of running remote commands (Nick Craig-Wood)
   - Fix timeout on hashing large files by sending keepalives (Nick Craig-Wood)
   - Fix unnecessary seeking when uploading and downloading files (Nick Craig-Wood)
@@ -3137,7 +3137,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.57.0 - 2021-11-01
 
-[See commits](https://github.com/rclone/rclone/compare/v1.56.0...v1.57.0)
+[See commits](/)
 
 - New backends
   - Sia: for Sia decentralized cloud (Ian Levesque, Matthew Sevey, Ivan Andreev)
@@ -3168,8 +3168,8 @@ instead of of `--size-only`, when `check` is not available.
   - lib/file: Improve error message when attempting to create dir on nonexistent drive on windows (albertony)
   - lib/http: Factor password hash salt into options with default (Nolan Woods)
   - lib/kv: Add key-value database api (Ivan Andreev)
-  - librclone
-    - Add `RcloneFreeString` function (albertony)
+  - libzclone
+    - Add `ZcloneFreeString` function (albertony)
     - Free strings in python example (albertony)
   - log: Optionally print pid in logs (Ivan Andreev)
   - ls: Introduce `--human-readable` global option to print human-readable sizes (albertony)
@@ -3192,7 +3192,7 @@ instead of of `--size-only`, when `check` is not available.
   - serve sftp: Fix generation of server keys on windows (albertony)
   - serve docker: Fix octal umask (Ivan Andreev)
 - Mount
-  - Enable rclone to be run as mount helper direct from the fstab (Ivan Andreev)
+  - Enable zclone to be run as mount helper direct from the fstab (Ivan Andreev)
   - Use procfs to validate mount on linux (Ivan Andreev)
   - Correctly daemonize for compatibility with automount (Ivan Andreev)
 - VFS
@@ -3234,8 +3234,8 @@ instead of of `--size-only`, when `check` is not available.
 - Jottacloud
   - Implement `SetModTime` to support modtime-only changes (albertony)
   - Improved error handling with `SetModTime` and corrupt files in general (albertony)
-  - Add support for `UserInfo` (`rclone config userinfo`) feature (albertony)
-  - Return direct download link from `rclone link` command (albertony)
+  - Add support for `UserInfo` (`zclone config userinfo`) feature (albertony)
+  - Return direct download link from `zclone link` command (albertony)
 - Koofr
   - Create direct share link (Dmitry Bogatov)
 - Pcloud
@@ -3247,7 +3247,7 @@ instead of of `--size-only`, when `check` is not available.
 - S3
   - Add support to use CDN URL to download the file (Logeshwaran)
   - Add AWS Snowball Edge to providers examples (r0kk3rz)
-  - Use a combination of SDK retries and rclone retries (Nick Craig-Wood)
+  - Use a combination of SDK retries and zclone retries (Nick Craig-Wood)
   - Fix IAM Role for Service Account not working and other auth problems (Nick Craig-Wood)
   - Fix `shared_credentials_file` auth after reverting incorrect fix (Nick Craig-Wood)
   - Fix corrupted on transfer: sizes differ 0 vs xxxx with Ceph (Nick Craig-Wood)
@@ -3263,7 +3263,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.56.2 - 2021-10-01
 
-[See commits](https://github.com/rclone/rclone/compare/v1.56.1...v1.56.2)
+[See commits](/)
 
 - Bug Fixes
   - serve http: Re-add missing auth to http service (Nolan Woods)
@@ -3273,7 +3273,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.56.1 - 2021-09-19
 
-[See commits](https://github.com/rclone/rclone/compare/v1.56.0...v1.56.1)
+[See commits](/)
 
 - Bug Fixes
   - accounting: Fix maximum bwlimit by scaling scale max token bucket size (Nick Craig-Wood)
@@ -3310,26 +3310,26 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.56.0 - 2021-07-20
 
-[See commits](https://github.com/rclone/rclone/compare/v1.55.0...v1.56.0)
+[See commits](/)
 
 - New backends
   - [Uptobox](/uptobox/) (buengese)
 - New commands
-  - [serve docker](/commands/rclone_serve_docker/) (Antoine GIRARD) (Ivan Andreev)
+  - [serve docker](/commands/zclone_serve_docker/) (Antoine GIRARD) (Ivan Andreev)
     - and accompanying [docker volume plugin](/docker/)
-  - [checksum](/commands/rclone_checksum/) to check files against a file of checksums (Ivan Andreev)
-    - this is also available as `rclone md5sum -C` etc
-  - [config touch](/commands/rclone_config_touch/): ensure config exists at configured location (albertony)
-  - [test changenotify](/commands/rclone_test_changenotify/): command to help debugging changenotify (Nick Craig-Wood)
+  - [checksum](/commands/zclone_checksum/) to check files against a file of checksums (Ivan Andreev)
+    - this is also available as `zclone md5sum -C` etc
+  - [config touch](/commands/zclone_config_touch/): ensure config exists at configured location (albertony)
+  - [test changenotify](/commands/zclone_test_changenotify/): command to help debugging changenotify (Nick Craig-Wood)
 - Deprecations
   - `dbhashsum`: Remove command deprecated a year ago (Ivan Andreev)
   - `cache`: Deprecate cache backend (Ivan Andreev)
 - New Features
   - rework config system so it can be used non-interactively via cli and rc API.
-    - See docs in [config create](/commands/rclone_config_create/)
+    - See docs in [config create](/commands/zclone_config_create/)
     - This is a very big change to all the backends so may cause breakages - please file bugs!
-  - librclone - export the rclone RC as a C library (lewisxy) (Nick Craig-Wood)
-    - Link a C-API rclone shared object into your project
+  - libzclone - export the zclone RC as a C library (lewisxy) (Nick Craig-Wood)
+    - Link a C-API zclone shared object into your project
     - Use the RC as an in memory interface
     - Python example supplied
     - Also supports Android and gomobile
@@ -3338,11 +3338,11 @@ instead of of `--size-only`, when `check` is not available.
     - Make `--dump` imply `-vv` (Alex Chen)
     - Use binary prefixes for size and rate units (albertony)
     - Use decimal prefixes for counts (albertony)
-    - Add google search widget to rclone.org (Ivan Andreev)
+    - Add google search widget to zclone.org (Ivan Andreev)
   - accounting: Calculate rolling average speed (Haochen Tong)
   - atexit: Terminate with non-zero status after receiving signal (Michael Hanselmann)
   - build
-    - Only run event-based workflow scripts under rclone repo with manual override (Mathieu Carbou)
+    - Only run event-based workflow scripts under zclone repo with manual override (Mathieu Carbou)
     - Add Android build with gomobile (x0b)
   - check: Log the hash in use like cryptcheck does (Nick Craig-Wood)
   - version: Print os/version, kernel and bitness (Ivan Andreev)
@@ -3453,7 +3453,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.55.1 - 2021-04-26
 
-[See commits](https://github.com/rclone/rclone/compare/v1.55.0...v1.55.1)
+[See commits](/)
 
 - Bug Fixes
   - selfupdate
@@ -3476,7 +3476,7 @@ instead of of `--size-only`, when `check` is not available.
   - Don't open browser when service account... (Ansh Mittal)
 - Dropbox
   - Add missing team_data.member scope for use with --impersonate (Nick Craig-Wood)
-  - Fix About after scopes changes - rclone config reconnect needed (Nick Craig-Wood)
+  - Fix About after scopes changes - zclone config reconnect needed (Nick Craig-Wood)
   - Fix Unable to decrypt returned paths from changeNotify (Nick Craig-Wood)
 - FTP
   - Fix implicit TLS (Ivan Andreev)
@@ -3491,14 +3491,14 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.55.0 - 2021-03-31
 
-[See commits](https://github.com/rclone/rclone/compare/v1.54.0...v1.55.0)
+[See commits](/)
 
 - New commands
-  - [selfupdate](/commands/rclone_selfupdate/) (Ivan Andreev)
-    - Allows rclone to update itself in-place or via a package (using `--package` flag)
+  - [selfupdate](/commands/zclone_selfupdate/) (Ivan Andreev)
+    - Allows zclone to update itself in-place or via a package (using `--package` flag)
     - Reads cryptographically signed signatures for non beta releases
     - Works on all OSes.
-  - [test](/commands/rclone_test/) - these are test commands - use with care!
+  - [test](/commands/zclone_test/) - these are test commands - use with care!
     - `histogram` - Makes a histogram of file name characters.
     - `info` - Discovers file name or other limitations for paths.
     - `makefiles` - Make a random file hierarchy for testing.
@@ -3519,7 +3519,7 @@ instead of of `--size-only`, when `check` is not available.
     - Use `GO386=softfloat` instead of deprecated `GO386=387` for 386 builds (Nick Craig-Wood)
     - Disable IOS builds for the time being (Nick Craig-Wood)
     - Androids builds made with up to date NDK (x0b)
-    - Add an rclone user to the Docker image but don't use it by default (cynthia kwok)
+    - Add an zclone user to the Docker image but don't use it by default (cynthia kwok)
   - dedupe: Make largest directory primary to minimize data moved (Saksham Khanna)
   - config
     - Wrap config library in an interface (Fionera)
@@ -3548,7 +3548,7 @@ instead of of `--size-only`, when `check` is not available.
     - Avoid +Inf value for speed in `core/stats` (albertony)
     - Add a full set of stats to `core/stats` (Nick Craig-Wood)
     - Allow `fs=` params to be a JSON blob (Nick Craig-Wood)
-  - rcd: Added systemd notification during the `rclone rcd` command. (Naveen Honest Raj)
+  - rcd: Added systemd notification during the `zclone rcd` command. (Naveen Honest Raj)
   - rmdirs: Make `--rmdirs` obey the filters (Nick Craig-Wood)
   - version: Show build tags and type of executable (Ivan Andreev)
 - Bug Fixes
@@ -3640,12 +3640,12 @@ instead of of `--size-only`, when `check` is not available.
 - Yandex
   - Make `--timeout 0` work properly (Nick Craig-Wood)
 - Zoho
-  - Replace client id - you will need to `rclone config reconnect` after this (buengese)
+  - Replace client id - you will need to `zclone config reconnect` after this (buengese)
   - Add forgotten setupRegion() to NewFs - this finally fixes regions other than EU (buengese)
 
 ## v1.54.1 - 2021-03-08
 
-[See commits](https://github.com/rclone/rclone/compare/v1.54.0...v1.54.1)
+[See commits](/)
 
 - Bug Fixes
   - accounting: Fix --bwlimit when up or down is off (Nick Craig-Wood)
@@ -3682,7 +3682,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.54.0 - 2021-02-02
 
-[See commits](https://github.com/rclone/rclone/compare/v1.53.0...v1.54.0)
+[See commits](/)
 
 - New backends
   - Compression remote (experimental) (buengese)
@@ -3700,7 +3700,7 @@ instead of of `--size-only`, when `check` is not available.
   - Enhance systemd integration (Hekmon)
     - log level identification, manual activation with flag, automatic systemd launch detection
     - Don't compile systemd log integration for non unix systems (Benjamin Gustin)
-  - Add a `--download` flag to md5sum/sha1sum/hashsum to force rclone to download and hash files locally (lostheli)
+  - Add a `--download` flag to md5sum/sha1sum/hashsum to force zclone to download and hash files locally (lostheli)
   - Add `--progress-terminal-title` to print ETA to terminal title (LaSombra)
   - Make backend env vars show in help as the defaults for backend flags (Nick Craig-Wood)
   - build
@@ -3722,7 +3722,7 @@ instead of of `--size-only`, when `check` is not available.
     - Add toggle option for average s3ize in directory - key 'a' (Adam Plánský)
     - Add empty folder flag into ncdu browser (Adam Plánský)
     - Add `!` (error) and `.` (unreadable) file flags to go with `e` (empty) (Nick Craig-Wood)
-  - obscure: Make `rclone obscure -` ignore newline at end of line (Nick Craig-Wood)
+  - obscure: Make `zclone obscure -` ignore newline at end of line (Nick Craig-Wood)
   - operations
     - Add logs when need to upload files to set mod times (Nick Craig-Wood)
     - Move and copy log name of the destination object in verbose (Adam Plánský)
@@ -3764,7 +3764,7 @@ instead of of `--size-only`, when `check` is not available.
 - Mount
   - Update systemd status with cache stats (Hekmon)
   - Disable bazil/fuse based mount on macOS (Nick Craig-Wood)
-    - Make `rclone mount` actually run `rclone cmount` under macOS (Nick Craig-Wood)
+    - Make `zclone mount` actually run `zclone cmount` under macOS (Nick Craig-Wood)
   - Implement mknod to make NFS file creation work (Nick Craig-Wood)
   - Make sure we don't call umount more than once (Nick Craig-Wood)
   - More user friendly mounting as network drive on windows (albertony)
@@ -3801,7 +3801,7 @@ instead of of `--size-only`, when `check` is not available.
   - Set Features ReadMimeType to false as Object.MimeType not supported (Nick Craig-Wood)
   - Fix case-insensitive NewObject, test metadata detection (Ivan Andreev)
 - Drive
-  - Implement `rclone backend copyid` command for copying files by ID (Nick Craig-Wood)
+  - Implement `zclone backend copyid` command for copying files by ID (Nick Craig-Wood)
   - Added flag `--drive-stop-on-download-limit` to stop transfers when the download limit is exceeded (Anagh Kumar Baranwal)
   - Implement CleanUp workaround for team drives (buengese)
   - Allow shortcut resolution and creation to be retried (Nick Craig-Wood)
@@ -3810,7 +3810,7 @@ instead of of `--size-only`, when `check` is not available.
 - Dropbox
   - Add support for viewing shared files and folders (buengese)
   - Enable short lived access tokens (Nick Craig-Wood)
-  - Implement IDer on Objects so `rclone lsf` etc can read the IDs (buengese)
+  - Implement IDer on Objects so `zclone lsf` etc can read the IDs (buengese)
   - Set Features ReadMimeType to false as Object.MimeType not supported (Nick Craig-Wood)
   - Make malformed_path errors from too long files not retriable (Nick Craig-Wood)
   - Test file name length before upload to fix upload loop (Nick Craig-Wood)
@@ -3821,7 +3821,7 @@ instead of of `--size-only`, when `check` is not available.
   - Make `--tpslimit apply` (Nick Craig-Wood)
 - Google Cloud Storage
   - Storage class object header support (Laurens Janssen)
-  - Fix anonymous client to use rclone's HTTP client (Nick Craig-Wood)
+  - Fix anonymous client to use zclone's HTTP client (Nick Craig-Wood)
   - Fix `Entry doesn't belong in directory "" (same as directory) - ignoring` (Nick Craig-Wood)
 - Googlephotos
   - New flag `--gphotos-include-archived` to show archived photos as well (Nicolas Rueff)
@@ -3854,7 +3854,7 @@ instead of of `--size-only`, when `check` is not available.
   - Fix finding directories in a case insensitive way (Nick Craig-Wood)
 - Qingstor
   - Fix error propagation in CleanUp (Nick Craig-Wood)
-  - Fix rclone cleanup (Nick Craig-Wood)
+  - Fix zclone cleanup (Nick Craig-Wood)
 - S3
   - Added `--s3-disable-http2` to disable http/2 (Anagh Kumar Baranwal)
   - Complete SSE-C implementation (Nick Craig-Wood)
@@ -3889,7 +3889,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.53.4 - 2021-01-20
 
-[See commits](https://github.com/rclone/rclone/compare/v1.53.3...v1.53.4)
+[See commits](/)
 
 - Bug Fixes
   - accounting: Fix data race in Transferred() (Maciej Zimnoch)
@@ -3933,12 +3933,12 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.53.3 - 2020-11-19
 
-[See commits](https://github.com/rclone/rclone/compare/v1.53.2...v1.53.3)
+[See commits](/)
 
 - Bug Fixes
   - random: Fix incorrect use of math/rand instead of crypto/rand CVE-2020-28924 (Nick Craig-Wood)
-    - Passwords you have generated with `rclone config` may be insecure
-    - See [issue #4783](https://github.com/rclone/rclone/issues/4783) for more details and a checking tool
+    - Passwords you have generated with `zclone config` may be insecure
+    - See [issue #4783](/) for more details and a checking tool
   - random: Seed math/rand in one place with crypto strong seed (Nick Craig-Wood)
 - VFS
   - Fix vfs/refresh calls with fs= parameter (Nick Craig-Wood)
@@ -3947,7 +3947,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.53.2 - 2020-10-26
 
-[See commits](https://github.com/rclone/rclone/compare/v1.53.1...v1.53.2)
+[See commits](/)
 
 - Bug Fixes
   - accounting
@@ -3997,7 +3997,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.53.1 - 2020-09-13
 
-[See commits](https://github.com/rclone/rclone/compare/v1.53.0...v1.53.1)
+[See commits](/)
 
 - Bug Fixes
   - accounting: Remove new line from end of --stats-one-line display (Nick Craig-Wood)
@@ -4006,7 +4006,7 @@ instead of of `--size-only`, when `check` is not available.
     - Fix docs (Nick Craig-Wood)
   - docs
     - Note --log-file does append (Nick Craig-Wood)
-    - Add full stops for consistency in rclone --help (edwardxml)
+    - Add full stops for consistency in zclone --help (edwardxml)
     - Add Tencent COS to s3 provider list (wjielai)
     - Updated mount command to reflect that it requires Go 1.13 or newer (Evan Harris)
     - jottacloud: Mention that uploads from local disk will not need to cache files to disk for md5 calculation (albertony)
@@ -4027,10 +4027,10 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.53.0 - 2020-09-02
 
-[See commits](https://github.com/rclone/rclone/compare/v1.52.0...v1.53.0)
+[See commits](/)
 
 - New Features
-  - The [VFS layer](/commands/rclone_mount/#vfs-virtual-file-system) was heavily reworked for this release - see below for more details
+  - The [VFS layer](/commands/zclone_mount/#vfs-virtual-file-system) was heavily reworked for this release - see below for more details
   - Interactive mode [-i/--interactive](/docs/#interactive) for destructive operations (fishbullet)
   - Add [--bwlimit-file](/docs/#bwlimit-file-bwtimetable) flag to limit speeds of individual file transfers (Nick Craig-Wood)
   - Transfers are sorted by start time in the stats and progress output (Max Sum)
@@ -4041,42 +4041,42 @@ instead of of `--size-only`, when `check` is not available.
     - Build with go1.15.x by default (Nick Craig-Wood)
     - Drop macOS 386 build as it is no longer supported by go1.15 (Nick Craig-Wood)
     - Add ARMv7 to the supported builds (Nick Craig-Wood)
-    - Enable `rclone cmount` on macOS (Nick Craig-Wood)
-    - Make rclone build with gccgo (Nick Craig-Wood)
-    - Make rclone build with wasm (Nick Craig-Wood)
+    - Enable `zclone cmount` on macOS (Nick Craig-Wood)
+    - Make zclone build with gccgo (Nick Craig-Wood)
+    - Make zclone build with wasm (Nick Craig-Wood)
     - Change beta numbering to be semver compatible (Nick Craig-Wood)
     - Add file properties and icon to Windows executable (albertony)
-    - Add experimental interface for integrating rclone into browsers (Nick Craig-Wood)
+    - Add experimental interface for integrating zclone into browsers (Nick Craig-Wood)
   - lib: Add file name compression (Klaus Post)
   - rc
-    - Allow installation and use of plugins and test plugins with rclone-webui (Chaitanya Bankanhal)
+    - Allow installation and use of plugins and test plugins with zclone-webui (Chaitanya Bankanhal)
     - Add reverse proxy pluginsHandler for serving plugins (Chaitanya Bankanhal)
     - Add `mount/listmounts` option for listing current mounts (Chaitanya Bankanhal)
     - Add `operations/uploadfile` to upload a file through rc using encoding multipart/form-data (Chaitanya Bankanhal)
-    - Add `core/command` to execute rclone terminal commands. (Chaitanya Bankanhal)
-  - `rclone check`
+    - Add `core/command` to execute zclone terminal commands. (Chaitanya Bankanhal)
+  - `zclone check`
     - Add reporting of filenames for same/missing/changed (Nick Craig-Wood)
     - Make check command obey `--dry-run`/`-i`/`--interactive` (Nick Craig-Wood)
     - Make check do `--checkers` files concurrently (Nick Craig-Wood)
     - Retry downloads if they fail when using the `--download` flag (Nick Craig-Wood)
     - Make it show stats by default (Nick Craig-Wood)
-  - `rclone obscure`: Allow obscure command to accept password on STDIN (David Ibarra)
-  - `rclone config`
-    - Set RCLONE_CONFIG_DIR for use in config files and subprocesses (Nick Craig-Wood)
+  - `zclone obscure`: Allow obscure command to accept password on STDIN (David Ibarra)
+  - `zclone config`
+    - Set ZCLONE_CONFIG_DIR for use in config files and subprocesses (Nick Craig-Wood)
     - Reject remote names starting with a dash. (jtagcat)
-  - `rclone cryptcheck`: Add reporting of filenames for same/missing/changed (Nick Craig-Wood)
-  - `rclone dedupe`: Make it obey the `--size-only` flag for duplicate detection (Nick Craig-Wood)
-  - `rclone link`: Add `--expire` and `--unlink` flags (Roman Kredentser)
-  - `rclone mkdir`: Warn when using mkdir on remotes which can't have empty directories (Nick Craig-Wood)
-  - `rclone rc`: Allow JSON parameters to simplify command line usage (Nick Craig-Wood)
-  - `rclone serve ftp`
+  - `zclone cryptcheck`: Add reporting of filenames for same/missing/changed (Nick Craig-Wood)
+  - `zclone dedupe`: Make it obey the `--size-only` flag for duplicate detection (Nick Craig-Wood)
+  - `zclone link`: Add `--expire` and `--unlink` flags (Roman Kredentser)
+  - `zclone mkdir`: Warn when using mkdir on remotes which can't have empty directories (Nick Craig-Wood)
+  - `zclone rc`: Allow JSON parameters to simplify command line usage (Nick Craig-Wood)
+  - `zclone serve ftp`
     - Don't compile on < go1.13 after dependency update (Nick Craig-Wood)
     - Add error message if auth proxy fails (Nick Craig-Wood)
     - Use refactored goftp.io/server library for binary shrink (Nick Craig-Wood)
-  - `rclone serve restic`: Expose interfaces so that rclone can be used as a library from within restic (Jack)
-  - `rclone sync`: Add `--track-renames-strategy leaf` (Nick Craig-Wood)
-  - `rclone touch`: Add ability to set nanosecond resolution times (Nick Craig-Wood)
-  - `rclone tree`: Remove `-i` shorthand for `--noindent` as it conflicts with `-i`/`--interactive` (Nick Craig-Wood)
+  - `zclone serve restic`: Expose interfaces so that zclone can be used as a library from within restic (Jack)
+  - `zclone sync`: Add `--track-renames-strategy leaf` (Nick Craig-Wood)
+  - `zclone touch`: Add ability to set nanosecond resolution times (Nick Craig-Wood)
+  - `zclone tree`: Remove `-i` shorthand for `--noindent` as it conflicts with `-i`/`--interactive` (Nick Craig-Wood)
 - Bug Fixes
   - accounting
     - Fix documentation for `speed`/`speedAvg` (Nick Craig-Wood)
@@ -4084,12 +4084,12 @@ instead of of `--size-only`, when `check` is not available.
     - Fix deadlock in stats printing (Nick Craig-Wood)
   - build
     - Fix file handle leak in GitHub release tool (Garrett Squire)
-  - `rclone check`: Fix successful retries with `--download` counting errors (Nick Craig-Wood)
-  - `rclone dedupe`: Fix logging to be easier to understand (Nick Craig-Wood)
+  - `zclone check`: Fix successful retries with `--download` counting errors (Nick Craig-Wood)
+  - `zclone dedupe`: Fix logging to be easier to understand (Nick Craig-Wood)
 - Mount
   - Warn macOS users that mount implementation is changing (Nick Craig-Wood)
-    - to test the new implementation use `rclone cmount` instead of `rclone mount`
-    - this is because the library rclone uses has dropped macOS support
+    - to test the new implementation use `zclone cmount` instead of `zclone mount`
+    - this is because the library zclone uses has dropped macOS support
   - rc interface
     - Add call for unmount all (Chaitanya Bankanhal)
     - Make `mount/mount` remote control take vfsOpt option (Nick Craig-Wood)
@@ -4133,18 +4133,18 @@ instead of of `--size-only`, when `check` is not available.
   - Don't compile on < go1.13 after dependency update (Nick Craig-Wood)
 - B2
   - Implement server-side copy for files > 5GB (Nick Craig-Wood)
-  - Cancel in progress multipart uploads and copies on rclone exit (Nick Craig-Wood)
-  - Note that b2's encoding now allows \ but rclone's hasn't changed (Nick Craig-Wood)
+  - Cancel in progress multipart uploads and copies on zclone exit (Nick Craig-Wood)
+  - Note that b2's encoding now allows \ but zclone's hasn't changed (Nick Craig-Wood)
   - Fix transfers when using download_url (Nick Craig-Wood)
 - Box
-  - Implement rclone cleanup (buengese)
-  - Cancel in progress multipart uploads and copies on rclone exit (Nick Craig-Wood)
+  - Implement zclone cleanup (buengese)
+  - Cancel in progress multipart uploads and copies on zclone exit (Nick Craig-Wood)
   - Allow authentication with access token (David)
 - Chunker
   - Make any created backends be cached to fix rc problems (Nick Craig-Wood)
 - Drive
-  - Add `rclone backend drives` to list shared drives (teamdrives) (Nick Craig-Wood)
-  - Implement `rclone backend untrash` (Nick Craig-Wood)
+  - Add `zclone backend drives` to list shared drives (teamdrives) (Nick Craig-Wood)
+  - Implement `zclone backend untrash` (Nick Craig-Wood)
   - Work around drive bug which didn't set modtime of copied docs (Nick Craig-Wood)
   - Added `--drive-starred-only` to only show starred files (Jay McEntire)
   - Deprecate `--drive-alternate-export` as it is no longer needed (themylogin)
@@ -4152,7 +4152,7 @@ instead of of `--size-only`, when `check` is not available.
   - Fix "panic: send on closed channel" when recycling dir entries (Nick Craig-Wood)
 - Dropbox
   - Add copyright detector info in limitations section in the docs (Alex Guerrero)
-  - Fix `rclone link` by removing expires parameter (Nick Craig-Wood)
+  - Fix `zclone link` by removing expires parameter (Nick Craig-Wood)
 - Fichier
   - Detect Flood detected: IP Locked error and sleep for 30s (Nick Craig-Wood)
 - FTP
@@ -4165,22 +4165,22 @@ instead of of `--size-only`, when `check` is not available.
   - Bring back legacy authentication for use with whitelabel versions (buengese)
   - Switch to new api root - also implement a very ugly workaround for the DirMove failures (buengese)
 - Onedrive
-  - Rework cancel of multipart uploads on rclone exit (Nick Craig-Wood)
-  - Implement rclone cleanup (Nick Craig-Wood)
+  - Rework cancel of multipart uploads on zclone exit (Nick Craig-Wood)
+  - Implement zclone cleanup (Nick Craig-Wood)
   - Add `--onedrive-no-versions` flag to remove old versions (Nick Craig-Wood)
 - Pcloud
-  - Implement `rclone link` for public link creation (buengese)
+  - Implement `zclone link` for public link creation (buengese)
 - Qingstor
-  - Cancel in progress multipart uploads on rclone exit (Nick Craig-Wood)
+  - Cancel in progress multipart uploads on zclone exit (Nick Craig-Wood)
 - S3
   - Preserve metadata when doing multipart copy (Nick Craig-Wood)
-  - Cancel in progress multipart uploads and copies on rclone exit (Nick Craig-Wood)
-  - Add `rclone link` for public link sharing (Roman Kredentser)
-  - Add `rclone backend restore` command to restore objects from GLACIER (Nick Craig-Wood)
-  - Add `rclone cleanup` and `rclone backend cleanup` to clean unfinished multipart uploads (Nick Craig-Wood)
-  - Add `rclone backend list-multipart-uploads` to list unfinished multipart uploads (Nick Craig-Wood)
+  - Cancel in progress multipart uploads and copies on zclone exit (Nick Craig-Wood)
+  - Add `zclone link` for public link sharing (Roman Kredentser)
+  - Add `zclone backend restore` command to restore objects from GLACIER (Nick Craig-Wood)
+  - Add `zclone cleanup` and `zclone backend cleanup` to clean unfinished multipart uploads (Nick Craig-Wood)
+  - Add `zclone backend list-multipart-uploads` to list unfinished multipart uploads (Nick Craig-Wood)
   - Add `--s3-max-upload-parts` support (Kamil Trzciński)
-  - Add `--s3-no-check-bucket` for minimising rclone transactions and perms (Nick Craig-Wood)
+  - Add `--s3-no-check-bucket` for minimising zclone transactions and perms (Nick Craig-Wood)
   - Add `--s3-profile` and `--s3-shared-credentials-file` options (Nick Craig-Wood)
   - Use regional s3 us-east-1 endpoint (David)
   - Add Scaleway provider (Vincent Feltz)
@@ -4204,7 +4204,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.52.3 - 2020-08-07
 
-[See commits](https://github.com/rclone/rclone/compare/v1.52.2...v1.52.3)
+[See commits](/)
 
 - Bug Fixes
   - docs
@@ -4234,7 +4234,7 @@ instead of of `--size-only`, when `check` is not available.
 
 ## v1.52.2 - 2020-06-24
 
-[See commits](https://github.com/rclone/rclone/compare/v1.52.1...v1.52.2)
+[See commits](/)
 
 - Bug Fixes
   - build
@@ -4257,11 +4257,11 @@ instead of of `--size-only`, when `check` is not available.
 - Tardigrade
   - Upgrade to uplink v1.1.1 (Caleb Case)
 - WebDAV
-  - Fix free/used display for rclone about/df for certain backends (Nick Craig-Wood)
+  - Fix free/used display for zclone about/df for certain backends (Nick Craig-Wood)
 
 ## v1.52.1 - 2020-06-10
 
-[See commits](https://github.com/rclone/rclone/compare/v1.52.0...v1.52.1)
+[See commits](/)
 
 - Bug Fixes
   - lib/file: Fix SetSparse on Windows 7 which fixes downloads of files > 250MB (Nick Craig-Wood)
@@ -4290,14 +4290,14 @@ instead of of `--size-only`, when `check` is not available.
   - Fix --header-upload (Nick Craig-Wood)
 - Tardigrade
   - Fix listing bug by upgrading to v1.0.7
-  - Set UserAgent to rclone (Caleb Case)
+  - Set UserAgent to zclone (Caleb Case)
 
 ## v1.52.0 - 2020-05-27
 
 Special thanks to Martin Michlmayr for proof reading and correcting
 all the docs and Edward Barker for helping re-write the front page.
 
-[See commits](https://github.com/rclone/rclone/compare/v1.51.0...v1.52.0)
+[See commits](/)
 
 - New backends
   - [Tardigrade](/tardigrade/) backend for use with storj.io (Caleb Case)
@@ -4305,8 +4305,8 @@ all the docs and Edward Barker for helping re-write the front page.
   - [Seafile](/seafile) for Seafile server (Fred @creativeprojects)
 - New commands
   - backend: command for backend-specific commands (see backends) (Nick Craig-Wood)
-  - cachestats: Deprecate in favour of `rclone backend stats cache:` (Nick Craig-Wood)
-  - dbhashsum: Deprecate in favour of `rclone hashsum DropboxHash` (Nick Craig-Wood)
+  - cachestats: Deprecate in favour of `zclone backend stats cache:` (Nick Craig-Wood)
+  - dbhashsum: Deprecate in favour of `zclone hashsum DropboxHash` (Nick Craig-Wood)
 - New Features
   - Add `--header-download` and `--header-upload` flags for setting HTTP headers when uploading/downloading (Tim Gallant)
   - Add `--header` flag to add HTTP headers to every HTTP transaction (Nick Craig-Wood)
@@ -4342,7 +4342,7 @@ all the docs and Edward Barker for helping re-write the front page.
   - rc
     - Add `-o`/`--opt` and `-a`/`--arg` for more structured input (Nick Craig-Wood)
     - Implement `backend/command` for running backend-specific commands remotely (Nick Craig-Wood)
-    - Add `mount/mount` command for starting `rclone mount` via the API (Chaitanya)
+    - Add `mount/mount` command for starting `zclone mount` via the API (Chaitanya)
   - rcd: Add Prometheus metrics support (Gary Kim)
   - serve http
     - Added a `--template` flag for user defined markup (calistri)
@@ -4382,7 +4382,7 @@ all the docs and Edward Barker for helping re-write the front page.
   - Constrain to go1.13 or above otherwise bazil.org/fuse fails to compile (Nick Craig-Wood)
   - Fix fail because of too long volume name (evileye)
   - Report 1PB free for unknown disk sizes (Nick Craig-Wood)
-  - Map more rclone errors into file systems errors (Nick Craig-Wood)
+  - Map more zclone errors into file systems errors (Nick Craig-Wood)
   - Fix disappearing cwd problem (Nick Craig-Wood)
   - Use ReaddirPlus on Windows to improve directory listing performance (Nick Craig-Wood)
   - Send a hint as to whether the filesystem is case insensitive or not (Nick Craig-Wood)
@@ -4391,7 +4391,7 @@ all the docs and Edward Barker for helping re-write the front page.
 - VFS
   - Add `--vfs-read-wait` and `--vfs-write-wait` flags to control time waiting for a sequential read/write (Nick Craig-Wood)
   - Change default `--vfs-read-wait` to 20ms (it was 5ms and not configurable) (Nick Craig-Wood)
-  - Make `df` output more consistent on a rclone mount. (Yves G)
+  - Make `df` output more consistent on a zclone mount. (Yves G)
   - Report 1PB free for unknown disk sizes (Nick Craig-Wood)
   - Fix race condition caused by unlocked reading of Dir.path (Nick Craig-Wood)
   - Make File lock and Dir lock not overlap to avoid deadlock (Nick Craig-Wood)
@@ -4404,10 +4404,10 @@ all the docs and Edward Barker for helping re-write the front page.
 - Local
   - Speed up multi thread downloads by using sparse files on Windows (Nick Craig-Wood)
   - Implement `--local-no-sparse` flag for disabling sparse files (Nick Craig-Wood)
-  - Implement `rclone backend noop` for testing purposes (Nick Craig-Wood)
+  - Implement `zclone backend noop` for testing purposes (Nick Craig-Wood)
   - Fix "file not found" errors on post transfer Hash calculation (Nick Craig-Wood)
 - Cache
-  - Implement `rclone backend stats` command (Nick Craig-Wood)
+  - Implement `zclone backend stats` command (Nick Craig-Wood)
   - Fix Server Side Copy with Temp Upload (Brandon McNama)
   - Remove Unused Functions (Lars Lehtonen)
   - Disable race tests until bbolt is fixed (Nick Craig-Wood)
@@ -4418,7 +4418,7 @@ all the docs and Edward Barker for helping re-write the front page.
   - Calculate hashes for uploads from local disk (Nick Craig-Wood)
     - This allows encrypted Jottacloud uploads without using local disk
     - This means encrypted s3/b2 uploads will now have hashes
-  - Added `rclone backend decode`/`encode` commands to replicate functionality of `cryptdecode` (Anagh Kumar Baranwal)
+  - Added `zclone backend decode`/`encode` commands to replicate functionality of `cryptdecode` (Anagh Kumar Baranwal)
   - Get rid of the unused Cipher interface as it obfuscated the code (Nick Craig-Wood)
 - Azure Blob
   - Implement streaming of unknown sized files so `rcat` is now supported (Nick Craig-Wood)
@@ -4440,8 +4440,8 @@ all the docs and Edward Barker for helping re-write the front page.
   - Remove unnecessary iat from jws claims (David)
 - Drive
   - Follow shortcuts by default, skip with `--drive-skip-shortcuts` (Nick Craig-Wood)
-  - Implement `rclone backend shortcut` command for creating shortcuts (Nick Craig-Wood)
-  - Added `rclone backend` command to change `service_account_file` and `chunk_size` (Anagh Kumar Baranwal)
+  - Implement `zclone backend shortcut` command for creating shortcuts (Nick Craig-Wood)
+  - Added `zclone backend` command to change `service_account_file` and `chunk_size` (Anagh Kumar Baranwal)
   - Fix missing files when using `--fast-list` and `--drive-shared-with-me` (Nick Craig-Wood)
   - Fix duplicate items when using `--drive-shared-with-me` (Nick Craig-Wood)
   - Extend `--drive-stop-on-upload-limit` to respond to `teamDriveFileLimitExceeded`. (harry)
@@ -4496,10 +4496,10 @@ all the docs and Edward Barker for helping re-write the front page.
   - Prune unused functions (Lars Lehtonen)
 - Putio
   - Add support for `--header-upload` and `--header-download` (Nick Craig-Wood)
-  - Make downloading files use the rclone http Client (Nick Craig-Wood)
+  - Make downloading files use the zclone http Client (Nick Craig-Wood)
   - Fix parsing of remotes with leading and trailing / (Nick Craig-Wood)
 - Qingstor
-  - Make `rclone cleanup` remove pending multipart uploads older than 24h (Nick Craig-Wood)
+  - Make `zclone cleanup` remove pending multipart uploads older than 24h (Nick Craig-Wood)
   - Try harder to cancel failed multipart uploads (Nick Craig-Wood)
   - Prune `multiUploader.list()` (Lars Lehtonen)
   - Lint fix (Lars Lehtonen)
@@ -4515,7 +4515,7 @@ all the docs and Edward Barker for helping re-write the front page.
   - Fix multipart abort context (Aleksandar Jankovic)
   - Replace deprecated `session.New()` with `session.NewSession()` (Lars Lehtonen)
   - Use the provided size parameter when allocating a new memory pool (Joachim Brandon LeBlanc)
-  - Use rclone's low level retries instead of AWS SDK to fix listing retries (Nick Craig-Wood)
+  - Use zclone's low level retries instead of AWS SDK to fix listing retries (Nick Craig-Wood)
   - Ignore directory markers at the root also (Nick Craig-Wood)
   - Use single memory pool (Michał Matczuk)
   - Do not resize buf on put to memBuf (Michał Matczuk)
@@ -4650,7 +4650,7 @@ all the docs and Edward Barker for helping re-write the front page.
   - Add URL to generate Login Token to config wizard (Nick Craig-Wood)
   - Add support whitelabel versions (buengese)
 - Koofr
-  - Use rclone HTTP client. (jaKa)
+  - Use zclone HTTP client. (jaKa)
 - Onedrive
   - Add Sites.Read.All permission (Benjamin Richter)
   - Add support "Retry-After" header (Motonori IWAMURO)
@@ -4711,15 +4711,15 @@ all the docs and Edward Barker for helping re-write the front page.
   - encodings (Fabian Möller & Nick Craig-Wood)
     - All backends now use file name encoding to ensure any file name can be written to any backend.
     - See the [restricted file name docs](/overview/#restricted-filenames) for more info and the [local backend docs](/local/#filenames).
-    - Some file names may look different in rclone if you are using any control characters in names or [unicode FULLWIDTH symbols](https://en.wikipedia.org/wiki/Halfwidth_and_Fullwidth_Forms_(Unicode_block)).
+    - Some file names may look different in zclone if you are using any control characters in names or [unicode FULLWIDTH symbols](https://en.wikipedia.org/wiki/Halfwidth_and_Fullwidth_Forms_(Unicode_block)).
   - build
     - Update to use go1.13 for the build (Nick Craig-Wood)
     - Drop support for go1.9 (Nick Craig-Wood)
-    - Build rclone with GitHub actions (Nick Craig-Wood)
+    - Build zclone with GitHub actions (Nick Craig-Wood)
     - Convert python scripts to python3 (Nick Craig-Wood)
     - Swap Azure/go-ansiterm for mattn/go-colorable (Nick Craig-Wood)
     - Dockerfile fixes (Matei David)
-    - Add [plugin support](https://github.com/rclone/rclone/blob/master/CONTRIBUTING.md#writing-a-plugin) for backends and commands (Richard Patel)
+    - Add [plugin support](/) for backends and commands (Richard Patel)
   - config
     - Use alternating Red/Green in config to make more obvious (Nick Craig-Wood)
   - contrib
@@ -4791,7 +4791,7 @@ all the docs and Edward Barker for helping re-write the front page.
   - Allow disabling EPSV mode (Jon Fautley)
 - HTTP
   - HEAD directory entries in parallel to speedup (Nick Craig-Wood)
-  - Add `--http-no-head` to stop rclone doing HEAD in listings (Nick Craig-Wood)
+  - Add `--http-no-head` to stop zclone doing HEAD in listings (Nick Craig-Wood)
 - Putio
   - Add ability to resume uploads (Cenk Alti)
 - S3
@@ -4870,10 +4870,10 @@ all the docs and Edward Barker for helping re-write the front page.
   - `config userinfo` to discover which user you are logged in as. (Nick Craig-Wood)
   - `config disconnect` to disconnect you (log out) from the backend. (Nick Craig-Wood)
   - Add `--use-json-log` for JSON logging (justinalin)
-  - Add context propagation to rclone (Aleksandar Jankovic)
+  - Add context propagation to zclone (Aleksandar Jankovic)
   - Reworking internal statistics interfaces so they work with rc jobs (Aleksandar Jankovic)
   - Add Higher units for ETA (AbelThar)
-  - Update rclone logos to new design (Andreas Chlupka)
+  - Update zclone logos to new design (Andreas Chlupka)
   - hash: Add CRC-32 support (Cenk Alti)
   - help showbackend: Fixed advanced option category when there are no standard options (buengese)
   - ncdu: Display/Copy to Clipboard Current Path (Gary Kim)
@@ -4886,7 +4886,7 @@ all the docs and Edward Barker for helping re-write the front page.
   - rc
     - Add ability to stop async jobs (Aleksandar Jankovic)
     - Return current settings if core/bwlimit called without parameters (Nick Craig-Wood)
-    - Rclone-WebUI integration with rclone (Chaitanya Bankanhal)
+    - Zclone-WebUI integration with zclone (Chaitanya Bankanhal)
     - Added command line parameter to control the cross origin resource sharing (CORS) in the rcd. (Security Improvement) (Chaitanya Bankanhal)
     - Add anchor tags to the docs so links are consistent (Nick Craig-Wood)
     - Remove _async key from input parameters after parsing so later operations won't get confused (buengese)
@@ -4982,11 +4982,11 @@ all the docs and Edward Barker for helping re-write the front page.
 ## v1.48.0 - 2019-06-15
 
 - New commands
-  - serve sftp: Serve an rclone remote over SFTP (Nick Craig-Wood)
+  - serve sftp: Serve an zclone remote over SFTP (Nick Craig-Wood)
 - New Features
   - Multi threaded downloads to local storage (Nick Craig-Wood)
     - controlled with `--multi-thread-cutoff` and `--multi-thread-streams`
-  - Use rclone.conf from rclone executable directory to enable portable use (albertony)
+  - Use zclone.conf from zclone executable directory to enable portable use (albertony)
   - Allow sync of a file and a directory with the same name (forgems)
     - this is common on bucket-based remotes, e.g. s3, gcs
   - Add `--ignore-case-sync` for forced case insensitivity (garry415)
@@ -5029,9 +5029,9 @@ all the docs and Edward Barker for helping re-write the front page.
   - Log errors when listing instead of returning an error (Nick Craig-Wood)
   - Fix preallocate warning on Linux with ZFS (Nick Craig-Wood)
 - Crypt
-  - Make rclone dedupe work through crypt (Nick Craig-Wood)
+  - Make zclone dedupe work through crypt (Nick Craig-Wood)
   - Fix wrapping of ChangeNotify to decrypt directories properly (Nick Craig-Wood)
-  - Support PublicLink (rclone link) of underlying backend (Nick Craig-Wood)
+  - Support PublicLink (zclone link) of underlying backend (Nick Craig-Wood)
   - Implement Optional methods SetTier, GetTier (Nick Craig-Wood)
 - B2
   - Implement server-side copy (Nick Craig-Wood)
@@ -5070,7 +5070,7 @@ all the docs and Edward Barker for helping re-write the front page.
   - Backend for Koofr cloud storage service. (jaKa)
 - New Features
   - Resume downloads if the reader fails in copy (Nick Craig-Wood)
-    - this means rclone will restart transfers if the source has an error
+    - this means zclone will restart transfers if the source has an error
     - this is most useful for downloads or cloud to cloud copies
   - Use `--fast-list` for listing operations where it won't use more memory (Nick Craig-Wood)
     - this should speed up the following operations on remotes which support `ListR`
@@ -5088,11 +5088,11 @@ all the docs and Edward Barker for helping re-write the front page.
   - serve dlna: Add connection manager service description to improve compatibility (Dan Walters)
   - lsf: Add 'e' format to show encrypted names and 'o' for original IDs (Nick Craig-Wood)
   - lsjson: Added `--files-only` and `--dirs-only` flags (calistri)
-  - rc: Implement operations/publiclink the equivalent of `rclone link` (Nick Craig-Wood)
+  - rc: Implement operations/publiclink the equivalent of `zclone link` (Nick Craig-Wood)
 - Bug Fixes
   - accounting: Fix total ETA when `--stats-unit bits` is in effect (Nick Craig-Wood)
   - Bash TAB completion
-    - Use private custom func to fix clash between rclone and kubectl (Nick Craig-Wood)
+    - Use private custom func to fix clash between zclone and kubectl (Nick Craig-Wood)
     - Fix for remotes with underscores in their names (Six)
     - Fix completion of remotes (Florian Gamböck)
     - Fix autocompletion of remote paths with spaces (Danil Semelenov)
@@ -5133,7 +5133,7 @@ all the docs and Edward Barker for helping re-write the front page.
   - Fix token refresh (Sebastian Bünger)
   - Add device registration (Oliver Heyme)
 - Onedrive
-  - Implement graceful cancel of multipart uploads if rclone is interrupted (Cnly)
+  - Implement graceful cancel of multipart uploads if zclone is interrupted (Cnly)
   - Always add trailing colon to path when addressing items, (Cnly)
   - Return errors instead of panic for invalid uploads (Fabian Möller)
 - S3
@@ -5194,21 +5194,21 @@ all the docs and Edward Barker for helping re-write the front page.
   - Fix vfs/refresh with recurse=true needing the `--fast-list` flag
 - Local
   - Add support for `-l`/`--links` (symbolic link translation) (yair@unicorn)
-    - this works by showing links as `link.rclonelink` - see local backend docs for more info
+    - this works by showing links as `link.zclonelink` - see local backend docs for more info
     - this errors if used with `-L`/`--copy-links`
   - Fix renaming/deleting open files on Windows (Nick Craig-Wood)
 - Crypt
   - Check for maximum length before decrypting filename to fix panic (Garry McNulty)
 - Azure Blob
   - Allow building azureblob backend on *BSD (themylogin)
-  - Use the rclone HTTP client to support `--dump headers`, `--tpslimit`, etc. (Nick Craig-Wood)
+  - Use the zclone HTTP client to support `--dump headers`, `--tpslimit`, etc. (Nick Craig-Wood)
   - Use the s3 pacer for 0 delay in non error conditions (Nick Craig-Wood)
   - Ignore directory markers (Nick Craig-Wood)
   - Stop Mkdir attempting to create existing containers (Nick Craig-Wood)
 - B2
   - cleanup: will remove unfinished large files >24hrs old (Garry McNulty)
   - For a bucket limited application key check the bucket name (Nick Craig-Wood)
-    - before this, rclone would use the authorised bucket regardless of what you put on the command line
+    - before this, zclone would use the authorised bucket regardless of what you put on the command line
   - Added `--b2-disable-checksum` flag (Wojciech Smigielski)
     - this enables large files to be uploaded without a SHA-1 hash for speed reasons
 - Drive
@@ -5218,7 +5218,7 @@ all the docs and Edward Barker for helping re-write the front page.
   - Improve ChangeNotify support for items with multiple parents (Fabian Möller)
   - Fix ListR for items with multiple parents - this fixes oddities with `vfs/refresh` (Fabian Möller)
   - Fix using `--drive-impersonate` and appfolders (Nick Craig-Wood)
-  - Fix google docs in rclone mount for some (not all) applications (Nick Craig-Wood)
+  - Fix google docs in zclone mount for some (not all) applications (Nick Craig-Wood)
 - Dropbox
   - Retry-After support for Dropbox backend (Mathieu Carbou)
 - FTP
@@ -5271,7 +5271,7 @@ all the docs and Edward Barker for helping re-write the front page.
 - Union
   - Fix poll-interval not working (Nick Craig-Wood)
 - WebDAV
-  - Support About which means rclone mount will show the correct disk size (Nick Craig-Wood)
+  - Support About which means zclone mount will show the correct disk size (Nick Craig-Wood)
   - Support MD5 and SHA1 hashes with Owncloud and Nextcloud (Nick Craig-Wood)
   - Fail soft on time parsing errors (Nick Craig-Wood)
   - Fix infinite loop on failed directory creation (Nick Craig-Wood)
@@ -5286,16 +5286,16 @@ all the docs and Edward Barker for helping re-write the front page.
 - New commands
   - rcd: New command just to serve the remote control API (Nick Craig-Wood)
 - New Features
-  - The remote control API (rc) was greatly expanded to allow full control over rclone (Nick Craig-Wood)
+  - The remote control API (rc) was greatly expanded to allow full control over zclone (Nick Craig-Wood)
     - sensitive operations require authorization or the `--rc-no-auth` flag
-    - config/* operations to configure rclone
+    - config/* operations to configure zclone
     - options/* for reading/setting command line flags
     - operations/* for all low level operations, e.g. copy file, list directory
     - sync/* for sync, copy and move
     - `--rc-files` flag to serve files on the rc http server
-      - this is for building web native GUIs for rclone
+      - this is for building web native GUIs for zclone
     - Optionally serving objects on the rc http server
-    - Ensure rclone fails to start up if the `--rc` port is in use already
+    - Ensure zclone fails to start up if the `--rc` port is in use already
     - See [the rc docs](/rc/) for more info
   - sync/copy/move
     - Make `--files-from` only read the objects specified and don't scan directories (Nick Craig-Wood)
@@ -5315,7 +5315,7 @@ all the docs and Edward Barker for helping re-write the front page.
   - dedupe: Check for existing filename before renaming a dupe file (ssaqua)
   - move: Don't create directories with `--dry-run` (Nick Craig-Wood)
   - operations: Fix Purge and Rmdirs when dir is not the root (Nick Craig-Wood)
-  - serve http/webdav/restic: Ensure rclone exits if the port is in use (Nick Craig-Wood)
+  - serve http/webdav/restic: Ensure zclone exits if the port is in use (Nick Craig-Wood)
 - Mount
   - Make `--volname` work for Windows and macOS (Nick Craig-Wood)
 - Azure Blob
@@ -5471,7 +5471,7 @@ Point release to fix hubic and azureblob backends.
   - Reworked config for backends (Nick Craig-Wood)
     - All backend config can now be supplied by command line, env var or config file
     - Advanced section in the config wizard for the optional items
-    - A large step towards rclone backends being usable in other go software
+    - A large step towards zclone backends being usable in other go software
     - Allow on the fly remotes with :backend: syntax
   - Stats revamp
     - Add `--progress`/`-P` flag to show interactive progress (Nick Craig-Wood)
@@ -5510,7 +5510,7 @@ Point release to fix hubic and azureblob backends.
 - Crypt
   - Fix accounting when checking hashes on upload (Nick Craig-Wood)
 - Amazon Cloud Drive
-  - Make very clear in the docs that rclone has no ACD keys (Nick Craig-Wood)
+  - Make very clear in the docs that zclone has no ACD keys (Nick Craig-Wood)
 - Azure Blob
   - Add connection string and SAS URL auth (Nick Craig-Wood)
   - List the container to see if it exists (Nick Craig-Wood)
@@ -5635,7 +5635,7 @@ Point release to fix hubic and azureblob backends.
 - Google Drive
   - Add `--drive-acknowledge-abuse` to download flagged files
   - Add `--drive-alternate-export` to fix large doc export
-  - Don't attempt to choose Team Drives when using rclone config create
+  - Don't attempt to choose Team Drives when using zclone config create
   - Fix change list polling with team drives
   - Fix ChangeNotify for folders (Fabian Möller)
   - Fix about (and df on a mount) for team drives
@@ -5670,7 +5670,7 @@ Point release to fix hubic and azureblob backends.
   - size: Add --json flag (Matthew Holt)
   - sync: implement --ignore-errors (Mateusz Pabian)
   - dedupe: Add dedupe largest functionality (Richard Yang)
-  - fs: Extend SizeSuffix to include TB and PB for rclone about
+  - fs: Extend SizeSuffix to include TB and PB for zclone about
   - fs: add --dump goroutines and --dump openfiles for debugging
   - rc: implement core/memstats to print internal memory usage info
   - rc: new call rc/pid (Michael P. Dubner)
@@ -5687,8 +5687,8 @@ Point release to fix hubic and azureblob backends.
 - Mount
   - Use About to return the correct disk total/used/free (e.g. in `df`)
   - Set `--attr-timeout default` to `1s` - fixes:
-    - rclone using too much memory
-    - rclone not serving files to samba
+    - zclone using too much memory
+    - zclone not serving files to samba
     - excessive time listing directories
   - Fix `df -i` (upstream fix)
 - VFS
@@ -5755,10 +5755,10 @@ Point release to fix hubic and azureblob backends.
     - by default this is a simple non recursive list of files and directories
     - it can be configured to add more info in an easy to parse way
   - `serve restic`: for serving a remote as a Restic REST endpoint
-    - This enables restic to use any backends that rclone can access
+    - This enables restic to use any backends that zclone can access
     - Thanks Alexander Neumann for help, patches and review
-  - `rc`: enable the remote control of a running rclone
-    - The running rclone must be started with --rc and related flags.
+  - `rc`: enable the remote control of a running zclone
+    - The running zclone must be started with --rc and related flags.
     - Currently there is support for bwlimit, and flushing for mount and cache.
 - New Features
   - `--max-delete` flag to add a delete threshold (Bjørn Erik Pedersen)
@@ -5778,7 +5778,7 @@ Point release to fix hubic and azureblob backends.
     - large packages split up
     - See the CONTRIBUTING.md doc for info as to what lives where now
   - Update to using go1.10 as the default go version
-  - Implement daily [full integration tests](https://pub.rclone.org/integration-tests/)
+  - Implement daily [full integration tests](/)
 - Release
   - Include a source tarball and sign it and the binaries
   - Sign the git tags as part of the release process
@@ -5797,10 +5797,10 @@ Point release to fix hubic and azureblob backends.
 - Mount
   - Add `--attr-timeout` flag to control attribute caching in kernel
     - this now defaults to 0 which is correct but less efficient
-    - see [the mount docs](/commands/rclone_mount/#attribute-caching) for more info
+    - see [the mount docs](/commands/zclone_mount/#attribute-caching) for more info
   - Add `--daemon` flag to allow mount to run in the background (ishuah)
   - Fix: Return ENOSYS rather than EIO on attempted link
-    - This fixes FileZilla accessing an rclone mount served over sftp.
+    - This fixes FileZilla accessing an zclone mount served over sftp.
   - Fix setting modtime twice
   - Mount tests now run on CI for Linux (mount & cmount)/Mac/Windows
   - Many bugs fixed in the VFS layer - see below
@@ -5831,22 +5831,22 @@ Point release to fix hubic and azureblob backends.
   - Offline uploading
   - Remote control support for path flushing
 - Amazon cloud drive
-  - Rclone no longer has any working keys - disable integration tests
+  - Zclone no longer has any working keys - disable integration tests
   - Implement DirChangeNotify to notify cache/vfs/mount of changes
 - Azureblob
   - Don't check for bucket/container presence if listing was OK
-    - this makes rclone do one less request per invocation
+    - this makes zclone do one less request per invocation
   - Improve accounting for chunked uploads
 - Backblaze B2
   - Don't check for bucket/container presence if listing was OK
-    - this makes rclone do one less request per invocation
+    - this makes zclone do one less request per invocation
 - Box
   - Improve accounting for chunked uploads
 - Dropbox
   - Fix custom oauth client parameters
 - Google Cloud Storage
   - Don't check for bucket/container presence if listing was OK
-    - this makes rclone do one less request per invocation
+    - this makes zclone do one less request per invocation
 - Google Drive
   - Migrate to api v3 (Fabian Möller)
   - Add scope configuration and root folder selection
@@ -5854,7 +5854,7 @@ Point release to fix hubic and azureblob backends.
     - thanks to everyone who tested, explored and contributed docs
   - Add `--drive-use-created-date` to use created date as modified date (nbuchanan)
   - Request the export formats only when required
-    - This makes rclone quicker when there are no google docs
+    - This makes zclone quicker when there are no google docs
   - Fix finding paths with latin1 chars (a workaround for a drive bug)
   - Fix copying of a single Google doc file
   - Fix `--drive-auth-owner-only` to look in all directories
@@ -5869,13 +5869,13 @@ Point release to fix hubic and azureblob backends.
   - Remove unused chunked upload flag and code
 - Qingstor
   - Don't check for bucket/container presence if listing was OK
-    - this makes rclone do one less request per invocation
+    - this makes zclone do one less request per invocation
 - S3
   - Support hashes for multipart files (Chris Redekop)
   - Initial support for IBM COS (S3) (Giri Badanahatti)
   - Update docs to discourage use of v2 auth with CEPH and others
   - Don't check for bucket/container presence if listing was OK
-    - this makes rclone do one less request per invocation
+    - this makes zclone do one less request per invocation
   - Fix server-side copy and set modtime on files with + in
 - SFTP
   - Add option to disable remote hash check command execution (Jon Fautley)
@@ -5890,7 +5890,7 @@ Point release to fix hubic and azureblob backends.
     - in v1.39 a bug was introduced which ignored new tokens - this fixes it
   - Fix extra HEAD transaction when uploading a new file
   - Don't check for bucket/container presence if listing was OK
-    - this makes rclone do one less request per invocation
+    - this makes zclone do one less request per invocation
 - Webdav
   - Add new time formats to support mydrive.ch and others
 
@@ -5905,13 +5905,13 @@ Point release to fix hubic and azureblob backends.
     - NB this feature is in beta so use with care
 - New commands
   - serve command with subcommands:
-    - serve webdav: this implements a webdav server for any rclone remote.
+    - serve webdav: this implements a webdav server for any zclone remote.
     - serve http: command to serve a remote over HTTP
   - config: add sub commands for full config file management
     - create/delete/dump/edit/file/password/providers/show/update
   - touch: to create or update the timestamp of a file (Jakub Tasiemski)
 - New Features
-  - curl install for rclone (Filip Bartodziej)
+  - curl install for zclone (Filip Bartodziej)
   - --stats now shows percentage, size, rate and ETA in condensed form (Ishuah Kariuki)
   - --exclude-if-present to exclude a directory if a file is present (Iakov Davydov)
   - rmdirs: add --leave-root flag (lewapm)
@@ -6046,9 +6046,9 @@ Point release to fix hubic and azureblob backends.
   - FTP - thanks to Antonio Messina
   - HTTP - thanks to Vasiliy Tolstov
 - New commands
-  - rclone ncdu - for exploring a remote with a text based user interface.
-  - rclone lsjson - for listing with a machine-readable output
-  - rclone dbhashsum - to show Dropbox style hashes of files (local or Dropbox)
+  - zclone ncdu - for exploring a remote with a text based user interface.
+  - zclone lsjson - for listing with a machine-readable output
+  - zclone dbhashsum - to show Dropbox style hashes of files (local or Dropbox)
 - New Features
   - Implement --fast-list flag
     - This allows remotes to list recursively if they can
@@ -6058,7 +6058,7 @@ Point release to fix hubic and azureblob backends.
     - --old-sync-method deprecated - the remaining uses are covered by --fast-list
     - This involved a major re-write of all the listing code
   - Add --tpslimit and --tpslimit-burst to limit transactions per second
-    - this is useful in conjunction with `rclone mount` to limit external apps
+    - this is useful in conjunction with `zclone mount` to limit external apps
   - Add --stats-log-level so can see --stats without -v
   - Print password prompts to stderr - Hraban Luyat
   - Warn about duplicate files when syncing
@@ -6068,7 +6068,7 @@ Point release to fix hubic and azureblob backends.
   - Don't Mkdir at the start of sync to save transactions
 - Compile
   - Update build to go1.8.3
-  - Require go1.6 for building rclone
+  - Require go1.6 for building zclone
   - Compile 386 builds with "GO386=387" for maximum compatibility
 - Bug Fixes
   - Fix menu selection when no remotes
@@ -6123,7 +6123,7 @@ Point release to fix hubic and azureblob backends.
   - Rewritten to use the v2 API
     - Now supports ModTime
       - Can only set by uploading the file again
-      - If you uploaded with an old rclone, rclone may upload everything again
+      - If you uploaded with an old zclone, zclone may upload everything again
       - Use `--size-only` or `--checksum` to avoid this
     - Now supports the Dropbox content hashing scheme
     - Now supports low level retries
@@ -6157,16 +6157,16 @@ Point release to fix hubic and azureblob backends.
   - Implement --backup-dir and --suffix
   - Implement --track-renames (initial implementation by Bjørn Erik Pedersen)
   - Add time-based bandwidth limits (Lukas Loesche)
-  - rclone cryptcheck: checks integrity of crypt remotes
+  - zclone cryptcheck: checks integrity of crypt remotes
   - Allow all config file variables and options to be set from environment variables
   - Add --buffer-size parameter to control buffer size for copy
   - Make --delete-after the default
   - Add --ignore-checksum flag (fixed by Hisham Zarka)
-  - rclone check: Add --download flag to check all the data, not just hashes
-  - rclone cat: add --head, --tail, --offset, --count and --discard
-  - rclone config: when choosing from a list, allow the value to be entered too
-  - rclone config: allow rename and copy of remotes
-  - rclone obscure: for generating encrypted passwords for rclone's config (T.C. Ferguson)
+  - zclone check: Add --download flag to check all the data, not just hashes
+  - zclone cat: add --head, --tail, --offset, --count and --discard
+  - zclone config: when choosing from a list, allow the value to be entered too
+  - zclone config: allow rename and copy of remotes
+  - zclone obscure: for generating encrypted passwords for zclone's config (T.C. Ferguson)
   - Comply with XDG Base Directory specification (Dario Giovannetti)
     - this moves the default location of the config file in a backwards compatible way
   - Release changes
@@ -6182,8 +6182,8 @@ Point release to fix hubic and azureblob backends.
   - Fix MimeType propagation
   - Fix filters to add ** rules to directory rules
 - Local
-  - Implement -L, --copy-links flag to allow rclone to follow symlinks
-  - Open files in write only mode so rclone can write to an rclone mount
+  - Implement -L, --copy-links flag to allow zclone to follow symlinks
+  - Open files in write only mode so zclone can write to an zclone mount
   - Fix unnormalised unicode causing problems reading directories
   - Fix interaction between -x flag and --max-depth
 - Mount
@@ -6204,7 +6204,7 @@ Point release to fix hubic and azureblob backends.
   - Fix panics on Move (rename)
   - Fix panic on token expiry
 - B2
-  - Fix inconsistent listings and rclone check
+  - Fix inconsistent listings and zclone check
   - Fix uploading empty files with go1.8
   - Constrain memory usage when doing multipart uploads
   - Fix upload url not being refreshed properly
@@ -6241,8 +6241,8 @@ Point release to fix hubic and azureblob backends.
   - Allow overlapping directories in move when server-side dir move is supported
   - Add --stats-unit option - thanks Scott McGillivray
 - Bug Fixes
-  - Fix the config file being overwritten when two rclone instances are running
-  - Make rclone lsd obey the filters properly
+  - Fix the config file being overwritten when two zclone instances are running
+  - Make zclone lsd obey the filters properly
   - Fix compilation on mips
   - Fix not transferring files that don't differ in size
   - Fix panic on nil retry/fatal error
@@ -6277,20 +6277,20 @@ Point release to fix hubic and azureblob backends.
   - Stop removing failed upload to cloud storage remotes
   - Make ContentType be preserved for cloud to cloud copies
   - Add support to toggle bandwidth limits via SIGUSR2 - thanks Marco Paganini
-  - `rclone check` shows count of hashes that couldn't be checked
-  - `rclone listremotes` command
+  - `zclone check` shows count of hashes that couldn't be checked
+  - `zclone listremotes` command
   - Support linux/arm64 build - thanks Fredrik Fornwall
   - Remove `Authorization:` lines from `--dump-headers` output
 - Bug Fixes
   - Ignore files with control characters in the names
-  - Fix `rclone move` command
+  - Fix `zclone move` command
     - Delete src files which already existed in dst
     - Fix deletion of src file when dst file older
-  - Fix `rclone check` on encrypted file systems
+  - Fix `zclone check` on encrypted file systems
   - Make failed uploads not count as "Transferred"
   - Make sure high level retries show with `-q`
   - Use a vendor directory with godep for repeatable builds
-- `rclone mount` - FUSE
+- `zclone mount` - FUSE
   - Implement FUSE mount options
     - `--no-modtime`, `--debug-fuse`, `--read-only`, `--allow-non-empty`, `--allow-root`, `--allow-other`
     - `--default-permissions`, `--write-back-cache`, `--max-read-ahead`, `--umask`, `--uid`, `--gid`
@@ -6335,12 +6335,12 @@ Point release to fix hubic and azureblob backends.
     - data encrypted in NACL secretbox format
     - with optional file name encryption
   - New commands
-    - rclone mount - implements FUSE mounting of remotes (EXPERIMENTAL)
+    - zclone mount - implements FUSE mounting of remotes (EXPERIMENTAL)
       - works on Linux, FreeBSD and OS X (need testers for the last 2!)
-    - rclone cat - outputs remote file or files to the terminal
-    - rclone genautocomplete - command to make a bash completion script for rclone
-  - Editing a remote using `rclone config` now goes through the wizard
-  - Compile with go 1.7 - this fixes rclone on macOS Sierra and on 386 processors
+    - zclone cat - outputs remote file or files to the terminal
+    - zclone genautocomplete - command to make a bash completion script for zclone
+  - Editing a remote using `zclone config` now goes through the wizard
+  - Compile with go 1.7 - this fixes zclone on macOS Sierra and on 386 processors
   - Use cobra for sub commands and docs generation
 - drive
   - Document how to make your own client_id
@@ -6378,7 +6378,7 @@ Point release to fix hubic and azureblob backends.
     - Now copied with --files-from
     - Automatically sets --no-traverse when copying a single file
   - Info on using installing with ansible - thanks Stefan Weichinger
-  - Implement --no-update-modtime flag to stop rclone fixing the remote modified times.
+  - Implement --no-update-modtime flag to stop zclone fixing the remote modified times.
 - Bug Fixes
   - Fix move command - stop it running for overlapping Fses - this was causing data loss.
 - Local
@@ -6388,7 +6388,7 @@ Point release to fix hubic and azureblob backends.
 - Swift
   - Add support for non-default project domain - thanks Antonio Messina.
 - S3
-  - Add instructions on how to use rclone with minio.
+  - Add instructions on how to use zclone with minio.
   - Add ap-northeast-2 (Seoul) and ap-south-1 (Mumbai) regions.
   - Skip setting the modified time for objects > 5GB as it isn't possible.
 - Backblaze B2
@@ -6456,7 +6456,7 @@ Point release to fix hubic and azureblob backends.
       - `--dedupe-mode oldest` - removes identical files then keeps the oldest one.
       - `--dedupe-mode rename` - removes identical files then renames the rest to be different.
 - Bug fixes
-  - Make rclone check obey the `--size-only` flag.
+  - Make zclone check obey the `--size-only` flag.
   - Use "application/octet-stream" if discovered mime type is invalid.
   - Fix missing "quit" option when there are no remotes.
 - Google Drive
@@ -6481,7 +6481,7 @@ Point release to fix hubic and azureblob backends.
 
 - New Features
   - Configuration file encryption - thanks Klaus Post
-  - Improve `rclone config` adding more help and making it easier to understand
+  - Improve `zclone config` adding more help and making it easier to understand
   - Implement `-u`/`--update` so creation times can be used on all remotes
   - Implement `--low-level-retries` flag
   - Optionally disable gzip compression on downloads with `--no-gzip-encoding`
@@ -6510,7 +6510,7 @@ Point release to fix hubic and azureblob backends.
 ## v1.27 - 2016-01-31
 
 - New Features
-  - Easier headless configuration with `rclone authorize`
+  - Easier headless configuration with `zclone authorize`
   - Add support for multiple hash types - we now check SHA1 as well as MD5 hashes.
   - `delete` command which does obey the filters (unlike `purge`)
   - `dedupe` command to deduplicate a remote.  Useful with Google Drive.
@@ -6525,7 +6525,7 @@ Point release to fix hubic and azureblob backends.
   - Fix directory traversal ("Next token is expired") for large directory listings
   - Remove 409 conflict from error codes we will retry - stops very long pauses
 - Backblaze B2
-  - SHA1 hashes now checked by rclone core
+  - SHA1 hashes now checked by zclone core
 - Drive
   - Add `--drive-auth-owner-only` to only consider files owned by the user - thanks Björn Harrtell
   - Export Google documents
@@ -6591,7 +6591,7 @@ Point release to fix hubic and azureblob backends.
 ## v1.23 - 2015-10-03
 
 - New features
-  - Implement `rclone size` for measuring remotes
+  - Implement `zclone size` for measuring remotes
 - Fixes
   - Fix headless config for drive and gcs
   - Tell the user they should try again if the webserver method failed
@@ -6654,7 +6654,7 @@ Point release to fix hubic and azureblob backends.
 ## v1.18 - 2015-08-17
 
 - drive
-  - Add `--drive-use-trash` flag so rclone trashes instead of deletes
+  - Add `--drive-use-trash` flag so zclone trashes instead of deletes
   - Add "Forbidden to download" message for files with no downloadURL
 - dropbox
   - Remove datastore
@@ -6688,7 +6688,7 @@ Point release to fix hubic and azureblob backends.
 - Add --checksum flag to only discard transfers by MD5SUM - thanks Alex Couper
 - Implement --size-only flag to sync on size not checksum & modtime
 - Expand docs and remove duplicated information
-- Document rclone's limitations with directories
+- Document zclone's limitations with directories
 - dropbox: update docs about case insensitivity
 
 ## v1.14 - 2015-05-21
@@ -6795,7 +6795,7 @@ Point release to fix hubic and azureblob backends.
 ## v0.98 - 2014-05-30
 
 - s3: Treat missing Content-Length as 0 for some ceph installations
-- rclonetest: add file with a space in
+- zclonetest: add file with a space in
 
 ## v0.97 - 2014-05-05
 
@@ -6810,7 +6810,7 @@ Point release to fix hubic and azureblob backends.
 
 ## v0.95 - 2014-03-28
 
-- rclone.org: website, docs and graphics
+- zclone.org: website, docs and graphics
 - drive: fix path parsing
 
 ## v0.94 - 2014-03-27
@@ -6834,7 +6834,7 @@ Point release to fix hubic and azureblob backends.
 
 ## v0.90 - 2013-06-27
 
-- Project named rclone
+- Project named zclone
 
 ## v0.00 - 2012-11-18
 

@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/lib/ranges"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/lib/ranges"
 )
 
 // TestItemWaiterBeyondItemSize checks that a reader waiting for a range past

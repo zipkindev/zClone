@@ -1,4 +1,4 @@
-// Package log provides logging for rclone
+// Package log provides logging for zclone
 package log
 
 import (
@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"zclone/fs"
 )
 
 // OptionsInfo descripts the Options in use
@@ -203,14 +203,14 @@ func init() {
 
 // InitLogging start the logging as per the command line flags
 //
-// This is called explicitly from the CLI, the librclone wrapper and
+// This is called explicitly from the CLI, the libzclone wrapper and
 // the test framework, but not from package init, so that importing
-// rclone as a library has no side effects on the process-wide default
+// zclone as a library has no side effects on the process-wide default
 // slog logger.
 func InitLogging() {
-	// Redirect the process-wide default logger through rclone's
+	// Redirect the process-wide default logger through zclone's
 	// handler so that log.Print/log.Fatal and slog.Default() (used by
-	// some standard library and third party code) end up in rclone's
+	// some standard library and third party code) end up in zclone's
 	// log output.
 	slog.SetDefault(slog.New(Handler))
 

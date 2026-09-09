@@ -12,13 +12,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
 const (
@@ -131,7 +131,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 
 	// Set the path prefix. This is the path to the root directory on the
 	// server. We add it to each request and strip it from each response because
-	// rclone does not want to see it
+	// zclone does not want to see it
 	f.pathPrefix = "/" + path.Join(opt.RootFolderID, f.root) + "/"
 
 	// The root URL equates to https://pixeldrain.com/api/filesystem during
@@ -169,7 +169,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 		// is not a file. This is what the test dictates
 		return f, err
 	} else if err == nil && fsp.Base().Type == "file" {
-		// The filesystem root is a file, rclone wants us to set the root to the
+		// The filesystem root is a file, zclone wants us to set the root to the
 		// parent directory
 		f.root = path.Dir(f.root)
 		f.pathPrefix = "/" + path.Join(opt.RootFolderID, f.root) + "/"

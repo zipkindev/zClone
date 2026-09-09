@@ -9,11 +9,11 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/vfs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/object"
+	"zclone/vfs"
 )
 
 // NB to test the symlink cache, running with elevated permissions is needed

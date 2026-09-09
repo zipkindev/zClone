@@ -1,6 +1,6 @@
 ---
 title: "SMB / CIFS"
-description: "Rclone docs for SMB backend"
+description: "Zclone docs for SMB backend"
 versionIntroduced: "v1.60"
 ---
 
@@ -19,12 +19,12 @@ command.)  You may put subdirectories in too, e.g. `remote:item/path/to/dir`.
 The first path segment must be the name of the share, which you entered when
 you started to share on Windows. On smbd, it's the section title in `smb.conf`
 (usually in `/etc/samba/`) file.
-You can find shares by querying the root if you're unsure (e.g. `rclone lsd remote:`).
+You can find shares by querying the root if you're unsure (e.g. `zclone lsd remote:`).
 
-You can't access the shared printers from rclone, obviously.
+You can't access the shared printers from zclone, obviously.
 
 You can't use Anonymous access for logging in. You have to use the `guest` user
-with an empty password instead. The rclone client tries to avoid 8.3 names when
+with an empty password instead. The zclone client tries to avoid 8.3 names when
 uploading files by encoding trailing spaces and periods. Alternatively,
 [the local backend](/local/#paths-on-windows) on Windows can access SMB servers
 using UNC paths, by `\\server\share`. This doesn't apply to non-Windows OSes,
@@ -37,7 +37,7 @@ Here is an example of making a SMB configuration.
 First run
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process.
@@ -129,7 +129,7 @@ E.g. "example.com".
 Properties:
 
 - Config:      host
-- Env Var:     RCLONE_SMB_HOST
+- Env Var:     ZCLONE_SMB_HOST
 - Type:        string
 - Required:    true
 
@@ -140,9 +140,9 @@ SMB username.
 Properties:
 
 - Config:      user
-- Env Var:     RCLONE_SMB_USER
+- Env Var:     ZCLONE_SMB_USER
 - Type:        string
-- Default:     "$USER"
+- Default:     "mizipkin"
 
 #### --smb-port
 
@@ -151,7 +151,7 @@ SMB port number.
 Properties:
 
 - Config:      port
-- Env Var:     RCLONE_SMB_PORT
+- Env Var:     ZCLONE_SMB_PORT
 - Type:        int
 - Default:     445
 
@@ -159,12 +159,12 @@ Properties:
 
 SMB password.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      pass
-- Env Var:     RCLONE_SMB_PASS
+- Env Var:     ZCLONE_SMB_PASS
 - Type:        string
 - Required:    false
 
@@ -175,7 +175,7 @@ Domain name for NTLM authentication.
 Properties:
 
 - Config:      domain
-- Env Var:     RCLONE_SMB_DOMAIN
+- Env Var:     ZCLONE_SMB_DOMAIN
 - Type:        string
 - Default:     "WORKGROUP"
 
@@ -183,7 +183,7 @@ Properties:
 
 Service principal name.
 
-Rclone presents this name to the server. Some servers use this as further
+Zclone presents this name to the server. Some servers use this as further
 authentication, and it often needs to be set for clusters. For example:
 
     cifs/remotehost:1020
@@ -194,7 +194,7 @@ Leave blank if not sure.
 Properties:
 
 - Config:      spn
-- Env Var:     RCLONE_SMB_SPN
+- Env Var:     ZCLONE_SMB_SPN
 - Type:        string
 - Required:    false
 
@@ -202,7 +202,7 @@ Properties:
 
 Use Kerberos authentication.
 
-If set, rclone will use Kerberos authentication instead of NTLM. This
+If set, zclone will use Kerberos authentication instead of NTLM. This
 requires a valid Kerberos configuration and credentials cache to be
 available, either in the default locations or as specified by the
 KRB5_CONFIG and KRB5CCNAME environment variables.
@@ -211,7 +211,7 @@ KRB5_CONFIG and KRB5CCNAME environment variables.
 Properties:
 
 - Config:      use_kerberos
-- Env Var:     RCLONE_SMB_USE_KERBEROS
+- Env Var:     ZCLONE_SMB_USE_KERBEROS
 - Type:        bool
 - Default:     false
 
@@ -224,7 +224,7 @@ Here are the Advanced options specific to smb (SMB / CIFS).
 Max time before closing idle connections.
 
 If no connections have been returned to the connection pool in the time
-given, rclone will empty the connection pool.
+given, zclone will empty the connection pool.
 
 Set to 0 to keep connections indefinitely.
 
@@ -232,7 +232,7 @@ Set to 0 to keep connections indefinitely.
 Properties:
 
 - Config:      idle_timeout
-- Env Var:     RCLONE_SMB_IDLE_TIMEOUT
+- Env Var:     ZCLONE_SMB_IDLE_TIMEOUT
 - Type:        Duration
 - Default:     1m0s
 
@@ -243,7 +243,7 @@ Hide special shares (e.g. print$) which users aren't supposed to access.
 Properties:
 
 - Config:      hide_special_share
-- Env Var:     RCLONE_SMB_HIDE_SPECIAL_SHARE
+- Env Var:     ZCLONE_SMB_HIDE_SPECIAL_SHARE
 - Type:        bool
 - Default:     true
 
@@ -256,7 +256,7 @@ Always true on Windows shares.
 Properties:
 
 - Config:      case_insensitive
-- Env Var:     RCLONE_SMB_CASE_INSENSITIVE
+- Env Var:     ZCLONE_SMB_CASE_INSENSITIVE
 - Type:        bool
 - Default:     true
 
@@ -277,7 +277,7 @@ Supported formats:
 Properties:
 
 - Config:      kerberos_ccache
-- Env Var:     RCLONE_SMB_KERBEROS_CCACHE
+- Env Var:     ZCLONE_SMB_KERBEROS_CCACHE
 - Type:        string
 - Required:    false
 
@@ -290,7 +290,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_SMB_ENCODING
+- Env Var:     ZCLONE_SMB_ENCODING
 - Type:        Encoding
 - Default:     Slash,LtGt,DoubleQuote,Colon,Question,Asterisk,Pipe,BackSlash,Ctl,RightSpace,RightPeriod,InvalidUtf8,Dot
 
@@ -301,7 +301,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_SMB_DESCRIPTION
+- Env Var:     ZCLONE_SMB_DESCRIPTION
 - Type:        string
 - Required:    false
 

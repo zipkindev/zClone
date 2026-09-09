@@ -19,20 +19,20 @@ import (
 	"unicode/utf8"
 
 	"github.com/Max-Sum/base32768"
-	"github.com/rclone/rclone/backend/crypt/pkcs7"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/lib/readers"
-	"github.com/rclone/rclone/lib/version"
 	"github.com/rfjakob/eme"
 	"golang.org/x/crypto/nacl/secretbox"
 	"golang.org/x/crypto/scrypt"
+	"zclone/backend/crypt/pkcs7"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/lib/readers"
+	"zclone/lib/version"
 )
 
 // Constants
 const (
 	nameCipherBlockSize = aes.BlockSize
-	fileMagic           = "RCLONE\x00\x00"
+	fileMagic           = "ZCLONE\x00\x00"
 	fileMagicSize       = len(fileMagic)
 	fileNonceSize       = 24
 	fileHeaderSize      = fileMagicSize + fileNonceSize
@@ -619,7 +619,7 @@ func (c *Cipher) DecryptFileName(in string) (string, error) {
 //
 // Unlike DecryptFileName, a version string on the last segment is
 // expected to be part of the encrypted name. Directory names created
-// by rclone before v1.76 had a version-like suffix left in plain
+// by zclone before v1.76 had a version-like suffix left in plain
 // text; these are still decrypted so that they appear in listings,
 // but they can't be opened or removed until renamed on the
 // underlying remote.

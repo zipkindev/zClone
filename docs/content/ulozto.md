@@ -1,6 +1,6 @@
 ---
 title: "Uloz.to"
-description: "Rclone docs for Uloz.to"
+description: "Zclone docs for Uloz.to"
 versionIntroduced: "v1.66"
 ---
 
@@ -11,14 +11,14 @@ Paths are specified as `remote:path`
 Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 
 The initial setup for Uloz.to involves filling in the user credentials.
-`rclone config` walks you through it.
+`zclone config` walks you through it.
 
 ## Configuration
 
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -39,7 +39,7 @@ XX / Uloz.to
 Storage> ulozto
 
 Option app_token.
-The application token identifying the app. An app API key can be either found in the API doc 
+The application token identifying the app. An app API key can be either found in the API doc
 https://uloz.to/upload-resumable-api-beta or obtained from customer service.
 Enter a value. Press Enter to leave empty.
 app_token> token_value
@@ -73,25 +73,25 @@ d) Delete this remote
 y/e/d> y
 ```
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 List folders in root level folder:
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your root folder:
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 To copy a local folder to a Uloz.to folder called backup:
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
 ### User credentials
@@ -129,7 +129,7 @@ as they can't be used in JSON strings.
 ### Transfers
 
 All files are currently uploaded using a single HTTP request, so
-for uploading large files a stable connection is necessary.  Rclone will
+for uploading large files a stable connection is necessary.  Zclone will
 upload up to `--transfers` chunks at the same time (shared among all
 uploads).
 
@@ -139,16 +139,16 @@ By default, files are moved to the recycle bin whereas folders
 are deleted immediately. Trashed files are permanently deleted after
 30 days in the recycle bin.
 
-Emptying the trash is currently not implemented in rclone.
+Emptying the trash is currently not implemented in zclone.
 
 ### Root folder ID
 
-You can set the `root_folder_slug` for rclone.  This is the folder
-(identified by its `Folder slug`) that rclone considers to be the root
+You can set the `root_folder_slug` for zclone.  This is the folder
+(identified by its `Folder slug`) that zclone considers to be the root
 of your Uloz.to drive.
 
-Normally you will leave this blank and rclone will determine the
-correct root to use itself. However you can set this to restrict rclone
+Normally you will leave this blank and zclone will determine the
+correct root to use itself. However you can set this to restrict zclone
 to a specific folder hierarchy.
 
 In order to do this you will have to find the `Folder slug` of the
@@ -177,7 +177,7 @@ doc https://uloz.to/upload-resumable-api-beta or obtained from customer service.
 Properties:
 
 - Config:      app_token
-- Env Var:     RCLONE_ULOZTO_APP_TOKEN
+- Env Var:     ZCLONE_ULOZTO_APP_TOKEN
 - Type:        string
 - Required:    false
 
@@ -188,7 +188,7 @@ The username of the principal to operate as.
 Properties:
 
 - Config:      username
-- Env Var:     RCLONE_ULOZTO_USERNAME
+- Env Var:     ZCLONE_ULOZTO_USERNAME
 - Type:        string
 - Required:    false
 
@@ -196,12 +196,12 @@ Properties:
 
 The password for the user.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      password
-- Env Var:     RCLONE_ULOZTO_PASSWORD
+- Env Var:     ZCLONE_ULOZTO_PASSWORD
 - Type:        string
 - Required:    false
 
@@ -211,14 +211,14 @@ Here are the Advanced options specific to ulozto (Uloz.to).
 
 #### --ulozto-root-folder-slug
 
-If set, rclone will use this folder as the root folder for all operations. For example,
+If set, zclone will use this folder as the root folder for all operations. For example,
 if the slug identifies 'foo/bar/', 'ulozto:baz' is equivalent to 'ulozto:foo/bar/baz' without
 any root slug set.
 
 Properties:
 
 - Config:      root_folder_slug
-- Env Var:     RCLONE_ULOZTO_ROOT_FOLDER_SLUG
+- Env Var:     ZCLONE_ULOZTO_ROOT_FOLDER_SLUG
 - Type:        string
 - Required:    false
 
@@ -229,7 +229,7 @@ The size of a single page for list commands. 1-500
 Properties:
 
 - Config:      list_page_size
-- Env Var:     RCLONE_ULOZTO_LIST_PAGE_SIZE
+- Env Var:     ZCLONE_ULOZTO_LIST_PAGE_SIZE
 - Type:        int
 - Default:     500
 
@@ -242,7 +242,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_ULOZTO_ENCODING
+- Env Var:     ZCLONE_ULOZTO_ENCODING
 - Type:        Encoding
 - Default:     Slash,BackSlash,Del,Ctl,InvalidUtf8,Dot
 
@@ -253,7 +253,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_ULOZTO_DESCRIPTION
+- Env Var:     ZCLONE_ULOZTO_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -261,22 +261,22 @@ Properties:
 
 ## Limitations
 
-Uloz.to file names can't have the `\` character in.  rclone maps this to
+Uloz.to file names can't have the `\` character in.  zclone maps this to
 and from an identical looking unicode equivalent `＼` (U+FF3C Fullwidth
 Reverse Solidus).
 
 Uloz.to only supports filenames up to 255 characters in length.
 
-Uloz.to rate limits access to the API, but exact details are undisclosed. 
+Uloz.to rate limits access to the API, but exact details are undisclosed.
 Practical testing reveals that hitting the rate limit during normal use
-is very rare, although not impossible with higher number of concurrently 
+is very rare, although not impossible with higher number of concurrently
 uploaded files.
 
-`rclone about` is not supported by the Uloz.to backend. Although 
-there's an endpoint to retrieve the information for the UI, it's not 
-exposed in the API.  Backends without this capability cannot determine 
-free space for an rclone mount or use policy `mfs` (most free space) 
-as a member of an rclone union remote.
+`zclone about` is not supported by the Uloz.to backend. Although
+there's an endpoint to retrieve the information for the UI, it's not
+exposed in the API.  Backends without this capability cannot determine
+free space for an zclone mount or use policy `mfs` (most free space)
+as a member of an zclone union remote.
 
-See [List of backends that do not support rclone about](https://rclone.org/overview/#optional-features)
-and [rclone about](https://rclone.org/commands/rclone_about/).
+See [List of backends that do not support zclone about](//overview/#optional-features)
+and [zclone about](//commands/zclone_about/).

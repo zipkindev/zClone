@@ -1,4 +1,4 @@
 package fs
 
-// VersionTag of rclone
-var VersionTag = "v1.76.0"
+// VersionTag of zclone
+var VersionTag = "v0.1.0"

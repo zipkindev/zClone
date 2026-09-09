@@ -13,10 +13,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/rclone/rclone/backend/overview"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/lib/errcount"
+	"zclone/backend/overview"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/lib/errcount"
 )
 
 // Registry of filesystems
@@ -241,7 +241,7 @@ type Option struct {
 	NoPrefix   bool             // set if the option for this should not use the backend prefix
 	Advanced   bool             // set if this is an advanced config option
 	Exclusive  bool             // set if the answer can only be one of the examples (empty string allowed unless Required or Default is set)
-	Sensitive  bool             // set if this option should be redacted when using rclone config redacted
+	Sensitive  bool             // set if this option should be redacted when using zclone config redacted
 }
 
 // BaseOption is an alias for Option used internally

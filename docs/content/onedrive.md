@@ -1,6 +1,6 @@
 ---
 title: "Microsoft OneDrive"
-description: "Rclone docs for Microsoft OneDrive"
+description: "Zclone docs for Microsoft OneDrive"
 versionIntroduced: "v1.24"
 ---
 
@@ -13,13 +13,13 @@ Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 ## Configuration
 
 The initial setup for OneDrive involves getting a token from
-Microsoft which you need to do in your browser.  `rclone config` walks
+Microsoft which you need to do in your browser.  `zclone config` walks
 you through it.
 
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -55,15 +55,15 @@ y) Yes
 n) No
 y/n> n
 Remote config
-Use web browser to automatically authenticate rclone with remote?
- * Say Y if the machine running rclone has a web browser you can use
- * Say N if running rclone on a (remote) machine without web browser access
+Use web browser to automatically authenticate zclone with remote?
+ * Say Y if the machine running zclone has a web browser you can use
+ * Say N if running zclone on a (remote) machine without web browser access
 If not sure try Y. If Y failed, try N.
 y) Yes
 n) No
 y/n> y
 If your browser doesn't open automatically go to the following link: http://127.0.0.1:53682/auth
-Log in and authorize rclone for access
+Log in and authorize zclone for access
 Waiting for code...
 Got code
 Choose a number from below, or type in an existing value
@@ -102,38 +102,38 @@ y/e/d> y
 See the [remote setup docs](/remote_setup/) for how to set it up on a
 machine without an internet-connected web browser available.
 
-Note that rclone runs a webserver on your local machine to collect the
+Note that zclone runs a webserver on your local machine to collect the
 token as returned from Microsoft. This only runs from the moment it
 opens your browser to the moment you get back the verification
 code.  This is on `http://127.0.0.1:53682/` and this it may require
 you to unblock it temporarily if you are running a host firewall.
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 List directories in top level of your OneDrive
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your OneDrive
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 To copy a local directory to an OneDrive directory called backup
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
 ### Getting your own Client ID and Key
 
-rclone uses a default Client ID when talking to OneDrive, unless a custom
+zclone uses a default Client ID when talking to OneDrive, unless a custom
 `client_id` is specified in the config. The default Client ID and Key are
-shared by all rclone users when performing requests.
+shared by all zclone users when performing requests.
 
 You may choose to create and use your own Client ID, in case the default one
 does not work well for you. For example, you might see throttling.
@@ -164,16 +164,16 @@ To create your own Client ID, please follow these steps:
   `Sites.Read.All` (if custom access scopes are configured, select the
   permissions accordingly). Once selected click `Add permissions` at the bottom.
 
-Now the application is complete. Run `rclone config` to create or edit a OneDrive
+Now the application is complete. Run `zclone config` to create or edit a OneDrive
 remote. Supply the app ID and password as Client ID and Secret, respectively.
-rclone will walk you through the remaining steps.
+zclone will walk you through the remaining steps.
 
-The access_scopes option allows you to configure the permissions requested by rclone.
+The access_scopes option allows you to configure the permissions requested by zclone.
 See [Microsoft Docs](https://docs.microsoft.com/en-us/graph/permissions-reference#files-permissions)
 for more information about the different scopes.
 
 The `Sites.Read.All` permission is required if you need to
-[search SharePoint sites when configuring the remote](https://github.com/rclone/rclone/pull/5883).
+[search SharePoint sites when configuring the remote](/).
 However, if that permission is not assigned, you need to exclude `Sites.Read.All`
 from your access scopes or set `disable_site_permission` option to true in the
 advanced options.
@@ -193,15 +193,15 @@ or try to limit the App to your organization only, as shown below.
    Note that you can also change the account type after creating the App.
 3. Find the [tenant ID](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-how-to-find-tenant)
    of your organization.
-4. In the rclone config, set `auth_url` to `https://login.microsoftonline.com/YOUR_TENANT_ID/oauth2/v2.0/authorize`.
-5. In the rclone config, set `token_url` to `https://login.microsoftonline.com/YOUR_TENANT_ID/oauth2/v2.0/token`.
+4. In the zclone config, set `auth_url` to `https://login.microsoftonline.com/YOUR_TENANT_ID/oauth2/v2.0/authorize`.
+5. In the zclone config, set `token_url` to `https://login.microsoftonline.com/YOUR_TENANT_ID/oauth2/v2.0/token`.
 
 Note: If you have a special region, you may need a different host in step 4 and 5.
-Here are [some hints](https://github.com/rclone/rclone/blob/bc23bf11db1c78c6ebbf8ea538fbebf7058b4176/backend/onedrive/onedrive.go#L86).
+Here are [some hints](/).
 
 ### Using OAuth Client Credential flow
 
-OAuth Client Credential flow will allow rclone to use permissions
+OAuth Client Credential flow will allow zclone to use permissions
 directly associated with the Azure AD Enterprise application, rather
 that adopting the context of an Azure AD user account.
 
@@ -224,12 +224,12 @@ correct drive ID type it in manually with the "driveid" option.
 To back up any user's data using this flow, grant your Azure AD
 application the necessary Microsoft Graph *Application permissions*
 (such as `Files.Read.All`, `Sites.Read.All` and/or `Sites.Selected`).
-With these permissions, rclone can access drives across the tenant,
+With these permissions, zclone can access drives across the tenant,
 but it needs to know *which user or drive* you want. Supply a specific
 `drive_id` corresponding to that user's OneDrive, or a SharePoint site
 ID for SharePoint libraries. You can obtain a user's drive ID using
 Microsoft Graph (e.g. `/users/{userUPN}/drive`) and then configure it
-in rclone. Once the correct drive ID is provided, rclone will back up
+in zclone. Once the correct drive ID is provided, zclone will back up
 that user's data using the app-only token without requiring their
 credentials.
 
@@ -256,7 +256,7 @@ endpoint.
    ".driveAccessToken": "access_token={access_token}"
    ```
 
-#### Rclone configuration
+#### Zclone configuration
 
 Use the extracted values to configure your remote:
 
@@ -281,8 +281,8 @@ not.
 OneDrive Personal, OneDrive for Business and Sharepoint Server support
 [QuickXorHash](https://docs.microsoft.com/en-us/onedrive/developer/code-snippets/quickxorhash).
 
-Before rclone 1.62 the default hash for Onedrive Personal was `SHA1`.
-For rclone 1.62 and above the default for all Onedrive backends is
+Before zclone 1.62 the default hash for Onedrive Personal was `SHA1`.
+For zclone 1.62 and above the default for all Onedrive backends is
 `QuickXorHash`.
 
 Starting from July 2023 `SHA1` support is being phased out in Onedrive
@@ -296,7 +296,7 @@ For all types of OneDrive you can use the `--checksum` flag.
 ### --fast-list
 
 This remote supports `--fast-list` which allows you to use fewer
-transactions in exchange for more memory. See the [rclone
+transactions in exchange for more memory. See the [zclone
 docs](/docs/#fast-list) for more details.
 
 This must be enabled with the `--onedrive-delta` flag (or `delta =
@@ -307,16 +307,16 @@ returns all the files in the remote very efficiently. This is much
 more efficient than listing directories recursively and is Microsoft's
 recommended way of reading all the file information from a drive.
 
-This can be useful with `rclone mount` and [rclone rc vfs/refresh
+This can be useful with `zclone mount` and [zclone rc vfs/refresh
 recursive=true](/rc/#vfs-refresh)) to very quickly fill the mount with
 information about all the files.
 
 The API used for the recursive listing (`ListR`) only supports listing
 from the root of the drive. This will become increasingly inefficient
-the further away you get from the root as rclone will have to discard
+the further away you get from the root as zclone will have to discard
 files outside of the directory you are using.
 
-Some commands (like `rclone lsf -R`) will use `ListR` by default - you
+Some commands (like `zclone lsf -R`) will use `ListR` by default - you
 can turn this off with `--disable ListR` if you need to.
 
 ### Restricted filename characters
@@ -356,7 +356,7 @@ as they can't be used in JSON strings.
 
 ### Deleting files
 
-Any files you delete with rclone will end up in the trash.  Microsoft
+Any files you delete with zclone will end up in the trash.  Microsoft
 doesn't provide an API to permanently delete files, nor to empty the
 trash, so you will have to do that with one of Microsoft's apps or via
 the OneDrive website.
@@ -375,7 +375,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_id
-- Env Var:     RCLONE_ONEDRIVE_CLIENT_ID
+- Env Var:     ZCLONE_ONEDRIVE_CLIENT_ID
 - Type:        string
 - Required:    false
 
@@ -388,7 +388,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_secret
-- Env Var:     RCLONE_ONEDRIVE_CLIENT_SECRET
+- Env Var:     ZCLONE_ONEDRIVE_CLIENT_SECRET
 - Type:        string
 - Required:    false
 
@@ -399,7 +399,7 @@ Choose national cloud region for OneDrive.
 Properties:
 
 - Config:      region
-- Env Var:     RCLONE_ONEDRIVE_REGION
+- Env Var:     ZCLONE_ONEDRIVE_REGION
 - Type:        string
 - Default:     "global"
 - Examples:
@@ -423,7 +423,7 @@ Set this if using
 Properties:
 
 - Config:      tenant
-- Env Var:     RCLONE_ONEDRIVE_TENANT
+- Env Var:     ZCLONE_ONEDRIVE_TENANT
 - Type:        string
 - Required:    false
 
@@ -438,7 +438,7 @@ OAuth Access Token as a JSON blob.
 Properties:
 
 - Config:      token
-- Env Var:     RCLONE_ONEDRIVE_TOKEN
+- Env Var:     ZCLONE_ONEDRIVE_TOKEN
 - Type:        string
 - Required:    false
 
@@ -451,7 +451,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      auth_url
-- Env Var:     RCLONE_ONEDRIVE_AUTH_URL
+- Env Var:     ZCLONE_ONEDRIVE_AUTH_URL
 - Type:        string
 - Required:    false
 
@@ -464,7 +464,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      token_url
-- Env Var:     RCLONE_ONEDRIVE_TOKEN_URL
+- Env Var:     ZCLONE_ONEDRIVE_TOKEN_URL
 - Type:        string
 - Required:    false
 
@@ -479,7 +479,7 @@ Note that this option is NOT supported by all backends.
 Properties:
 
 - Config:      client_credentials
-- Env Var:     RCLONE_ONEDRIVE_CLIENT_CREDENTIALS
+- Env Var:     ZCLONE_ONEDRIVE_CLIENT_CREDENTIALS
 - Type:        bool
 - Default:     false
 
@@ -490,17 +490,17 @@ Cutoff for switching to chunked upload.
 Any files larger than this will be uploaded in chunks of chunk_size.
 
 This is disabled by default as uploading using single part uploads
-causes rclone to use twice the storage on Onedrive business as when
-rclone sets the modification time after the upload Onedrive creates a
+causes zclone to use twice the storage on Onedrive business as when
+zclone sets the modification time after the upload Onedrive creates a
 new version.
 
-See: https://github.com/rclone/rclone/issues/1716
+See: /
 
 
 Properties:
 
 - Config:      upload_cutoff
-- Env Var:     RCLONE_ONEDRIVE_UPLOAD_CUTOFF
+- Env Var:     ZCLONE_ONEDRIVE_UPLOAD_CUTOFF
 - Type:        SizeSuffix
 - Default:     off
 
@@ -521,7 +521,7 @@ Example: https://your-tenant.sharepoint.com/_api
 Properties:
 
 - Config:      tenant_url
-- Env Var:     RCLONE_ONEDRIVE_TENANT_URL
+- Env Var:     ZCLONE_ONEDRIVE_TENANT_URL
 - Type:        string
 - Required:    false
 
@@ -536,7 +536,7 @@ Note that the chunks will be buffered into memory.
 Properties:
 
 - Config:      chunk_size
-- Env Var:     RCLONE_ONEDRIVE_CHUNK_SIZE
+- Env Var:     ZCLONE_ONEDRIVE_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     10Mi
 
@@ -547,7 +547,7 @@ The ID of the drive to use.
 Properties:
 
 - Config:      drive_id
-- Env Var:     RCLONE_ONEDRIVE_DRIVE_ID
+- Env Var:     ZCLONE_ONEDRIVE_DRIVE_ID
 - Type:        string
 - Required:    false
 
@@ -558,7 +558,7 @@ The type of the drive (personal | business | documentLibrary).
 Properties:
 
 - Config:      drive_type
-- Env Var:     RCLONE_ONEDRIVE_DRIVE_TYPE
+- Env Var:     ZCLONE_ONEDRIVE_DRIVE_TYPE
 - Type:        string
 - Required:    false
 
@@ -574,21 +574,21 @@ there through a path traversal.
 Properties:
 
 - Config:      root_folder_id
-- Env Var:     RCLONE_ONEDRIVE_ROOT_FOLDER_ID
+- Env Var:     ZCLONE_ONEDRIVE_ROOT_FOLDER_ID
 - Type:        string
 - Required:    false
 
 #### --onedrive-access-scopes
 
-Set scopes to be requested by rclone.
+Set scopes to be requested by zclone.
 
-Choose or manually enter a custom space separated list with all scopes, that rclone should request.
+Choose or manually enter a custom space separated list with all scopes, that zclone should request.
 
 
 Properties:
 
 - Config:      access_scopes
-- Env Var:     RCLONE_ONEDRIVE_ACCESS_SCOPES
+- Env Var:     ZCLONE_ONEDRIVE_ACCESS_SCOPES
 - Type:        SpaceSepList
 - Default:     Files.Read Files.ReadWrite Files.Read.All Files.ReadWrite.All Sites.Read.All offline_access
 - Examples:
@@ -604,7 +604,7 @@ Properties:
 
 Set to make OneNote files show up in directory listings.
 
-By default, rclone will hide OneNote files in directory listings because
+By default, zclone will hide OneNote files in directory listings because
 operations like "Open" and "Update" won't work on them.  But this
 behaviour may also prevent you from deleting them.  If you want to
 delete OneNote files or otherwise want them to show up in directory
@@ -613,7 +613,7 @@ listing, set this option.
 Properties:
 
 - Config:      expose_onenote_files
-- Env Var:     RCLONE_ONEDRIVE_EXPOSE_ONENOTE_FILES
+- Env Var:     ZCLONE_ONEDRIVE_EXPOSE_ONENOTE_FILES
 - Type:        bool
 - Default:     false
 
@@ -627,12 +627,12 @@ This will work if you are copying between two OneDrive *Personal* drives AND the
 copy are already shared between them. Additionally, it should also function for a user who
 has access permissions both between Onedrive for *business* and *SharePoint* under the *same
 tenant*, and between *SharePoint* and another *SharePoint* under the *same tenant*. In other
-cases, rclone will fall back to normal copy (which will be slightly slower).
+cases, zclone will fall back to normal copy (which will be slightly slower).
 
 Properties:
 
 - Config:      server_side_across_configs
-- Env Var:     RCLONE_ONEDRIVE_SERVER_SIDE_ACROSS_CONFIGS
+- Env Var:     ZCLONE_ONEDRIVE_SERVER_SIDE_ACROSS_CONFIGS
 - Type:        bool
 - Default:     false
 
@@ -643,7 +643,7 @@ Size of listing chunk.
 Properties:
 
 - Config:      list_chunk
-- Env Var:     RCLONE_ONEDRIVE_LIST_CHUNK
+- Env Var:     ZCLONE_ONEDRIVE_LIST_CHUNK
 - Type:        int
 - Default:     1000
 
@@ -651,7 +651,7 @@ Properties:
 
 Remove all versions on modifying operations.
 
-Onedrive for business creates versions when rclone uploads new files
+Onedrive for business creates versions when zclone uploads new files
 overwriting an existing one and when it sets the modification time.
 
 These versions take up space out of the quota.
@@ -666,7 +666,7 @@ this flag there.
 Properties:
 
 - Config:      no_versions
-- Env Var:     RCLONE_ONEDRIVE_NO_VERSIONS
+- Env Var:     ZCLONE_ONEDRIVE_NO_VERSIONS
 - Type:        bool
 - Default:     false
 
@@ -684,7 +684,7 @@ it only applies to OneDrive for Business and SharePoint document libraries.
 Properties:
 
 - Config:      hard_delete
-- Env Var:     RCLONE_ONEDRIVE_HARD_DELETE
+- Env Var:     ZCLONE_ONEDRIVE_HARD_DELETE
 - Type:        bool
 - Default:     false
 
@@ -695,7 +695,7 @@ Set the scope of the links created by the link command.
 Properties:
 
 - Config:      link_scope
-- Env Var:     RCLONE_ONEDRIVE_LINK_SCOPE
+- Env Var:     ZCLONE_ONEDRIVE_LINK_SCOPE
 - Type:        string
 - Default:     "anonymous"
 - Examples:
@@ -714,7 +714,7 @@ Set the type of the links created by the link command.
 Properties:
 
 - Config:      link_type
-- Env Var:     RCLONE_ONEDRIVE_LINK_TYPE
+- Env Var:     ZCLONE_ONEDRIVE_LINK_TYPE
 - Type:        string
 - Default:     "view"
 - Examples:
@@ -735,7 +735,7 @@ At the time of writing this only works with OneDrive personal paid accounts.
 Properties:
 
 - Config:      link_password
-- Env Var:     RCLONE_ONEDRIVE_LINK_PASSWORD
+- Env Var:     ZCLONE_ONEDRIVE_LINK_PASSWORD
 - Type:        string
 - Required:    false
 
@@ -746,7 +746,7 @@ Specify the hash in use for the backend.
 This specifies the hash type in use. If set to "auto" it will use the
 default hash which is QuickXorHash.
 
-Before rclone 1.62 an SHA1 hash was used by default for Onedrive
+Before zclone 1.62 an SHA1 hash was used by default for Onedrive
 Personal. For 1.62 and later the default is to use a QuickXorHash for
 all onedrive types. If an SHA1 hash is desired then set this option
 accordingly.
@@ -758,18 +758,18 @@ This can be set to "none" to not use any hashes.
 
 If the hash requested does not exist on the object, it will be
 returned as an empty string which is treated as a missing hash by
-rclone.
+zclone.
 
 
 Properties:
 
 - Config:      hash_type
-- Env Var:     RCLONE_ONEDRIVE_HASH_TYPE
+- Env Var:     ZCLONE_ONEDRIVE_HASH_TYPE
 - Type:        string
 - Default:     "auto"
 - Examples:
   - "auto"
-    - Rclone chooses the best hash
+    - Zclone chooses the best hash
   - "quickxor"
     - QuickXor
   - "sha1"
@@ -811,22 +811,22 @@ parameter.
 Properties:
 
 - Config:      av_override
-- Env Var:     RCLONE_ONEDRIVE_AV_OVERRIDE
+- Env Var:     ZCLONE_ONEDRIVE_AV_OVERRIDE
 - Type:        bool
 - Default:     false
 
 #### --onedrive-delta
 
-If set rclone will use delta listing to implement recursive listings.
+If set zclone will use delta listing to implement recursive listings.
 
 If this flag is set the onedrive backend will advertise `ListR`
 support for recursive listings.
 
 Setting this flag speeds up these things greatly:
 
-    rclone lsf -R onedrive:
-    rclone size onedrive:
-    rclone rc vfs/refresh recursive=true
+    zclone lsf -R onedrive:
+    zclone size onedrive:
+    zclone rc vfs/refresh recursive=true
 
 **However** the delta listing API **only** works at the root of the
 drive. If you use it not at the root then it recurses from the root
@@ -835,20 +835,20 @@ for. So it will be correct but may not be very efficient.
 
 This is why this flag is not set as the default.
 
-As a rule of thumb if nearly all of your data is under rclone's root
+As a rule of thumb if nearly all of your data is under zclone's root
 directory (the `root/directory` in `onedrive:root/directory`) then
 using this flag will be a big performance win. If your data is
 mostly not under the root then using this flag will be a big
 performance loss.
 
 It is recommended if you are mounting your onedrive at the root
-(or near the root when using crypt) and using rclone `rc vfs/refresh`.
+(or near the root when using crypt) and using zclone `rc vfs/refresh`.
 
 
 Properties:
 
 - Config:      delta
-- Env Var:     RCLONE_ONEDRIVE_DELTA
+- Env Var:     ZCLONE_ONEDRIVE_DELTA
 - Type:        bool
 - Default:     false
 
@@ -863,7 +863,7 @@ isn't always desirable to set the permissions from the metadata.
 Properties:
 
 - Config:      metadata_permissions
-- Env Var:     RCLONE_ONEDRIVE_METADATA_PERMISSIONS
+- Env Var:     ZCLONE_ONEDRIVE_METADATA_PERMISSIONS
 - Type:        Bits
 - Default:     off
 - Examples:
@@ -887,7 +887,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_ONEDRIVE_ENCODING
+- Env Var:     ZCLONE_ONEDRIVE_ENCODING
 - Type:        Encoding
 - Default:     Slash,LtGt,DoubleQuote,Colon,Question,Asterisk,Pipe,BackSlash,Del,Ctl,LeftSpace,LeftTilde,RightSpace,RightPeriod,InvalidUtf8,Dot
 
@@ -898,7 +898,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_ONEDRIVE_DESCRIPTION
+- Env Var:     ZCLONE_ONEDRIVE_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -989,7 +989,7 @@ Example for OneDrive Business:
 ```
 
 To write permissions, pass in a "permissions" metadata key using this same
-format. The [`--metadata-mapper`](https://rclone.org/docs/#metadata-mapper) tool can
+format. The [`--metadata-mapper`](//docs/#metadata-mapper) tool can
 be very helpful for this.
 
 When adding permissions, an email address can be provided in the `User.ID` or
@@ -1033,7 +1033,7 @@ passed in will be ignored.
 TIP: to see the metadata and permissions for any file or folder, run:
 
 ```
-rclone lsjson remote:path --stat -M --onedrive-metadata-permissions read
+zclone lsjson remote:path --stat -M --onedrive-metadata-permissions read
 ```
 
 Here are the possible system metadata items for the onedrive backend.
@@ -1089,7 +1089,7 @@ a remote per user you wish to impersonate.
    # OneDrive b!XYZ123                                                           business  14/10/2023    1:00:58 pm
    ```
 
-3. Then in rclone add a onedrive remote type, and use the `Type in driveID`
+3. Then in zclone add a onedrive remote type, and use the `Type in driveID`
    with the DriveID you got in the previous step. One remote per user. It will
    then confirm the drive ID, and hopefully give you a message of
    `Found drive "root" of type "business"` and then include the URL of the format
@@ -1097,9 +1097,9 @@ a remote per user you wish to impersonate.
 
 ## Limitations
 
-If you don't use rclone for 90 days the refresh token will
+If you don't use zclone for 90 days the refresh token will
 expire. This will result in authorization problems. This is easy to
-fix by running the `rclone config reconnect remote:` command to get a
+fix by running the `zclone config reconnect remote:` command to get a
 new token and refresh token.
 
 ### Naming
@@ -1109,7 +1109,7 @@ file called "Hello.doc" and one called "hello.doc".
 
 There are quite a few characters that can't be in OneDrive file
 names.  These can't occur on Windows platforms, but on non-Windows
-platforms they are common.  Rclone will map these names to and from an
+platforms they are common.  Zclone will map these names to and from an
 identical looking unicode equivalent.  For example if a file has a `?`
 in it will be mapped to `？` instead.
 
@@ -1122,16 +1122,16 @@ for Business [(Updated 13 Jan 2021)](https://support.microsoft.com/en-us/office/
 
 The entire path, including the file name, must contain fewer than 400
 characters for OneDrive, OneDrive for Business and SharePoint Online. If you
-are encrypting file and folder names with rclone, you may want to pay attention
+are encrypting file and folder names with zclone, you may want to pay attention
 to this limitation because the encrypted names are typically longer than the
 original ones.
 
 ### Number of files
 
 OneDrive seems to be OK with at least 50,000 files in a folder, but at
-100,000 rclone will get errors listing the directory like `couldn’t
+100,000 zclone will get errors listing the directory like `couldn’t
 list files: UnknownError:`.  See
-[#2707](https://github.com/rclone/rclone/issues/2707) for more info.
+[#2707](/) for more info.
 
 An official document about the limitations for different types of OneDrive can
 be found [here](https://support.office.com/en-us/article/invalid-file-names-and-file-types-in-onedrive-onedrive-for-business-and-sharepoint-64883a5d-228e-48f5-b3d2-eb39e07630fa).
@@ -1143,14 +1143,14 @@ version of the file.  This counts against a users quota.  For
 example changing the modification time of a file creates a second
 version, so the file apparently uses twice the space.
 
-For example the `copy` command is affected by this as rclone copies
+For example the `copy` command is affected by this as zclone copies
 the file and then afterwards sets the modification time to match the
 source file which uses another version.
 
-You can use the `rclone cleanup` command (see below) to remove all old
+You can use the `zclone cleanup` command (see below) to remove all old
 versions.
 
-Or you can set the `no_versions` parameter to `true` and rclone will
+Or you can set the `no_versions` parameter to `true` and zclone will
 remove versions after operations which create new versions. This takes
 extra transactions so only enable it if you need it.
 
@@ -1196,21 +1196,21 @@ versioning on OneDrive
    Note: This will disable the creation of new file versions, but will not remove
    any previous versions. Your documents are safe.
 7. Apply the changes by clicking OK.
-8. Use rclone to upload or modify files. (I also use the --no-update-modtime flag)
-9. Restore the versioning settings after using rclone. (Optional)
+8. Use zclone to upload or modify files. (I also use the --no-update-modtime flag)
+9. Restore the versioning settings after using zclone. (Optional)
 
 ## Cleanup
 
-OneDrive supports `rclone cleanup` which causes rclone to look through
+OneDrive supports `zclone cleanup` which causes zclone to look through
 every file under the path supplied and delete all version but the
 current version. Because this involves traversing all the files, then
-querying each file for versions it can be quite slow. Rclone does
+querying each file for versions it can be quite slow. Zclone does
 `--checkers` tests in parallel. The command also supports `--interactive`/`i`
 or `--dry-run` which is a great way to see what it would do.
 
 ```text
-rclone cleanup --interactive remote:path/subdir # interactively remove all old version for path/subdir
-rclone cleanup remote:path/subdir               # unconditionally remove all old version for path/subdir
+zclone cleanup --interactive remote:path/subdir # interactively remove all old version for path/subdir
+zclone cleanup remote:path/subdir               # unconditionally remove all old version for path/subdir
 ```
 
 **NB** Onedrive personal can't currently delete versions
@@ -1221,7 +1221,7 @@ rclone cleanup remote:path/subdir               # unconditionally remove all old
 
 If you experience excessive throttling or is being blocked on SharePoint then
 it may help to set the user agent explicitly with a flag like this:
-`--user-agent "ISV|rclone.org|rclone/v1.55.1"`
+`--user-agent "ISV|zclone.org|zclone/v1.55.1"`
 
 The specific details can be found in the Microsoft document:
 [Avoid getting throttled or blocked in SharePoint Online](https://docs.microsoft.com/en-us/sharepoint/dev/general-development/how-to-avoid-getting-throttled-or-blocked-in-sharepoint-online#how-to-decorate-your-http-traffic-to-avoid-throttling)
@@ -1233,7 +1233,7 @@ It is a
 issue that Sharepoint (not OneDrive or OneDrive for Business) silently modifies
 uploaded files, mainly Office files (.docx, .xlsx, etc.), causing file size and
 hash checks to fail. There are also other situations that will cause OneDrive to
-report inconsistent file sizes. To use rclone with such
+report inconsistent file sizes. To use zclone with such
 affected files on Sharepoint, you
 may disable these checks with the following command line arguments:
 
@@ -1244,7 +1244,7 @@ may disable these checks with the following command line arguments:
 Alternatively, if you have write access to the OneDrive files, it may be possible
 to fix this problem for certain files, by attempting the steps below.
 Open the web interface for [OneDrive](https://onedrive.live.com) and find the
-affected files (which will be in the error messages/log for rclone). Simply click
+affected files (which will be in the error messages/log for zclone). Simply click
 on each of these files, causing OneDrive to open them on the web. This will cause
 each file to be converted in place to a format that is functionally equivalent
 but which will no longer trigger the size discrepancy. Once all problematic files
@@ -1257,13 +1257,13 @@ that Sharepoint (not OneDrive or OneDrive for Business) may return "item not
 found" errors when users try to replace or delete uploaded files; this seems to
 mainly affect Office files (.docx, .xlsx, etc.) and web files (.html, .aspx, etc.).
 As a workaround, you may use
-the `--backup-dir <BACKUP_DIR>` command line argument so rclone moves the
+the `--backup-dir <BACKUP_DIR>` command line argument so zclone moves the
 files to be replaced/deleted into a given backup directory (instead of directly
-replacing/deleting them). For example, to instruct rclone to move the files into
-the directory `rclone-backup-dir` on backend `mysharepoint`, you may use:
+replacing/deleting them). For example, to instruct zclone to move the files into
+the directory `zclone-backup-dir` on backend `mysharepoint`, you may use:
 
 ```text
---backup-dir mysharepoint:rclone-backup-dir
+--backup-dir mysharepoint:zclone-backup-dir
 ```
 
 ### access\_denied (AADSTS65005)
@@ -1271,14 +1271,14 @@ the directory `rclone-backup-dir` on backend `mysharepoint`, you may use:
 ```text
 Error: access_denied
 Code: AADSTS65005
-Description: Using application 'rclone' is currently not supported for your organization [YOUR_ORGANIZATION] because it is in an unmanaged state. An administrator needs to claim ownership of the company by DNS validation of [YOUR_ORGANIZATION] before the application rclone can be provisioned.
+Description: Using application 'zclone' is currently not supported for your organization [YOUR_ORGANIZATION] because it is in an unmanaged state. An administrator needs to claim ownership of the company by DNS validation of [YOUR_ORGANIZATION] before the application zclone can be provisioned.
 ```
 
-This means that rclone can't use the OneDrive for Business API with your account.
+This means that zclone can't use the OneDrive for Business API with your account.
 You can't do much about it, maybe write an email to your admins.
 
 However, there are other ways to interact with your OneDrive account. Have a look
-at the WebDAV backend: <https://rclone.org/webdav/#sharepoint>
+at the WebDAV backend: <//webdav/#sharepoint>
 
 ### invalid\_grant (AADSTS50076)
 
@@ -1290,15 +1290,15 @@ Description: Due to a configuration change made by your administrator, or becaus
 
 If you see the error above after enabling multi-factor authentication for your
 account, you can fix it by refreshing your OAuth refresh token. To do that, run
-`rclone config`, and choose to edit your OneDrive backend. Then, you don't need
+`zclone config`, and choose to edit your OneDrive backend. Then, you don't need
 to actually make any changes until you reach this question:
 `Token already configured - replace it?`. For this question, answer `y` and go through
 the process to refresh your token, just like the first time the backend is
-configured. After this, rclone should work again for this backend.
+configured. After this, zclone should work again for this backend.
 
 ### Invalid request when making public links
 
-On Sharepoint and OneDrive for Business, `rclone link` may return an "Invalid
+On Sharepoint and OneDrive for Business, `zclone link` may return an "Invalid
 request" error. A possible cause is that the organisation admin didn't allow
 public links to be made for the organisation/sharepoint library. To fix the
 permissions as an admin, take a look at the docs:
@@ -1307,16 +1307,16 @@ permissions as an admin, take a look at the docs:
 
 ### Can not access `Shared` with me files
 
-Shared with me files is not supported by rclone
-[currently](https://github.com/rclone/rclone/issues/4062), but there is a workaround:
+Shared with me files is not supported by zclone
+[currently](/), but there is a workaround:
 
 1. Visit [https://onedrive.live.com](https://onedrive.live.com/)
 2. Right click a item in `Shared`, then click `Add shortcut to My files` in the context
     ![make_shortcut](https://user-images.githubusercontent.com/60313789/206118040-7e762b3b-aa61-41a1-8649-cc18889f3572.png "Screenshot (Shared with me)")
-3. The shortcut will appear in `My files`, you can access it with rclone, it
+3. The shortcut will appear in `My files`, you can access it with zclone, it
    behaves like a normal folder/file.
     ![in_my_files](https://i.imgur.com/0S8H3li.png "Screenshot (My Files)")
-    ![rclone_mount](https://i.imgur.com/2Iq66sW.png "Screenshot (rclone mount)")
+    ![zclone_mount](https://i.imgur.com/2Iq66sW.png "Screenshot (zclone mount)")
 
 ### Live Photos uploaded from iOS (small video clips in .heic files)
 
@@ -1324,7 +1324,7 @@ The iOS OneDrive app introduced [upload and storage](https://techcommunity.micro
 of [Live Photos](https://support.apple.com/en-gb/HT207310) in 2020.
 The usage and download of these uploaded Live Photos is unfortunately still
 work-in-progress and this introduces several issues when copying, synchronising
-and mounting – both in rclone and in the native OneDrive client on Windows.
+and mounting – both in zclone and in the native OneDrive client on Windows.
 
 The root cause can easily be seen if you locate one of your Live Photos in the
 OneDrive web interface. Then download the photo from the web interface. You
@@ -1333,7 +1333,7 @@ displayed in the web interface. The downloaded file is smaller because it only
 contains a single frame (still photo) extracted from the Live Photo (movie)
 stored in OneDrive.
 
-The different sizes will cause `rclone copy/sync` to repeatedly recopy
+The different sizes will cause `zclone copy/sync` to repeatedly recopy
 unmodified photos something like this:
 
 ```text
@@ -1346,7 +1346,7 @@ These recopies can be worked around by adding `--ignore-size`. Please note that
 this workaround only syncs the still-picture not the movie clip,
 and relies on modification dates being correctly updated on all files in all situations.
 
-The different sizes will also cause `rclone check` to report size errors something
+The different sizes will also cause `zclone check` to report size errors something
 like this:
 
 ```text
@@ -1355,7 +1355,7 @@ ERROR : 20230203_123826234_iOS.heic: sizes differ
 
 These check errors can be suppressed by adding `--ignore-size`.
 
-The different sizes will also cause `rclone mount` to fail downloading with an
+The different sizes will also cause `zclone mount` to fail downloading with an
 error something like this:
 
 ```text

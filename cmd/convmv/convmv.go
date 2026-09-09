@@ -6,12 +6,12 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/sync"
-	"github.com/rclone/rclone/lib/transform"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs/config/flags"
+	"zclone/fs/operations"
+	"zclone/fs/sync"
+	"zclone/lib/transform"
 )
 
 // Globals
@@ -98,7 +98,7 @@ anticipate these.
 
 - If two files from the source are transformed into the same name at the
   destination, the final state may be non-deterministic.
-- Running rclone check after a sync using such transformations may erroneously
+- Running zclone check after a sync using such transformations may erroneously
   report missing or differing files due to overwritten results.
 
 To minimize risks, users should:

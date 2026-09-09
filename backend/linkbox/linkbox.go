@@ -27,16 +27,16 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/dircache"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
 const (
@@ -160,7 +160,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 	}).Fill(ctx, f)
 
 	if f.opt.Email == "" || f.opt.Password == "" {
-		return nil, fmt.Errorf("email and password are required - run `rclone config`")
+		return nil, fmt.Errorf("email and password are required - run `zclone config`")
 	}
 
 	// Load cached web token or login to get a new one
@@ -179,9 +179,22 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 	if err != nil {
 		// Assume it is a file
 		newRoot, remote := dircache.SplitPath(root)
-		tempF := *f //nolint:govet // copying mutex is OK here as it is a new Fs
-		tempF.dirCache = dircache.New(newRoot, rootID, &tempF)
-		tempF.root = newRoot
+		f.webTokenMu.Lock()
+		webToken := f.webToken
+		f.webTokenMu.Unlock()
+		tempF := &Fs{
+			name:     f.name,
+			root:     newRoot,
+			opt:      f.opt,
+			features: f.features,
+			ci:       f.ci,
+			srv:      f.srv,
+			cdnSrv:   f.cdnSrv,
+			pacer:    f.pacer,
+			m:        f.m,
+			webToken: webToken,
+		}
+		tempF.dirCache = dircache.New(newRoot, rootID, tempF)
 		// Make new Fs which is the parent
 		err = tempF.dirCache.FindRoot(ctx, false)
 		if err != nil {
@@ -196,10 +209,10 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 			}
 			return nil, err
 		}
-		f.features.Fill(ctx, &tempF)
+		f.features.Fill(ctx, tempF)
 		// XXX: update the old f here instead of returning tempF, since
 		// `features` were already filled with functions having *f as a receiver.
-		// See https://github.com/rclone/rclone/issues/2182
+		// See /
 		f.dirCache = tempF.dirCache
 		f.root = tempF.root
 		// return an error with an fs which points to the parent
@@ -645,7 +658,7 @@ func (o *Object) Open(ctx context.Context, options ...fs.OpenOption) (io.ReadClo
 	}
 
 	if downloadURL == "" {
-		return nil, fmt.Errorf("no download URL for %q - try re-running `rclone config reconnect`", o.Remote())
+		return nil, fmt.Errorf("no download URL for %q - try re-running `zclone config reconnect`", o.Remote())
 	}
 
 	opts := &rest.Opts{
@@ -669,7 +682,7 @@ func (o *Object) Open(ctx context.Context, options ...fs.OpenOption) (io.ReadClo
 
 // Update in to the object with the modTime given of the given size
 //
-// When called from outside an Fs by rclone, src.Size() will always be >= 0.
+// When called from outside an Fs by zclone, src.Size() will always be >= 0.
 // But for unknown-sized objects (indicated by src.Size() == -1), Upload should either
 // return an error or update the object properly (rather than e.g. calling panic).
 func (o *Object) Update(ctx context.Context, in io.Reader, src fs.ObjectInfo, options ...fs.OpenOption) (err error) {
@@ -968,7 +981,7 @@ type getUploadURLResponse struct {
 
 // Put in to the remote path with the modTime given of the given size
 //
-// When called from outside an Fs by rclone, src.Size() will always be >= 0.
+// When called from outside an Fs by zclone, src.Size() will always be >= 0.
 // But for unknown-sized objects (indicated by src.Size() == -1), Put should either
 // return an error or upload it properly (rather than e.g. calling panic).
 //

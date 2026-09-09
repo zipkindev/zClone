@@ -6,10 +6,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/rclone/rclone/cmd/bisync/bilib"
-	"github.com/rclone/rclone/fs"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v3"
+	"zclone/cmd/bisync/bilib"
+	"zclone/fs"
 )
 
 const configFile = "../../fstest/test_all/config.yaml"

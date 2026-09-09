@@ -9,9 +9,9 @@ import (
 	"sync"
 
 	"github.com/aalpar/deheap"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/fserrors"
+	"zclone/fs"
+	"zclone/fs/filter"
+	"zclone/fs/fserrors"
 )
 
 // compare two items for order by

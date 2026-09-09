@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/lib/pacer"
 	"github.com/stretchr/testify/require"
+	"zclone/fs/fserrors"
+	"zclone/lib/pacer"
 )
 
 var errFoo = errors.New("foo")

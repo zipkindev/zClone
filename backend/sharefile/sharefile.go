@@ -83,25 +83,25 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/backend/sharefile/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/oauthutil"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/sharefile/api"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/lib/dircache"
+	"zclone/lib/encoder"
+	"zclone/lib/oauthutil"
+	"zclone/lib/pacer"
+	"zclone/lib/random"
+	"zclone/lib/rest"
 )
 
 const (
-	rcloneClientID              = "djQUPlHTUM9EvayYBWuKC5IrVIoQde46"
-	rcloneEncryptedClientSecret = "v7572bKhUindQL3yDnUAebmgP-QxiwT38JLxVPolcZBl6SSs329MtFzH73x7BeELmMVZtneUPvALSopUZ6VkhQ"
+	zcloneClientID              = "djQUPlHTUM9EvayYBWuKC5IrVIoQde46"
+	zcloneEncryptedClientSecret = "v7572bKhUindQL3yDnUAebmgP-QxiwT38JLxVPolcZBl6SSs329MtFzH73x7BeELmMVZtneUPvALSopUZ6VkhQ"
 	minSleep                    = 10 * time.Millisecond
 	maxSleep                    = 2 * time.Second
 	decayConstant               = 2              // bigger for slower decay, exponential
@@ -119,8 +119,8 @@ func newOauthConfig(tokenURL string) *oauthutil.Config {
 		Scopes:       nil,
 		AuthURL:      "https://secure.sharefile.com/oauth/authorize",
 		TokenURL:     tokenURL,
-		ClientID:     rcloneClientID,
-		ClientSecret: obscure.MustReveal(rcloneEncryptedClientSecret),
+		ClientID:     zcloneClientID,
+		ClientSecret: obscure.MustReveal(zcloneEncryptedClientSecret),
 		RedirectURL:  oauthutil.RedirectPublicSecureURL,
 	}
 }
@@ -525,7 +525,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 		f.features.Fill(ctx, &tempF)
 		// XXX: update the old f here instead of returning tempF, since
 		// `features` were already filled with functions having *f as a receiver.
-		// See https://github.com/rclone/rclone/issues/2182
+		// See /
 		f.dirCache = tempF.dirCache
 		f.root = tempF.root
 		// return an error with an fs which points to the parent
@@ -1108,7 +1108,7 @@ func (f *Fs) Copy(ctx context.Context, src fs.Object, remote string) (dst fs.Obj
 	copyTargetDirID := dstParentID
 	if !directCopy {
 		// Create a temporary directory to copy the object in to
-		tmpDir := "rclone-temp-dir-" + random.String(16)
+		tmpDir := "zclone-temp-dir-" + random.String(16)
 		err = f.Mkdir(ctx, tmpDir)
 		if err != nil {
 			return nil, fmt.Errorf("copy: failed to make temp dir: %w", err)

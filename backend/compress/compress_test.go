@@ -6,12 +6,12 @@ import (
 	"path/filepath"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/drive"
-	_ "github.com/rclone/rclone/backend/local"
-	_ "github.com/rclone/rclone/backend/s3"
-	_ "github.com/rclone/rclone/backend/swift"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
+	_ "zclone/backend/drive"
+	_ "zclone/backend/local"
+	_ "zclone/backend/s3"
+	_ "zclone/backend/swift"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
 )
 
 var defaultOpt = fstests.Opt{
@@ -41,7 +41,7 @@ func TestRemoteGzip(t *testing.T) {
 	if *fstest.RemoteName != "" {
 		t.Skip("Skipping as -remote set")
 	}
-	tempdir := filepath.Join(os.TempDir(), "rclone-compress-test-gzip")
+	tempdir := filepath.Join(os.TempDir(), "zclone-compress-test-gzip")
 	name := "TestCompressGzip"
 	opt := defaultOpt
 	opt.RemoteName = name + ":"
@@ -60,7 +60,7 @@ func TestRemoteZstd(t *testing.T) {
 	if *fstest.RemoteName != "" {
 		t.Skip("Skipping as -remote set")
 	}
-	tempdir := filepath.Join(os.TempDir(), "rclone-compress-test-zstd")
+	tempdir := filepath.Join(os.TempDir(), "zclone-compress-test-zstd")
 	name := "TestCompressZstd"
 	opt := defaultOpt
 	opt.RemoteName = name + ":"

@@ -5,9 +5,9 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs/config"
 	"github.com/stretchr/testify/assert"
+	"zclone/cmd"
+	"zclone/fs/config"
 )
 
 func TestVersionWorksWithoutAccessibleConfigFile(t *testing.T) {
@@ -38,7 +38,7 @@ func TestVersionWorksWithoutAccessibleConfigFile(t *testing.T) {
 		assert.NoError(t, cmd.Root.Execute())
 	})
 
-	// This causes rclone to exit and the tests to stop!
+	// This causes zclone to exit and the tests to stop!
 	// cmd.Root.SetArgs([]string{"--version"})
 	// assert.NotPanics(t, func() {
 	// 	assert.NoError(t, cmd.Root.Execute())

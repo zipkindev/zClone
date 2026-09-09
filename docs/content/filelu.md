@@ -1,6 +1,6 @@
 ---
 title: "FileLu"
-description: "Rclone docs for FileLu"
+description: "Zclone docs for FileLu"
 versionIntroduced: "v1.70"
 ---
 
@@ -9,7 +9,7 @@ versionIntroduced: "v1.70"
 [FileLu](https://filelu.com/) is a reliable cloud storage provider
 offering features like secure file uploads, downloads, flexible
 storage options, and sharing capabilities. With support for high
-storage limits and seamless integration with rclone, FileLu makes
+storage limits and seamless integration with zclone, FileLu makes
 managing files in the cloud easy. Its cross-platform file backup
 services let you upload and back up files from any internet-connected
 device.
@@ -22,7 +22,7 @@ an industry standard S3 compatible object store.
 Here is an example of how to make a remote called `filelu`. First, run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -41,8 +41,8 @@ xx / FileLu Cloud Storage
    \ "filelu"
 [snip]
 Storage> filelu
-Enter your FileLu Rclone Key:
-key> YOUR_FILELU_RCLONE_KEY RC_xxxxxxxxxxxxxxxxxxxxxxxx
+Enter your FileLu Zclone Key:
+key> YOUR_FILELU_ZCLONE_KEY RC_xxxxxxxxxxxxxxxxxxxxxxxx
 Configuration complete.
 
 Keep this "filelu" remote?
@@ -54,104 +54,104 @@ y/e/d> y
 
 ### Paths
 
-A path without an initial `/` will operate in the `Rclone` directory.
+A path without an initial `/` will operate in the `Zclone` directory.
 
 A path with an initial `/` will operate at the root where you can see
-the `Rclone` directory.
+the `Zclone` directory.
 
 ```console
-$ rclone lsf TestFileLu:/
+$ zclone lsf TestFileLu:/
 CCTV/
 Camera/
 Documents/
 Music/
 Photos/
-Rclone/
+Zclone/
 Vault/
 Videos/
 ```
 
 ### Example Commands
 
-Create a new folder named `foldername` in the `Rclone` directory:
+Create a new folder named `foldername` in the `Zclone` directory:
 
 ```console
-rclone mkdir filelu:foldername
+zclone mkdir filelu:foldername
 ```
 
 Delete a folder on FileLu:
 
 ```console
-rclone rmdir filelu:/folder/path/
+zclone rmdir filelu:/folder/path/
 ```
 
 Delete a file on FileLu:
 
 ```console
-rclone delete filelu:/hello.txt
+zclone delete filelu:/hello.txt
 ```
 
 List files from your FileLu account:
 
 ```console
-rclone ls filelu:
+zclone ls filelu:
 ```
 
 List all folders:
 
 ```console
-rclone lsd filelu:
+zclone lsd filelu:
 ```
 
 Copy a specific file to the FileLu root:
 
 ```console
-rclone copy D:\hello.txt filelu:
+zclone copy D:\hello.txt filelu:
 ```
 
 Copy files from a local directory to a FileLu directory:
 
 ```console
-rclone copy D:/local-folder filelu:/remote-folder/path/
+zclone copy D:/local-folder filelu:/remote-folder/path/
 ```
 
 Download a file from FileLu into a local directory:
 
 ```console
-rclone copy filelu:/file-path/hello.txt D:/local-folder
+zclone copy filelu:/file-path/hello.txt D:/local-folder
 ```
 
 Move files from a local directory to a FileLu directory:
 
 ```console
-rclone move D:\local-folder filelu:/remote-path/
+zclone move D:\local-folder filelu:/remote-path/
 ```
 
 Sync files from a local directory to a FileLu directory:
 
 ```console
-rclone sync --interactive D:/local-folder filelu:/remote-path/
+zclone sync --interactive D:/local-folder filelu:/remote-path/
 ```
 
 Mount remote to local Linux:
 
 ```console
-rclone mount filelu: /root/mnt --vfs-cache-mode full
+zclone mount filelu: /root/mnt --vfs-cache-mode full
 ```
 
 Mount remote to local Windows:
 
 ```console
-rclone mount filelu: D:/local_mnt --vfs-cache-mode full
+zclone mount filelu: D:/local_mnt --vfs-cache-mode full
 ```
 
 Get storage info about the FileLu account:
 
 ```console
-rclone about filelu:
+zclone about filelu:
 ```
 
-All the other rclone commands are supported by this backend.
+All the other zclone commands are supported by this backend.
 
 ### FolderID instead of folder path
 
@@ -171,16 +171,16 @@ where a character is a Unicode character.
 
 ### Duplicated Files
 
-When uploading and syncing via Rclone, FileLu does not allow uploading
+When uploading and syncing via Zclone, FileLu does not allow uploading
 duplicate files within the same directory. However, you can upload
 duplicate files, provided they are in different directories (folders).
 
 ### Failure to Log / Invalid Credentials or KEY
 
-Ensure that you have the correct Rclone key, which can be found in [My
-Account](https://filelu.com/account/). Every time you toggle Rclone
+Ensure that you have the correct Zclone key, which can be found in [My
+Account](https://filelu.com/account/). Every time you toggle Zclone
 OFF and ON in My Account, a new RC_xxxxxxxxxxxxxxxxxxxx key is
-generated. Be sure to update your Rclone configuration with the new
+generated. Be sure to update your Zclone configuration with the new
 key.
 
 If you are connecting to your FileLu remote for the first time and
@@ -190,13 +190,13 @@ encounter an error such as:
 Failed to create file system for "my-filelu-remote:": couldn't login: Invalid credentials
 ```
 
-Ensure your Rclone Key is correct.
+Ensure your Zclone Key is correct.
 
 ### Process `killed`
 
 Accounts with large files or extensive metadata may experience
 significant memory usage during list/sync operations. Ensure the
-system running `rclone` has sufficient memory and CPU to handle these
+system running `zclone` has sufficient memory and CPU to handle these
 operations.
 
 <!-- autogenerated options start - DO NOT EDIT - instead edit fs.RegInfo in backend/filelu/filelu.go and run make backenddocs to verify --> <!-- markdownlint-disable-line line-length -->
@@ -206,12 +206,12 @@ Here are the Standard options specific to filelu (FileLu Cloud Storage).
 
 #### --filelu-key
 
-Your FileLu Rclone key from My Account
+Your FileLu Zclone key from My Account
 
 Properties:
 
 - Config:      key
-- Env Var:     RCLONE_FILELU_KEY
+- Env Var:     ZCLONE_FILELU_KEY
 - Type:        string
 - Required:    true
 
@@ -226,7 +226,7 @@ Cutoff for switching to chunked upload. Any files larger than this will be uploa
 Properties:
 
 - Config:      upload_cutoff
-- Env Var:     RCLONE_FILELU_UPLOAD_CUTOFF
+- Env Var:     ZCLONE_FILELU_UPLOAD_CUTOFF
 - Type:        SizeSuffix
 - Default:     500Mi
 
@@ -237,7 +237,7 @@ Chunk size to use for uploading. Used for multipart uploads.
 Properties:
 
 - Config:      chunk_size
-- Env Var:     RCLONE_FILELU_CHUNK_SIZE
+- Env Var:     ZCLONE_FILELU_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     64Mi
 
@@ -250,7 +250,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_FILELU_ENCODING
+- Env Var:     ZCLONE_FILELU_ENCODING
 - Type:        Encoding
 - Default:     Slash,LtGt,DoubleQuote,SingleQuote,BackQuote,Dollar,Colon,Question,Asterisk,Pipe,Hash,Percent,BackSlash,CrLf,Del,Ctl,LeftSpace,LeftPeriod,LeftTilde,LeftCrLfHtVt,RightSpace,RightPeriod,RightCrLfHtVt,InvalidUtf8,Dot,SquareBracket,Semicolon,Exclamation
 
@@ -261,7 +261,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_FILELU_DESCRIPTION
+- Env Var:     ZCLONE_FILELU_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -271,7 +271,7 @@ Properties:
 
 This backend uses a custom library implementing the FileLu API. While
 it supports file transfers, some advanced features may not yet be
-available. Please report any issues to the [rclone forum](https://forum.rclone.org/)
+available. Please report any issues to the [zclone forum](/)
 for troubleshooting and updates.
 
 For further information, visit [FileLu's website](https://filelu.com/).

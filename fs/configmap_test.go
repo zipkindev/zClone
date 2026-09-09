@@ -25,10 +25,10 @@ func captureLog(t *testing.T) *bytes.Buffer {
 
 // TestConfigEnvVarsRedactsPassword checks that the value of a
 // password config option set via the environment
-// (RCLONE_CONFIG_backend_option) is not logged (see #5794).
+// (ZCLONE_CONFIG_backend_option) is not logged (see #5794).
 func TestConfigEnvVarsRedactsPassword(t *testing.T) {
-	t.Setenv("RCLONE_CONFIG_SRC_PASS", "obscured_pass")
-	t.Setenv("RCLONE_CONFIG_SRC_HOST", "example.com")
+	t.Setenv("ZCLONE_CONFIG_SRC_PASS", "obscured_pass")
+	t.Setenv("ZCLONE_CONFIG_SRC_HOST", "example.com")
 	buf := captureLog(t)
 
 	config := configEnvVars{
@@ -57,7 +57,7 @@ func TestConfigEnvVarsRedactsPassword(t *testing.T) {
 // TestConfigEnvVarsDumpAuthShowsPassword checks that with --dump auth
 // set the password value is still shown in the log for debugging.
 func TestConfigEnvVarsDumpAuthShowsPassword(t *testing.T) {
-	t.Setenv("RCLONE_CONFIG_SRC_PASS", "obscured_pass")
+	t.Setenv("ZCLONE_CONFIG_SRC_PASS", "obscured_pass")
 	buf := captureLog(t)
 	ci := GetConfig(context.Background())
 	oldDump := ci.Dump
@@ -76,10 +76,10 @@ func TestConfigEnvVarsDumpAuthShowsPassword(t *testing.T) {
 }
 
 // TestOptionEnvVarsRedactsPassword checks that the value of a
-// password option set via the environment (RCLONE_backend_option) is
+// password option set via the environment (ZCLONE_backend_option) is
 // not logged (see #5794).
 func TestOptionEnvVarsRedactsPassword(t *testing.T) {
-	t.Setenv("RCLONE_SFTP_PASS", "obscured_pass")
+	t.Setenv("ZCLONE_SFTP_PASS", "obscured_pass")
 	buf := captureLog(t)
 
 	oev := optionEnvVars{

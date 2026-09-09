@@ -1,6 +1,6 @@
 ---
 title: "Filen"
-description: "Rclone docs for Filen"
+description: "Zclone docs for Filen"
 versionIntroduced: "1.73"
 ---
 
@@ -10,11 +10,11 @@ The initial setup for Filen requires that you get an API key for your account,
 currently this is only possible using the [Filen CLI](https://github.com/FilenCloudDienste/filen-cli).
 This means you must first download the CLI, login, and then run the `export-api-key` command.
 
-**Note:** If you change your Filen account password, you will need to update your rclone configuration with the new password and a re-exported API key (via `export-api-key`).
+**Note:** If you change your Filen account password, you will need to update your zclone configuration with the new password and a re-exported API key (via `export-api-key`).
 
 Here is an example of how to make a remote called `FilenRemote`.  First run:
 
-     rclone config
+     zclone config
 
 This will guide you through an interactive setup process:
 ```
@@ -105,7 +105,7 @@ Email of your Filen account
 Properties:
 
 - Config:      email
-- Env Var:     RCLONE_FILEN_EMAIL
+- Env Var:     ZCLONE_FILEN_EMAIL
 - Type:        string
 - Required:    true
 
@@ -113,12 +113,12 @@ Properties:
 
 Password of your Filen account
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      password
-- Env Var:     RCLONE_FILEN_PASSWORD
+- Env Var:     ZCLONE_FILEN_PASSWORD
 - Type:        string
 - Required:    true
 
@@ -129,12 +129,12 @@ API Key for your Filen account
 Get this using the Filen CLI export-api-key command
 You can download the Filen CLI from https://github.com/FilenCloudDienste/filen-cli
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      api_key
-- Env Var:     RCLONE_FILEN_API_KEY
+- Env Var:     ZCLONE_FILEN_API_KEY
 - Type:        string
 - Required:    true
 
@@ -156,7 +156,7 @@ this may help to speed up the transfers.
 Properties:
 
 - Config:      upload_concurrency
-- Env Var:     RCLONE_FILEN_UPLOAD_CONCURRENCY
+- Env Var:     ZCLONE_FILEN_UPLOAD_CONCURRENCY
 - Type:        int
 - Default:     16
 
@@ -169,7 +169,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_FILEN_ENCODING
+- Env Var:     ZCLONE_FILEN_ENCODING
 - Type:        Encoding
 - Default:     Slash,Del,Ctl,InvalidUtf8,Dot
 
@@ -180,7 +180,7 @@ Master Keys (internal use only)
 Properties:
 
 - Config:      master_keys
-- Env Var:     RCLONE_FILEN_MASTER_KEYS
+- Env Var:     ZCLONE_FILEN_MASTER_KEYS
 - Type:        string
 - Required:    false
 
@@ -191,7 +191,7 @@ Private RSA Key (internal use only)
 Properties:
 
 - Config:      private_key
-- Env Var:     RCLONE_FILEN_PRIVATE_KEY
+- Env Var:     ZCLONE_FILEN_PRIVATE_KEY
 - Type:        string
 - Required:    false
 
@@ -202,7 +202,7 @@ Public RSA Key (internal use only)
 Properties:
 
 - Config:      public_key
-- Env Var:     RCLONE_FILEN_PUBLIC_KEY
+- Env Var:     ZCLONE_FILEN_PUBLIC_KEY
 - Type:        string
 - Required:    false
 
@@ -213,7 +213,7 @@ Authentication Version (internal use only)
 Properties:
 
 - Config:      auth_version
-- Env Var:     RCLONE_FILEN_AUTH_VERSION
+- Env Var:     ZCLONE_FILEN_AUTH_VERSION
 - Type:        string
 - Required:    false
 
@@ -224,7 +224,7 @@ UUID of Account Root Directory (internal use only)
 Properties:
 
 - Config:      base_folder_uuid
-- Env Var:     RCLONE_FILEN_BASE_FOLDER_UUID
+- Env Var:     ZCLONE_FILEN_BASE_FOLDER_UUID
 - Type:        string
 - Required:    false
 
@@ -235,7 +235,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_FILEN_DESCRIPTION
+- Env Var:     ZCLONE_FILEN_DESCRIPTION
 - Type:        string
 - Required:    false
 

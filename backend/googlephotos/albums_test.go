@@ -3,8 +3,8 @@ package googlephotos
 import (
 	"testing"
 
-	"github.com/rclone/rclone/backend/googlephotos/api"
 	"github.com/stretchr/testify/assert"
+	"zclone/backend/googlephotos/api"
 )
 
 func TestNewAlbums(t *testing.T) {

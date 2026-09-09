@@ -7,11 +7,11 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/operations"
 )
 
 // Globals
@@ -44,19 +44,19 @@ var commandDefinition = &cobra.Command{
 You can use it like this to output a single file
 
 |||sh
-rclone cat remote:path/to/file
+zclone cat remote:path/to/file
 |||
 
 Or like this to output any file in dir or its subdirectories.
 
 |||sh
-rclone cat remote:path/to/dir
+zclone cat remote:path/to/dir
 |||
 
 Or like this to output any .txt files in dir or its subdirectories.
 
 |||sh
-rclone --include "*.txt" cat remote:path/to/dir
+zclone --include "*.txt" cat remote:path/to/dir
 |||
 
 Use the |--head| flag to print characters only at the start, |--tail| for
@@ -71,13 +71,13 @@ files, use:
 - bash:
 
   |||sh
-  rclone --include "*.txt" --separator $'\n' cat remote:path/to/dir
+  zclone --include "*.txt" --separator $'\n' cat remote:path/to/dir
   |||
 
 - powershell:
 
   |||powershell
-  rclone --include "*.txt" --separator "|n" cat remote:path/to/dir
+  zclone --include "*.txt" --separator "|n" cat remote:path/to/dir
   |||`, "|", "`"),
 	Annotations: map[string]string{
 		"versionIntroduced": "v1.33",

@@ -1,6 +1,6 @@
 ---
 title: "Internxt Drive"
-description: "Rclone docs for Internxt Drive"
+description: "Zclone docs for Internxt Drive"
 versionIntroduced: "v1.73"
 ---
 
@@ -14,11 +14,11 @@ Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 
 ## Limitations
 
-**Note:** The Internxt backend may not work with all account types. Please refer to [Internxt plan details](https://internxt.com/pricing) or contact [Internxt support](https://help.internxt.com) to verify rclone compatibility with your subscription.
+**Note:** The Internxt backend may not work with all account types. Please refer to [Internxt plan details](https://internxt.com/pricing) or contact [Internxt support](https://help.internxt.com) to verify zclone compatibility with your subscription.
 
 ## Configuration
 
-Here is an example of how to make a remote called `internxt`. Run `rclone config` and follow the prompts:
+Here is an example of how to make a remote called `internxt`. Run `zclone config` and follow the prompts:
 
 ```
 No remotes found, make a new one?
@@ -66,10 +66,10 @@ If you have two-factor authentication enabled on your Internxt account, you will
 
 ### Security Considerations
 
-The authentication process stores your password and mnemonic in the rclone configuration file. It is **strongly recommended** to encrypt your rclone config to protect these sensitive credentials:
+The authentication process stores your password and mnemonic in the zclone configuration file. It is **strongly recommended** to encrypt your zclone config to protect these sensitive credentials:
 
 ```
-rclone config password
+zclone config password
 ```
 
 This will prompt you to set a password that encrypts your entire configuration file.
@@ -78,19 +78,19 @@ This will prompt you to set a password that encrypts your entire configuration f
 
 ```
 # List files
-rclone ls internxt:
+zclone ls internxt:
 
 # Copy files to Internxt
-rclone copy /local/path internxt:remote/path
+zclone copy /local/path internxt:remote/path
 
 # Sync local directory to Internxt
-rclone sync /local/path internxt:remote/path
+zclone sync /local/path internxt:remote/path
 
 # Mount Internxt Drive as a local filesystem
-rclone mount internxt: /path/to/mountpoint
+zclone mount internxt: /path/to/mountpoint
 
 # Check storage usage
-rclone about internxt:
+zclone about internxt:
 ```
 
 ### Modification times and hashes
@@ -116,7 +116,7 @@ Email of your Internxt account.
 Properties:
 
 - Config:      email
-- Env Var:     RCLONE_INTERNXT_EMAIL
+- Env Var:     ZCLONE_INTERNXT_EMAIL
 - Type:        string
 - Required:    true
 
@@ -124,12 +124,12 @@ Properties:
 
 Password.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      pass
-- Env Var:     RCLONE_INTERNXT_PASS
+- Env Var:     ZCLONE_INTERNXT_PASS
 - Type:        string
 - Required:    true
 
@@ -146,7 +146,7 @@ By default, hash validation is disabled. Set this to false to enable validation.
 Properties:
 
 - Config:      skip_hash_validation
-- Env Var:     RCLONE_INTERNXT_SKIP_HASH_VALIDATION
+- Env Var:     ZCLONE_INTERNXT_SKIP_HASH_VALIDATION
 - Type:        bool
 - Default:     true
 
@@ -161,7 +161,7 @@ Note that each chunk is buffered in memory.
 Properties:
 
 - Config:      upload_concurrency
-- Env Var:     RCLONE_INTERNXT_UPLOAD_CONCURRENCY
+- Env Var:     ZCLONE_INTERNXT_UPLOAD_CONCURRENCY
 - Type:        int
 - Default:     4
 
@@ -175,7 +175,7 @@ The minimum is 100 MiB and the maximum is 5 GiB.
 Properties:
 
 - Config:      upload_cutoff
-- Env Var:     RCLONE_INTERNXT_UPLOAD_CUTOFF
+- Env Var:     ZCLONE_INTERNXT_UPLOAD_CUTOFF
 - Type:        SizeSuffix
 - Default:     100Mi
 
@@ -190,7 +190,7 @@ Memory usage is approximately chunk_size * upload_concurrency.
 Properties:
 
 - Config:      chunk_size
-- Env Var:     RCLONE_INTERNXT_CHUNK_SIZE
+- Env Var:     ZCLONE_INTERNXT_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     30Mi
 
@@ -203,7 +203,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_INTERNXT_ENCODING
+- Env Var:     ZCLONE_INTERNXT_ENCODING
 - Type:        Encoding
 - Default:     Slash,BackSlash,CrLf,RightPeriod,InvalidUtf8,Dot
 
@@ -214,7 +214,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_INTERNXT_DESCRIPTION
+- Env Var:     ZCLONE_INTERNXT_DESCRIPTION
 - Type:        string
 - Required:    false
 

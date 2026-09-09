@@ -12,7 +12,7 @@ import (
 // Other tags including `cgo` are detected in this package.
 var Tags []string
 
-// GetLinkingAndTags tells how the rclone executable was linked
+// GetLinkingAndTags tells how the zclone executable was linked
 // and returns space separated build tags or the string "none".
 func GetLinkingAndTags() (linking, tagString string) {
 	linking = "static"

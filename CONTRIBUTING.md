@@ -1,22 +1,21 @@
-# Contributing to rclone
+# Contributing to zclone
 
-This is a short guide on how to contribute things to rclone.
+This is a short guide on how to contribute things to zclone.
 
 ## Reporting a bug
 
-If you've just got a question or aren't sure if you've found a bug
-then please use the [rclone forum](https://forum.rclone.org/) instead
-of filing an issue.
+If you've got a question or aren't sure if you've found a bug, use the
+support channel configured by the project owner instead of filing an issue.
 
 When filing an issue, please include the following information if
 possible as well as a description of the problem.  Make sure you test
-with the [latest beta of rclone](https://beta.rclone.org/):
+with the [latest beta of zclone](/):
 
-- Rclone version (e.g. output from `rclone version`)
+- Zclone version (e.g. output from `zclone version`)
 - Which OS you are using and how many bits (e.g. Windows 10, 64 bit)
-- The command you were trying to run (e.g. `rclone copy /tmp remote:tmp`)
+- The command you were trying to run (e.g. `zclone copy /tmp remote:tmp`)
 - A log of the command with the `-vv` flag (e.g. output from
-  `rclone -vv copy /tmp remote:tmp`)
+  `zclone -vv copy /tmp remote:tmp`)
   - if the log contains secrets then edit the file with a text editor first to
     obscure them
 
@@ -25,31 +24,25 @@ with the [latest beta of rclone](https://beta.rclone.org/):
 If you find a bug that you'd like to fix, or a new feature that you'd
 like to implement then please submit a pull request via GitHub.
 
-If it is a big feature, then [make an issue](https://github.com/rclone/rclone/issues)
-first so it can be discussed.
+If it is a big feature, open an issue first so it can be discussed.
 
-To prepare your pull request first press the fork button on [rclone's GitHub
-page](https://github.com/rclone/rclone).
+To prepare a pull request, fork or clone the Zclone repository hosted by your
+project owner.
 
 Then [install Git](https://git-scm.com/downloads) and set your public contribution
 [name](https://docs.github.com/en/github/getting-started-with-github/setting-your-username-in-git)
 and [email](https://docs.github.com/en/github/setting-up-and-managing-your-github-user-account/setting-your-commit-email-address#setting-your-commit-email-address-in-git).
 
 Next open your terminal, change directory to your preferred folder and initialise
-your local rclone project:
+your local zclone project:
 
 ```console
-git clone https://github.com/rclone/rclone.git
-cd rclone
-git remote rename origin upstream
-  # if you have SSH keys setup in your GitHub account:
-git remote add origin git@github.com:YOURUSER/rclone.git
-  # otherwise:
-git remote add origin https://github.com/YOURUSER/rclone.git
+git clone <approved-zclone-repository-or-local-path>
+cd zclone
 ```
 
 Note that most of the terminal commands in the rest of this guide must be
-executed from the rclone folder created above.
+executed from the zclone folder created above.
 
 Now [install Go](https://golang.org/doc/install) and verify your installation:
 
@@ -57,11 +50,11 @@ Now [install Go](https://golang.org/doc/install) and verify your installation:
 go version
 ```
 
-Great, you can now compile and execute your own version of rclone:
+Great, you can now compile and execute your own version of zclone:
 
 ```console
 go build
-./rclone version
+./zclone version
 ```
 
 (Note that you can also replace `go build` with `make`, which will include a
@@ -75,7 +68,7 @@ git checkout -b my-new-feature
 And get hacking.
 
 You may like one of the [popular editors/IDE's for Go](https://github.com/golang/go/wiki/IDEsAndTextEditorPlugins)
-and a quick view on the rclone [code organisation](#code-organisation).
+and a quick view on the zclone [code organisation](#code-organisation).
 
 When ready - test the affected functionality and run the unit tests for the
 code you changed
@@ -89,7 +82,7 @@ Note that you may need to make a test remote, e.g. `TestSwift` for some
 of the unit tests.
 
 This is typically enough if you made a simple bug fix, otherwise please read
-the rclone [testing](#testing) section too.
+the zclone [testing](#testing) section too.
 
 Make sure you
 
@@ -116,9 +109,9 @@ or [squash your commits](#squashing-your-commits).
 ## AI-assisted contributions
 
 You are welcome to use AI coding assistants (Claude Code, Codex, Cursor, Gemini
-CLI, and similar) to help write your contribution. Rclone has an
+CLI, and similar) to help write your contribution. Zclone has an
 [AGENTS.md](AGENTS.md) file at the top of the repository describing the project's
-conventions; point your tool at it so the code it produces matches rclone's
+conventions; point your tool at it so the code it produces matches zclone's
 style.
 
 However, the same standard applies to every pull request whether or not a tool
@@ -182,7 +175,7 @@ git push --force origin my-new-feature
 ### Basing your changes on the latest master
 
 To base your changes on the latest version of the
-[rclone master](https://github.com/rclone/rclone/tree/master) (upstream):
+[zclone master](/) (upstream):
 
 ```console
 git checkout master
@@ -225,11 +218,11 @@ If you squash commits that have been pushed to GitHub, then you will have to
 Tip: You may like to use `git rebase -i master` if you are experienced or have a
 more complex situation.
 
-### GitHub Continuous Integration
+### Continuous Integration
 
-rclone currently uses [GitHub Actions](https://github.com/rclone/rclone/actions)
-to build and test the project, which should be automatically available for your
-fork too from the `Actions` tab in your repository.
+Zclone is verified on a controlled self-hosted runner using the local toolchain
+and committed dependency tree. See `ci/README.md`; hosted CI services are not a
+build dependency of this distribution.
 
 ## Testing
 
@@ -240,13 +233,13 @@ you can run the same tests as get run in the CI which can be very helpful.
 
 You can run them with `make check` or with `golangci-lint run ./...`.
 
-Using these tests ensures that the rclone codebase all uses the same coding
+Using these tests ensures that the zclone codebase all uses the same coding
 standards. These tests also check for easy mistakes to make (like forgetting
 to check an error return).
 
 ### Quick testing
 
-rclone's tests are run from the go testing framework, so at the top
+zclone's tests are run from the go testing framework, so at the top
 level you can run this to run all the tests.
 
 ```console
@@ -259,14 +252,14 @@ You can also use `make`, if supported by your platform
 make quicktest
 ```
 
-The quicktest is [automatically run by GitHub](#github-continuous-integration)
-when you push your branch to GitHub.
+Run quicktest locally or on the controlled self-hosted runner before proposing
+a change.
 
 ### Backend testing
 
-rclone contains a mixture of unit tests and integration tests.
+zclone contains a mixture of unit tests and integration tests.
 Because it is difficult (and in some respects pointless) to test cloud
-storage systems by mocking all their interfaces, rclone unit tests can
+storage systems by mocking all their interfaces, zclone unit tests can
 run against any of the backends.  This is done by making specially
 named remotes in the default config file.
 
@@ -281,7 +274,7 @@ cd backend/drive
 go test -v
 ```
 
-You can then run the integration tests which test all of rclone's
+You can then run the integration tests which test all of zclone's
 operations.  Normally these get run against the local file system,
 but they can be run against any of the remotes.
 
@@ -312,25 +305,20 @@ make check
 make test
 ```
 
-The commands may require some extra go packages which you can install with
-
-```console
-make build_dep
-```
-
-The full integration tests are run daily on the integration test server. You can
-find the results at <https://integration.rclone.org>
+The commands require locally provisioned test tools and configured remotes.
+`make build_dep` intentionally does not download tools. Run the full suite on
+your controlled test infrastructure.
 
 ## Code Organisation
 
-Rclone code is organised into a small number of top level directories
+Zclone code is organised into a small number of top level directories
 with modules beneath.
 
-- backend - the rclone backends for interfacing to cloud providers -
+- backend - the zclone backends for interfacing to cloud providers -
   - all - import this to load all the cloud providers
   - ...providers
-- bin - scripts for use while building or maintaining rclone
-- cmd - the rclone commands
+- bin - scripts for use while building or maintaining zclone
+- cmd - the zclone commands
   - all - import this to load all the commands
   - ...commands
 - cmdtest - end-to-end tests of commands, flags, environment variables,...
@@ -339,16 +327,16 @@ with modules beneath.
     or portions marked autogenerated where the corresponding .go file must be
     edited instead, and everything else is autogenerated
     - commands - these are auto-generated, edit the corresponding .go file
-- fs - main rclone definitions - minimal amount of code
+- fs - main zclone definitions - minimal amount of code
   - accounting - bandwidth limiting and statistics
   - asyncreader - an io.Reader which reads ahead
   - config - manage the config file and flags
   - driveletter - detect if a name is a drive letter
   - filter - implements include/exclude filtering
-  - fserrors - rclone specific error handling
-  - fshttp - http handling for rclone
-  - fspath - path handling for rclone
-  - hash - defines rclone's hash types and functions
+  - fserrors - zclone specific error handling
+  - fshttp - http handling for zclone
+  - fspath - path handling for zclone
+  - hash - defines zclone's hash types and functions
   - list - list a remote
   - log - logging facilities
   - march - iterates directories in lock step
@@ -363,14 +351,14 @@ with modules beneath.
   - test_all - Runs integration tests for everything
 - graphics - the images used in the website, etc.
 - lib - libraries used by the backend
-  - atexit - register functions to run when rclone exits
+  - atexit - register functions to run when zclone exits
   - dircache - directory ID to name caching
   - oauthutil - helpers for using oauth
   - pacer - retries with backoff and paces operations
   - readers - a selection of useful io.Readers
   - rest - a thin abstraction over net/http for REST
-- librclone - in memory interface to rclone's API for embedding rclone
-- vfs - Virtual FileSystem layer for implementing rclone mount and similar
+- libzclone - in memory interface to zclone's API for embedding zclone
+- vfs - Virtual FileSystem layer for implementing zclone mount and similar
 
 ## Writing Documentation
 
@@ -386,7 +374,7 @@ perform the same checks while writing. It generally follows Ciro Santilli's
 [Markdown Style Guide](https://cirosantilli.com/markdown-style-guide), which
 is good source if you want to know more.
 
-HTML pages, served as website <rclone.org>, are generated from the Markdown,
+HTML pages, served as website <zclone.org>, are generated from the Markdown,
 using [Hugo](https://gohugo.io). Note that when generating the HTML pages,
 there is currently used a different algorithm for generating header anchors
 than what GitHub uses for its Markdown rendering. For example, in the HTML docs
@@ -402,7 +390,7 @@ or contain autogenerated portions (e.g. the backend documentation under
 `docs/content/commands`). These are marked with an `autogenerated` comment.
 The sources of the autogenerated text are usually Markdown formatted text
 embedded as string values in the Go source code, so you need to locate these
-and edit the `.go` file instead. The `MANUAL.*`, `rclone.1` and other text
+and edit the `.go` file instead. The `MANUAL.*`, `zclone.1` and other text
 files in the root of the repository are also autogenerated. The autogeneration
 of files, and the website, will be done during the release process. See the
 `make doc` and `make website` targets in the Makefile if you are interested in
@@ -426,7 +414,7 @@ the source file in the `Help:` field:
 - More details can be added in a new paragraph, after an empty line (`"\n\n"`).
   - Like with docs generated from Markdown, a single line break is ignored
     and two line breaks creates a new paragraph.
-  - This text will be shown to the user in `rclone config`
+  - This text will be shown to the user in `zclone config`
     and in the docs (where it will be added by `make backenddocs`,
     normally run some time before next release).
 - To create options of enumeration type use the `Examples:` field.
@@ -476,9 +464,9 @@ caveat when linking to header anchors, noted above, which means that GitHub's
 Markdown preview may not be an entirely reliable verification of the results.
 
 After your changes have been merged, you can verify them on
-[tip.rclone.org](https://tip.rclone.org). This site is updated daily with the
+[tip.zclone.org](/). This site is updated daily with the
 current state of the master branch at 07:00 UTC. The changes will be on the main
-[rclone.org](https://rclone.org) site once they have been included in a release.
+[zclone.org](/) site once they have been included in a release.
 
 ## Making a release
 
@@ -488,7 +476,7 @@ file.
 ## Commit messages
 
 Please make the first line of your commit message a summary of the
-change that a user (not a developer) of rclone would like to read, and
+change that a user (not a developer) of zclone would like to read, and
 prefix it with the directory of the change followed by a colon.  The
 changelog gets made by looking at just these first lines so make it
 good!
@@ -528,44 +516,20 @@ Fixes #1498
 
 ## Adding a dependency
 
-rclone uses the [go
-modules](https://tip.golang.org/cmd/go/#hdr-Modules__module_versions__and_more)
-support in go1.11 and later to manage its dependencies.
-
-rclone can be built with modules outside of the `GOPATH`.
-
-To add a dependency `github.com/ncw/new_dependency` see the
-instructions below.  These will fetch the dependency and add it to
-`go.mod` and `go.sum`.
-
-```console
-go get github.com/ncw/new_dependency
-```
-
-You can add constraints on that package when doing `go get` (see the
-go docs linked above), but don't unless you really need to.
-
-Please check in the changes generated by `go mod` including `go.mod`
-and `go.sum` in the same commit as your other changes.
+Review new dependencies in a controlled environment, then bring the reviewed
+source, `go.mod`, `go.sum`, and regenerated `vendor/` tree into Zclone together.
+Run `make source-manifest` in the same change. The normal Zclone build never
+downloads a module.
 
 ## Updating a dependency
 
-If you need to update a dependency then run
-
-```console
-go get golang.org/x/crypto
-```
-
-Check in a single commit as above.
+Follow the same controlled-import process as for a new dependency. Check in the
+module metadata, vendored source, and updated dependency manifest together.
 
 ## Updating all the dependencies
 
-In order to update all the dependencies then run `make update`.  This
-just uses the go modules to update all the modules to their latest
-stable release. Check in the changes in a single commit as above.
-
-This should be done early in the release cycle to pick up new versions
-of packages in time for them to get some testing.
+`make update` is intentionally disabled. Dependency updates are performed in a
+controlled import environment and validated locally with `make verify-local`.
 
 ## Updating a backend
 
@@ -586,7 +550,7 @@ The next section goes into more detail about the tests.
 
 Choose a name.  The docs here will use `remote` as an example.
 
-Note that in rclone terminology a file system backend is called a
+Note that in zclone terminology a file system backend is called a
 remote or an fs.
 
 ### Research
@@ -601,24 +565,24 @@ remote or an fs.
     shows how to use the directory cache)
   - b2 is a good one to start from if you have a bucket-based remote
 - Add your remote to the imports in `backend/all/all.go`
-- HTTP based remotes are easiest to maintain if they use rclone's
-  [lib/rest](https://pkg.go.dev/github.com/rclone/rclone/lib/rest) module, but
+- HTTP based remotes are easiest to maintain if they use zclone's
+  [lib/rest](https://pkg.go.dev/zclone/lib/rest) module, but
   if there is a really good Go SDK from the provider then use that instead.
 - Try to implement as many optional methods as possible as it makes the remote
   more usable.
-- Use [lib/encoder](https://pkg.go.dev/github.com/rclone/rclone/lib/encoder) to
-  make sure we can encode any path name and `rclone info` to help determine the
+- Use [lib/encoder](https://pkg.go.dev/zclone/lib/encoder) to
+  make sure we can encode any path name and `zclone info` to help determine the
   encodings needed
-  - `rclone purge -v TestRemote:rclone-info`
-  - `rclone test info --all --remote-encoding None -vv --write-json remote.json TestRemote:rclone-info`
+  - `zclone purge -v TestRemote:zclone-info`
+  - `zclone test info --all --remote-encoding None -vv --write-json remote.json TestRemote:zclone-info`
   - `go run cmd/test/info/internal/build_csv/main.go -o remote.csv remote.json`
   - open `remote.csv` in a spreadsheet and examine
 
 ### Guidelines for a speedy merge
 
-- **Do** use [lib/rest](https://pkg.go.dev/github.com/rclone/rclone/lib/rest)
+- **Do** use [lib/rest](https://pkg.go.dev/zclone/lib/rest)
   if you are implementing a REST like backend and parsing XML/JSON in the backend.
-- **Do** use rclone's Client or Transport from [fs/fshttp](https://pkg.go.dev/github.com/rclone/rclone/fs/fshttp)
+- **Do** use zclone's Client or Transport from [fs/fshttp](https://pkg.go.dev/zclone/fs/fshttp)
   if your backend is HTTP based - this adds features like `--dump bodies`,
   `--tpslimit`, `--user-agent` without you having to code anything!
 - **Do** follow your example backend exactly - use the same code order, function
@@ -658,8 +622,8 @@ Before a new or changed backend can be merged we require:
 - A clean run of `go run ./fstest/test_all -backends remote` (please include the
   result in your pull request).
 - A test account for the backend so the maintainers can add it to the
-  [integration test server](https://integration.rclone.org) and keep the backend
-  working as rclone evolves. A backend that we cannot test is likely to break and
+  [integration test server](https://integration.zclone.org) and keep the backend
+  working as zclone evolves. A backend that we cannot test is likely to break and
   may be removed.
 
 See the [testing](#testing) section for more information on integration tests.
@@ -675,7 +639,7 @@ First add a data file about your backend in
 tables and the tiering info.
 
 - Create it with: `bin/manage_backends.py create docs/data/backends/remote.yaml`
-- Edit it to fill in the blanks. Look at the [tiers docs](https://rclone.org/tiers/).
+- Edit it to fill in the blanks. Look at the [tiers docs](//tiers/).
 - Run this command to fill in the features: `bin/manage_backends.py features docs/data/backends/remote.yaml`
 
 Next edit these files:
@@ -687,7 +651,7 @@ Next edit these files:
     reference backend docs)
   - update them in your backend with `bin/make_backend_docs.py remote`
 - `docs/content/docs.md` - list of remotes in config section
-- `docs/content/_index.md` - front page of rclone.org
+- `docs/content/_index.md` - front page of zclone.org
 - `docs/layouts/chrome/navbar.html` - add it to the website navigation
 - `bin/make_manual.py` - add the page to the `docs` constant
 
@@ -703,40 +667,40 @@ in the web browser and the links (internal and external) all work.
 New features (backends, commands) can also be added "out-of-tree", through Go
 plugins. Changes will be kept in a dynamically loaded file instead of being
 compiled into the main binary. This is useful if you can't merge your changes
-upstream or don't want to maintain a fork of rclone.
+upstream or don't want to maintain a fork of zclone.
 
 ### Usage
 
 - Naming
-  - Plugins names must have the pattern `librcloneplugin_KIND_NAME.so`.
+  - Plugins names must have the pattern `libzcloneplugin_KIND_NAME.so`.
   - `KIND` should be one of `backend`, `command` or `bundle`.
   - Example: A plugin with backend support for PiFS would be called
-    `librcloneplugin_backend_pifs.so`.
+    `libzcloneplugin_backend_pifs.so`.
 - Loading
   - Supported on macOS & Linux as of now. ([Go issue for Windows support](https://github.com/golang/go/issues/19282))
-  - Supported on rclone v1.50 or greater.
-  - All plugins in the folder specified by variable `$RCLONE_PLUGIN_PATH` are loaded.
+  - Supported on zclone v1.50 or greater.
+  - All plugins in the folder specified by variable `$ZCLONE_PLUGIN_PATH` are loaded.
   - If this variable doesn't exist, plugin support is disabled.
-  - Plugins must be compiled against the exact version of rclone to work.
-    (The rclone used during building the plugin must be the same as the source
-    of rclone)
+  - Plugins must be compiled against the exact version of zclone to work.
+    (The zclone used during building the plugin must be the same as the source
+    of zclone)
 
 ### Building
 
 To turn your existing additions into a Go plugin, move them to an external repository
 and change the top-level package name to `main`.
 
-Check `rclone --version` and make sure that the plugin's rclone dependency and
+Check `zclone --version` and make sure that the plugin's zclone dependency and
 host Go version match.
 
 Then, run `go build -buildmode=plugin -o PLUGIN_NAME.so .` to build the plugin.
 
-[Go reference](https://godoc.org/github.com/rclone/rclone/lib/plugin)
+[Go reference](https://godoc.org/zclone/lib/plugin)
 
 ## Keeping a backend or command out of tree
 
-Rclone was designed to be modular so it is very easy to keep a backend
-or a command out of the main rclone source tree.
+Zclone was designed to be modular so it is very easy to keep a backend
+or a command out of the main zclone source tree.
 
 So for example if you had a backend which accessed your proprietary
 systems or a command which was specialised for your needs you could
@@ -745,6 +709,6 @@ add them out of tree.
 This may be easier than using a plugin and is supported on all
 platforms not just macOS and Linux.
 
-This is explained further in <https://github.com/rclone/rclone_out_of_tree_example>
+This is explained further in </_out_of_tree_example>
 which has an example of an out of tree backend `ram` (which is a
 renamed version of the `memory` backend).

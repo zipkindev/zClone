@@ -10,14 +10,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/file"
-	"github.com/rclone/rclone/lib/ranges"
-	"github.com/rclone/rclone/vfs/vfscache/downloaders"
-	"github.com/rclone/rclone/vfs/vfscache/writeback"
-	"github.com/rclone/rclone/vfs/vfscommon"
+	"zclone/fs"
+	"zclone/fs/fserrors"
+	"zclone/fs/operations"
+	"zclone/lib/file"
+	"zclone/lib/ranges"
+	"zclone/vfs/vfscache/downloaders"
+	"zclone/vfs/vfscache/writeback"
+	"zclone/vfs/vfscommon"
 )
 
 // NB as Cache and Item are tightly linked it is necessary to have a
@@ -1278,8 +1278,8 @@ func (item *Item) _ensure(offset, size int64) (err error) {
 		// OK to call downloaders constructor with item.mu held
 
 		// item.o can also be nil under some circumstances
-		// See: https://github.com/rclone/rclone/issues/6190
-		// See: https://github.com/rclone/rclone/issues/6235
+		// See: /
+		// See: /
 		if item.o == nil {
 			o, err := item.c.fremote.NewObject(item.c.ctx, item.name)
 			if err != nil {

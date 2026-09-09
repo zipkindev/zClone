@@ -7,11 +7,11 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/fspath"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/config/configmap"
+	"zclone/fs/filter"
+	"zclone/fs/fspath"
 )
 
 // getFsName gets an fs name from fsName either from the cache or direct

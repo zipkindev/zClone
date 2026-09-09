@@ -31,13 +31,13 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/ncw/swift/v2"
-	"github.com/rclone/gofakes3"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/multipart"
-	"github.com/rclone/rclone/lib/pool"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
+	"zclone/lib/gofakes3"
+	"zclone/fs"
+	"zclone/fs/operations"
+	"zclone/lib/multipart"
+	"zclone/lib/pool"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
 )
 
 // multipartUploadPrefix is prepended to the leaf name of the temporary object

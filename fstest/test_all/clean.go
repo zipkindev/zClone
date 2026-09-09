@@ -7,17 +7,17 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fstest/runs"
+	"zclone/fs"
+	"zclone/fs/fspath"
+	"zclone/fs/list"
+	"zclone/fs/operations"
+	"zclone/fstest/runs"
 )
 
 // MatchTestRemote matches the remote names used for testing (copied
 // from fstest/fstest.go so we don't have to import that and get all
 // its flags)
-var MatchTestRemote = regexp.MustCompile(`^rclone-test-[abcdefghijklmnopqrstuvwxyz0123456789]{12,24}(_segments)?$`)
+var MatchTestRemote = regexp.MustCompile(`^zclone-test-[abcdefghijklmnopqrstuvwxyz0123456789]{12,24}(_segments)?$`)
 
 // cleanFs runs a single clean fs for left over directories
 func cleanFs(ctx context.Context, remote string, cleanup bool, Opt runs.RunOpt) error {

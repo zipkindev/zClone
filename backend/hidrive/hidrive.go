@@ -4,7 +4,7 @@ package hidrive
 // FIXME HiDrive only supports file or folder names of 255 characters or less.
 // Operations that create files or folders with longer names will throw an HTTP error:
 // - 422 Unprocessable Entity
-// A more graceful way for rclone to handle this may be desirable.
+// A more graceful way for zclone to handle this may be desirable.
 
 import (
 	"context"
@@ -17,25 +17,25 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/rclone/rclone/lib/encoder"
+	"zclone/lib/encoder"
 
-	"github.com/rclone/rclone/backend/hidrive/api"
-	"github.com/rclone/rclone/backend/hidrive/hidrivehash"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/oauthutil"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/hidrive/api"
+	"zclone/backend/hidrive/hidrivehash"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/lib/oauthutil"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
 const (
-	rcloneClientID              = "6b0258fdda630d34db68a3ce3cbf19ae"
-	rcloneEncryptedClientSecret = "GC7UDZ3Ra4jLcmfQSagKCDJ1JEy-mU6pBBhFrS3tDEHILrK7j3TQHUrglkO5SgZ_"
+	zcloneClientID              = "6b0258fdda630d34db68a3ce3cbf19ae"
+	zcloneEncryptedClientSecret = "GC7UDZ3Ra4jLcmfQSagKCDJ1JEy-mU6pBBhFrS3tDEHILrK7j3TQHUrglkO5SgZ_"
 	minSleep                    = 10 * time.Millisecond
 	maxSleep                    = 2 * time.Second
 	decayConstant               = 2 // bigger for slower decay, exponential
@@ -50,8 +50,8 @@ var (
 	oauthConfig = &oauthutil.Config{
 		AuthURL:      "https://my.hidrive.com/client/authorize",
 		TokenURL:     "https://my.hidrive.com/oauth2/token",
-		ClientID:     rcloneClientID,
-		ClientSecret: obscure.MustReveal(rcloneEncryptedClientSecret),
+		ClientID:     zcloneClientID,
+		ClientSecret: obscure.MustReveal(zcloneEncryptedClientSecret),
 		RedirectURL:  oauthutil.TitleBarRedirectURL,
 	}
 	// hidrivehashType is the hash.Type for HiDrive hashes.
@@ -81,7 +81,7 @@ func init() {
 		},
 		Options: append(oauthutil.SharedOptions, []fs.Option{{
 			Name:    "scope_access",
-			Help:    "Access permissions that rclone should use when requesting access from HiDrive.",
+			Help:    "Access permissions that zclone should use when requesting access from HiDrive.",
 			Default: "rw",
 			Examples: []fs.OptionExample{{
 				Value: "rw",
@@ -92,7 +92,7 @@ func init() {
 			}},
 		}, {
 			Name:    "scope_role",
-			Help:    "User-level that rclone should use when requesting access from HiDrive.",
+			Help:    "User-level that zclone should use when requesting access from HiDrive.",
 			Default: "user",
 			Examples: []fs.OptionExample{{
 				Value: "user",
@@ -111,12 +111,12 @@ This will be sufficient in most cases.`,
 			Help: `The root/parent folder for all paths.
 
 Fill in to use the specified folder as the parent for all paths given to the remote.
-This way rclone can use any folder as its starting point.`,
+This way zclone can use any folder as its starting point.`,
 			Default: "/",
 			Examples: []fs.OptionExample{{
 				Value: "/",
-				Help: `The topmost directory accessible by rclone.
-This will be equivalent with "root" if rclone uses a regular HiDrive user account.`,
+				Help: `The topmost directory accessible by zclone.
+This will be equivalent with "root" if zclone uses a regular HiDrive user account.`,
 			}, {
 				Value: "root",
 				Help:  `The topmost directory of the HiDrive user account`,

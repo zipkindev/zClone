@@ -14,27 +14,27 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/backend/yandex/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/oauthutil"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/lib/readers"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/yandex/api"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
+	"zclone/lib/encoder"
+	"zclone/lib/oauthutil"
+	"zclone/lib/pacer"
+	"zclone/lib/random"
+	"zclone/lib/readers"
+	"zclone/lib/rest"
 )
 
 // oAuth
 const (
-	rcloneClientID              = "ac39b43b9eba4cae8ffb788c06d816a8"
-	rcloneEncryptedClientSecret = "EfyyNZ3YUEwXM5yAhi72G9YwKn2mkFrYwJNS7cY0TJAhFlX9K-uJFbGlpO-RYjrJ"
+	zcloneClientID              = "ac39b43b9eba4cae8ffb788c06d816a8"
+	zcloneEncryptedClientSecret = "EfyyNZ3YUEwXM5yAhi72G9YwKn2mkFrYwJNS7cY0TJAhFlX9K-uJFbGlpO-RYjrJ"
 	rootURL                     = "https://cloud-api.yandex.com/v1/disk"
 	minSleep                    = 10 * time.Millisecond
 	maxSleep                    = 2 * time.Second // may needs to be increased, testing needed
@@ -49,8 +49,8 @@ var (
 	oauthConfig = &oauthutil.Config{
 		AuthURL:      "https://oauth.yandex.com/authorize", //same as https://oauth.yandex.ru/authorize
 		TokenURL:     "https://oauth.yandex.com/token",     //same as https://oauth.yandex.ru/token
-		ClientID:     rcloneClientID,
-		ClientSecret: obscure.MustReveal(rcloneEncryptedClientSecret),
+		ClientID:     zcloneClientID,
+		ClientSecret: obscure.MustReveal(zcloneEncryptedClientSecret),
 		RedirectURL:  oauthutil.RedirectURL,
 	}
 )
@@ -288,7 +288,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 		return nil, fmt.Errorf("couldn't read OAuth token: %w", err)
 	}
 	if token.RefreshToken == "" {
-		return nil, errors.New("unable to get RefreshToken. If you are upgrading from older versions of rclone, please run `rclone config` and re-configure this backend")
+		return nil, errors.New("unable to get RefreshToken. If you are upgrading from older versions of zclone, please run `zclone config` and re-configure this backend")
 	}
 	if token.TokenType != "OAuth" {
 		token.TokenType = "OAuth"
@@ -648,7 +648,7 @@ func (f *Fs) delete(ctx context.Context, path string, hardDelete bool) (err erro
 func (f *Fs) purgeCheck(ctx context.Context, dir string, check bool) error {
 	root := f.filePath(dir)
 	if check {
-		//to comply with rclone logic we check if the directory is empty before delete.
+		//to comply with zclone logic we check if the directory is empty before delete.
 		//send request to get list of objects in this directory.
 		info, err := f.readMetaDataForPath(ctx, root, &api.ResourceInfoRequestOptions{})
 		if err != nil {
@@ -960,9 +960,9 @@ func (o *Object) setMetaData(info *api.ResourceInfoResponse) (err error) {
 	o.mimeType = info.MimeType
 
 	var modTimeString string
-	modTimeObj, ok := info.CustomProperties["rclone_modified"]
+	modTimeObj, ok := info.CustomProperties["zclone_modified"]
 	if ok {
-		// read modTime from rclone_modified custom_property of object
+		// read modTime from zclone_modified custom_property of object
 		modTimeString, ok = modTimeObj.(string)
 	}
 	if !ok {
@@ -1057,8 +1057,8 @@ func (o *Object) setCustomProperty(ctx context.Context, property string, value s
 //
 // Commits the datastore
 func (o *Object) SetModTime(ctx context.Context, modTime time.Time) error {
-	// set custom_property 'rclone_modified' of object to modTime
-	err := o.setCustomProperty(ctx, "rclone_modified", modTime.Format(time.RFC3339Nano))
+	// set custom_property 'zclone_modified' of object to modTime
+	err := o.setCustomProperty(ctx, "zclone_modified", modTime.Format(time.RFC3339Nano))
 	if err != nil {
 		return err
 	}

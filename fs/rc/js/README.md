@@ -1,14 +1,14 @@
-# Rclone as WASM
+# Zclone as WASM
 
-This directory contains files to use the rclone rc as a library in the browser.
+This directory contains files to use the zclone rc as a library in the browser.
 
-This works by compiling rclone to WASM and loading that in via javascript.
+This works by compiling zclone to WASM and loading that in via javascript.
 
 This contains the following files
 
 - `index.html` - test web page to load the module
 - `loader.js` - java script to load the module - see here for usage
-- `main.go` - main go code exporting the rclone rc
+- `main.go` - main go code exporting the zclone rc
 - `Makefile` - test makefile
 - `README.md` - this readme
 - `serve.go` - test program to serve the web page
@@ -17,7 +17,7 @@ This contains the following files
 ## Compiling
 
 This can be compiled by using `make` or alternatively
-`GOARCH=wasm GOOS=js go build -o rclone.wasm`.
+`GOARCH=wasm GOOS=js go build -o zclone.wasm`.
 
 ## Running
 

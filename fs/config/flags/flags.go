@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
 	"github.com/spf13/pflag"
+	"zclone/fs"
 )
 
 // Groups of Flags
@@ -116,7 +116,7 @@ func init() {
 	All.NewGroup("Check", "Flags used for check commands")
 	All.NewGroup("Networking", "Flags for general networking and HTTP stuff")
 	All.NewGroup("Performance", "Flags helpful for increasing performance")
-	All.NewGroup("Config", "Flags for general configuration of rclone")
+	All.NewGroup("Config", "Flags for general configuration of zclone")
 	All.NewGroup("Debugging", "Flags for developers")
 	All.NewGroup("Filter", "Flags for filtering directory listings")
 	All.NewGroup("Listing", "Flags for listing directories")

@@ -13,16 +13,16 @@ import (
 
 	"github.com/anacrolix/dms/soap"
 
-	"github.com/rclone/rclone/cmd/serve/servetest"
-	"github.com/rclone/rclone/fs/config/configfile"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
+	"zclone/cmd/serve/servetest"
+	"zclone/fs/config/configfile"
+	"zclone/fs/rc"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	"zclone/fs"
 )
 
 var (
@@ -118,7 +118,7 @@ func TestServeContent(t *testing.T) {
 
 // Check that ContentDirectory#Browse returns appropriate metadata on the root container.
 func TestContentDirectoryBrowseMetadata(t *testing.T) {
-	// Sample from: https://github.com/rclone/rclone/issues/3253#issuecomment-524317469
+	// Sample from: https://zclone/issues/3253#issuecomment-524317469
 	req, err := http.NewRequest("POST", baseURL+serviceControlURL, strings.NewReader(`
 <?xml version="1.0" encoding="utf-8"?>
 <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"
@@ -154,7 +154,7 @@ func TestContentDirectoryBrowseMetadata(t *testing.T) {
 
 // Check that Browse response arguments are in the SCPD-defined order.
 // Samsung TVs require this specific ordering to work correctly.
-// See: https://github.com/rclone/rclone/issues/9346
+// See: https://zclone/issues/9346
 func TestContentDirectoryBrowseResponseOrder(t *testing.T) {
 	req, err := http.NewRequest("POST", baseURL+serviceControlURL, strings.NewReader(`
 <?xml version="1.0" encoding="utf-8"?>

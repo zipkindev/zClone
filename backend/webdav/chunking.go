@@ -16,9 +16,9 @@ import (
 	"path"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/readers"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/fs"
+	"zclone/lib/readers"
+	"zclone/lib/rest"
 )
 
 func (f *Fs) shouldRetryChunkMerge(ctx context.Context, resp *http.Response, err error, sleepTime *time.Duration, wasLocked *bool) (bool, error) {
@@ -55,14 +55,14 @@ func (o *Object) getChunksUploadDir() (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("chunked upload couldn't hash URL: %w", err)
 	}
-	uploadDir := "rclone-chunked-upload-" + hex.EncodeToString(hasher.Sum(nil))
+	uploadDir := "zclone-chunked-upload-" + hex.EncodeToString(hasher.Sum(nil))
 	return uploadDir, nil
 }
 
 func (f *Fs) getChunksUploadURL() (string, error) {
 	submatch := nextCloudURLRegex.FindStringSubmatch(f.endpointURL)
 	if submatch == nil {
-		return "", errors.New("the remote url looks incorrect. Note that nextcloud chunked uploads require you to use the /dav/files/USER endpoint instead of /webdav. Please check 'rclone config show remotename' to verify that the url field ends in /dav/files/USERNAME")
+		return "", errors.New("the remote url looks incorrect. Note that nextcloud chunked uploads require you to use the /dav/files/USER endpoint instead of /webdav. Please check 'zclone config show remotename' to verify that the url field ends in /dav/files/USERNAME")
 	}
 
 	baseURL, user := submatch[1], submatch[2]
@@ -119,7 +119,7 @@ func (o *Object) uploadChunks(ctx context.Context, in0 io.Reader, size int64, pa
 
 		partObj.remote = fmt.Sprintf("%s/%015d-%015d", uploadDir, offset, endOffset)
 		// Enable low-level HTTP 2 retries.
-		// 2022-04-28 15:59:06 ERROR : stuff/video.avi: Failed to copy: uploading chunk failed: Put "https://censored.com/remote.php/dav/uploads/Admin/rclone-chunked-upload-censored/000006113198080-000006123683840": http2: Transport: cannot retry err [http2: Transport received Server's graceful shutdown GOAWAY] after Request.Body was written; define Request.GetBody to avoid this error
+		// 2022-04-28 15:59:06 ERROR : stuff/video.avi: Failed to copy: uploading chunk failed: Put "https://censored.com/remote.php/dav/uploads/Admin/zclone-chunked-upload-censored/000006113198080-000006123683840": http2: Transport: cannot retry err [http2: Transport received Server's graceful shutdown GOAWAY] after Request.Body was written; define Request.GetBody to avoid this error
 
 		buf := make([]byte, chunkSize)
 		in := readers.NewRepeatableLimitReaderBuffer(in0, buf, chunkSize)

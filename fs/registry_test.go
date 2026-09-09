@@ -6,10 +6,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/rclone/rclone/fs/config/configmap"
 	"github.com/spf13/pflag"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs/config/configmap"
 )
 
 // Check it satisfies the interface
@@ -219,17 +219,17 @@ func TestOptionFlagName(t *testing.T) {
 }
 
 func TestOptionEnvVarName(t *testing.T) {
-	assert.Equal(t, "RCLONE_LOCAL_NOUNC", nouncOption.EnvVarName("local"))
-	assert.Equal(t, "RCLONE_LOCAL_COPY_LINKS", copyLinksOption.EnvVarName("local"))
-	assert.Equal(t, "RCLONE_LOCAL_CASE_INSENSITIVE", caseInsensitiveOption.EnvVarName("local"))
+	assert.Equal(t, "ZCLONE_LOCAL_NOUNC", nouncOption.EnvVarName("local"))
+	assert.Equal(t, "ZCLONE_LOCAL_COPY_LINKS", copyLinksOption.EnvVarName("local"))
+	assert.Equal(t, "ZCLONE_LOCAL_CASE_INSENSITIVE", caseInsensitiveOption.EnvVarName("local"))
 }
 
 func TestOptionGetters(t *testing.T) {
 	// Set up env vars
 	envVars := [][2]string{
-		{"RCLONE_CONFIG_LOCAL_POTATO_PIE", "yes"},
-		{"RCLONE_COPY_LINKS", "TRUE"},
-		{"RCLONE_LOCAL_NOUNC", "NOUNC"},
+		{"ZCLONE_CONFIG_LOCAL_POTATO_PIE", "yes"},
+		{"ZCLONE_COPY_LINKS", "TRUE"},
+		{"ZCLONE_LOCAL_NOUNC", "NOUNC"},
 	}
 	for _, ev := range envVars {
 		assert.NoError(t, os.Setenv(ev[0], ev[1]))
@@ -253,10 +253,10 @@ func TestOptionGetters(t *testing.T) {
 
 	// set up getters
 
-	// A configmap.Getter to read from the environment RCLONE_CONFIG_backend_option_name
+	// A configmap.Getter to read from the environment ZCLONE_CONFIG_backend_option_name
 	configEnvVarsGetter := configEnvVars{configName: "local"}
 
-	// A configmap.Getter to read from the environment RCLONE_option_name
+	// A configmap.Getter to read from the environment ZCLONE_option_name
 	optionEnvVarsGetter := optionEnvVars{"local", testOptions}
 
 	// A configmap.Getter to read either the default value or the set

@@ -17,20 +17,20 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/rclone/rclone/cmd"
-	cmdserve "github.com/rclone/rclone/cmd/serve"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/fs/walk"
-	libhttp "github.com/rclone/rclone/lib/http"
-	"github.com/rclone/rclone/lib/http/serve"
-	"github.com/rclone/rclone/lib/systemd"
-	"github.com/rclone/rclone/lib/terminal"
 	"github.com/spf13/cobra"
 	"golang.org/x/net/http2"
+	"zclone/cmd"
+	cmdserve "zclone/cmd/serve"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/config/flags"
+	"zclone/fs/operations"
+	"zclone/fs/rc"
+	"zclone/fs/walk"
+	libhttp "zclone/lib/http"
+	"zclone/lib/http/serve"
+	"zclone/lib/systemd"
+	"zclone/lib/terminal"
 )
 
 // OptionsInfo describes the Options in use
@@ -97,7 +97,7 @@ var Command = &cobra.Command{
 	Use:   "restic remote:path",
 	Short: `Serve the remote for restic's REST API.`,
 	Long: `Run a basic web server to serve a remote over restic's REST backend
-API over HTTP.  This allows restic to use rclone as a data storage
+API over HTTP.  This allows restic to use zclone as a data storage
 mechanism for cloud providers that restic does not support directly.
 
 [Restic](https://restic.net/) is a command-line program for doing
@@ -108,19 +108,19 @@ The server will log errors.  Use -v to see access logs.
 ` + "`--bwlimit`" + ` will be respected for file transfers.
 Use ` + "`--stats`" + ` to control the stats printing.
 
-### Setting up rclone for use by restic
+### Setting up zclone for use by restic
 
 First [set up a remote for your chosen cloud provider](/docs/#configure).
 
 Once you have set up the remote, check it is working with, for example
-"rclone lsd remote:".  You may have called the remote something other
+"zclone lsd remote:".  You may have called the remote something other
 than "remote:" - just substitute whatever you called it in the
 following instructions.
 
-Now start the rclone restic server
+Now start the zclone restic server
 
 ` + "```console" + `
-rclone serve restic -v remote:backup
+zclone serve restic -v remote:backup
 ` + "```" + `
 
 Where you can replace "backup" in the above by whatever path in the
@@ -131,18 +131,18 @@ with use of the ` + "`--addr`" + ` flag.
 
 You might wish to start this server on boot.
 
-Adding ` + "`--cache-objects=false`" + ` will cause rclone to stop caching objects
+Adding ` + "`--cache-objects=false`" + ` will cause zclone to stop caching objects
 returned from the List call. Caching is normally desirable as it speeds
 up downloading objects, saves transactions and uses very little memory.
 
-### Setting up restic to use rclone
+### Setting up restic to use zclone
 
 Now you can [follow the restic
 instructions](http://restic.readthedocs.io/en/latest/030_preparing_a_new_repo.html#rest-server)
 on setting up restic.
 
 Note that you will need restic 0.8.2 or later to interoperate with
-rclone.
+zclone.
 
 For the example above you will want to use "http://localhost:8080/" as
 the URL for the REST server.
@@ -200,7 +200,7 @@ with a path of ` + "`/<username>/`" + `.
 			}
 			if s.opt.Stdio {
 				if terminal.IsTerminal(int(os.Stdout.Fd())) {
-					return errors.New("refusing to run HTTP2 server directly on a terminal, please let restic start rclone")
+					return errors.New("refusing to run HTTP2 server directly on a terminal, please let restic start zclone")
 				}
 
 				conn := &StdioConn{
@@ -360,7 +360,7 @@ func (s *server) Bind(router chi.Router) {
 	// }
 	router.Use(
 		middleware.SetHeader("Accept-Ranges", "bytes"),
-		middleware.SetHeader("Server", "rclone/"+fs.Version),
+		middleware.SetHeader("Server", fs.AppName+"/"+fs.Version),
 		WithRemote,
 	)
 
@@ -550,7 +550,7 @@ func (s *server) listObjects(w http.ResponseWriter, r *http.Request) {
 
 // createRepo creates repository directories.
 //
-// We don't bother creating the data dirs as rclone will create them on the fly
+// We don't bother creating the data dirs as zclone will create them on the fly
 func (s *server) createRepo(w http.ResponseWriter, r *http.Request) {
 	remote, ok := r.Context().Value(ContextRemoteKey).(string)
 	if !ok {

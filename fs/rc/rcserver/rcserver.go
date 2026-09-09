@@ -3,7 +3,6 @@ package rcserver
 
 import (
 	"context"
-	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"flag"
@@ -17,16 +16,16 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/fs/rc/jobs"
-	libhttp "github.com/rclone/rclone/lib/http"
-	"github.com/rclone/rclone/lib/http/serve"
 	"github.com/skratchdot/open-golang/open"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/config"
+	"zclone/fs/fspath"
+	"zclone/fs/list"
+	"zclone/fs/rc"
+	"zclone/fs/rc/jobs"
+	libhttp "zclone/lib/http"
+	"zclone/lib/http/serve"
 )
 
 // Start the remote control server if configured
@@ -67,7 +66,7 @@ func newServer(ctx context.Context, opt *rc.Options, mux *http.ServeMux) (*Serve
 		fs.Logf(nil, "Serving files from %q", opt.Files)
 		fileHandler = http.FileServer(http.Dir(opt.Files))
 	} else if opt.WebUI {
-		return nil, errors.New("--rc-web-gui has been superseded by the `rclone gui` command")
+		return nil, errors.New("--rc-web-gui has been superseded by the `zclone gui` command")
 	}
 
 	s := &Server{
@@ -91,7 +90,7 @@ func newServer(ctx context.Context, opt *rc.Options, mux *http.ServeMux) (*Serve
 	router := s.server.Router()
 	router.Use(
 		middleware.SetHeader("Accept-Ranges", "bytes"),
-		middleware.SetHeader("Server", "rclone/"+fs.Version),
+		middleware.SetHeader("Server", fs.AppName+"/"+fs.Version),
 	)
 
 	// Add the debug handler which is installed in the default mux.
@@ -119,35 +118,36 @@ func (s *Server) Serve() error {
 		fs.Logf(nil, "Serving remote control on %s", URL)
 		// Open the files in the browser if set
 		if s.files != nil {
-			openURL, err := url.Parse(URL)
+			openURL, err := safeBrowserURL(URL)
 			if err != nil {
 				return fmt.Errorf("invalid serving URL: %w", err)
 			}
-			// Add username, password into the URL if they are set
-			user, pass := s.opt.Auth.BasicUser, s.opt.Auth.BasicPass
-			if user != "" && pass != "" {
-				openURL.User = url.UserPassword(user, pass)
-
-				// Base64 encode username and password to be sent through url
-				loginToken := user + ":" + pass
-				parameters := url.Values{}
-				encodedToken := base64.URLEncoding.EncodeToString([]byte(loginToken))
-				fs.Debugf(nil, "login_token %q", encodedToken)
-				parameters.Add("login_token", encodedToken)
-				openURL.RawQuery = parameters.Encode()
-				openURL.RawPath = "/#/login"
-			}
 			// Don't open browser if serving in testing environment or required not to do so.
 			if flag.Lookup("test.v") == nil {
-				if err := open.Start(openURL.String()); err != nil {
-					fs.Errorf(nil, "Failed to open Web GUI in browser: %v. Manually access it at: %s", err, openURL.String())
+				if err := open.Start(openURL); err != nil {
+					fs.Errorf(nil, "Failed to open server in browser: %v. Manually access it at: %s", err, openURL)
 				}
 			} else {
-				fs.Logf(nil, "Web GUI is not automatically opening browser. Navigate to %s to use.", openURL.String())
+				fs.Logf(nil, "Browser is not automatically opening. Navigate to %s to use.", openURL)
 			}
 		}
 	}
 	return nil
+}
+
+// safeBrowserURL returns a URL suitable for logging or opening in a browser.
+// It removes credential-bearing components so they cannot leak through logs,
+// browser history, process arguments, or referrer headers.
+func safeBrowserURL(serverURL string) (string, error) {
+	openURL, err := url.Parse(serverURL)
+	if err != nil {
+		return "", err
+	}
+	openURL.User = nil
+	query := openURL.Query()
+	query.Del("login_token")
+	openURL.RawQuery = query.Encode()
+	return openURL.String(), nil
 }
 
 // writeError writes a formatted error to the output
@@ -268,7 +268,7 @@ func (s *Server) handlePost(w http.ResponseWriter, r *http.Request, path string)
 	fs.Debugf(nil, "rc: %q: with parameters %+v", path, in)
 	job, out, err := jobs.NewJob(ctx, call.Fn, in)
 	if job != nil {
-		w.Header().Add("x-rclone-jobid", fmt.Sprintf("%d", job.ID))
+		w.Header().Add("x-zclone-jobid", fmt.Sprintf("%d", job.ID))
 	}
 	if err != nil {
 		writeError(path, inOrig, w, err, http.StatusInternalServerError)
@@ -306,7 +306,7 @@ func (s *Server) serveRoot(w http.ResponseWriter, r *http.Request) {
 	remoteNames := config.GetRemoteNames()
 	sort.Strings(remoteNames)
 	directory := serve.NewDirectory("", s.server.HTMLTemplate())
-	directory.Name = "List of all rclone remotes."
+	directory.Name = "List of all zclone remotes."
 	q := url.Values{}
 	for _, remoteName := range remoteNames {
 		q.Set("fs", remoteName)
@@ -336,7 +336,7 @@ func checkServeRemote(fsName string, authenticated bool) error {
 		return fmt.Errorf("invalid remote %q: %w", fsName, err)
 	}
 
-	// global.* connection string options mutate process-wide rclone config. Never honour these
+	// global.* connection string options mutate process-wide zclone config. Never honour these
 	// from a request-derived remote, even when the request is authenticated
 	for k := range parsed.Config {
 		if strings.HasPrefix(k, "global.") {

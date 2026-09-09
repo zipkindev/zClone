@@ -1,0 +1,8 @@
+[Unit]
+Description=Docker Volume Plugin for zclone
+
+[Socket]
+ListenStream=/run/docker/plugins/zclone.sock
+
+[Install]
+WantedBy=sockets.target

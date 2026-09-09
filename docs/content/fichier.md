@@ -1,6 +1,6 @@
 ---
 title: "1Fichier"
-description: "Rclone docs for 1Fichier"
+description: "Zclone docs for 1Fichier"
 versionIntroduced: "v1.49"
 ---
 
@@ -22,7 +22,7 @@ which you need to do in your browser.
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -42,7 +42,7 @@ XX / 1Fichier
    \ "fichier"
 [snip]
 Storage> fichier
-** See help for fichier backend at: https://rclone.org/fichier/ **
+** See help for fichier backend at: //fichier/ **
 
 Your API Key, get it from https://1fichier.com/console/params.pl
 Enter a string value. Press Enter for the default ("").
@@ -64,26 +64,26 @@ d) Delete this remote
 y/e/d> y
 ```
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 
 List directories in top level of your 1Fichier account
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your 1Fichier account
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 To copy a local directory to a 1Fichier directory called backup
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
 ### Modification times and hashes
@@ -136,7 +136,7 @@ Your API Key, get it from https://1fichier.com/console/params.pl.
 Properties:
 
 - Config:      api_key
-- Env Var:     RCLONE_FICHIER_API_KEY
+- Env Var:     ZCLONE_FICHIER_API_KEY
 - Type:        string
 - Required:    false
 
@@ -151,7 +151,7 @@ If you want to download a shared folder, add this parameter.
 Properties:
 
 - Config:      shared_folder
-- Env Var:     RCLONE_FICHIER_SHARED_FOLDER
+- Env Var:     ZCLONE_FICHIER_SHARED_FOLDER
 - Type:        string
 - Required:    false
 
@@ -159,12 +159,12 @@ Properties:
 
 If you want to download a shared file that is password protected, add this parameter.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      file_password
-- Env Var:     RCLONE_FICHIER_FILE_PASSWORD
+- Env Var:     ZCLONE_FICHIER_FILE_PASSWORD
 - Type:        string
 - Required:    false
 
@@ -172,12 +172,12 @@ Properties:
 
 If you want to list the files in a shared folder that is password protected, add this parameter.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      folder_password
-- Env Var:     RCLONE_FICHIER_FOLDER_PASSWORD
+- Env Var:     ZCLONE_FICHIER_FOLDER_PASSWORD
 - Type:        string
 - Required:    false
 
@@ -188,7 +188,7 @@ Set if you wish to use CDN download links.
 Properties:
 
 - Config:      cdn
-- Env Var:     RCLONE_FICHIER_CDN
+- Env Var:     ZCLONE_FICHIER_CDN
 - Type:        bool
 - Default:     false
 
@@ -201,7 +201,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_FICHIER_ENCODING
+- Env Var:     ZCLONE_FICHIER_ENCODING
 - Type:        Encoding
 - Default:     Slash,LtGt,DoubleQuote,SingleQuote,BackQuote,Dollar,BackSlash,Del,Ctl,LeftSpace,RightSpace,InvalidUtf8,Dot
 
@@ -212,7 +212,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_FICHIER_DESCRIPTION
+- Env Var:     ZCLONE_FICHIER_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -220,10 +220,10 @@ Properties:
 
 ## Limitations
 
-`rclone about` is not supported by the 1Fichier backend. Backends without
-this capability cannot determine free space for an rclone mount or
-use policy `mfs` (most free space) as a member of an rclone union
+`zclone about` is not supported by the 1Fichier backend. Backends without
+this capability cannot determine free space for an zclone mount or
+use policy `mfs` (most free space) as a member of an zclone union
 remote.
 
-See [List of backends that do not support rclone about](https://rclone.org/overview/#optional-features)
-and [rclone about](https://rclone.org/commands/rclone_about/).
+See [List of backends that do not support zclone about](//overview/#optional-features)
+and [zclone about](//commands/zclone_about/).

@@ -18,13 +18,13 @@ connection will be made to `127.0.0.1:80` and only when that succeeds
 will the test continue.
 
 If in addition to `_connect`, `_connect_delay=5s` is also present then
-after the connection succeeds rclone will wait `5s` before continuing.
+after the connection succeeds zclone will wait `5s` before continuing.
 This is for servers that aren't quite ready even though they have
 opened their TCP ports.
 
 ## Writing new scripts
 
-A docker based server or an `rclone serve` based server should be easy
+A docker based server or an `zclone serve` based server should be easy
 to write. Look at one of the examples.
 
 `run.bash` contains boilerplate to be included in a bash script for
@@ -37,7 +37,7 @@ Including this is mandatory. It will call your `start()`, `stop()` and
 implementations. It contains implementations of `stop()` and
 `status()` so all you have to do is write a `start()` function.
 
-`rclone-serve.bash` contains functions to help with `rclone serve`
+`zclone-serve.bash` contains functions to help with `zclone serve`
 based implementations. It contains implementations of `stop()` and
 `status()` so all you have to do is write a `start()` function which
 should call the `run()` function provided.

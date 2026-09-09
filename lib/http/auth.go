@@ -6,9 +6,9 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
 	"github.com/spf13/pflag"
+	"zclone/fs"
+	"zclone/fs/config/flags"
 )
 
 // AuthHelp returns text describing the http authentication to add to the command help.
@@ -41,7 +41,7 @@ htpasswd -B htpasswd user
 htpasswd -B htpasswd anotherUser
 ` + "```" + `
 
-The password file can be updated while rclone is running.
+The password file can be updated while zclone is running.
 
 Use ` + "`--{{ .Prefix }}realm`" + ` to set the authentication realm.
 

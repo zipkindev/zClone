@@ -1,4 +1,4 @@
-// Package configflags defines the flags used by rclone.  It is
+// Package configflags defines the flags used by zclone.  It is
 // decoupled into a separate package so it can be replaced.
 package configflags
 
@@ -10,10 +10,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/flags"
 	"github.com/spf13/pflag"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/flags"
 )
 
 var (
@@ -45,8 +45,8 @@ func AddFlags(ci *fs.ConfigInfo, flagSet *pflag.FlagSet) {
 	flags.CountVarP(flagSet, &verbose, "verbose", "v", "Print lots more stuff (repeat for more)", "Logging,Important")
 	flags.BoolVarP(flagSet, &quiet, "quiet", "q", false, "Print as little stuff as possible", "Logging")
 	flags.StringVarP(flagSet, &configPath, "config", "", config.GetConfigPath(), "Config file", "Config")
-	flags.StringVarP(flagSet, &cacheDir, "cache-dir", "", config.GetCacheDir(), "Directory rclone will use for caching", "Config")
-	flags.StringVarP(flagSet, &tempDir, "temp-dir", "", os.TempDir(), "Directory rclone will use for temporary files", "Config")
+	flags.StringVarP(flagSet, &cacheDir, "cache-dir", "", config.GetCacheDir(), "Directory zclone will use for caching", "Config")
+	flags.StringVarP(flagSet, &tempDir, "temp-dir", "", os.TempDir(), "Directory zclone will use for temporary files", "Config")
 	flags.BoolVarP(flagSet, &dumpHeaders, "dump-headers", "", false, "Dump HTTP headers - may contain sensitive info", "Debugging")
 	flags.BoolVarP(flagSet, &dumpBodies, "dump-bodies", "", false, "Dump HTTP headers and bodies - may contain sensitive info", "Debugging")
 	flags.BoolVarP(flagSet, &deleteBefore, "delete-before", "", false, "When synchronizing, delete files on destination before transferring", "Sync")

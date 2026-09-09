@@ -25,7 +25,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the

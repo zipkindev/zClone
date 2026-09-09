@@ -9,9 +9,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/vfs/vfscommon"
+	"zclone/fs"
+	"zclone/fs/operations"
+	"zclone/vfs/vfscommon"
 )
 
 // WriteFileHandle is an open for write handle on a File

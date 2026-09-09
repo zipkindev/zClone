@@ -13,12 +13,12 @@ import (
 	"strings"
 
 	"github.com/pkg/sftp"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/terminal"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
 	"golang.org/x/crypto/ssh"
+	"zclone/fs"
+	"zclone/fs/hash"
+	"zclone/lib/terminal"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
 )
 
 func describeConn(c interface {
@@ -40,7 +40,7 @@ type execCommand struct {
 
 var shellUnEscapeRegex = regexp.MustCompile(`\\(.)`)
 
-// Unescape a string that was escaped by rclone
+// Unescape a string that was escaped by zclone
 func shellUnEscape(str string) string {
 	str = strings.ReplaceAll(str, "'\n'", "\n")
 	str = shellUnEscapeRegex.ReplaceAllString(str, `$1`)
@@ -55,7 +55,7 @@ type conn struct {
 }
 
 // execCommand implements an extremely limited number of commands to
-// interoperate with the rclone sftp backend
+// interoperate with the zclone sftp backend
 func (c *conn) execCommand(ctx context.Context, out io.Writer, command string) (err error) {
 	defer recoverPanic(&err)
 	binary, args := command, ""
@@ -119,7 +119,7 @@ func (c *conn) execCommand(ctx context.Context, out io.Writer, command string) (
 			args = ""
 		}
 		return c.handleHashsumCommand(ctx, out, hash.XXH128, args)
-	case "rclone":
+	case "zclone":
 		argv := strings.SplitN(args, " ", 3)
 		if len(argv) > 1 && argv[0] == "hashsum" {
 			var ht hash.Type
@@ -135,13 +135,13 @@ func (c *conn) execCommand(ctx context.Context, out io.Writer, command string) (
 		}
 		return fmt.Errorf("%q not implemented", command)
 	case "echo":
-		// Special cases for legacy rclone command detection.
-		// Before rclone v1.49.0 the sftp backend used "echo 'abc' | md5sum" when
+		// Special cases for legacy zclone command detection.
+		// Before zclone v1.49.0 the sftp backend used "echo 'abc' | md5sum" when
 		// detecting hash support, but was then changed to instead just execute
 		// md5sum/sha1sum (without arguments), which is handled above. The following
-		// code is therefore only necessary to support rclone versions older than
-		// v1.49.0 using a sftp remote connected to a rclone serve sftp instance
-		// running a newer version of rclone (e.g. latest).
+		// code is therefore only necessary to support zclone versions older than
+		// v1.49.0 using a sftp remote connected to a zclone serve sftp instance
+		// running a newer version of zclone (e.g. latest).
 		switch args {
 		case "'abc' | md5sum":
 			if c.vfs.Fs().Hashes().Contains(hash.MD5) {
@@ -370,7 +370,7 @@ func serveChannel(rwc io.ReadWriteCloser, h sftp.Handlers, what string) error {
 
 func serveStdio(f fs.Fs) error {
 	if terminal.IsTerminal(int(os.Stdout.Fd())) {
-		return errors.New("refusing to run SFTP server directly on a terminal. Please let sshd start rclone, by connecting with sftp or sshfs")
+		return errors.New("refusing to run SFTP server directly on a terminal. Please let sshd start zclone, by connecting with sftp or sshfs")
 	}
 	sshChannel := &stdioChannel{
 		stdin:  os.Stdin,

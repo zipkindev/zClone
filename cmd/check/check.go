@@ -8,13 +8,13 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
 )
 
 // Globals
@@ -142,7 +142,7 @@ sizes and hashes (MD5 or SHA1) and logs a report of files that don't
 match.  It doesn't alter the source or destination.
 
 For the [crypt](/crypt/) remote there is a dedicated command,
-[cryptcheck](/commands/rclone_cryptcheck/), that are able to check
+[cryptcheck](/commands/zclone_cryptcheck/), that are able to check
 the checksums of the encrypted files.
 
 If you supply the |--size-only| flag, it will only compare the sizes not

@@ -10,7 +10,7 @@ adoption: Widely used
 docs: Full
 security: Varies
 virtual: false
-remote: ':http,url=''http://downloads.rclone.org'':'
+remote: ':http,url=''/'':'
 features:
 - CanHaveEmptyDirectories
 - Command

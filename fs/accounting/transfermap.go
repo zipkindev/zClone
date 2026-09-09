@@ -7,8 +7,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/rc"
+	"zclone/fs"
+	"zclone/fs/rc"
 )
 
 // transferMap holds name to transfer map

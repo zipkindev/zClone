@@ -77,7 +77,7 @@ do
 done
 
 echo -n "Compiling ${buildflags} ${binary} ... "
-go test ${buildflags} -c -o "${binary}" || {
+GOPROXY=off GOSUMDB=off GOFLAGS=-mod=vendor go test ${buildflags} -c -o "${binary}" || {
     echo "build failed"
     exit 1
 }

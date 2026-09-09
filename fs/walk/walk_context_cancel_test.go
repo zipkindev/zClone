@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fstest/mockdir"
 	"github.com/stretchr/testify/assert"
+	"zclone/fs"
+	"zclone/fstest/mockdir"
 )
 
 // Test that walk stops listing when the context is cancelled.

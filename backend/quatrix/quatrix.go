@@ -20,19 +20,19 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/backend/quatrix/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/multipart"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/quatrix/api"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/dircache"
+	"zclone/lib/encoder"
+	"zclone/lib/multipart"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
 const (
@@ -181,7 +181,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 	client := fshttp.NewClient(ctx)
 
 	// since transport is a global variable that is initialized only once (due to sync.Once)
-	// we need to reset it to have correct transport per each client (with proper values extracted from rclone config)
+	// we need to reset it to have correct transport per each client (with proper values extracted from zclone config)
 	client.Transport = fshttp.NewTransportCustom(ctx, nil)
 
 	root = trimPath(root)

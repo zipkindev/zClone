@@ -1,7 +1,7 @@
 # Docs
 
 This directory tree is used to build all the different docs for
-rclone.
+zclone.
 
 See the `content` directory for the docs in markdown format.
 
@@ -27,7 +27,7 @@ so it is easy to tweak stuff.
 ```
 ├── config.json                   - hugo config file
 ├── content                       - docs and backend docs
-│   ├── _index.md                 - the front page of rclone.org
+│   ├── _index.md                 - the front page of zclone.org
 │   ├── commands                  - auto-generated command docs - DO NOT EDIT
 ├── i18n
 │   └── en.toml                   - hugo multilingual config

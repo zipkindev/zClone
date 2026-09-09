@@ -18,10 +18,10 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 
 	"golang.org/x/text/unicode/norm"
 )
@@ -34,7 +34,7 @@ const (
 	projectRootFolderRecord = "----Project-Root-Folder----"
 	indexingStateReady      = "FINISHED"
 
-	// cacheSubdir is the subdirectory under rclone's cache dir for all iCloud Photos state
+	// cacheSubdir is the subdirectory under zclone's cache dir for all iCloud Photos state
 	cacheSubdir = "iclouddrive-photos"
 
 	// Album type constants from CloudKit CPLAlbum records
@@ -966,7 +966,7 @@ func albumCacheKey(objectType string) string {
 }
 
 // zoneCacheDir returns the disk cache directory for this zone
-// Path follows rclone convention: <cacheDir>/<backend>/<remoteName>/<zone>/
+// Path follows zclone convention: <cacheDir>/<backend>/<remoteName>/<zone>/
 func (lib *Library) zoneCacheDir() string {
 	return filepath.Join(lib.service.client.CacheDir(), lib.zoneID)
 }

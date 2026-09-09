@@ -11,10 +11,10 @@ import (
 	"strings"
 
 	"github.com/go-git/go-billy/v5"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/vfs"
 	"github.com/willscott/go-nfs"
+	"zclone/fs"
+	"zclone/fs/log"
+	"zclone/vfs"
 )
 
 // Handler returns a NFS backing that exposes a given file system in response to all mount requests.
@@ -151,17 +151,17 @@ func onUnmount() {
 	}
 }
 
-// logger handles go-nfs logs and reroutes them to rclone's logging system
+// logger handles go-nfs logs and reroutes them to zclone's logging system
 type logger struct {
 	level nfs.LogLevel
 }
 
-// logPrint intercepts go-nfs logs and calls rclone's log system instead
+// logPrint intercepts go-nfs logs and calls zclone's log system instead
 func (l *logger) logPrint(level fs.LogLevel, args ...any) {
 	fs.LogPrintf(level, "nfs", "%s", fmt.Sprint(args...))
 }
 
-// logPrintf intercepts go-nfs logs and calls rclone's log system instead
+// logPrintf intercepts go-nfs logs and calls zclone's log system instead
 func (l *logger) logPrintf(level fs.LogLevel, format string, args ...any) {
 	fs.LogPrintf(level, "nfs", format, args...)
 }

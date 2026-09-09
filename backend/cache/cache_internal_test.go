@@ -20,20 +20,20 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/backend/cache"
-	"github.com/rclone/rclone/backend/crypt"
-	_ "github.com/rclone/rclone/backend/drive"
-	"github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/testy"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/vfs/vfscommon"
 	"github.com/stretchr/testify/require"
+	"zclone/backend/cache"
+	"zclone/backend/crypt"
+	_ "zclone/backend/drive"
+	"zclone/backend/local"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/object"
+	"zclone/fs/operations"
+	"zclone/fstest"
+	"zclone/fstest/testy"
+	"zclone/lib/random"
+	"zclone/vfs/vfscommon"
 )
 
 const (
@@ -821,7 +821,7 @@ func newRun() *run {
 	}
 
 	if uploadDir == "" {
-		r.tmpUploadDir, err = os.MkdirTemp("", "rclonecache-tmp")
+		r.tmpUploadDir, err = os.MkdirTemp("", "zclonecache-tmp")
 		if err != nil {
 			panic(fmt.Sprintf("Failed to create temp dir: %v", err))
 		}
@@ -968,7 +968,7 @@ func (r *run) randomReader(t *testing.T, size int64) io.ReadCloser {
 	chunk := int64(1024)
 	cnt := size / chunk
 	left := size % chunk
-	f, err := os.CreateTemp("", "rclonecache-tempfile")
+	f, err := os.CreateTemp("", "zclonecache-tempfile")
 	require.NoError(t, err)
 
 	for range int(cnt) {

@@ -7,11 +7,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/cmd/bisync/bilib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/terminal"
-	"github.com/rclone/rclone/lib/transform"
+	"zclone/cmd/bisync/bilib"
+	"zclone/fs"
+	"zclone/fs/operations"
+	"zclone/lib/terminal"
+	"zclone/lib/transform"
 )
 
 // Prefer describes strategies for resolving sync conflicts

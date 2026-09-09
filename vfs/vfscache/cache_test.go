@@ -9,15 +9,15 @@ import (
 	"testing"
 	"time"
 
-	_ "github.com/rclone/rclone/backend/local" // import the local backend
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/lib/diskusage"
-	"github.com/rclone/rclone/vfs/vfscache/writeback"
-	"github.com/rclone/rclone/vfs/vfscommon"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local" // import the local backend
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fstest"
+	"zclone/lib/diskusage"
+	"zclone/vfs/vfscache/writeback"
+	"zclone/vfs/vfscommon"
 )
 
 // TestMain drives the tests

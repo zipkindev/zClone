@@ -15,9 +15,9 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/lib/oauthutil"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/lib/oauthutil"
 
 	"maps"
 
@@ -33,7 +33,7 @@ func RandomHex(n int) (string, error) {
 	return hex.EncodeToString(bytes), nil
 }
 
-// Config configures rclone using JWT
+// Config configures zclone using JWT
 func Config(id, name, url string, claims jwt.Claims, headerParams map[string]any, queryParams map[string]string, privateKey *rsa.PrivateKey, m configmap.Mapper, client *http.Client) (err error) {
 	jwtToken := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
 	maps.Copy(jwtToken.Header, headerParams)

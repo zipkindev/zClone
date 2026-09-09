@@ -4,14 +4,14 @@ import (
 	"path"
 	"strings"
 
-	"github.com/rclone/gofakes3"
-	"github.com/rclone/rclone/vfs"
+	"zclone/lib/gofakes3"
+	"zclone/vfs"
 )
 
 // legacyMultipartUploadPrefix marked the temporary objects of in-progress
 // multipart uploads before the tempObjectPrefix namespace was reserved
-// (rclone v1.75); leftovers from an older server are still hidden.
-const legacyMultipartUploadPrefix = ".rclone_multipart_upload_"
+// (zclone v1.75); leftovers from an older server are still hidden.
+const legacyMultipartUploadPrefix = ".zclone_multipart_upload_"
 
 func (b *s3Backend) entryListR(_vfs *vfs.VFS, bucketName, fdPath, name string, addPrefix bool, response *gofakes3.ObjectList) error {
 	fp, err := bucketDirPath(bucketName, fdPath)

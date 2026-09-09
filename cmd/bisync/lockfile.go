@@ -9,9 +9,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/cmd/bisync/bilib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/terminal"
+	"zclone/cmd/bisync/bilib"
+	"zclone/fs"
+	"zclone/lib/terminal"
 )
 
 const basicallyforever = fs.Duration(200 * 365 * 24 * time.Hour)
@@ -35,7 +35,7 @@ func (b *bisyncRun) setLockFile() (err error) {
 			if !b.lockFileIsExpired() {
 				errTip := Color(terminal.MagentaFg, "Tip: this indicates that another bisync run (of these same paths) either is still running or was interrupted before completion. \n")
 				errTip += Color(terminal.MagentaFg, "If you're SURE you want to override this safety feature, you can delete the lock file with the following command, then run bisync again: \n")
-				errTip += fmt.Sprintf(Color(terminal.HiRedFg, "rclone deletefile \"%s\""), b.lockFile)
+				errTip += fmt.Sprintf(Color(terminal.HiRedFg, "zclone deletefile \"%s\""), b.lockFile)
 				return fmt.Errorf(Color(terminal.RedFg, "prior lock file found: %s \n")+errTip, Color(terminal.HiYellowFg, b.lockFile))
 			}
 		}

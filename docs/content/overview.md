@@ -6,7 +6,7 @@ type: page
 
 # Overview of cloud storage systems
 
-Each cloud storage system is slightly different.  Rclone attempts to
+Each cloud storage system is slightly different.  Zclone attempts to
 provide a unified interface to them, but some underlying differences
 show through.
 
@@ -33,7 +33,7 @@ on objects, but several of them not something that is appropriate
 to use for syncing. E.g. some backends will only write a timestamp
 that represents the time of the upload. To be relevant for syncing
 it should be able to store the modification time of the source
-object. If this is not the case, rclone will only check the file
+object. If this is not the case, zclone will only check the file
 size by default, though can be configured to check the file hash
 (with the `--checksum` flag). Ideally it should also be possible to
 change the timestamp of an existing file without having to re-upload it.
@@ -57,7 +57,7 @@ means the it keeps modification times on objects, and updates them
 when uploading objects, but it does not support changing only the
 modification time (`SetModTime` operation) without re-uploading,
 possibly not even without deleting existing first. Some operations
-in rclone, such as `copy` and `sync` commands, will automatically
+in zclone, such as `copy` and `sync` commands, will automatically
 check for `SetModTime` support and re-upload if necessary to keep
 the modification times in sync. Other commands will not work
 without `SetModTime` support, e.g. `touch` command on an existing
@@ -98,29 +98,29 @@ systems.
 If a cloud storage system allows duplicate files then it can have two
 objects with the same name.
 
-This confuses rclone greatly when syncing - use the `rclone dedupe`
+This confuses zclone greatly when syncing - use the `zclone dedupe`
 command to rename or remove duplicates.
 
 ### Restricted filenames
 
 Some cloud storage systems might have restrictions on the characters
 that are usable in file or directory names.
-When `rclone` detects such a name during a file upload, it will
+When `zclone` detects such a name during a file upload, it will
 transparently replace the restricted characters with similar looking
 Unicode characters. To handle the different sets of restricted characters
-for different backends, rclone uses something it calls [encoding](#encoding).
+for different backends, zclone uses something it calls [encoding](#encoding).
 
 This process is designed to avoid ambiguous file names as much as
 possible and allow to move files between many cloud storage systems
 transparently.
 
-The name shown by `rclone` to the user or during log output will only
+The name shown by `zclone` to the user or during log output will only
 contain a minimal set of [replaced characters](#restricted-characters)
 to ensure correct formatting and not necessarily the actual name used
 on the cloud storage.
 
 This transformation is reversed when downloading a file or parsing
-`rclone` arguments. For example, when uploading a file named `my file?.txt`
+`zclone` arguments. For example, when uploading a file named `my file?.txt`
 to Onedrive, it will be displayed as `my file?.txt` on the console, but
 stored as `my file？.txt` to Onedrive (the `?` gets replaced by the similar
 looking `？` character, the so-called "fullwidth question mark").
@@ -139,7 +139,7 @@ punctuation marks that are used.
 
 On Windows, the characters `:`, `*` and `?` are examples of restricted
 characters. If these are used in filenames on a remote that supports it,
-Rclone will transparently convert them to their fullwidth Unicode
+Zclone will transparently convert them to their fullwidth Unicode
 variants `＊`, `？` and `：` when downloading to Windows, and back again
 when uploading. This way files with names that are not allowed on Windows
 can still be stored.
@@ -148,27 +148,27 @@ However, if you have files on your Windows system originally with these same
 Unicode characters in their names, they will be included in the same conversion
 process. E.g. if you create a file in your Windows filesystem with name
 `Test：1.jpg`, where `：` is the Unicode fullwidth colon symbol, and use
-rclone to upload it to Google Drive, which supports regular `:` (halfwidth
-question mark), rclone will replace the fullwidth `:` with the
+zclone to upload it to Google Drive, which supports regular `:` (halfwidth
+question mark), zclone will replace the fullwidth `:` with the
 halfwidth `:` and store the file as `Test:1.jpg` in Google Drive. Since
 both Windows and Google Drive allows the name `Test：1.jpg`, it would
-probably be better if rclone just kept the name as is in this case.
+probably be better if zclone just kept the name as is in this case.
 
 With the opposite situation; if you have a file named `Test:1.jpg`,
 in your Google Drive, e.g. uploaded from a Linux system where `:` is valid
-in file names. Then later use rclone to copy this file to your Windows
+in file names. Then later use zclone to copy this file to your Windows
 computer you will notice that on your local disk it gets renamed
 to `Test：1.jpg`. The original filename is not legal on Windows, due to
-the `:`, and rclone therefore renames it to make the copy possible.
+the `:`, and zclone therefore renames it to make the copy possible.
 That is all good. However, this can also lead to an issue: If you already
-had a *different* file named `Test：1.jpg` on Windows, and then use rclone
-to copy either way. Rclone will then treat the file originally named
+had a *different* file named `Test：1.jpg` on Windows, and then use zclone
+to copy either way. Zclone will then treat the file originally named
 `Test:1.jpg` on Google Drive and the file originally named `Test：1.jpg`
 on Windows as the same file, and replace the contents from one with the other.
 
 Its virtually impossible to handle all cases like these correctly in all
 situations, but by customizing the [encoding option](#encoding), changing the
-set of characters that rclone should convert, you should be able to
+set of characters that zclone should convert, you should be able to
 create a configuration that works well for your specific situation.
 See also the [example](/overview/#encoding-example-windows) below.
 
@@ -249,7 +249,7 @@ names in a different encoding than UTF-8 or UTF-16, like latin1. See the
 Most backends have an encoding option, specified as a flag
 `--backend-encoding` where `backend` is the name of the backend, or as
 a config parameter `encoding` (you'll need to select the Advanced
-config in `rclone config` to see it).
+config in `zclone config` to see it).
 
 This will have default value which encodes and decodes characters in
 such a way as to preserve the maximum number of characters (see
@@ -266,7 +266,7 @@ disable the encoding completely with `--backend-encoding Raw` or set
 
 Encoding takes a comma separated list of encodings. You can see the
 list of all possible values by passing an invalid value to this
-flag, e.g. `--local-encoding "help"`. The command `rclone help flags encoding`
+flag, e.g. `--local-encoding "help"`. The command `zclone help flags encoding`
 will show you the defaults for the backends.
 
 | Encoding  | Characters | Encoded as |
@@ -335,20 +335,20 @@ parameter in the config file.
 
 As another example, take a Windows system where there is a file with
 name `Test：1.jpg`, where `：` is the Unicode fullwidth colon symbol.
-When using rclone to copy this to a remote which supports `:`,
+When using zclone to copy this to a remote which supports `:`,
 the regular (halfwidth) colon (such as Google Drive), you will notice
 that the file gets renamed to `Test:1.jpg`.
 
-To avoid this you can change the set of characters rclone should convert
+To avoid this you can change the set of characters zclone should convert
 for the local filesystem, using command-line argument `--local-encoding`.
-Rclone's default behavior on Windows corresponds to
+Zclone's default behavior on Windows corresponds to
 
 ```text
 --local-encoding "Slash,LtGt,DoubleQuote,Colon,Question,Asterisk,Pipe,BackSlash,Ctl,RightSpace,RightPeriod,InvalidUtf8,Dot"
 ```
 
 If you want to use fullwidth characters `：`, `＊` and `？` in your filenames
-without rclone changing them when uploading to a remote, then set the same as
+without zclone changing them when uploading to a remote, then set the same as
 the default value but without `Colon,Question,Asterisk`:
 
 ```text
@@ -359,14 +359,14 @@ Alternatively, you can disable the conversion of any characters with
 `--local-encoding Raw`.
 
 Instead of using command-line argument `--local-encoding`, you may also set it
-as [environment variable](/docs/#environment-variables) `RCLONE_LOCAL_ENCODING`,
+as [environment variable](/docs/#environment-variables) `ZCLONE_LOCAL_ENCODING`,
 or [configure](/docs/#configure) a remote of type `local` in your config,
 and set the `encoding` option there.
 
 The risk by doing this is that if you have a filename with the regular (halfwidth)
 `:`, `*` and `?` in your cloud storage, and you try to download
 it to your Windows filesystem, this will fail. These characters are not
-valid in filenames on Windows, and you have told rclone not to work around
+valid in filenames on Windows, and you have told zclone not to work around
 this by converting them to valid fullwidth variants.
 
 ### MIME Type
@@ -382,7 +382,7 @@ The MIME type can be important if you are serving files directly to
 HTTP from the storage system.
 
 If you are copying from a remote which supports reading (`R`) to a
-remote which supports writing (`W`) then rclone will preserve the MIME
+remote which supports writing (`W`) then zclone will preserve the MIME
 types.  Otherwise they will be guessed from the extension, or the
 remote itself may assign the MIME type.
 
@@ -407,7 +407,7 @@ See [the metadata docs](/docs/#metadata) for more info.
 
 ## Optional Features
 
-All rclone remotes support a base command set. Other features depend
+All zclone remotes support a base command set. Other features depend
 upon backend-specific capabilities.
 
 {{< optional-features-table >}}
@@ -421,8 +421,8 @@ the directory.
 
 Used when copying an object to and from the same remote.  This known
 as a server-side copy so you can copy a file without downloading it
-and uploading it again.  It is used if you use `rclone copy` or
-`rclone move` if the remote doesn't support `Move` directly.
+and uploading it again.  It is used if you use `zclone copy` or
+`zclone move` if the remote doesn't support `Move` directly.
 
 If the server doesn't support `Copy` directly then for copy operations
 the file is downloaded then re-uploaded.
@@ -430,24 +430,24 @@ the file is downloaded then re-uploaded.
 ### Move
 
 Used when moving/renaming an object on the same remote.  This is known
-as a server-side move of a file.  This is used in `rclone move` if the
+as a server-side move of a file.  This is used in `zclone move` if the
 server doesn't support `DirMove`.
 
-If the server isn't capable of `Move` then rclone simulates it with
-`Copy` then delete.  If the server doesn't support `Copy` then rclone
+If the server isn't capable of `Move` then zclone simulates it with
+`Copy` then delete.  If the server doesn't support `Copy` then zclone
 will download the file and re-upload it.
 
 ### DirMove
 
-This is used to implement `rclone move` to move a directory if
+This is used to implement `zclone move` to move a directory if
 possible.  If it isn't then it will use `Move` on each file (which
 falls back to `Copy` then download and upload - see `Move` section).
 
 ### CleanUp
 
-This is used for emptying the trash for a remote by `rclone cleanup`.
+This is used for emptying the trash for a remote by `zclone cleanup`.
 
-If the server can't do `CleanUp` then `rclone cleanup` will return an
+If the server can't do `CleanUp` then `zclone cleanup` will return an
 error.
 
 ‡‡ Note that while Box implements this it has to delete every file
@@ -457,18 +457,18 @@ individually so it will be slower than emptying the trash via the WebUI
 
 The remote supports a recursive list to list all the contents beneath
 a directory quickly.  This enables the `--fast-list` flag to work.
-See the [rclone docs](/docs/#fast-list) for more details.
+See the [zclone docs](/docs/#fast-list) for more details.
 
 ### StreamUpload
 
 Some remotes allow files to be uploaded without knowing the file size
 in advance. This allows certain operations to work without spooling the
-file to local disk first, e.g. `rclone rcat`.
+file to local disk first, e.g. `zclone rcat`.
 
 ### MultithreadUpload
 
 Some remotes allow transfers to the remote to be sent as chunks in
-parallel. If this is supported then rclone will use multi-thread
+parallel. If this is supported then zclone will use multi-thread
 copying to transfer files much faster.
 
 ### LinkSharing
@@ -479,17 +479,17 @@ on the particular cloud provider.
 
 ### About
 
-Rclone `about` prints quota information for a remote. Typical output
+Zclone `about` prints quota information for a remote. Typical output
 includes bytes used, free, quota and in trash.
 
-If a remote lacks about capability `rclone about remote:`returns
+If a remote lacks about capability `zclone about remote:`returns
 an error.
 
 Backends without about capability cannot determine free space for an
-rclone mount, or use policy `mfs` (most free space) as a member of an
-rclone union remote.
+zclone mount, or use policy `mfs` (most free space) as a member of an
+zclone union remote.
 
-See [rclone about command](https://rclone.org/commands/rclone_about/)
+See [zclone about command](//commands/zclone_about/)
 
 ### EmptyDir
 

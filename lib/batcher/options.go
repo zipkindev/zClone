@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 // FsOptions returns the batch mode fs.Options
@@ -13,7 +13,7 @@ func (opt *Options) FsOptions(extra string) []fs.Option {
 		Name: "batch_mode",
 		Help: fmt.Sprintf(`Upload file batching sync|async|off.
 
-This sets the batch mode used by rclone.
+This sets the batch mode used by zclone.
 
 %sThis has 3 possible values
 
@@ -21,7 +21,7 @@ This sets the batch mode used by rclone.
 - sync - batch uploads and check completion (default)
 - async - batch upload and don't check completion
 
-Rclone will close any outstanding batches when it exits which may make
+Zclone will close any outstanding batches when it exits which may make
 a delay on quit.
 `, extra),
 		Default:  "sync",
@@ -32,14 +32,14 @@ a delay on quit.
 
 This sets the batch size of files to upload. It has to be less than %d.
 
-By default this is 0 which means rclone will calculate the batch size
+By default this is 0 which means zclone will calculate the batch size
 depending on the setting of batch_mode.
 
 - batch_mode: async - default batch_size is %d
 - batch_mode: sync - default batch_size is the same as --transfers
 - batch_mode: off - not in use
 
-Rclone will close any outstanding batches when it exits which may make
+Zclone will close any outstanding batches when it exits which may make
 a delay on quit.
 
 Setting this is a great idea if you are uploading lots of small files
@@ -55,7 +55,7 @@ maximise throughput.
 If an upload batch is idle for more than this long then it will be
 uploaded.
 
-The default for this is 0 which means rclone will choose a sensible
+The default for this is 0 which means zclone will choose a sensible
 default based on the batch_mode in use.
 
 - batch_mode: async - default batch_timeout is %v

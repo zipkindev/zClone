@@ -9,14 +9,14 @@ import (
 	"strings"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/vfs/vfscommon"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/ssh"
+	_ "zclone/backend/local"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/obscure"
+	"zclone/vfs/vfscommon"
 )
 
 func TestRun(t *testing.T) {
@@ -337,9 +337,9 @@ func TestIPFromAddr(t *testing.T) {
 		{"[2001:db8::1]:1024", "2001:db8::1"},
 		{"[::ffff:192.0.2.1]:1024", "192.0.2.1"},
 		{"[fe80::1%eth0]:1024", "fe80::1%eth0"},
-		{"/tmp/rclone.sock", ""},
+		{"/tmp/zclone.sock", ""},
 		{"/tmp/foo:bar.sock", ""},
-		{`C:\Users\me\rclone.sock`, ""},
+		{`C:\Users\me\zclone.sock`, ""},
 		{"@", ""},
 		{"<nil>", ""},
 		{"", ""},

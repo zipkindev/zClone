@@ -17,20 +17,20 @@ import (
 	"time"
 
 	"github.com/jlaffaye/ftp"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/env"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/proxy"
-	"github.com/rclone/rclone/lib/readers"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/encoder"
+	"zclone/lib/env"
+	"zclone/lib/pacer"
+	"zclone/lib/proxy"
+	"zclone/lib/readers"
 )
 
 var (
@@ -139,7 +139,7 @@ So for |concurrency 3| you'd use |--checkers 2 --transfers 2
 			Help: `Max time before closing idle connections.
 
 If no connections have been returned to the connection pool in the time
-given, rclone will empty the connection pool.
+given, zclone will empty the connection pool.
 
 Set to 0 to keep connections indefinitely.
 `,
@@ -183,7 +183,7 @@ Setting this flag will allow the usage of the following TLS ciphers in addition 
 			Default: false,
 			Help: `Allow asking for FTP password when needed.
 
-If this is set and no password is supplied then rclone will ask for a password
+If this is set and no password is supplied then zclone will ask for a password
 `,
 			Advanced: true,
 		}, {
@@ -217,11 +217,11 @@ Example:
 			Default: false,
 			Help: `Don't check the upload is OK
 
-Normally rclone will try to check the upload exists after it has
+Normally zclone will try to check the upload exists after it has
 uploaded a file to make sure the size and modification time are as
 expected.
 
-This flag stops rclone doing these checks. This enables uploading to
+This flag stops zclone doing these checks. This enables uploading to
 folders which are write only.
 
 You will likely need to use the --inplace flag also if uploading to
@@ -411,7 +411,7 @@ func shouldRetry(ctx context.Context, err error) (bool, error) {
 //
 // We can't share session caches between connections.
 //
-// See: https://github.com/rclone/rclone/issues/7234
+// See: /
 func (f *Fs) tlsConfig() *tls.Config {
 	var tlsConfig *tls.Config
 	if f.opt.TLS || f.opt.ExplicitTLS {
@@ -496,7 +496,7 @@ func (f *Fs) ftpConnection(ctx context.Context) (c *ftp.ServerConn, err error) {
 		tlsConn := tls.Client(conn, tlsConfig)
 		// Do the initial handshake - tls.Client doesn't do it for us
 		// If we do this then connections to proftpd/pureftpd lock up
-		// See: https://github.com/rclone/rclone/issues/6426
+		// See: /
 		// See: https://github.com/jlaffaye/ftp/issues/282
 		if false {
 			err = tlsConn.HandshakeContext(ctx)
@@ -756,7 +756,7 @@ func (f *Fs) Shutdown(ctx context.Context) error {
 	return f.drainPool(ctx)
 }
 
-// translateErrorFile turns FTP errors into rclone errors if possible for a file
+// translateErrorFile turns FTP errors into zclone errors if possible for a file
 func translateErrorFile(err error) error {
 	if errX := textprotoError(err); errX != nil {
 		switch errX.Code {
@@ -767,7 +767,7 @@ func translateErrorFile(err error) error {
 	return err
 }
 
-// translateErrorDir turns FTP errors into rclone errors if possible for a directory
+// translateErrorDir turns FTP errors into zclone errors if possible for a directory
 func translateErrorDir(err error) error {
 	if errX := textprotoError(err); errX != nil {
 		switch errX.Code {
@@ -1069,7 +1069,7 @@ func (f *Fs) mkdir(ctx context.Context, abspath string) error {
 	if errX := textprotoError(err); errX != nil {
 		switch errX.Code {
 		case ftp.StatusRequestedFileActionOK: // some ftp servers apparently return 250 instead of 257
-			err = nil // see: https://forum.rclone.org/t/rclone-pop-up-an-i-o-error-when-creating-a-folder-in-a-mounted-ftp-drive/44368/
+			err = nil // see: /
 		case ftp.StatusFileUnavailable: // dir already exists: see issue #2181
 			err = nil
 		case 521: // dir already exists: error number according to RFC 959: issue #2363
@@ -1311,7 +1311,7 @@ func (f *ftpReadCloser) Close() error {
 	}
 	// mask the error if it was caused by a premature close
 	// NB StatusAboutToSend is to work around a bug in pureftpd
-	// See: https://github.com/rclone/rclone/issues/3445#issuecomment-521654257
+	// See: /
 	if errX := textprotoError(err); errX != nil {
 		switch errX.Code {
 		case ftp.StatusTransfertAborted, ftp.StatusFileUnavailable, ftp.StatusAboutToSend, ftp.StatusRequestedFileActionOK:

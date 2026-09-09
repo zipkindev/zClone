@@ -6,7 +6,7 @@ import (
 	"errors"
 	"io"
 
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 // io related errors returned by ChunkedReader

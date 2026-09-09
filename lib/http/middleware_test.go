@@ -280,7 +280,7 @@ func TestMiddlewareAuthCertificateUser(t *testing.T) {
 		{
 			name:        "Valid",
 			status:      http.StatusOK,
-			result:      "rclone-dev-client",
+			result:      "zclone-dev-client",
 			clientCerts: []tls.Certificate{clientCert},
 			http: Config{
 				ListenAddr:    []string{"127.0.0.1:0"},
@@ -315,7 +315,7 @@ func TestMiddlewareAuthCertificateUser(t *testing.T) {
 		{
 			name:        "CustomAuth/Valid",
 			status:      http.StatusOK,
-			result:      "rclone-dev-client",
+			result:      "zclone-dev-client",
 			clientCerts: []tls.Certificate{clientCert},
 			http: Config{
 				ListenAddr:    []string{"127.0.0.1:0"},
@@ -328,7 +328,7 @@ func TestMiddlewareAuthCertificateUser(t *testing.T) {
 				Realm: "test",
 				CustomAuthFn: func(_ *http.Request, user, pass string) (value any, err error) {
 					fmt.Println("CUSTOMAUTH", user, pass)
-					if user == "rclone-dev-client" && pass == "" {
+					if user == "zclone-dev-client" && pass == "" {
 						return true, nil
 					}
 					return nil, errors.New("invalid credentials")
@@ -397,7 +397,7 @@ func TestMiddlewareCORS(t *testing.T) {
 			name: "CustomOrigin",
 			http: Config{
 				ListenAddr:  []string{"127.0.0.1:0"},
-				AllowOrigin: "http://test.rclone.org",
+				AllowOrigin: "http://test.zclone.org",
 			},
 			method: "GET",
 			status: http.StatusOK,
@@ -406,7 +406,7 @@ func TestMiddlewareCORS(t *testing.T) {
 			name: "WithBaseURL",
 			http: Config{
 				ListenAddr:  []string{"127.0.0.1:0"},
-				AllowOrigin: "http://test.rclone.org",
+				AllowOrigin: "http://test.zclone.org",
 				BaseURL:     "/baseurl/",
 			},
 			method: "GET",
@@ -416,7 +416,7 @@ func TestMiddlewareCORS(t *testing.T) {
 			name: "WithBaseURLTryRootGET",
 			http: Config{
 				ListenAddr:  []string{"127.0.0.1:0"},
-				AllowOrigin: "http://test.rclone.org",
+				AllowOrigin: "http://test.zclone.org",
 				BaseURL:     "/baseurl/",
 			},
 			method:  "GET",
@@ -427,7 +427,7 @@ func TestMiddlewareCORS(t *testing.T) {
 			name: "WithBaseURLTryRootOPTIONS",
 			http: Config{
 				ListenAddr:  []string{"127.0.0.1:0"},
-				AllowOrigin: "http://test.rclone.org",
+				AllowOrigin: "http://test.zclone.org",
 				BaseURL:     "/baseurl/",
 			},
 			method:  "OPTIONS",
@@ -544,7 +544,7 @@ func TestMiddlewareCORSWithAuth(t *testing.T) {
 			name: "ServerWithAuth",
 			http: Config{
 				ListenAddr:  []string{"127.0.0.1:0"},
-				AllowOrigin: "http://test.rclone.org",
+				AllowOrigin: "http://test.zclone.org",
 			},
 			auth: AuthConfig{
 				Realm:     "test",

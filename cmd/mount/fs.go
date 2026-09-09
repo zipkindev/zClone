@@ -10,11 +10,11 @@ import (
 
 	"bazil.org/fuse"
 	fusefs "bazil.org/fuse/fs"
-	"github.com/rclone/rclone/cmd/mountlib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/vfs"
+	"zclone/cmd/mountlib"
+	"zclone/fs"
+	"zclone/fs/fserrors"
+	"zclone/fs/log"
+	"zclone/vfs"
 )
 
 // FS represents the top level filing system

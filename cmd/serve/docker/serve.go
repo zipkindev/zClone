@@ -10,9 +10,9 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/file"
+	"zclone/fs"
+	"zclone/lib/atexit"
+	"zclone/lib/file"
 )
 
 // Server connects plugin with docker daemon by protocol
@@ -90,7 +90,7 @@ func writeSpecFile(addr, proto, specDir string) (string, error) {
 	if err := file.MkdirAll(specDir, 0755); err != nil {
 		return "", err
 	}
-	specFile := filepath.Join(specDir, "rclone.spec")
+	specFile := filepath.Join(specDir, "zclone.spec")
 	url := fmt.Sprintf("%s://%s", proto, addr)
 	if err := os.WriteFile(specFile, []byte(url), 0644); err != nil {
 		return "", err

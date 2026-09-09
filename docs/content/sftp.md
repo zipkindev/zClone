@@ -16,7 +16,7 @@ The SFTP backend can be used with a number of different providers:
 
 {{< provider_list >}}
 {{< provider name="Hetzner Storage Box" home="https://www.hetzner.com/storage/storage-box" config="/sftp/#hetzner-storage-box">}}
-{{< provider name="rsync.net" home="https://rsync.net/products/rclone.html" config="/sftp/#rsync-net">}}
+{{< provider name="rsync.net" home="https://rsync.net/products/zclone.html" config="/sftp/#rsync-net">}}
 {{< /provider_list >}}
 
 <!-- markdownlint-restore -->
@@ -26,16 +26,16 @@ SSH installations.
 
 Paths are specified as `remote:path`. If the path does not begin with
 a `/` it is relative to the home directory of the user.  An empty path
-`remote:` refers to the user's home directory. For example, `rclone lsd remote:`
-would list the home directory of the user configured in the rclone remote config
-(`i.e /home/sftpuser`). However, `rclone lsd remote:/` would list the root
+`remote:` refers to the user's home directory. For example, `zclone lsd remote:`
+would list the home directory of the user configured in the zclone remote config
+(`i.e /home/sftpuser`). However, `zclone lsd remote:/` would list the root
 directory for remote machine (i.e. `/`)
 
 Note that some SFTP servers will need the leading / - Synology is a
 good example of this. rsync.net and Hetzner, on the other hand, requires users to
 OMIT the leading /.
 
-Note that by default rclone will try to execute shell commands on
+Note that by default zclone will try to execute shell commands on
 the server, see [shell access considerations](#shell-access-considerations).
 
 ## Configuration
@@ -43,7 +43,7 @@ the server, see [shell access considerations](#shell-access-considerations).
 Here is an example of making an SFTP configuration.  First run
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process.
@@ -101,39 +101,39 @@ This remote is called `remote` and can now be used like this:
 See all directories in the home directory
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 See all directories in the root directory
 
 ```console
-rclone lsd remote:/
+zclone lsd remote:/
 ```
 
 Make a new directory
 
 ```console
-rclone mkdir remote:path/to/directory
+zclone mkdir remote:path/to/directory
 ```
 
 List the contents of a directory
 
 ```console
-rclone ls remote:path/to/directory
+zclone ls remote:path/to/directory
 ```
 
 Sync `/home/local/directory` to the remote directory, deleting any
 excess files in the directory.
 
 ```console
-rclone sync --interactive /home/local/directory remote:directory
+zclone sync --interactive /home/local/directory remote:directory
 ```
 
 Mount the remote path `/srv/www-data/` to the local path
 `/mnt/www-data`
 
 ```console
-rclone mount remote:/srv/www-data/ /mnt/www-data
+zclone mount remote:/srv/www-data/ /mnt/www-data
 ```
 
 ### SSH Authentication
@@ -148,7 +148,7 @@ Key files should be PEM-encoded private key files. For instance `/home/$USER/.ss
 Only unencrypted OpenSSH or PEM encrypted files are supported.
 
 The key file can be specified in either an external file (key_file) or contained
-within the  rclone config file (key_pem).  If using key_pem in the config file,
+within the  zclone config file (key_pem).  If using key_pem in the config file,
 the entry should be on a single line with new line ('\n' or '\r\n') separating lines.
 I.e.
 
@@ -163,13 +163,13 @@ awk '{printf "%s\\n", $0}' < ~/.ssh/id_rsa
 ```
 
 If you don't specify `pass`, `key_file`, or `key_pem` or `ask_password` then
-rclone will attempt to contact an ssh-agent. You can also specify `key_use_agent`
+zclone will attempt to contact an ssh-agent. You can also specify `key_use_agent`
 to force the usage of an ssh-agent. In this case `key_file` or `key_pem` can
 also be specified to force the usage of a specific key in the ssh-agent.
 
 Using an ssh-agent is the only way to load encrypted OpenSSH keys at the moment.
 
-If you set the `ask_password` option, rclone will prompt for a password when
+If you set the `ask_password` option, zclone will prompt for a password when
 needed and no password has been configured.
 
 #### Certificate-signed keys
@@ -208,10 +208,10 @@ cat id_rsa-cert.pub id_rsa > merged_key
 
 ### Host key validation
 
-By default rclone will not check the server's host key for validation.
+By default zclone will not check the server's host key for validation.
 This can allow an attacker to replace a server with their own and if
 you use password authentication then this can lead to that password
-being exposed. Rclone will produce a warning `No host key validation
+being exposed. Zclone will produce a warning `No host key validation
 is being performed` each time the backend is started in this mode.
 
 Host key matching, using standard ssh `known_hosts` files can be
@@ -220,7 +220,7 @@ the file maintained by `OpenSSH` or can point to a unique file. To
 explicitly disable host key checking and silence the warning, the
 `known_hosts_file` option can be set to `none`.
 
-Alternatively rclone can maintain server host keys in a `host_keys`
+Alternatively zclone can maintain server host keys in a `host_keys`
 setting in the config file. This can be updated automatically with
 `--sftp-pin-host-key`.
 
@@ -247,7 +247,7 @@ ssh-keyscan -t dsa,rsa,ecdsa,ed25519 example.com >> known_hosts
 
 There are some limitations:
 
-- `rclone` will not *manage* this file for you.  If the key is missing or
+- `zclone` will not *manage* this file for you.  If the key is missing or
   wrong then the connection will be refused.
 - If the server is set up for a certificate host key then the entry in
   the `known_hosts` file *must* be the `@cert-authority` entry for the CA
@@ -275,35 +275,35 @@ NewFs: couldn't connect SSH: ssh: handshake failed: ssh: no authorities for host
 then it is likely the server has presented a CA signed host certificate
 and you will need to add the appropriate `@cert-authority` entry.
 
-The `known_hosts_file` setting can be set during `rclone config` as an
+The `known_hosts_file` setting can be set during `zclone config` as an
 advanced option.
 
 ### Host key pinning
 
-As an alternative to maintaining a `known_hosts` file, rclone supports
+As an alternative to maintaining a `known_hosts` file, zclone supports
 Trust On First Use (TOFU) host key pinning via the `--sftp-pin-host-key`
 command-line flag.
 
 The recommended workflow is:
 
-1. For the very first connection to a new remote, run rclone once with
-   `--sftp-pin-host-key`. Rclone records the server's host key into the
+1. For the very first connection to a new remote, run zclone once with
+   `--sftp-pin-host-key`. Zclone records the server's host key into the
    remote's `host_keys` config option and logs the SHA256 fingerprint:
 
    ```console
-   $ rclone --sftp-pin-host-key lsd remote:
+   $ zclone --sftp-pin-host-key lsd remote:
    2026/01/01 12:00:00 NOTICE: sftp://sftpuser@example.com:22/: Accepted ssh-ed25519 host key SHA256:abc... for example.com:22 on first use
    2026/01/01 12:00:00 NOTICE: sftp://sftpuser@example.com:22/: Pinned ssh-ed25519 host key SHA256:abc... for example.com:22 in config
    ```
 
-2. For every subsequent run, omit the flag. Rclone consults the pinned
+2. For every subsequent run, omit the flag. Zclone consults the pinned
    `host_keys` and refuses the connection on any mismatch.
 
 This is a strict improvement over the default of no host key validation,
-but note that the first connection itself is unauthenticated. Rclone
+but note that the first connection itself is unauthenticated. Zclone
 detects later key changes, not a man-in-the-middle who is already on-path
 the first time you connect. Ideally do the first connection over a trusted
-network or cross-check the fingerprint rclone logs against one provided out
+network or cross-check the fingerprint zclone logs against one provided out
 of band by the server operator.
 
 If `known_hosts_file` is also set it takes precedence and
@@ -327,25 +327,25 @@ algorithm and base64 fields of a known_hosts line - not its SHA256
 fingerprint:
 
 ```console
-rclone config update remote host_keys "ssh-ed25519 AAAAC3..."
+zclone config update remote host_keys "ssh-ed25519 AAAAC3..."
 ```
 
 Setting `pin_host_key = true` persistently in the config file is not
-recommended: while it is set, rclone will accept any new host key algorithm
+recommended: while it is set, zclone will accept any new host key algorithm
 the server later presents, widening the trust surface beyond the initial
 pin. Using `--sftp-pin-host-key` as a one-shot flag keeps each
 unauthenticated trust event a deliberate decision.
 
 #### Re-pinning after a legitimate key change
 
-If the server's host key is legitimately rotated, rclone will refuse the
+If the server's host key is legitimately rotated, zclone will refuse the
 connection with an error containing both the stored and offered SHA256
 fingerprints. To accept the new key, clear the stored value and re-run once
 with the flag:
 
 ```console
-rclone config update remote host_keys ""
-rclone --sftp-pin-host-key lsd remote:
+zclone config update remote host_keys ""
+zclone --sftp-pin-host-key lsd remote:
 ```
 
 Alternatively edit `host_keys` directly to replace or add the new entry.
@@ -358,7 +358,7 @@ Multiple entries (separated by commas) are supported.
   periodically even though the underlying CA is unchanged). Use
   `known_hosts_file` with an `@cert-authority` entry instead.
 - On-the-fly remotes (`:sftp,host=...:`) cannot persist the pinned key -
-  rclone will log a warning and re-accept the server key on every run,
+  zclone will log a warning and re-accept the server key on every run,
   so the flag only provides first-connect fingerprint logging. Named
   remotes used with connection string overrides (`remote,port=2022:`)
   are fine: the pinned key is saved to the remote's config section.
@@ -371,7 +371,7 @@ Multiple entries (separated by commas) are supported.
   `host_keys`, or repeat the first-connect step until each node's key
   has been observed, appending the additional entries to `host_keys` by
   hand (comma-separated).
-- rclone does not yet support OpenSSH's `hostkeys@openssh.com` extension,
+- zclone does not yet support OpenSSH's `hostkeys@openssh.com` extension,
   the non-RFC mechanism that helps clients learn additional host keys
   during rotation. This is being tracked upstream at
   https://github.com/golang/go/issues/37245
@@ -401,7 +401,7 @@ and the possibility to execute commands. This includes [checksum](#checksum),
 and in some cases also [about](#about-command). The shell commands that
 must be executed may be different on different type of shells, and also
 quoting/escaping of file path arguments containing special characters may
-be different. Rclone therefore needs to know what type of shell it is,
+be different. Zclone therefore needs to know what type of shell it is,
 and if shell access is available at all.
 
 Most servers run on some version of Unix, and then a basic Unix shell can
@@ -411,9 +411,9 @@ can also run a SSH server, which is a port of OpenSSH (see official
 On a Windows server the shell handling is different: Although it can also
 be set up to use a Unix type shell, e.g. Cygwin bash, the default is to
 use Windows Command Prompt (cmd.exe), and PowerShell is a recommended
-alternative. All of these have behave differently, which rclone must handle.
+alternative. All of these have behave differently, which zclone must handle.
 
-Rclone tries to auto-detect what type of shell is used on the server,
+Zclone tries to auto-detect what type of shell is used on the server,
 first time you access the SFTP remote. If a remote shell session is
 successfully created, it will look for indications that it is CMD or
 PowerShell, with fall-back to Unix if not something else is detected.
@@ -428,8 +428,8 @@ commands, e.g. if this is not allowed on the server.
 If you have `shell_type = none` in the configuration then
 the [ssh](#sftp-ssh) must not be set.
 
-When the server is [rclone serve sftp](/commands/rclone_serve_sftp/),
-the rclone SFTP remote will detect this as a Unix type shell - even
+When the server is [zclone serve sftp](/commands/zclone_serve_sftp/),
+the zclone SFTP remote will detect this as a Unix type shell - even
 if it is running on Windows. This server does not actually have a shell,
 but it accepts input commands matching the specific ones that the
 SFTP backend relies on for Unix shells, e.g. `md5sum` and `df`. Also
@@ -440,13 +440,13 @@ correct, and support all features.
 #### Shell access considerations
 
 The shell type auto-detection logic, described above, means that
-by default rclone will try to run a shell command the first time
+by default zclone will try to run a shell command the first time
 a new sftp remote is accessed. If you configure a sftp remote
 without a config file, e.g. an [on the fly](/docs/#backend-path-to-dir)
-remote, rclone will have nowhere to store the result, and it
+remote, zclone will have nowhere to store the result, and it
 will re-run the command on every access. To avoid this you should
 explicitly set the `shell_type` option to the correct value,
-or to `none` if you want to prevent rclone from executing any
+or to `none` if you want to prevent zclone from executing any
 remote shell commands.
 
 It is also important to note that, since the shell type decides
@@ -458,25 +458,25 @@ or disable shell access until you know.
 
 ### Checksum
 
-SFTP does not natively support checksums (file hash), but rclone
+SFTP does not natively support checksums (file hash), but zclone
 is able to use checksumming if the same login has shell access,
 and can execute remote commands. If there is a command that can
-calculate compatible checksums on the remote system, Rclone can
+calculate compatible checksums on the remote system, Zclone can
 then be configured to execute this whenever a checksum is needed,
 and read back the results. By default MD5 and SHA-1 are considered,
 but also CRC32, SHA-256, BLAKE3, XXH3 and XXH128 are supported,
 option `hashes` can be set to specify which to consider.
 
 Normally this requires an external utility being available on
-the server. E.g. for MD5 checksums, by default rclone will try commands
-`md5sum`, `md5` and `rclone md5sum`, and the first one found
+the server. E.g. for MD5 checksums, by default zclone will try commands
+`md5sum`, `md5` and `zclone md5sum`, and the first one found
 usable will be picked. These utilities normally need to be in the
 remote's PATH to be found.
 
 In some cases the shell itself is capable of calculating checksums.
-PowerShell is an example of such a shell. If rclone detects that the
+PowerShell is an example of such a shell. If zclone detects that the
 remote shell is PowerShell, which means it most probably is a
-Windows OpenSSH server, rclone will use a predefined script block
+Windows OpenSSH server, zclone will use a predefined script block
 to produce the checksums for MD5, SHA-1 and SHA-256 when no external
 checksum commands are found (see [shell access](#shell-access)). This
 assumes PowerShell version 4.0 or newer.
@@ -486,16 +486,16 @@ the commands to be executed for calculation of checksums. You can for
 example set a specific path to where the md5sum executable are located,
 or specify some other tool that print checksums in compatible format.
 The value can include command-line arguments, or even shell script blocks
-as with PowerShell. Rclone has subcommands [hashsum](/commands/rclone_hashsum/),
-[md5sum](/commands/rclone_md5sum/) and [sha1sum](/commands/rclone_sha1sum/)
-that use compatible format, which means if you have an rclone executable
+as with PowerShell. Zclone has subcommands [hashsum](/commands/zclone_hashsum/),
+[md5sum](/commands/zclone_md5sum/) and [sha1sum](/commands/zclone_sha1sum/)
+that use compatible format, which means if you have an zclone executable
 on the server it can be used. As mentioned above, they will be automatically
 picked up if found in PATH, but if not you can set something like
-`/path/to/rclone md5sum` as the value of option `md5sum_command` to
+`/path/to/zclone md5sum` as the value of option `md5sum_command` to
 make sure a specific executable is used.
 
 Remote checksumming is recommended and enabled by default. First time
-rclone is using a SFTP remote, if options `md5sum_command` or `sha1_command`
+zclone is using a SFTP remote, if options `md5sum_command` or `sha1_command`
 are not set, it will check if any of the default commands for each of them,
 as described above, can be used. The result will be saved in the remote
 configuration, so next time it will use the same. Value `none`
@@ -520,7 +520,7 @@ Modified times are used in syncing and are fully supported.
 Some SFTP servers disable setting/modifying the file modification time after
 upload (for example, certain configurations of ProFTPd with mod_sftp). If you
 are using one of these servers, you can set the option `set_modtime = false` in
-your RClone backend configuration to disable this behaviour.
+your Zclone backend configuration to disable this behaviour.
 
 ### About command
 
@@ -528,13 +528,13 @@ The `about` command returns the total space, free space, and used
 space on the remote for the disk of the specified path on the remote or,
 if not set, the disk of the root on the remote.
 
-SFTP usually supports the [about](/commands/rclone_about/) command, but
+SFTP usually supports the [about](/commands/zclone_about/) command, but
 it depends on the server. If the server implements the vendor-specific
 VFS statistics extension, which is normally the case with OpenSSH instances,
 it will be used. If not, but the same login has access to a Unix shell,
 where the `df` command is available (e.g. in the remote's PATH), then
 this will be used instead. If the server shell is PowerShell, probably
-with a Windows OpenSSH server, rclone will use a built-in shell command
+with a Windows OpenSSH server, zclone will use a built-in shell command
 (see [shell access](#shell-access)). If none of the above is applicable,
 `about` will fail.
 
@@ -552,7 +552,7 @@ E.g. "example.com".
 Properties:
 
 - Config:      host
-- Env Var:     RCLONE_SFTP_HOST
+- Env Var:     ZCLONE_SFTP_HOST
 - Type:        string
 - Required:    true
 
@@ -563,9 +563,9 @@ SSH username.
 Properties:
 
 - Config:      user
-- Env Var:     RCLONE_SFTP_USER
+- Env Var:     ZCLONE_SFTP_USER
 - Type:        string
-- Default:     "$USER"
+- Default:     "mizipkin"
 
 #### --sftp-port
 
@@ -574,7 +574,7 @@ SSH port number.
 Properties:
 
 - Config:      port
-- Env Var:     RCLONE_SFTP_PORT
+- Env Var:     ZCLONE_SFTP_PORT
 - Type:        int
 - Default:     22
 
@@ -582,12 +582,12 @@ Properties:
 
 SSH password, leave blank to use ssh-agent.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      pass
-- Env Var:     RCLONE_SFTP_PASS
+- Env Var:     ZCLONE_SFTP_PASS
 - Type:        string
 - Required:    false
 
@@ -608,7 +608,7 @@ If specified, it will override the key_file parameter.
 Properties:
 
 - Config:      key_pem
-- Env Var:     RCLONE_SFTP_KEY_PEM
+- Env Var:     ZCLONE_SFTP_KEY_PEM
 - Type:        string
 - Required:    false
 
@@ -618,12 +618,12 @@ Path to PEM-encoded private key file.
 
 Leave blank or set key-use-agent to use ssh-agent.
 
-Leading `~` will be expanded in the file name as will environment variables such as `${RCLONE_CONFIG_DIR}`.
+Leading `~` will be expanded in the file name as will environment variables such as `${ZCLONE_CONFIG_DIR}`.
 
 Properties:
 
 - Config:      key_file
-- Env Var:     RCLONE_SFTP_KEY_FILE
+- Env Var:     ZCLONE_SFTP_KEY_FILE
 - Type:        string
 - Required:    false
 
@@ -634,12 +634,12 @@ The passphrase to decrypt the PEM-encoded private key file.
 Only PEM encrypted key files (old OpenSSH format) are supported. Encrypted keys
 in the new OpenSSH format can't be used.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      key_file_pass
-- Env Var:     RCLONE_SFTP_KEY_FILE_PASS
+- Env Var:     ZCLONE_SFTP_KEY_FILE_PASS
 - Type:        string
 - Required:    false
 
@@ -652,7 +652,7 @@ If specified will override pubkey_file.
 Properties:
 
 - Config:      pubkey
-- Env Var:     RCLONE_SFTP_PUBKEY
+- Env Var:     ZCLONE_SFTP_PUBKEY
 - Type:        string
 - Required:    false
 
@@ -662,12 +662,12 @@ Optional path to public key file.
 
 Set this if you have a signed certificate you want to use for authentication.
 
-Leading `~` will be expanded in the file name as will environment variables such as `${RCLONE_CONFIG_DIR}`.
+Leading `~` will be expanded in the file name as will environment variables such as `${ZCLONE_CONFIG_DIR}`.
 
 Properties:
 
 - Config:      pubkey_file
-- Env Var:     RCLONE_SFTP_PUBKEY_FILE
+- Env Var:     ZCLONE_SFTP_PUBKEY_FILE
 - Type:        string
 - Required:    false
 
@@ -682,7 +682,7 @@ when the ssh-agent contains many keys.
 Properties:
 
 - Config:      key_use_agent
-- Env Var:     RCLONE_SFTP_KEY_USE_AGENT
+- Env Var:     ZCLONE_SFTP_KEY_USE_AGENT
 - Type:        bool
 - Default:     false
 
@@ -707,7 +707,7 @@ This must be false if you use either ciphers or key_exchange advanced options.
 Properties:
 
 - Config:      use_insecure_cipher
-- Env Var:     RCLONE_SFTP_USE_INSECURE_CIPHER
+- Env Var:     ZCLONE_SFTP_USE_INSECURE_CIPHER
 - Type:        bool
 - Default:     false
 - Examples:
@@ -725,7 +725,7 @@ Leave blank or set to false to enable hashing (recommended), set to true to disa
 Properties:
 
 - Config:      disable_hashcheck
-- Env Var:     RCLONE_SFTP_DISABLE_HASHCHECK
+- Env Var:     ZCLONE_SFTP_DISABLE_HASHCHECK
 - Type:        bool
 - Default:     false
 
@@ -733,18 +733,18 @@ Properties:
 
 Path and arguments to external ssh binary.
 
-Normally rclone will use its internal ssh library to connect to the
+Normally zclone will use its internal ssh library to connect to the
 SFTP server. However it does not implement all possible ssh options so
 it may be desirable to use an external ssh binary.
 
-Rclone ignores all the internal config if you use this option and
+Zclone ignores all the internal config if you use this option and
 expects you to configure the ssh binary with the user/host/port and
 any other options you need.
 
 **Important** The ssh command must log in without asking for a
 password so needs to be configured with keys or certificates.
 
-Rclone will run the command supplied either with the additional
+Zclone will run the command supplied either with the additional
 arguments "-s sftp" to access the SFTP subsystem or with commands such
 as "md5sum /path/to/file" appended to read checksums.
 
@@ -754,14 +754,14 @@ An example setting might be:
 
     ssh -o ServerAliveInterval=20 user@example.com
 
-Note that when using an external ssh binary rclone makes a new ssh
+Note that when using an external ssh binary zclone makes a new ssh
 connection for every hash it calculates.
 
 
 Properties:
 
 - Config:      ssh
-- Env Var:     RCLONE_SFTP_SSH
+- Env Var:     ZCLONE_SFTP_SSH
 - Type:        SpaceSepList
 - Default:     
 
@@ -775,12 +775,12 @@ Optional path to known_hosts file.
 
 Set this value to enable server host key validation. Set to `none` to silence the "No host key validation" notice.
 
-Leading `~` will be expanded in the file name as will environment variables such as `${RCLONE_CONFIG_DIR}`.
+Leading `~` will be expanded in the file name as will environment variables such as `${ZCLONE_CONFIG_DIR}`.
 
 Properties:
 
 - Config:      known_hosts_file
-- Env Var:     RCLONE_SFTP_KNOWN_HOSTS_FILE
+- Env Var:     ZCLONE_SFTP_KNOWN_HOSTS_FILE
 - Type:        string
 - Required:    false
 - Examples:
@@ -792,18 +792,18 @@ Properties:
 Pin the server host key on first connection (Trust On First Use).
 
 Intended for one-time use as the `--sftp-pin-host-key` command-line
-flag. Run rclone once with the flag and the server's host key will be
+flag. Run zclone once with the flag and the server's host key will be
 recorded into the host_keys config option. On subsequent runs (without
 the flag) host_keys is consulted and any mismatch is refused.
 
 Setting this option persistently in the config file is not
-recommended. While it is set, rclone will also accept any new
+recommended. While it is set, zclone will also accept any new
 host key algorithm the server later presents, which widens the trust
 surface beyond the initial pin. To pin a new key after a legitimate
 key change, re-run with the flag.
 
 The first connection is unauthenticated, so ideally do it over a
-trusted network or cross-check the fingerprint rclone logs against
+trusted network or cross-check the fingerprint zclone logs against
 one provided out of band.
 
 If known_hosts_file is also set, that takes precedence and this option
@@ -812,7 +812,7 @@ is ignored.
 Properties:
 
 - Config:      pin_host_key
-- Env Var:     RCLONE_SFTP_PIN_HOST_KEY
+- Env Var:     ZCLONE_SFTP_PIN_HOST_KEY
 - Type:        bool
 - Default:     false
 
@@ -837,7 +837,7 @@ At most 16 entries may be pinned.
 Properties:
 
 - Config:      host_keys
-- Env Var:     RCLONE_SFTP_HOST_KEYS
+- Env Var:     ZCLONE_SFTP_HOST_KEYS
 - Type:        CommaSepList
 - Default:     
 
@@ -845,7 +845,7 @@ Properties:
 
 Allow asking for SFTP password when needed.
 
-If this is set and no password is supplied then rclone will:
+If this is set and no password is supplied then zclone will:
 - ask for a password
 - not contact the ssh agent
 
@@ -853,7 +853,7 @@ If this is set and no password is supplied then rclone will:
 Properties:
 
 - Config:      ask_password
-- Env Var:     RCLONE_SFTP_ASK_PASSWORD
+- Env Var:     ZCLONE_SFTP_ASK_PASSWORD
 - Type:        bool
 - Default:     false
 
@@ -866,28 +866,28 @@ different. This issue affects among others Synology NAS boxes.
 
 E.g. if shared folders can be found in directories representing volumes:
 
-    rclone sync /home/local/directory remote:/directory --sftp-path-override /volume2/directory
+    zclone sync /home/local/directory remote:/directory --sftp-path-override /volume2/directory
 
 E.g. if home directory can be found in a shared folder called "home":
 
-    rclone sync /home/local/directory remote:/home/directory --sftp-path-override /volume1/homes/USER/directory
+    zclone sync /home/local/directory remote:/home/directory --sftp-path-override /volume1/homes/USER/directory
 	
-To specify only the path to the SFTP remote's root, and allow rclone to add any relative subpaths automatically (including unwrapping/decrypting remotes as necessary), add the '@' character to the beginning of the path.
+To specify only the path to the SFTP remote's root, and allow zclone to add any relative subpaths automatically (including unwrapping/decrypting remotes as necessary), add the '@' character to the beginning of the path.
 
 E.g. the first example above could be rewritten as:
 
-	rclone sync /home/local/directory remote:/directory --sftp-path-override @/volume2
+	zclone sync /home/local/directory remote:/directory --sftp-path-override @/volume2
 	
 Note that when using this method with Synology "home" folders, the full "/homes/USER" path should be specified instead of "/home".
 
 E.g. the second example above should be rewritten as:
 
-	rclone sync /home/local/directory remote:/homes/USER/directory --sftp-path-override @/volume1
+	zclone sync /home/local/directory remote:/homes/USER/directory --sftp-path-override @/volume1
 
 Properties:
 
 - Config:      path_override
-- Env Var:     RCLONE_SFTP_PATH_OVERRIDE
+- Env Var:     ZCLONE_SFTP_PATH_OVERRIDE
 - Type:        string
 - Required:    false
 
@@ -900,7 +900,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_SFTP_ENCODING
+- Env Var:     ZCLONE_SFTP_ENCODING
 - Type:        Encoding
 - Default:     Slash,Del,Ctl,Dot
 
@@ -911,7 +911,7 @@ Set the modified time on the remote if set.
 Properties:
 
 - Config:      set_modtime
-- Env Var:     RCLONE_SFTP_SET_MODTIME
+- Env Var:     ZCLONE_SFTP_SET_MODTIME
 - Type:        bool
 - Default:     true
 
@@ -924,7 +924,7 @@ Leave blank for autodetect.
 Properties:
 
 - Config:      shell_type
-- Env Var:     RCLONE_SFTP_SHELL_TYPE
+- Env Var:     ZCLONE_SFTP_SHELL_TYPE
 - Type:        string
 - Required:    false
 - Examples:
@@ -944,7 +944,7 @@ Comma separated list of supported checksum types.
 Properties:
 
 - Config:      hashes
-- Env Var:     RCLONE_SFTP_HASHES
+- Env Var:     ZCLONE_SFTP_HASHES
 - Type:        CommaSepList
 - Default:     
 
@@ -957,7 +957,7 @@ Leave blank for autodetect.
 Properties:
 
 - Config:      md5sum_command
-- Env Var:     RCLONE_SFTP_MD5SUM_COMMAND
+- Env Var:     ZCLONE_SFTP_MD5SUM_COMMAND
 - Type:        string
 - Required:    false
 
@@ -970,7 +970,7 @@ Leave blank for autodetect.
 Properties:
 
 - Config:      sha1sum_command
-- Env Var:     RCLONE_SFTP_SHA1SUM_COMMAND
+- Env Var:     ZCLONE_SFTP_SHA1SUM_COMMAND
 - Type:        string
 - Required:    false
 
@@ -983,7 +983,7 @@ Leave blank for autodetect.
 Properties:
 
 - Config:      crc32sum_command
-- Env Var:     RCLONE_SFTP_CRC32SUM_COMMAND
+- Env Var:     ZCLONE_SFTP_CRC32SUM_COMMAND
 - Type:        string
 - Required:    false
 
@@ -996,7 +996,7 @@ Leave blank for autodetect.
 Properties:
 
 - Config:      sha256sum_command
-- Env Var:     RCLONE_SFTP_SHA256SUM_COMMAND
+- Env Var:     ZCLONE_SFTP_SHA256SUM_COMMAND
 - Type:        string
 - Required:    false
 
@@ -1009,7 +1009,7 @@ Leave blank for autodetect.
 Properties:
 
 - Config:      blake3sum_command
-- Env Var:     RCLONE_SFTP_BLAKE3SUM_COMMAND
+- Env Var:     ZCLONE_SFTP_BLAKE3SUM_COMMAND
 - Type:        string
 - Required:    false
 
@@ -1022,7 +1022,7 @@ Leave blank for autodetect.
 Properties:
 
 - Config:      xxh3sum_command
-- Env Var:     RCLONE_SFTP_XXH3SUM_COMMAND
+- Env Var:     ZCLONE_SFTP_XXH3SUM_COMMAND
 - Type:        string
 - Required:    false
 
@@ -1035,7 +1035,7 @@ Leave blank for autodetect.
 Properties:
 
 - Config:      xxh128sum_command
-- Env Var:     RCLONE_SFTP_XXH128SUM_COMMAND
+- Env Var:     ZCLONE_SFTP_XXH128SUM_COMMAND
 - Type:        string
 - Required:    false
 
@@ -1052,7 +1052,7 @@ with a chroot jail or restricted permissions).
 Properties:
 
 - Config:      skip_links
-- Env Var:     RCLONE_SFTP_SKIP_LINKS
+- Env Var:     ZCLONE_SFTP_SKIP_LINKS
 - Type:        bool
 - Default:     false
 
@@ -1063,7 +1063,7 @@ Specifies the SSH2 subsystem on the remote host.
 Properties:
 
 - Config:      subsystem
-- Env Var:     RCLONE_SFTP_SUBSYSTEM
+- Env Var:     ZCLONE_SFTP_SUBSYSTEM
 - Type:        string
 - Default:     "sftp"
 
@@ -1074,7 +1074,7 @@ Specifies the path or command to run a sftp server on the remote host.
 The subsystem option is ignored when server_command is defined.
 
 If adding server_command to the configuration file please note that 
-it should not be enclosed in quotes, since that will make rclone fail.
+it should not be enclosed in quotes, since that will make zclone fail.
 
 A working example is:
 
@@ -1085,7 +1085,7 @@ A working example is:
 Properties:
 
 - Config:      server_command
-- Env Var:     RCLONE_SFTP_SERVER_COMMAND
+- Env Var:     ZCLONE_SFTP_SERVER_COMMAND
 - Type:        string
 - Required:    false
 
@@ -1105,7 +1105,7 @@ any given time.
 Properties:
 
 - Config:      use_fstat
-- Env Var:     RCLONE_SFTP_USE_FSTAT
+- Env Var:     ZCLONE_SFTP_USE_FSTAT
 - Type:        bool
 - Default:     false
 
@@ -1130,7 +1130,7 @@ If concurrent reads are disabled, the use_fstat option is ignored.
 Properties:
 
 - Config:      disable_concurrent_reads
-- Env Var:     RCLONE_SFTP_DISABLE_CONCURRENT_READS
+- Env Var:     ZCLONE_SFTP_DISABLE_CONCURRENT_READS
 - Type:        bool
 - Default:     false
 
@@ -1138,7 +1138,7 @@ Properties:
 
 If set don't use concurrent writes.
 
-Normally rclone uses concurrent writes to upload files. This improves
+Normally zclone uses concurrent writes to upload files. This improves
 the performance greatly, especially for distant servers.
 
 This option disables concurrent writes should that be necessary.
@@ -1147,7 +1147,7 @@ This option disables concurrent writes should that be necessary.
 Properties:
 
 - Config:      disable_concurrent_writes
-- Env Var:     RCLONE_SFTP_DISABLE_CONCURRENT_WRITES
+- Env Var:     ZCLONE_SFTP_DISABLE_CONCURRENT_WRITES
 - Type:        bool
 - Default:     false
 
@@ -1156,7 +1156,7 @@ Properties:
 Max time before closing idle connections.
 
 If no connections have been returned to the connection pool in the time
-given, rclone will empty the connection pool.
+given, zclone will empty the connection pool.
 
 Set to 0 to keep connections indefinitely.
 
@@ -1164,7 +1164,7 @@ Set to 0 to keep connections indefinitely.
 Properties:
 
 - Config:      idle_timeout
-- Env Var:     RCLONE_SFTP_IDLE_TIMEOUT
+- Env Var:     ZCLONE_SFTP_IDLE_TIMEOUT
 - Type:        Duration
 - Default:     1m0s
 
@@ -1185,7 +1185,7 @@ and only use it if you always connect to the same server or after
 sufficiently broad testing. If you get errors such as
 "failed to send packet payload: EOF", lots of "connection lost",
 or "corrupted on transfer", when copying a larger file, try lowering
-the value. The server run by [rclone serve sftp](/commands/rclone_serve_sftp)
+the value. The server run by [zclone serve sftp](/commands/zclone_serve_sftp)
 sends packets with standard 32k maximum payload so you must not
 set a different chunk_size when downloading files, but it accepts
 packets up to the 256k total size, so for uploads the chunk_size
@@ -1195,7 +1195,7 @@ can be set as for the OpenSSH example above.
 Properties:
 
 - Config:      chunk_size
-- Env Var:     RCLONE_SFTP_CHUNK_SIZE
+- Env Var:     ZCLONE_SFTP_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     32Ki
 
@@ -1211,7 +1211,7 @@ cost of using more memory.
 Properties:
 
 - Config:      concurrency
-- Env Var:     RCLONE_SFTP_CONCURRENCY
+- Env Var:     ZCLONE_SFTP_CONCURRENCY
 - Type:        int
 - Default:     64
 
@@ -1236,7 +1236,7 @@ So for `connections 3` you'd use `--checkers 2 --transfers 2
 Properties:
 
 - Config:      connections
-- Env Var:     RCLONE_SFTP_CONNECTIONS
+- Env Var:     ZCLONE_SFTP_CONNECTIONS
 - Type:        int
 - Default:     0
 
@@ -1263,7 +1263,7 @@ and pass variables with spaces in quotes, eg
 Properties:
 
 - Config:      set_env
-- Env Var:     RCLONE_SFTP_SET_ENV
+- Env Var:     ZCLONE_SFTP_SET_ENV
 - Type:        SpaceSepList
 - Default:     
 
@@ -1283,7 +1283,7 @@ Example:
 Properties:
 
 - Config:      ciphers
-- Env Var:     RCLONE_SFTP_CIPHERS
+- Env Var:     ZCLONE_SFTP_CIPHERS
 - Type:        SpaceSepList
 - Default:     
 
@@ -1303,7 +1303,7 @@ Example:
 Properties:
 
 - Config:      key_exchange
-- Env Var:     RCLONE_SFTP_KEY_EXCHANGE
+- Env Var:     ZCLONE_SFTP_KEY_EXCHANGE
 - Type:        SpaceSepList
 - Default:     
 
@@ -1321,7 +1321,7 @@ Example:
 Properties:
 
 - Config:      macs
-- Env Var:     RCLONE_SFTP_MACS
+- Env Var:     ZCLONE_SFTP_MACS
 - Type:        SpaceSepList
 - Default:     
 
@@ -1341,7 +1341,7 @@ Example:
 Properties:
 
 - Config:      host_key_algorithms
-- Env Var:     RCLONE_SFTP_HOST_KEY_ALGORITHMS
+- Env Var:     ZCLONE_SFTP_HOST_KEY_ALGORITHMS
 - Type:        SpaceSepList
 - Default:     
 
@@ -1359,7 +1359,7 @@ Example:
 Properties:
 
 - Config:      socks_proxy
-- Env Var:     RCLONE_SFTP_SOCKS_PROXY
+- Env Var:     ZCLONE_SFTP_SOCKS_PROXY
 - Type:        string
 - Required:    false
 
@@ -1379,7 +1379,7 @@ Example:
 Properties:
 
 - Config:      http_proxy
-- Env Var:     RCLONE_SFTP_HTTP_PROXY
+- Env Var:     ZCLONE_SFTP_HTTP_PROXY
 - Type:        string
 - Required:    false
 
@@ -1405,7 +1405,7 @@ This feature may be useful backups made with --copy-dest.
 Properties:
 
 - Config:      copy_is_hardlink
-- Env Var:     RCLONE_SFTP_COPY_IS_HARDLINK
+- Env Var:     ZCLONE_SFTP_COPY_IS_HARDLINK
 - Type:        bool
 - Default:     false
 
@@ -1416,7 +1416,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_SFTP_DESCRIPTION
+- Env Var:     ZCLONE_SFTP_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -1450,10 +1450,10 @@ Note that `--timeout` and `--contimeout` are both supported.
 
 rsync.net is supported through the SFTP backend.
 
-See [rsync.net's documentation of rclone examples](https://www.rsync.net/products/rclone.html).
+See [rsync.net's documentation of zclone examples](https://www.rsync.net/products/zclone.html).
 
 ## Hetzner Storage Box {#hetzner-storage-box}
 
 Hetzner Storage Boxes are supported through the SFTP backend on port 23.
 
-See [Hetzner's documentation for details](https://docs.hetzner.com/robot/storage-box/access/access-ssh-rsync-borg#rclone)
+See [Hetzner's documentation for details](https://docs.hetzner.com/robot/storage-box/access/access-ssh-rsync-borg#zclone)

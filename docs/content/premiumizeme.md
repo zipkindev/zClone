@@ -1,6 +1,6 @@
 ---
 title: "premiumize.me"
-description: "Rclone docs for premiumize.me"
+description: "Zclone docs for premiumize.me"
 versionIntroduced: "v1.49"
 ---
 
@@ -13,13 +13,13 @@ Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 ## Configuration
 
 The initial setup for [premiumize.me](https://premiumize.me/) involves getting a
-token from premiumize.me which you need to do in your browser. `rclone config`
+token from premiumize.me which you need to do in your browser. `zclone config`
 walks you through it.
 
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -39,18 +39,18 @@ XX / premiumize.me
    \ "premiumizeme"
 [snip]
 Storage> premiumizeme
-** See help for premiumizeme backend at: https://rclone.org/premiumizeme/ **
+** See help for premiumizeme backend at: //premiumizeme/ **
 
 Remote config
-Use web browser to automatically authenticate rclone with remote?
- * Say Y if the machine running rclone has a web browser you can use
- * Say N if running rclone on a (remote) machine without web browser access
+Use web browser to automatically authenticate zclone with remote?
+ * Say Y if the machine running zclone has a web browser you can use
+ * Say N if running zclone on a (remote) machine without web browser access
 If not sure try Y. If Y failed, try N.
 y) Yes
 n) No
 y/n> y
 If your browser doesn't open automatically go to the following link: http://127.0.0.1:53682/auth
-Log in and authorize rclone for access
+Log in and authorize zclone for access
 Waiting for code...
 Got code
 Configuration complete.
@@ -67,31 +67,31 @@ y/e/d>
 See the [remote setup docs](/remote_setup/) for how to set it up on a
 machine without an internet-connected web browser available.
 
-Note that rclone runs a webserver on your local machine to collect the
+Note that zclone runs a webserver on your local machine to collect the
 token as returned from premiumize.me. This only runs from the moment it opens
 your browser to the moment you get back the verification code.  This
 is on `http://127.0.0.1:53682/` and this it may require you to unblock
 it temporarily if you are running a host firewall.
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 List directories in top level of your premiumize.me
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your premiumize.me
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 To copy a local directory to an premiumize.me directory called backup
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
 ### Modification times and hashes
@@ -127,7 +127,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_id
-- Env Var:     RCLONE_PREMIUMIZEME_CLIENT_ID
+- Env Var:     ZCLONE_PREMIUMIZEME_CLIENT_ID
 - Type:        string
 - Required:    false
 
@@ -140,7 +140,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_secret
-- Env Var:     RCLONE_PREMIUMIZEME_CLIENT_SECRET
+- Env Var:     ZCLONE_PREMIUMIZEME_CLIENT_SECRET
 - Type:        string
 - Required:    false
 
@@ -155,7 +155,7 @@ OAuth Access Token as a JSON blob.
 Properties:
 
 - Config:      token
-- Env Var:     RCLONE_PREMIUMIZEME_TOKEN
+- Env Var:     ZCLONE_PREMIUMIZEME_TOKEN
 - Type:        string
 - Required:    false
 
@@ -168,7 +168,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      auth_url
-- Env Var:     RCLONE_PREMIUMIZEME_AUTH_URL
+- Env Var:     ZCLONE_PREMIUMIZEME_AUTH_URL
 - Type:        string
 - Required:    false
 
@@ -181,7 +181,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      token_url
-- Env Var:     RCLONE_PREMIUMIZEME_TOKEN_URL
+- Env Var:     ZCLONE_PREMIUMIZEME_TOKEN_URL
 - Type:        string
 - Required:    false
 
@@ -196,7 +196,7 @@ Note that this option is NOT supported by all backends.
 Properties:
 
 - Config:      client_credentials
-- Env Var:     RCLONE_PREMIUMIZEME_CLIENT_CREDENTIALS
+- Env Var:     ZCLONE_PREMIUMIZEME_CLIENT_CREDENTIALS
 - Type:        bool
 - Default:     false
 
@@ -209,7 +209,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_PREMIUMIZEME_ENCODING
+- Env Var:     ZCLONE_PREMIUMIZEME_ENCODING
 - Type:        Encoding
 - Default:     Slash,DoubleQuote,BackSlash,Del,Ctl,InvalidUtf8,Dot
 
@@ -220,7 +220,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_PREMIUMIZEME_DESCRIPTION
+- Env Var:     ZCLONE_PREMIUMIZEME_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -232,7 +232,7 @@ Note that premiumize.me is case insensitive so you can't have a file called
 "Hello.doc" and one called "hello.doc".
 
 premiumize.me file names can't have the `\` or `"` characters in.
-rclone maps these to and from an identical looking unicode equivalents
+zclone maps these to and from an identical looking unicode equivalents
 `＼` and `＂`
 
 premiumize.me only supports filenames up to 255 characters in length.

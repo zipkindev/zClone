@@ -20,20 +20,20 @@ import (
 	file_migration "github.com/Files-com/files-sdk-go/v3/filemigration"
 	"github.com/Files-com/files-sdk-go/v3/folder"
 	"github.com/Files-com/files-sdk-go/v3/session"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
 )
 
 /*
-Run of rclone info
+Run of zclone info
 stringNeedsEscaping = []rune{
         '/', '\x00'
 }

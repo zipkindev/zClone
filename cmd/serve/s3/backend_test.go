@@ -8,14 +8,14 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rclone/gofakes3"
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/cmd/serve/proxy"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/vfs/vfscommon"
+	"zclone/lib/gofakes3"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	"zclone/cmd/serve/proxy"
+	"zclone/fs"
+	"zclone/fstest"
+	"zclone/vfs/vfscommon"
 )
 
 // newTestBackend serves a root directory containing a bucket directory, an

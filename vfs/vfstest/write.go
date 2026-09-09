@@ -5,10 +5,10 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
 )
 
 // TestWriteFileNoWrite tests writing a file with no write()'s to it

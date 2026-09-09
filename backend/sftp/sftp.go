@@ -24,21 +24,21 @@ import (
 	"time"
 
 	"github.com/pkg/sftp"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/env"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/readers"
 	sshagent "github.com/xanzy/ssh-agent"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/crypto/ssh/knownhosts"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/lib/encoder"
+	"zclone/lib/env"
+	"zclone/lib/pacer"
+	"zclone/lib/readers"
 )
 
 const (
@@ -133,18 +133,18 @@ Set this value to enable server host key validation. Set to ` + "`none`" + ` to 
 			Help: `Pin the server host key on first connection (Trust On First Use).
 
 Intended for one-time use as the ` + "`--sftp-pin-host-key`" + ` command-line
-flag. Run rclone once with the flag and the server's host key will be
+flag. Run zclone once with the flag and the server's host key will be
 recorded into the host_keys config option. On subsequent runs (without
 the flag) host_keys is consulted and any mismatch is refused.
 
 Setting this option persistently in the config file is not
-recommended. While it is set, rclone will also accept any new
+recommended. While it is set, zclone will also accept any new
 host key algorithm the server later presents, which widens the trust
 surface beyond the initial pin. To pin a new key after a legitimate
 key change, re-run with the flag.
 
 The first connection is unauthenticated, so ideally do it over a
-trusted network or cross-check the fingerprint rclone logs against
+trusted network or cross-check the fingerprint zclone logs against
 one provided out of band.
 
 If known_hosts_file is also set, that takes precedence and this option
@@ -213,7 +213,7 @@ This must be false if you use either ciphers or key_exchange advanced options.
 			Default: false,
 			Help: `Allow asking for SFTP password when needed.
 
-If this is set and no password is supplied then rclone will:
+If this is set and no password is supplied then zclone will:
 - ask for a password
 - not contact the ssh agent
 `,
@@ -228,23 +228,23 @@ different. This issue affects among others Synology NAS boxes.
 
 E.g. if shared folders can be found in directories representing volumes:
 
-    rclone sync /home/local/directory remote:/directory --sftp-path-override /volume2/directory
+    zclone sync /home/local/directory remote:/directory --sftp-path-override /volume2/directory
 
 E.g. if home directory can be found in a shared folder called "home":
 
-    rclone sync /home/local/directory remote:/home/directory --sftp-path-override /volume1/homes/USER/directory
+    zclone sync /home/local/directory remote:/home/directory --sftp-path-override /volume1/homes/USER/directory
 	
-To specify only the path to the SFTP remote's root, and allow rclone to add any relative subpaths automatically (including unwrapping/decrypting remotes as necessary), add the '@' character to the beginning of the path.
+To specify only the path to the SFTP remote's root, and allow zclone to add any relative subpaths automatically (including unwrapping/decrypting remotes as necessary), add the '@' character to the beginning of the path.
 
 E.g. the first example above could be rewritten as:
 
-	rclone sync /home/local/directory remote:/directory --sftp-path-override @/volume2
+	zclone sync /home/local/directory remote:/directory --sftp-path-override @/volume2
 	
 Note that when using this method with Synology "home" folders, the full "/homes/USER" path should be specified instead of "/home".
 
 E.g. the second example above should be rewritten as:
 
-	rclone sync /home/local/directory remote:/homes/USER/directory --sftp-path-override @/volume1`,
+	zclone sync /home/local/directory remote:/homes/USER/directory --sftp-path-override @/volume1`,
 			Advanced: true,
 		}, {
 			Name:     config.ConfigEncoding,
@@ -340,7 +340,7 @@ with a chroot jail or restricted permissions).`,
 The subsystem option is ignored when server_command is defined.
 
 If adding server_command to the configuration file please note that 
-it should not be enclosed in quotes, since that will make rclone fail.
+it should not be enclosed in quotes, since that will make zclone fail.
 
 A working example is:
 
@@ -386,7 +386,7 @@ If concurrent reads are disabled, the use_fstat option is ignored.
 			Default: false,
 			Help: `If set don't use concurrent writes.
 
-Normally rclone uses concurrent writes to upload files. This improves
+Normally zclone uses concurrent writes to upload files. This improves
 the performance greatly, especially for distant servers.
 
 This option disables concurrent writes should that be necessary.
@@ -398,7 +398,7 @@ This option disables concurrent writes should that be necessary.
 			Help: `Max time before closing idle connections.
 
 If no connections have been returned to the connection pool in the time
-given, rclone will empty the connection pool.
+given, zclone will empty the connection pool.
 
 Set to 0 to keep connections indefinitely.
 `,
@@ -420,7 +420,7 @@ and only use it if you always connect to the same server or after
 sufficiently broad testing. If you get errors such as
 "failed to send packet payload: EOF", lots of "connection lost",
 or "corrupted on transfer", when copying a larger file, try lowering
-the value. The server run by [rclone serve sftp](/commands/rclone_serve_sftp)
+the value. The server run by [zclone serve sftp](/commands/zclone_serve_sftp)
 sends packets with standard 32k maximum payload so you must not
 set a different chunk_size when downloading files, but it accepts
 packets up to the 256k total size, so for uploads the chunk_size
@@ -537,18 +537,18 @@ Example:
 			Default: fs.SpaceSepList{},
 			Help: `Path and arguments to external ssh binary.
 
-Normally rclone will use its internal ssh library to connect to the
+Normally zclone will use its internal ssh library to connect to the
 SFTP server. However it does not implement all possible ssh options so
 it may be desirable to use an external ssh binary.
 
-Rclone ignores all the internal config if you use this option and
+Zclone ignores all the internal config if you use this option and
 expects you to configure the ssh binary with the user/host/port and
 any other options you need.
 
 **Important** The ssh command must log in without asking for a
 password so needs to be configured with keys or certificates.
 
-Rclone will run the command supplied either with the additional
+Zclone will run the command supplied either with the additional
 arguments "-s sftp" to access the SFTP subsystem or with commands such
 as "md5sum /path/to/file" appended to read checksums.
 
@@ -558,7 +558,7 @@ An example setting might be:
 
     ssh -o ServerAliveInterval=20 user@example.com
 
-Note that when using an external ssh binary rclone makes a new ssh
+Note that when using an external ssh binary zclone makes a new ssh
 connection for every hash it calculates.
 `,
 		}, {
@@ -1179,7 +1179,7 @@ func (f *Fs) commitHostKey(pk *pendingKey) {
 	// Re-read the current stored value rather than reformatting our in-memory
 	// map. This narrows (but cannot close - the config layer has no locked
 	// read-modify-write) the window for clobbering an update made by a
-	// parallel rclone process.
+	// parallel zclone process.
 	current, _ := f.m.Get("host_keys")
 	var entries fs.CommaSepList
 	if err := entries.Set(current); err != nil {
@@ -1272,7 +1272,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 		ClientVersion: "SSH-2.0-" + f.ci.UserAgent,
 	}
 
-	// pin_host_key and host_keys only apply when rclone does the host
+	// pin_host_key and host_keys only apply when zclone does the host
 	// key checking itself: known_hosts_file takes precedence and the
 	// external ssh program does its own validation, so in either case
 	// host_keys is ignored entirely, without being parsed.
@@ -1339,7 +1339,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 		}
 	default:
 		sshConfig.HostKeyCallback = ssh.InsecureIgnoreHostKey()
-		fs.Logf(name, "No host key validation is being performed. Set known_hosts_file (to \"none\" to silence this notice) or use --sftp-pin-host-key to enable it. See: https://rclone.org/sftp/#host-key-validation")
+		fs.Logf(name, "No host key validation is being performed. Set known_hosts_file (to \"none\" to silence this notice) or use --sftp-pin-host-key to enable it. See: //sftp/#host-key-validation")
 	}
 
 	if opt.UseInsecureCipher && (opt.Ciphers != nil || opt.KeyExchange != nil) {
@@ -1382,12 +1382,12 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 			//
 			// If `opt.KeyUseAgent` is true, then it's expected that `opt.KeyFile` contains the public key.
 			// This is how it works with openssh; the `IdentityFile` in openssh config points to the public key.
-			// It's not necessary to specify the public key explicitly when using ssh-agent, since openssh and rclone
+			// It's not necessary to specify the public key explicitly when using ssh-agent, since openssh and zclone
 			// will try all the keys they find in the ssh-agent until they find one that works. But just like
 			// `IdentityFile` is used in openssh config to limit the search to one specific key, so does
-			// `opt.KeyFile` in rclone config limit the search to that specific key.
+			// `opt.KeyFile` in zclone config limit the search to that specific key.
 			//
-			// However, previous versions of rclone would always expect to find the public key in
+			// However, previous versions of zclone would always expect to find the public key in
 			// `${opt.KeyFile}.pub` even if `opt.KeyUseAgent` was true. So for the sake of backward compatibility
 			// we still first attempt to read the public key from `${opt.KeyFile}.pub`. But if it fails with
 			// an `fs.ErrNotExist` then we also try to read the public key from `opt.KeyFile`.
@@ -2119,7 +2119,7 @@ func (f *Fs) Hashes() hash.Set {
 			[]struct{ hashFile, hashEmpty string }{
 				{"md5sum", "md5sum"},
 				{"md5 -r", "md5 -r"},
-				{"rclone md5sum", "rclone md5sum"},
+				{"zclone md5sum", "zclone md5sum"},
 			},
 		},
 		hash.SHA1: {
@@ -2128,7 +2128,7 @@ func (f *Fs) Hashes() hash.Set {
 			[]struct{ hashFile, hashEmpty string }{
 				{"sha1sum", "sha1sum"},
 				{"sha1 -r", "sha1 -r"},
-				{"rclone sha1sum", "rclone sha1sum"},
+				{"zclone sha1sum", "zclone sha1sum"},
 			},
 		},
 		hash.CRC32: {
@@ -2136,7 +2136,7 @@ func (f *Fs) Hashes() hash.Set {
 			"00000000",
 			[]struct{ hashFile, hashEmpty string }{
 				{"crc32", "crc32"},
-				{"rclone hashsum crc32", "rclone hashsum crc32"},
+				{"zclone hashsum crc32", "zclone hashsum crc32"},
 			},
 		},
 		hash.SHA256: {
@@ -2145,7 +2145,7 @@ func (f *Fs) Hashes() hash.Set {
 			[]struct{ hashFile, hashEmpty string }{
 				{"sha256sum", "sha1sum"},
 				{"sha256 -r", "sha1 -r"},
-				{"rclone hashsum sha256", "rclone hashsum sha256"},
+				{"zclone hashsum sha256", "zclone hashsum sha256"},
 			},
 		},
 		hash.BLAKE3: {
@@ -2153,7 +2153,7 @@ func (f *Fs) Hashes() hash.Set {
 			"af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262",
 			[]struct{ hashFile, hashEmpty string }{
 				{"b3sum", "b3sum"},
-				{"rclone hashsum blake3", "rclone hashsum blake3"},
+				{"zclone hashsum blake3", "zclone hashsum blake3"},
 			},
 		},
 		hash.XXH3: {
@@ -2167,7 +2167,7 @@ func (f *Fs) Hashes() hash.Set {
 				// therefore not use the "xxhsum -H3" command or its xxh3sum alias directly.
 				//{"xxh3sum", "xxh3sum"},
 				//{"xxhsum -H3", "xxhsum -H3"},
-				{"rclone hashsum xxh3", "rclone hashsum xxh3"},
+				{"zclone hashsum xxh3", "zclone hashsum xxh3"},
 			},
 		},
 		hash.XXH128: {
@@ -2176,7 +2176,7 @@ func (f *Fs) Hashes() hash.Set {
 			[]struct{ hashFile, hashEmpty string }{
 				{"xxh128sum", "xxh128sum"},
 				{"xxhsum -H2", "xxhsum -H2"},
-				{"rclone hashsum xxh128", "rclone hashsum xxh128"},
+				{"zclone hashsum xxh128", "zclone hashsum xxh128"},
 			},
 		},
 	}

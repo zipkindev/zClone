@@ -1,6 +1,6 @@
 //go:build !plan9
 
-// Package list implements 'rclone archive list'
+// Package list implements 'zclone archive list'
 package list
 
 import (
@@ -10,14 +10,14 @@ import (
 	"strings"
 
 	"github.com/mholt/archives"
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/archive"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/cmd/archive"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/config/flags"
+	"zclone/fs/filter"
+	"zclone/fs/operations"
 )
 
 var (
@@ -42,13 +42,13 @@ var Command = &cobra.Command{
 	Short: `List archive contents from source.`,
 	Long: strings.ReplaceAll(`
 List the contents of an archive to the console, auto detecting the
-format. See [rclone archive create](/commands/rclone_archive_create/)
+format. See [zclone archive create](/commands/zclone_archive_create/)
 for the archive formats supported.
 
 For example:
 
 |||
-$ rclone archive list remote:archive.zip
+$ zclone archive list remote:archive.zip
         6 file.txt
         0 dir/
         4 dir/bye.txt
@@ -57,7 +57,7 @@ $ rclone archive list remote:archive.zip
 Or with |--long| flag for more info:
 
 |||
-$ rclone archive list --long remote:archive.zip
+$ zclone archive list --long remote:archive.zip
         6 2025-10-30 09:46:23.000000000 file.txt
         0 2025-10-30 09:46:57.000000000 dir/
         4 2025-10-30 09:46:57.000000000 dir/bye.txt
@@ -66,7 +66,7 @@ $ rclone archive list --long remote:archive.zip
 Or with |--plain| flag which is useful for scripting:
 
 |||
-$ rclone archive list --plain /path/to/archive.zip
+$ zclone archive list --plain /path/to/archive.zip
 file.txt
 dir/
 dir/bye.txt
@@ -75,14 +75,14 @@ dir/bye.txt
 Or with |--dirs-only|:
 
 |||
-$ rclone archive list --plain --dirs-only /path/to/archive.zip
+$ zclone archive list --plain --dirs-only /path/to/archive.zip
 dir/
 |||
 
 Or with |--files-only|:
 
 |||
-$ rclone archive list --plain --files-only /path/to/archive.zip
+$ zclone archive list --plain --files-only /path/to/archive.zip
 file.txt
 dir/bye.txt
 |||
@@ -90,7 +90,7 @@ dir/bye.txt
 Filters may also be used:
 
 |||
-$ rclone archive list --long archive.zip --include "bye.*"
+$ zclone archive list --long archive.zip --include "bye.*"
         4 2025-10-30 09:46:57.000000000 dir/bye.txt
 |||
 

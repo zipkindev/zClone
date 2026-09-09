@@ -1,6 +1,6 @@
 ---
 title: "QingStor"
-description: "Rclone docs for QingStor Object Storage"
+description: "Zclone docs for QingStor Object Storage"
 versionIntroduced: "v1.38"
 ---
 
@@ -14,7 +14,7 @@ command.)  You may put subdirectories in too, e.g. `remote:bucket/path/to/dir`.
 Here is an example of making an QingStor configuration.  First run
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process.
@@ -83,49 +83,49 @@ This remote is called `remote` and can now be used like this
 See all buckets
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 Make a new bucket
 
 ```console
-rclone mkdir remote:bucket
+zclone mkdir remote:bucket
 ```
 
 List the contents of a bucket
 
 ```console
-rclone ls remote:bucket
+zclone ls remote:bucket
 ```
 
 Sync `/home/local/directory` to the remote bucket, deleting any excess
 files in the bucket.
 
 ```console
-rclone sync --interactive /home/local/directory remote:bucket
+zclone sync --interactive /home/local/directory remote:bucket
 ```
 
 ### --fast-list
 
 This remote supports `--fast-list` which allows you to use fewer
-transactions in exchange for more memory. See the [rclone
+transactions in exchange for more memory. See the [zclone
 docs](/docs/#fast-list) for more details.
 
 ### Multipart uploads
 
-rclone supports multipart uploads with QingStor which means that it can
+zclone supports multipart uploads with QingStor which means that it can
 upload files bigger than 5 GiB. Note that files uploaded with multipart
 upload don't have an MD5SUM.
 
 Note that incomplete multipart uploads older than 24 hours can be
-removed with `rclone cleanup remote:bucket` just for one bucket
-`rclone cleanup remote:` for all buckets. QingStor does not ever
+removed with `zclone cleanup remote:bucket` just for one bucket
+`zclone cleanup remote:` for all buckets. QingStor does not ever
 remove incomplete multipart uploads so it may be necessary to run this
 from time to time.
 
 ### Buckets and Zone
 
-With QingStor you can list buckets (`rclone lsd`) using any zone,
+With QingStor you can list buckets (`zclone lsd`) using any zone,
 but you can only access the content of a bucket from the zone it was
 created in.  If you attempt to access a bucket from the wrong zone,
 you will get an error, `incorrect zone, the bucket is not in 'XXX'
@@ -133,14 +133,14 @@ zone`.
 
 ### Authentication
 
-There are two ways to supply `rclone` with a set of QingStor
+There are two ways to supply `zclone` with a set of QingStor
 credentials. In order of precedence:
 
-- Directly in the rclone configuration file (as configured by `rclone config`)
+- Directly in the zclone configuration file (as configured by `zclone config`)
   - set `access_key_id` and `secret_access_key`
 - Runtime configuration:
   - set `env_auth` to `true` in the config file
-  - Exporting the following environment variables before running `rclone`
+  - Exporting the following environment variables before running `zclone`
     - Access Key ID: `QS_ACCESS_KEY_ID` or `QS_ACCESS_KEY`
     - Secret Access Key: `QS_SECRET_ACCESS_KEY` or `QS_SECRET_KEY`
 
@@ -167,7 +167,7 @@ Only applies if access_key_id and secret_access_key is blank.
 Properties:
 
 - Config:      env_auth
-- Env Var:     RCLONE_QINGSTOR_ENV_AUTH
+- Env Var:     ZCLONE_QINGSTOR_ENV_AUTH
 - Type:        bool
 - Default:     false
 - Examples:
@@ -185,7 +185,7 @@ Leave blank for anonymous access or runtime credentials.
 Properties:
 
 - Config:      access_key_id
-- Env Var:     RCLONE_QINGSTOR_ACCESS_KEY_ID
+- Env Var:     ZCLONE_QINGSTOR_ACCESS_KEY_ID
 - Type:        string
 - Required:    false
 
@@ -198,7 +198,7 @@ Leave blank for anonymous access or runtime credentials.
 Properties:
 
 - Config:      secret_access_key
-- Env Var:     RCLONE_QINGSTOR_SECRET_ACCESS_KEY
+- Env Var:     ZCLONE_QINGSTOR_SECRET_ACCESS_KEY
 - Type:        string
 - Required:    false
 
@@ -211,7 +211,7 @@ Leave blank will use the default value "https://qingstor.com:443".
 Properties:
 
 - Config:      endpoint
-- Env Var:     RCLONE_QINGSTOR_ENDPOINT
+- Env Var:     ZCLONE_QINGSTOR_ENDPOINT
 - Type:        string
 - Required:    false
 
@@ -224,7 +224,7 @@ Default is "pek3a".
 Properties:
 
 - Config:      zone
-- Env Var:     RCLONE_QINGSTOR_ZONE
+- Env Var:     ZCLONE_QINGSTOR_ZONE
 - Type:        string
 - Required:    false
 - Examples:
@@ -249,7 +249,7 @@ Number of connection retries.
 Properties:
 
 - Config:      connection_retries
-- Env Var:     RCLONE_QINGSTOR_CONNECTION_RETRIES
+- Env Var:     ZCLONE_QINGSTOR_CONNECTION_RETRIES
 - Type:        int
 - Default:     3
 
@@ -263,7 +263,7 @@ The minimum is 0 and the maximum is 5 GiB.
 Properties:
 
 - Config:      upload_cutoff
-- Env Var:     RCLONE_QINGSTOR_UPLOAD_CUTOFF
+- Env Var:     ZCLONE_QINGSTOR_UPLOAD_CUTOFF
 - Type:        SizeSuffix
 - Default:     200Mi
 
@@ -283,7 +283,7 @@ enough memory, then increasing this will speed up the transfers.
 Properties:
 
 - Config:      chunk_size
-- Env Var:     RCLONE_QINGSTOR_CHUNK_SIZE
+- Env Var:     ZCLONE_QINGSTOR_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     4Mi
 
@@ -304,7 +304,7 @@ this may help to speed up the transfers.
 Properties:
 
 - Config:      upload_concurrency
-- Env Var:     RCLONE_QINGSTOR_UPLOAD_CONCURRENCY
+- Env Var:     ZCLONE_QINGSTOR_UPLOAD_CONCURRENCY
 - Type:        int
 - Default:     1
 
@@ -317,7 +317,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_QINGSTOR_ENCODING
+- Env Var:     ZCLONE_QINGSTOR_ENCODING
 - Type:        Encoding
 - Default:     Slash,Ctl,InvalidUtf8
 
@@ -328,7 +328,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_QINGSTOR_DESCRIPTION
+- Env Var:     ZCLONE_QINGSTOR_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -336,10 +336,10 @@ Properties:
 
 ## Limitations
 
-`rclone about` is not supported by the qingstor backend. Backends without
-this capability cannot determine free space for an rclone mount or
-use policy `mfs` (most free space) as a member of an rclone union
+`zclone about` is not supported by the qingstor backend. Backends without
+this capability cannot determine free space for an zclone mount or
+use policy `mfs` (most free space) as a member of an zclone union
 remote.
 
-See [List of backends that do not support rclone about](https://rclone.org/overview/#optional-features)
-and [rclone about](https://rclone.org/commands/rclone_about/).
+See [List of backends that do not support zclone about](//overview/#optional-features)
+and [zclone about](//commands/zclone_about/).

@@ -13,9 +13,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fshttp"
 	"golang.org/x/net/publicsuffix"
+	"zclone/fs"
+	"zclone/fs/fshttp"
 )
 
 // CookieAuth hold the authentication information

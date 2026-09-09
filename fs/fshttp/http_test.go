@@ -16,10 +16,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"moul.io/http2curl/v2"
+	"zclone/fs"
 )
 
 func TestCleanAuth(t *testing.T) {
@@ -86,6 +86,13 @@ func TestCleanCurl(t *testing.T) {
 		cleanCurl(&in)
 		assert.Equal(t, test.want, test.in, test.in)
 	}
+}
+
+func TestCleanURL(t *testing.T) {
+	req := httptest.NewRequest("GET", "https://example.invalid/object?keep=value&access_token=secret&X-Amz-Signature=signed&sig=short", nil)
+	cleaned := cleanRequest(req)
+	assert.Equal(t, "https://example.invalid/object?X-Amz-Signature=XXXX&access_token=XXXX&keep=value&sig=XXXX", cleaned.URL.String())
+	assert.Equal(t, "https://example.invalid/object?keep=value&access_token=secret&X-Amz-Signature=signed&sig=short", req.URL.String())
 }
 
 var certSerial = int64(0)

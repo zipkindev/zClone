@@ -1,16 +1,16 @@
 ---
 title: "FTP"
-description: "Rclone docs for FTP backend"
+description: "Zclone docs for FTP backend"
 versionIntroduced: "v1.37"
 ---
 
 # FTP
 
-FTP is the File Transfer Protocol. Rclone FTP support is provided using the
+FTP is the File Transfer Protocol. Zclone FTP support is provided using the
 [github.com/jlaffaye/ftp](https://godoc.org/github.com/jlaffaye/ftp)
 package.
 
-[Limitations of Rclone's FTP backend](#limitations)
+[Limitations of Zclone's FTP backend](#limitations)
 
 Paths are specified as `remote:path`. If the path does not begin with
 a `/` it is relative to the home directory of the user.  An empty path
@@ -21,11 +21,11 @@ a `/` it is relative to the home directory of the user.  An empty path
 To create an FTP configuration named `remote`, run
 
 ```console
-rclone config
+zclone config
 ```
 
-Rclone config guides you through an interactive setup process. A minimal
-rclone FTP remote definition only requires host, username and password.
+Zclone config guides you through an interactive setup process. A minimal
+zclone FTP remote definition only requires host, username and password.
 For an anonymous FTP server, see [below](#anonymous-ftp).
 
 ```text
@@ -45,7 +45,7 @@ XX / FTP
    \ "ftp"
 [snip]
 Storage> ftp
-** See help for ftp backend at: https://rclone.org/ftp/ **
+** See help for ftp backend at: //ftp/ **
 
 FTP host to connect to
 Enter a string value. Press Enter for the default ("").
@@ -89,26 +89,26 @@ y/e/d> y
 To see all directories in the home directory of `remote`
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 Make a new directory
 
 ```console
-rclone mkdir remote:path/to/directory
+zclone mkdir remote:path/to/directory
 ```
 
 List the contents of a directory
 
 ```console
-rclone ls remote:path/to/directory
+zclone ls remote:path/to/directory
 ```
 
 Sync `/home/local/directory` to the remote directory, deleting any
 excess files in the directory.
 
 ```console
-rclone sync --interactive /home/local/directory remote:directory
+zclone sync --interactive /home/local/directory remote:directory
 ```
 
 ### Anonymous FTP
@@ -125,20 +125,20 @@ such servers, without requiring any configuration in advance. The following
 are examples of that:
 
 ```console
-rclone lsf :ftp: --ftp-host=speedtest.tele2.net --ftp-user=anonymous --ftp-pass=$(rclone obscure dummy)
-rclone lsf :ftp,host=speedtest.tele2.net,user=anonymous,pass=$(rclone obscure dummy):
+zclone lsf :ftp: --ftp-host=speedtest.tele2.net --ftp-user=anonymous --ftp-pass=$(zclone obscure dummy)
+zclone lsf :ftp,host=speedtest.tele2.net,user=anonymous,pass=$(zclone obscure dummy):
 ```
 
 The above examples work in Linux shells and in PowerShell, but not Windows
-Command Prompt. They execute the [rclone obscure](/commands/rclone_obscure/)
+Command Prompt. They execute the [zclone obscure](/commands/zclone_obscure/)
 command to create a password string in the format required by the
 [pass](#ftp-pass) option. The following examples are exactly the same, except use
 an already obscured string representation of the same password "dummy", and
 therefore works even in Windows Command Prompt:
 
 ```console
-rclone lsf :ftp: --ftp-host=speedtest.tele2.net --ftp-user=anonymous --ftp-pass=IXs2wc8OJOz7SYLBk47Ji1rHTmxM
-rclone lsf :ftp,host=speedtest.tele2.net,user=anonymous,pass=IXs2wc8OJOz7SYLBk47Ji1rHTmxM:
+zclone lsf :ftp: --ftp-host=speedtest.tele2.net --ftp-user=anonymous --ftp-pass=IXs2wc8OJOz7SYLBk47Ji1rHTmxM
+zclone lsf :ftp,host=speedtest.tele2.net,user=anonymous,pass=IXs2wc8OJOz7SYLBk47Ji1rHTmxM:
 ```
 
 ### Implicit TLS
@@ -214,7 +214,7 @@ E.g. "ftp.example.com".
 Properties:
 
 - Config:      host
-- Env Var:     RCLONE_FTP_HOST
+- Env Var:     ZCLONE_FTP_HOST
 - Type:        string
 - Required:    true
 
@@ -225,9 +225,9 @@ FTP username.
 Properties:
 
 - Config:      user
-- Env Var:     RCLONE_FTP_USER
+- Env Var:     ZCLONE_FTP_USER
 - Type:        string
-- Default:     "$USER"
+- Default:     "mizipkin"
 
 #### --ftp-port
 
@@ -236,7 +236,7 @@ FTP port number.
 Properties:
 
 - Config:      port
-- Env Var:     RCLONE_FTP_PORT
+- Env Var:     ZCLONE_FTP_PORT
 - Type:        int
 - Default:     21
 
@@ -244,12 +244,12 @@ Properties:
 
 FTP password.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      pass
-- Env Var:     RCLONE_FTP_PASS
+- Env Var:     ZCLONE_FTP_PASS
 - Type:        string
 - Required:    false
 
@@ -265,7 +265,7 @@ than port 21. Cannot be used in combination with explicit FTPS.
 Properties:
 
 - Config:      tls
-- Env Var:     RCLONE_FTP_TLS
+- Env Var:     ZCLONE_FTP_TLS
 - Type:        bool
 - Default:     false
 
@@ -280,7 +280,7 @@ to an encrypted one. Cannot be used in combination with implicit FTPS.
 Properties:
 
 - Config:      explicit_tls
-- Env Var:     RCLONE_FTP_EXPLICIT_TLS
+- Env Var:     ZCLONE_FTP_EXPLICIT_TLS
 - Type:        bool
 - Default:     false
 
@@ -309,7 +309,7 @@ So for `concurrency 3` you'd use `--checkers 2 --transfers 2
 Properties:
 
 - Config:      concurrency
-- Env Var:     RCLONE_FTP_CONCURRENCY
+- Env Var:     ZCLONE_FTP_CONCURRENCY
 - Type:        int
 - Default:     0
 
@@ -320,7 +320,7 @@ Do not verify the TLS certificate of the server.
 Properties:
 
 - Config:      no_check_certificate
-- Env Var:     RCLONE_FTP_NO_CHECK_CERTIFICATE
+- Env Var:     ZCLONE_FTP_NO_CHECK_CERTIFICATE
 - Type:        bool
 - Default:     false
 
@@ -331,7 +331,7 @@ Disable using EPSV even if server advertises support.
 Properties:
 
 - Config:      disable_epsv
-- Env Var:     RCLONE_FTP_DISABLE_EPSV
+- Env Var:     ZCLONE_FTP_DISABLE_EPSV
 - Type:        bool
 - Default:     false
 
@@ -342,7 +342,7 @@ Disable using MLSD even if server advertises support.
 Properties:
 
 - Config:      disable_mlsd
-- Env Var:     RCLONE_FTP_DISABLE_MLSD
+- Env Var:     ZCLONE_FTP_DISABLE_MLSD
 - Type:        bool
 - Default:     false
 
@@ -353,7 +353,7 @@ Disable using UTF-8 even if server advertises support.
 Properties:
 
 - Config:      disable_utf8
-- Env Var:     RCLONE_FTP_DISABLE_UTF8
+- Env Var:     ZCLONE_FTP_DISABLE_UTF8
 - Type:        bool
 - Default:     false
 
@@ -364,7 +364,7 @@ Use MDTM to set modification time (VsFtpd quirk)
 Properties:
 
 - Config:      writing_mdtm
-- Env Var:     RCLONE_FTP_WRITING_MDTM
+- Env Var:     ZCLONE_FTP_WRITING_MDTM
 - Type:        bool
 - Default:     false
 
@@ -375,7 +375,7 @@ Use LIST -a to force listing of hidden files and folders. This will disable the 
 Properties:
 
 - Config:      force_list_hidden
-- Env Var:     RCLONE_FTP_FORCE_LIST_HIDDEN
+- Env Var:     ZCLONE_FTP_FORCE_LIST_HIDDEN
 - Type:        bool
 - Default:     false
 
@@ -384,7 +384,7 @@ Properties:
 Max time before closing idle connections.
 
 If no connections have been returned to the connection pool in the time
-given, rclone will empty the connection pool.
+given, zclone will empty the connection pool.
 
 Set to 0 to keep connections indefinitely.
 
@@ -392,7 +392,7 @@ Set to 0 to keep connections indefinitely.
 Properties:
 
 - Config:      idle_timeout
-- Env Var:     RCLONE_FTP_IDLE_TIMEOUT
+- Env Var:     ZCLONE_FTP_IDLE_TIMEOUT
 - Type:        Duration
 - Default:     1m0s
 
@@ -403,7 +403,7 @@ Maximum time to wait for a response to close.
 Properties:
 
 - Config:      close_timeout
-- Env Var:     RCLONE_FTP_CLOSE_TIMEOUT
+- Env Var:     ZCLONE_FTP_CLOSE_TIMEOUT
 - Type:        Duration
 - Default:     1m0s
 
@@ -418,7 +418,7 @@ Enabled by default. Use 0 to disable.
 Properties:
 
 - Config:      tls_cache_size
-- Env Var:     RCLONE_FTP_TLS_CACHE_SIZE
+- Env Var:     ZCLONE_FTP_TLS_CACHE_SIZE
 - Type:        int
 - Default:     32
 
@@ -429,7 +429,7 @@ Disable TLS 1.3 (workaround for FTP servers with buggy TLS)
 Properties:
 
 - Config:      disable_tls13
-- Env Var:     RCLONE_FTP_DISABLE_TLS13
+- Env Var:     ZCLONE_FTP_DISABLE_TLS13
 - Type:        bool
 - Default:     false
 
@@ -445,7 +445,7 @@ Setting this flag will allow the usage of the following TLS ciphers in addition 
 Properties:
 
 - Config:      allow_insecure_tls_ciphers
-- Env Var:     RCLONE_FTP_ALLOW_INSECURE_TLS_CIPHERS
+- Env Var:     ZCLONE_FTP_ALLOW_INSECURE_TLS_CIPHERS
 - Type:        bool
 - Default:     false
 
@@ -456,7 +456,7 @@ Maximum time to wait for data connection closing status.
 Properties:
 
 - Config:      shut_timeout
-- Env Var:     RCLONE_FTP_SHUT_TIMEOUT
+- Env Var:     ZCLONE_FTP_SHUT_TIMEOUT
 - Type:        Duration
 - Default:     1m0s
 
@@ -464,13 +464,13 @@ Properties:
 
 Allow asking for FTP password when needed.
 
-If this is set and no password is supplied then rclone will ask for a password
+If this is set and no password is supplied then zclone will ask for a password
 
 
 Properties:
 
 - Config:      ask_password
-- Env Var:     RCLONE_FTP_ASK_PASSWORD
+- Env Var:     ZCLONE_FTP_ASK_PASSWORD
 - Type:        bool
 - Default:     false
 
@@ -488,7 +488,7 @@ Example:
 Properties:
 
 - Config:      socks_proxy
-- Env Var:     RCLONE_FTP_SOCKS_PROXY
+- Env Var:     ZCLONE_FTP_SOCKS_PROXY
 - Type:        string
 - Required:    false
 
@@ -508,7 +508,7 @@ Example:
 Properties:
 
 - Config:      http_proxy
-- Env Var:     RCLONE_FTP_HTTP_PROXY
+- Env Var:     ZCLONE_FTP_HTTP_PROXY
 - Type:        string
 - Required:    false
 
@@ -516,11 +516,11 @@ Properties:
 
 Don't check the upload is OK
 
-Normally rclone will try to check the upload exists after it has
+Normally zclone will try to check the upload exists after it has
 uploaded a file to make sure the size and modification time are as
 expected.
 
-This flag stops rclone doing these checks. This enables uploading to
+This flag stops zclone doing these checks. This enables uploading to
 folders which are write only.
 
 You will likely need to use the --inplace flag also if uploading to
@@ -530,7 +530,7 @@ a write only folder.
 Properties:
 
 - Config:      no_check_upload
-- Env Var:     RCLONE_FTP_NO_CHECK_UPLOAD
+- Env Var:     ZCLONE_FTP_NO_CHECK_UPLOAD
 - Type:        bool
 - Default:     false
 
@@ -543,7 +543,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_FTP_ENCODING
+- Env Var:     ZCLONE_FTP_ENCODING
 - Type:        Encoding
 - Default:     Slash,Del,Ctl,RightSpace,Dot
 - Examples:
@@ -561,7 +561,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_FTP_DESCRIPTION
+- Env Var:     ZCLONE_FTP_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -569,32 +569,32 @@ Properties:
 
 ## Limitations
 
-FTP servers acting as rclone remotes must support `passive` mode.
+FTP servers acting as zclone remotes must support `passive` mode.
 The mode cannot be configured as `passive` is the only supported one.
-Rclone's FTP implementation is not compatible with `active` mode
+Zclone's FTP implementation is not compatible with `active` mode
 as [the library it uses doesn't support it](https://github.com/jlaffaye/ftp/issues/29).
 This will likely never be supported due to security concerns.
 
-Rclone's FTP backend does not support any checksums but can compare
+Zclone's FTP backend does not support any checksums but can compare
 file sizes.
 
-`rclone about` is not supported by the FTP backend. Backends without
-this capability cannot determine free space for an rclone mount or
-use policy `mfs` (most free space) as a member of an rclone union
+`zclone about` is not supported by the FTP backend. Backends without
+this capability cannot determine free space for an zclone mount or
+use policy `mfs` (most free space) as a member of an zclone union
 remote.
 
-See [List of backends that do not support rclone about](https://rclone.org/overview/#optional-features)
-and [rclone about](https://rclone.org/commands/rclone_about/).
+See [List of backends that do not support zclone about](//overview/#optional-features)
+and [zclone about](//commands/zclone_about/).
 
 The implementation of : `--dump headers`,
 `--dump bodies`, `--dump auth` for debugging isn't the same as
-for rclone HTTP based backends - it has less fine grained control.
+for zclone HTTP based backends - it has less fine grained control.
 
 `--timeout` isn't supported (but `--contimeout` is).
 
 `--bind` isn't supported.
 
-Rclone's FTP backend could support server-side move but does not
+Zclone's FTP backend could support server-side move but does not
 at present.
 
 The `ftp_proxy` environment variable is not currently supported.
@@ -608,12 +608,12 @@ commands and needs a special configuration setting: `writing_mdtm = true`.
 
 Support for precise file time with other FTP servers varies depending on what
 protocol extensions they advertise. If all the `MLSD`, `MDTM` and `MFTM`
-extensions are present, rclone will use them together to provide precise time.
-Otherwise the times you see on the FTP server through rclone are those of the
+extensions are present, zclone will use them together to provide precise time.
+Otherwise the times you see on the FTP server through zclone are those of the
 last file upload.
 
-You can use the following command to check whether rclone can use precise time
-with your FTP server: `rclone backend features your_ftp_remote:` (the trailing
+You can use the following command to check whether zclone can use precise time
+with your FTP server: `zclone backend features your_ftp_remote:` (the trailing
 colon is important). Look for the number in the line tagged by `Precision`
 designating the remote time precision expressed as nanoseconds. A value of
 `1000000000` means that file time precision of 1 second is available.

@@ -1,4 +1,4 @@
-// Package proxy implements a programmable proxy for rclone serve
+// Package proxy implements a programmable proxy for zclone serve
 package proxy
 
 import (
@@ -17,21 +17,21 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/obscure"
-	libcache "github.com/rclone/rclone/lib/cache"
-	libhttp "github.com/rclone/rclone/lib/http"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/obscure"
+	libcache "zclone/lib/cache"
+	libhttp "zclone/lib/http"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
 )
 
 // Help contains text describing how to use the proxy
 var Help = strings.ReplaceAll(`### Auth Proxy
 
 If you supply the parameter |--auth-proxy /path/to/program| then
-rclone will use that program to generate backends on the fly which
+zclone will use that program to generate backends on the fly which
 then are used to authenticate incoming requests.  This uses a simple
 JSON based protocol with input on STDIN and output on STDOUT.
 
@@ -40,8 +40,8 @@ together, if |--auth-proxy| is set the authorized keys option will be
 ignored.
 
 There is an example program
-[bin/test_proxy.py](https://github.com/rclone/rclone/blob/master/bin/test_proxy.py)
-in the rclone source code.
+[bin/test_proxy.py](/)
+in the zclone source code.
 
 The program's job is to take a |user| and |pass| on the input and turn
 those into the config for a backend on STDOUT in JSON format.  This
@@ -84,7 +84,7 @@ The |client_ip| key holds the IP address the client connected from,
 without a port number.  It can be used to restrict logins to certain
 networks, or to log authentication attempts centrally.  It is omitted if
 the client has no IP address, for example when connecting over a unix
-socket.  Note that if rclone is behind a reverse proxy this will be the
+socket.  Note that if zclone is behind a reverse proxy this will be the
 address of the reverse proxy and not the original client.
 
 And as an example return this on STDOUT
@@ -102,7 +102,7 @@ And as an example return this on STDOUT
 
 This would mean that an SFTP backend would be created on the fly for
 the |user| and |pass|/|public_key| returned in the output to the host given.  Note
-that since |_obscure| is set to |pass|, rclone will obscure the |pass|
+that since |_obscure| is set to |pass|, zclone will obscure the |pass|
 parameter before creating the backend (which is required for sftp
 backends).
 
@@ -120,7 +120,7 @@ address, or the proxy returns different config parameters (eg a rotated
 than the cached one being reused.
 
 This can be used to build general purpose proxies to any kind of
-backend that rclone supports.
+backend that zclone supports.
 
 `, "|", "`")
 

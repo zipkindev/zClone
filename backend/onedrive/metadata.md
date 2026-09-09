@@ -83,7 +83,7 @@ Example for OneDrive Business:
 ```
 
 To write permissions, pass in a "permissions" metadata key using this same
-format. The [`--metadata-mapper`](https://rclone.org/docs/#metadata-mapper) tool can
+format. The [`--metadata-mapper`](//docs/#metadata-mapper) tool can
 be very helpful for this.
 
 When adding permissions, an email address can be provided in the `User.ID` or
@@ -127,5 +127,5 @@ passed in will be ignored.
 TIP: to see the metadata and permissions for any file or folder, run:
 
 ```
-rclone lsjson remote:path --stat -M --onedrive-metadata-permissions read
+zclone lsjson remote:path --stat -M --onedrive-metadata-permissions read
 ```

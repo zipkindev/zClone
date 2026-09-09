@@ -10,11 +10,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/cmd/bisync/bilib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/lib/terminal"
 	"golang.org/x/text/unicode/norm"
+	"zclone/cmd/bisync/bilib"
+	"zclone/fs"
+	"zclone/fs/filter"
+	"zclone/lib/terminal"
 )
 
 // delta
@@ -323,7 +323,7 @@ func (b *bisyncRun) applyDeltas(ctx context.Context, ds1, ds2 *deltaSet) (result
 	}
 
 	// build a list of only the "deltaOther"s so we don't have to check more files than necessary
-	// this is essentially the same as running rclone check with a --files-from filter, then exempting the --match results from being renamed
+	// this is essentially the same as running zclone check with a --files-from filter, then exempting the --match results from being renamed
 	// we therefore avoid having to list the same directory more than once.
 
 	// we are intentionally overriding DryRun here because we need to perform the check, even during a dry run, or the results would be inaccurate.

@@ -17,19 +17,19 @@ import (
 
 	"github.com/mitchellh/go-homedir"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/lib/file"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/lib/terminal"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fspath"
+	"zclone/fs/rc"
+	"zclone/lib/file"
+	"zclone/lib/random"
+	"zclone/lib/terminal"
 )
 
 const (
-	configFileName       = "rclone.conf"
+	configFileName       = fs.AppName + ".conf"
 	hiddenConfigFileName = "." + configFileName
 	noConfigFile         = "notfound"
 
@@ -57,7 +57,7 @@ const (
 	// ConfigEncodingHelp is the help for ConfigEncoding
 	ConfigEncodingHelp = "The encoding for the backend.\n\nSee the [encoding section in the overview](/overview/#encoding) for more info."
 
-	// ConfigAuthorize indicates that we just want "rclone authorize"
+	// ConfigAuthorize indicates that we just want "zclone authorize"
 	ConfigAuthorize = "config_authorize"
 
 	// ConfigAuthNoBrowser indicates that we do not want to open browser
@@ -71,10 +71,10 @@ const (
 )
 
 // Storage defines an interface for loading and saving config to
-// persistent storage. Rclone provides a default implementation to
+// persistent storage. Zclone provides a default implementation to
 // load and save to a config file when this is imported
 //
-// import "github.com/rclone/rclone/fs/config/configfile"
+// import "zclone/fs/config/configfile"
 // configfile.Install()
 type Storage interface {
 	// GetSectionList returns a slice of strings with names for all the
@@ -156,8 +156,8 @@ func findHomeDir() (string, error) {
 	return path, err
 }
 
-// Find rclone executable directory and look for existing rclone.conf there
-// (<rclone_exe_dir>/rclone.conf)
+// Find the executable directory and look for an existing configuration file there.
+// (<executable_dir>/<app>.conf)
 func findLocalConfig() (configDir string, configFile string) {
 	if exePath, err := os.Executable(); err == nil {
 		configDir = filepath.Dir(exePath)
@@ -166,11 +166,11 @@ func findLocalConfig() (configDir string, configFile string) {
 	return
 }
 
-// Get path to Windows AppData config subdirectory for rclone and look for existing rclone.conf there
-// ($AppData/rclone/rclone.conf)
+// Get path to the Windows AppData config subdirectory and look for a configuration file there.
+// ($AppData/<app>/<app>.conf)
 func findAppDataConfig() (configDir string, configFile string) {
 	if appDataDir := os.Getenv("APPDATA"); appDataDir != "" {
-		configDir = filepath.Join(appDataDir, "rclone")
+		configDir = filepath.Join(appDataDir, fs.AppName)
 		configFile = findFile(configDir, configFileName)
 	} else {
 		fs.Debugf(nil, "Environment variable APPDATA is not defined and cannot be used as configuration location")
@@ -178,29 +178,29 @@ func findAppDataConfig() (configDir string, configFile string) {
 	return
 }
 
-// Get path to XDG config subdirectory for rclone and look for existing rclone.conf there
+// Get path to the XDG config subdirectory and look for a configuration file there.
 // (see XDG Base Directory specification: https://specifications.freedesktop.org/basedir-spec/latest/).
-// ($XDG_CONFIG_HOME\rclone\rclone.conf)
+// ($XDG_CONFIG_HOME/<app>/<app>.conf)
 func findXDGConfig() (configDir string, configFile string) {
 	if xdgConfigDir := os.Getenv("XDG_CONFIG_HOME"); xdgConfigDir != "" {
-		configDir = filepath.Join(xdgConfigDir, "rclone")
+		configDir = filepath.Join(xdgConfigDir, fs.AppName)
 		configFile = findFile(configDir, configFileName)
 	}
 	return
 }
 
-// Get path to .config subdirectory for rclone and look for existing rclone.conf there
-// (~/.config/rclone/rclone.conf)
+// Get path to the .config subdirectory and look for a configuration file there.
+// (~/.config/<app>/<app>.conf)
 func findDotConfigConfig(home string) (configDir string, configFile string) {
 	if home != "" {
-		configDir = filepath.Join(home, ".config", "rclone")
+		configDir = filepath.Join(home, ".config", fs.AppName)
 		configFile = findFile(configDir, configFileName)
 	}
 	return
 }
 
-// Look for existing .rclone.conf (legacy hidden filename) in root of user's home directory
-// (~/.rclone.conf)
+// Look for the legacy hidden configuration filename in the user's home directory.
+// (~/.<app>.conf)
 func findOldHomeConfig(home string) (configDir string, configFile string) {
 	if home != "" {
 		configDir = home
@@ -209,9 +209,9 @@ func findOldHomeConfig(home string) (configDir string, configFile string) {
 	return
 }
 
-// Return the path to the configuration file
+// makeConfigPath returns the path to the configuration file.
 func makeConfigPath() string {
-	// Look for existing rclone.conf in prioritized list of known locations
+	// Look for an existing configuration file in prioritized known locations.
 	// Also get configuration directory to use for new config file when no existing is found.
 	var (
 		configFile        string
@@ -219,18 +219,18 @@ func makeConfigPath() string {
 		primaryConfigDir  string
 		fallbackConfigDir string
 	)
-	// <rclone_exe_dir>/rclone.conf
+	// <executable_dir>/<app>.conf
 	if _, configFile = findLocalConfig(); configFile != "" {
 		return configFile
 	}
-	// Windows: $AppData/rclone/rclone.conf
+	// Windows: $AppData/<app>/<app>.conf
 	// This is also the default location for new config when no existing is found
 	if runtime.GOOS == "windows" {
 		if primaryConfigDir, configFile = findAppDataConfig(); configFile != "" {
 			return configFile
 		}
 	}
-	// $XDG_CONFIG_HOME/rclone/rclone.conf
+	// $XDG_CONFIG_HOME/<app>/<app>.conf
 	// Also looking for this on Windows, for backwards compatibility reasons.
 	if configDir, configFile = findXDGConfig(); configFile != "" {
 		return configFile
@@ -239,14 +239,14 @@ func makeConfigPath() string {
 		// On Unix this is also the default location for new config when no existing is found
 		primaryConfigDir = configDir
 	}
-	// ~/.config/rclone/rclone.conf
+	// ~/.config/<app>/<app>.conf
 	// This is also the fallback location for new config
 	// (when $AppData on Windows and $XDG_CONFIG_HOME on Unix is not defined)
 	homeDir, homeDirErr := findHomeDir()
 	if fallbackConfigDir, configFile = findDotConfigConfig(homeDir); configFile != "" {
 		return configFile
 	}
-	// ~/.rclone.conf
+	// ~/.<app>.conf
 	if _, configFile = findOldHomeConfig(homeDir); configFile != "" {
 		return configFile
 	}
@@ -256,7 +256,7 @@ func makeConfigPath() string {
 	// variable, since then we skip actually trying to create the default
 	// and report any errors related to it (we can't use pflag for this because
 	// it isn't initialised yet so we search the command line manually).
-	_, configSupplied := os.LookupEnv("RCLONE_CONFIG")
+	_, configSupplied := os.LookupEnv("ZCLONE_CONFIG")
 	if !configSupplied {
 		for _, item := range os.Args {
 			if item == "--config" || strings.HasPrefix(item, "--config=") {
@@ -266,7 +266,7 @@ func makeConfigPath() string {
 		}
 	}
 	// If we found a configuration directory to be used for new config during search
-	// above, then create it to be ready for rclone.conf file to be written into it
+	// above, then create it to be ready for the configuration file to be written into it
 	// later, and also as a test of permissions to use fallback if not even able to
 	// create the directory.
 	if primaryConfigDir != "" {
@@ -289,8 +289,7 @@ func makeConfigPath() string {
 			return configFile
 		}
 		// Problem: Try a fallback location. If we did find a home directory then
-		// just assume file .rclone.conf (legacy hidden filename) can be written in
-		// its root (~/.rclone.conf).
+		// just assume the legacy hidden configuration file can be written in its root.
 		if homeDir != "" {
 			fs.Debugf(nil, "Configuration directory could not be created and will not be used: %v", mkdirErr)
 			return filepath.Join(homeDir, hiddenConfigFileName)
@@ -309,7 +308,7 @@ func makeConfigPath() string {
 	// (XDG_CONFIG_HOME or APPDATA) which couldn't be created, but in any case
 	// did not find a home directory!
 	// Report it as an error, and return as last resort the path relative to current
-	// working directory, of .rclone.conf (legacy hidden filename).
+	// working directory, of the legacy hidden configuration file.
 	if !configSupplied {
 		fs.Errorf(nil, "Defaulting to storing config in current directory.")
 		fs.Errorf(nil, "Use --config flag to workaround.")
@@ -361,9 +360,9 @@ var ErrorConfigFileNotFound = errors.New("config file not found")
 // LoadedData ensures the config file storage is loaded and returns it
 func LoadedData() Storage {
 	if !dataLoaded {
-		// Set RCLONE_CONFIG_DIR for backend config and subprocesses
+		// Set ZCLONE_CONFIG_DIR for backend config and subprocesses
 		// If empty configPath (in-memory only) the value will be "."
-		_ = os.Setenv("RCLONE_CONFIG_DIR", filepath.Dir(configPath))
+		_ = os.Setenv("ZCLONE_CONFIG_DIR", filepath.Dir(configPath))
 		// Load configuration from file (or initialize sensible default if no file or error)
 		if err := data.Load(); err == nil {
 			fs.Debugf(nil, "Using config file from %q", configPath)
@@ -425,7 +424,7 @@ func FileDeleteKey(section, key string) bool {
 // GetValue gets the value for a config key from environment
 // or config file under section returning the default if not set.
 //
-// Emulates the preference documented and normally used by rclone via
+// Emulates the preference documented and normally used by zclone via
 // configmap, which means environment variables before config file.
 func GetValue(remote, key string) string {
 	envKey := fs.ConfigToEnv(remote, key)
@@ -456,11 +455,11 @@ type Remote struct {
 	Description string `json:"description"`
 }
 
-var remoteEnvRe = regexp.MustCompile(`^RCLONE_CONFIG_(.+?)_TYPE=(.+)$`)
+var remoteEnvRe = regexp.MustCompile(`^ZCLONE_CONFIG_(.+?)_TYPE=(.+)$`)
 
 // GetRemotes returns the list of remotes defined in environment and config file.
 //
-// Emulates the preference documented and normally used by rclone via
+// Emulates the preference documented and normally used by zclone via
 // configmap, which means environment variables before config file.
 func GetRemotes() []Remote {
 	var remotes []Remote
@@ -789,7 +788,7 @@ func makeCacheDir() (dir string) {
 		// if no dir found then use TempDir - we will have a cachedir!
 		dir = os.TempDir()
 	}
-	return filepath.Join(dir, "rclone")
+	return filepath.Join(dir, fs.AppName)
 }
 
 // GetCacheDir returns the default directory for cache

@@ -14,12 +14,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/backend/doi/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/hash"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/backend/doi/api"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/hash"
 )
 
 var remoteName = "TestDoi"

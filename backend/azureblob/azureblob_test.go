@@ -7,10 +7,10 @@ package azureblob
 import (
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
 	"github.com/stretchr/testify/assert"
+	"zclone/fs"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
 )
 
 // TestIntegration runs integration tests against the remote

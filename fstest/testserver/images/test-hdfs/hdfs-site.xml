@@ -20,9 +20,9 @@
     <property><name>dfs.encrypt.data.transfer.algorithm</name><value>rc4</value></property>
     <property><name>dfs.encrypt.data.transfer.cipher.suites</name><value>AES/CTR/NoPadding</value></property>
 
-    <property><name>dfs.namenode.kerberos.principal</name>          <value>hdfs/_HOST@KERBEROS.RCLONE</value></property>
-    <property><name>dfs.web.authentication.kerberos.principal</name><value>HTTP/_HOST@KERBEROS.RCLONE</value></property>
-    <property><name>dfs.datanode.kerberos.principal</name>          <value>hdfs/_HOST@KERBEROS.RCLONE</value></property>
+    <property><name>dfs.namenode.kerberos.principal</name>          <value>hdfs/_HOST@KERBEROS.ZCLONE</value></property>
+    <property><name>dfs.web.authentication.kerberos.principal</name><value>HTTP/_HOST@KERBEROS.ZCLONE</value></property>
+    <property><name>dfs.datanode.kerberos.principal</name>          <value>hdfs/_HOST@KERBEROS.ZCLONE</value></property>
 
     <property><name>dfs.namenode.keytab.file</name>              <value>/etc/hadoop/kerberos.key</value></property>
     <property><name>dfs.web.authentication.kerberos.keytab</name><value>/etc/hadoop/kerberos.key</value></property>

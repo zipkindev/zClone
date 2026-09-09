@@ -18,13 +18,13 @@ import (
 	"unicode/utf8"
 
 	"github.com/peterh/liner"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/driveletter"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/lib/terminal"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/driveletter"
+	"zclone/fs/fspath"
+	"zclone/lib/terminal"
 )
 
 var (
@@ -493,9 +493,10 @@ var rootRelativeMarkdownLink = regexp.MustCompile(`\[([^\]]+)\]\((/[^)]*)\)`)
 // terminal. The same help text is also used to generate the website
 // documentation, where markdown links with root-relative targets resolve
 // correctly. On the terminal those links are confusing, so rewrite them to
-// "text (https://rclone.org/path)" using rclone.org as the implied root.
+// "text (local documentation: /path)" using the local documentation as the
+// implied root.
 func renderHelpForTerminal(help string) string {
-	return rootRelativeMarkdownLink.ReplaceAllString(help, "$1 (https://rclone.org$2)")
+	return rootRelativeMarkdownLink.ReplaceAllString(help, "$1 (local documentation: $2)")
 }
 
 // ChooseOption asks the user to choose an option
@@ -679,7 +680,7 @@ func ShowConfigLocation() {
 		fmt.Println("Configuration is in memory only")
 	} else {
 		if _, err := os.Stat(configPath); os.IsNotExist(err) {
-			fmt.Println("Configuration file doesn't exist, but rclone will use this path:")
+			fmt.Println("Configuration file doesn't exist, but zclone will use this path:")
 		} else {
 			fmt.Println("Configuration file is stored at:")
 		}
@@ -792,7 +793,7 @@ func checkPassword(password string) (string, error) {
 	trimmedPassword := strings.TrimSpace(password)
 	// Warn user if password has leading+trailing whitespace
 	if len(password) != len(trimmedPassword) {
-		_, _ = fmt.Fprintln(os.Stderr, "Your password contains leading/trailing whitespace - in previous versions of rclone this was stripped")
+		_, _ = fmt.Fprintln(os.Stderr, "Your password contains leading/trailing whitespace - in previous versions of zclone this was stripped")
 	}
 	if len(password) == 0 || len(trimmedPassword) == 0 {
 		return "", errors.New("no characters in password")

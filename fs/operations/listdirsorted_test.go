@@ -4,12 +4,12 @@ import (
 	"context"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/fstest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/filter"
+	"zclone/fs/list"
+	"zclone/fstest"
 )
 
 // testListDirSorted is integration testing code in fs/list/list.go

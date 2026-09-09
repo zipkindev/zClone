@@ -1,6 +1,6 @@
 ---
 title: "Citrix ShareFile"
-description: "Rclone docs for Citrix ShareFile"
+description: "Zclone docs for Citrix ShareFile"
 versionIntroduced: "v1.50"
 ---
 
@@ -12,13 +12,13 @@ service aimed as business.
 ## Configuration
 
 The initial setup for Citrix ShareFile involves getting a token from
-Citrix ShareFile which you can in your browser.  `rclone config` walks you
+Citrix ShareFile which you can in your browser.  `zclone config` walks you
 through it.
 
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -36,7 +36,7 @@ Choose a number from below, or type in your own value
 XX / Citrix Sharefile
    \ "sharefile"
 Storage> sharefile
-** See help for sharefile backend at: https://rclone.org/sharefile/ **
+** See help for sharefile backend at: //sharefile/ **
 
 ID of the root folder
 
@@ -60,15 +60,15 @@ y) Yes
 n) No
 y/n> n
 Remote config
-Use web browser to automatically authenticate rclone with remote?
- * Say Y if the machine running rclone has a web browser you can use
- * Say N if running rclone on a (remote) machine without web browser access
+Use web browser to automatically authenticate zclone with remote?
+ * Say Y if the machine running zclone has a web browser you can use
+ * Say N if running zclone on a (remote) machine without web browser access
 If not sure try Y. If Y failed, try N.
 y) Yes
 n) No
 y/n> y
 If your browser doesn't open automatically go to the following link: http://127.0.0.1:53682/auth?state=XXX
-Log in and authorize rclone for access
+Log in and authorize zclone for access
 Waiting for code...
 Got code
 Configuration complete.
@@ -86,31 +86,31 @@ y/e/d> y
 See the [remote setup docs](/remote_setup/) for how to set it up on a
 machine without an internet-connected web browser available.
 
-Note that rclone runs a webserver on your local machine to collect the
+Note that zclone runs a webserver on your local machine to collect the
 token as returned from Citrix ShareFile. This only runs from the moment it opens
 your browser to the moment you get back the verification code.  This
 is on `http://127.0.0.1:53682/` and this it may require you to unblock
 it temporarily if you are running a host firewall.
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 List directories in top level of your ShareFile
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your ShareFile
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 To copy a local directory to an ShareFile directory called backup
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
 Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
@@ -126,7 +126,7 @@ flag.
 
 ### Transfers
 
-For files above 128 MiB rclone will use a chunked transfer.  Rclone will
+For files above 128 MiB zclone will use a chunked transfer.  Zclone will
 upload up to `--transfers` chunks at the same time (shared among all
 the multipart uploads).  Chunks are buffered in memory and are
 normally 64 MiB so increasing `--transfers` will increase memory use.
@@ -173,7 +173,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_id
-- Env Var:     RCLONE_SHAREFILE_CLIENT_ID
+- Env Var:     ZCLONE_SHAREFILE_CLIENT_ID
 - Type:        string
 - Required:    false
 
@@ -186,7 +186,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_secret
-- Env Var:     RCLONE_SHAREFILE_CLIENT_SECRET
+- Env Var:     ZCLONE_SHAREFILE_CLIENT_SECRET
 - Type:        string
 - Required:    false
 
@@ -200,7 +200,7 @@ standard values here or any folder ID (long hex number ID).
 Properties:
 
 - Config:      root_folder_id
-- Env Var:     RCLONE_SHAREFILE_ROOT_FOLDER_ID
+- Env Var:     ZCLONE_SHAREFILE_ROOT_FOLDER_ID
 - Type:        string
 - Required:    false
 - Examples:
@@ -226,7 +226,7 @@ OAuth Access Token as a JSON blob.
 Properties:
 
 - Config:      token
-- Env Var:     RCLONE_SHAREFILE_TOKEN
+- Env Var:     ZCLONE_SHAREFILE_TOKEN
 - Type:        string
 - Required:    false
 
@@ -239,7 +239,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      auth_url
-- Env Var:     RCLONE_SHAREFILE_AUTH_URL
+- Env Var:     ZCLONE_SHAREFILE_AUTH_URL
 - Type:        string
 - Required:    false
 
@@ -252,7 +252,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      token_url
-- Env Var:     RCLONE_SHAREFILE_TOKEN_URL
+- Env Var:     ZCLONE_SHAREFILE_TOKEN_URL
 - Type:        string
 - Required:    false
 
@@ -267,7 +267,7 @@ Note that this option is NOT supported by all backends.
 Properties:
 
 - Config:      client_credentials
-- Env Var:     RCLONE_SHAREFILE_CLIENT_CREDENTIALS
+- Env Var:     ZCLONE_SHAREFILE_CLIENT_CREDENTIALS
 - Type:        bool
 - Default:     false
 
@@ -278,7 +278,7 @@ Cutoff for switching to multipart upload.
 Properties:
 
 - Config:      upload_cutoff
-- Env Var:     RCLONE_SHAREFILE_UPLOAD_CUTOFF
+- Env Var:     ZCLONE_SHAREFILE_UPLOAD_CUTOFF
 - Type:        SizeSuffix
 - Default:     128Mi
 
@@ -296,7 +296,7 @@ Reducing this will reduce memory usage but decrease performance.
 Properties:
 
 - Config:      chunk_size
-- Env Var:     RCLONE_SHAREFILE_CHUNK_SIZE
+- Env Var:     ZCLONE_SHAREFILE_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     64Mi
 
@@ -311,7 +311,7 @@ be set manually to something like: https://XXX.sharefile.com
 Properties:
 
 - Config:      endpoint
-- Env Var:     RCLONE_SHAREFILE_ENDPOINT
+- Env Var:     ZCLONE_SHAREFILE_ENDPOINT
 - Type:        string
 - Required:    false
 
@@ -324,7 +324,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_SHAREFILE_ENCODING
+- Env Var:     ZCLONE_SHAREFILE_ENCODING
 - Type:        Encoding
 - Default:     Slash,LtGt,DoubleQuote,Colon,Question,Asterisk,Pipe,BackSlash,Ctl,LeftSpace,LeftPeriod,RightSpace,RightPeriod,InvalidUtf8,Dot
 
@@ -335,7 +335,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_SHAREFILE_DESCRIPTION
+- Env Var:     ZCLONE_SHAREFILE_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -347,10 +347,10 @@ Note that ShareFile is case insensitive so you can't have a file called
 
 ShareFile only supports filenames up to 256 characters in length.
 
-`rclone about` is not supported by the Citrix ShareFile backend. Backends without
-this capability cannot determine free space for an rclone mount or
-use policy `mfs` (most free space) as a member of an rclone union
+`zclone about` is not supported by the Citrix ShareFile backend. Backends without
+this capability cannot determine free space for an zclone mount or
+use policy `mfs` (most free space) as a member of an zclone union
 remote.
 
-See [List of backends that do not support rclone about](https://rclone.org/overview/#optional-features)
-and [rclone about](https://rclone.org/commands/rclone_about/).
+See [List of backends that do not support zclone about](//overview/#optional-features)
+and [zclone about](//commands/zclone_about/).

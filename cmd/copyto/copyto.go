@@ -4,11 +4,11 @@ package copyto
 import (
 	"context"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/operations/operationsflags"
-	"github.com/rclone/rclone/fs/sync"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs/operations"
+	"zclone/fs/operations/operationsflags"
+	"zclone/fs/sync"
 )
 
 var (
@@ -32,15 +32,15 @@ directory named dest:path.
 This can be used to copy a single file to a destination with a name
 different from its source - for example, uploading and renaming in one
 step. If the source is a directory then it acts exactly like the
-[copy](/commands/rclone_copy/) command.
+[copy](/commands/zclone_copy/) command.
 
 So
 
 ` + "```console" + `
-rclone copyto src dst
+zclone copyto src dst
 ` + "```" + `
 
-where src and dst are rclone paths, either ` + "`remote:path`" + ` or
+where src and dst are zclone paths, either ` + "`remote:path`" + ` or
 ` + "`/path/to/local`" + ` or ` + "`C:\\windows\\path\\if\\on\\windows`" + `.
 
 This will:
@@ -58,7 +58,7 @@ by size and modification time or MD5SUM.  It doesn't delete files from
 the destination.
 
 *If you are looking to copy just a byte range of a file, please see
-` + "`rclone cat --offset X --count Y`" + `.*
+` + "`zclone cat --offset X --count Y`" + `.*
 
 **Note**: Use the ` + "`-P`" + `/` + "`--progress`" + ` flag to view
 real-time transfer statistics.

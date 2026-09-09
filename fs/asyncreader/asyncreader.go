@@ -8,9 +8,9 @@ import (
 	"io"
 	"sync"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/pool"
-	"github.com/rclone/rclone/lib/readers"
+	"zclone/fs"
+	"zclone/lib/pool"
+	"zclone/lib/readers"
 )
 
 const (

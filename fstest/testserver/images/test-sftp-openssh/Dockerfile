@@ -1,11 +1,11 @@
-# A very minimal sftp server for integration testing rclone
+# A very minimal sftp server for integration testing zclone
 FROM alpine:latest
 
-# User rclone, password password
+# User zclone, password password
 RUN \
     apk add openssh && \
     ssh-keygen -A && \
-    adduser -D rclone && \
-    echo "rclone:password" | chpasswd 
+    adduser -D zclone && \
+    echo "zclone:password" | chpasswd
 
 ENTRYPOINT [ "/usr/sbin/sshd", "-D" ]

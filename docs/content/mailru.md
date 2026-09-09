@@ -23,7 +23,7 @@ and Mac OS.
 - Storage keeps hash for all files and performs transparent deduplication,
   the hash algorithm is a modified SHA1
 - If a particular file is already present in storage, one can quickly submit file
-  hash instead of long file upload (this optimization is supported by rclone)
+  hash instead of long file upload (this optimization is supported by zclone)
 
 ## Configuration
 
@@ -31,25 +31,25 @@ Here is an example of making a mailru configuration.
 
 First create a Mail.ru Cloud account and choose a tariff.
 
-You will need to log in and create an app password for rclone. Rclone
+You will need to log in and create an app password for zclone. Zclone
 **will not work** with your normal username and password - it will
 give an error like `oauth2: server response missing access_token`.
 
 - Click on your user icon in the top right
 - Go to Security / "Пароль и безопасность"
 - Click password for apps / "Пароли для внешних приложений"
-- Add the password - give it a name - eg "rclone"
+- Add the password - give it a name - eg "zclone"
 - Select the permissions level. For some reason just "Full access to Cloud"
-  (WebDav) doesn't work for Rclone currently. You have to select "Full access
+  (WebDav) doesn't work for Zclone currently. You have to select "Full access
   to Mail, Cloud and Calendar" (all protocols).
-  ([thread on forum.rclone.org](https://forum.rclone.org/t/failed-to-create-file-system-for-mailru-failed-to-authorize-oauth2-invalid-username-or-password-username-or-password-is-incorrect/49298))
+  ([thread on forum.zclone.org](/))
 - Copy the password and use this password below - your normal login password
   won't work.
 
 Now run
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -75,7 +75,7 @@ Enter a string value. Press Enter for the default ("").
 user> username@mail.ru
 Password
 
-This must be an app password - rclone will not work with your normal
+This must be an app password - zclone will not work with your normal
 password. See the Configuration section in the docs for how to make an
 app password.
 y) Yes type in my own password
@@ -120,26 +120,26 @@ You can use the configured backend as shown below:
 See top level directories
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 Make a new directory
 
 ```console
-rclone mkdir remote:directory
+zclone mkdir remote:directory
 ```
 
 List the contents of a directory
 
 ```console
-rclone ls remote:directory
+zclone ls remote:directory
 ```
 
 Sync `/home/local/directory` to the remote path, deleting any
 excess files in the path.
 
 ```console
-rclone sync --interactive /home/local/directory remote:directory
+zclone sync --interactive /home/local/directory remote:directory
 ```
 
 ### Modification times and hashes
@@ -156,15 +156,15 @@ bytes concatenated with a decimal representation of the data length.
 ### Emptying Trash
 
 Removing a file or directory actually moves it to the trash, which is not
-visible to rclone but can be seen in a web browser. The trashed file
+visible to zclone but can be seen in a web browser. The trashed file
 still occupies part of total quota. If you wish to empty your trash
-and free some quota, you can use the `rclone cleanup remote:` command,
+and free some quota, you can use the `zclone cleanup remote:` command,
 which will permanently delete all your trashed files.
 This command does not take any path arguments.
 
 ### Quota information
 
-To view your current quota you can use the `rclone about remote:`
+To view your current quota you can use the `zclone about remote:`
 command which will display your usage limit (quota) and the current usage.
 
 ### Restricted filename characters
@@ -200,7 +200,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_id
-- Env Var:     RCLONE_MAILRU_CLIENT_ID
+- Env Var:     ZCLONE_MAILRU_CLIENT_ID
 - Type:        string
 - Required:    false
 
@@ -213,7 +213,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_secret
-- Env Var:     RCLONE_MAILRU_CLIENT_SECRET
+- Env Var:     ZCLONE_MAILRU_CLIENT_SECRET
 - Type:        string
 - Required:    false
 
@@ -224,7 +224,7 @@ User name (usually email).
 Properties:
 
 - Config:      user
-- Env Var:     RCLONE_MAILRU_USER
+- Env Var:     ZCLONE_MAILRU_USER
 - Type:        string
 - Required:    true
 
@@ -232,17 +232,17 @@ Properties:
 
 Password.
 
-This must be an app password - rclone will not work with your normal
+This must be an app password - zclone will not work with your normal
 password. See the Configuration section in the docs for how to make an
 app password.
 
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      pass
-- Env Var:     RCLONE_MAILRU_PASS
+- Env Var:     ZCLONE_MAILRU_PASS
 - Type:        string
 - Required:    true
 
@@ -254,15 +254,15 @@ This feature is called "speedup" or "put by hash". It is especially efficient
 in case of generally available files like popular books, video or audio clips,
 because files are searched by hash in all accounts of all mailru users.
 It is meaningless and ineffective if source file is unique or encrypted.
-Please note that rclone may need local memory and disk space to calculate
+Please note that zclone may need local memory and disk space to calculate
 content hash in advance and decide whether full upload is required.
-Also, if rclone does not know file size in advance (e.g. in case of
+Also, if zclone does not know file size in advance (e.g. in case of
 streaming or partial uploads), it will not even try this optimization.
 
 Properties:
 
 - Config:      speedup_enable
-- Env Var:     RCLONE_MAILRU_SPEEDUP_ENABLE
+- Env Var:     ZCLONE_MAILRU_SPEEDUP_ENABLE
 - Type:        bool
 - Default:     true
 - Examples:
@@ -282,7 +282,7 @@ OAuth Access Token as a JSON blob.
 Properties:
 
 - Config:      token
-- Env Var:     RCLONE_MAILRU_TOKEN
+- Env Var:     ZCLONE_MAILRU_TOKEN
 - Type:        string
 - Required:    false
 
@@ -295,7 +295,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      auth_url
-- Env Var:     RCLONE_MAILRU_AUTH_URL
+- Env Var:     ZCLONE_MAILRU_AUTH_URL
 - Type:        string
 - Required:    false
 
@@ -308,7 +308,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      token_url
-- Env Var:     RCLONE_MAILRU_TOKEN_URL
+- Env Var:     ZCLONE_MAILRU_TOKEN_URL
 - Type:        string
 - Required:    false
 
@@ -323,7 +323,7 @@ Note that this option is NOT supported by all backends.
 Properties:
 
 - Config:      client_credentials
-- Env Var:     RCLONE_MAILRU_CLIENT_CREDENTIALS
+- Env Var:     ZCLONE_MAILRU_CLIENT_CREDENTIALS
 - Type:        bool
 - Default:     false
 
@@ -336,7 +336,7 @@ Patterns are case insensitive and can contain '*' or '?' meta characters.
 Properties:
 
 - Config:      speedup_file_patterns
-- Env Var:     RCLONE_MAILRU_SPEEDUP_FILE_PATTERNS
+- Env Var:     ZCLONE_MAILRU_SPEEDUP_FILE_PATTERNS
 - Type:        string
 - Default:     "*.mkv,*.avi,*.mp4,*.mp3,*.zip,*.gz,*.rar,*.pdf"
 - Examples:
@@ -358,7 +358,7 @@ Reason is that preliminary hashing can exhaust your RAM or disk space.
 Properties:
 
 - Config:      speedup_max_disk
-- Env Var:     RCLONE_MAILRU_SPEEDUP_MAX_DISK
+- Env Var:     ZCLONE_MAILRU_SPEEDUP_MAX_DISK
 - Type:        SizeSuffix
 - Default:     3Gi
 - Examples:
@@ -376,7 +376,7 @@ Files larger than the size given below will always be hashed on disk.
 Properties:
 
 - Config:      speedup_max_memory
-- Env Var:     RCLONE_MAILRU_SPEEDUP_MAX_MEMORY
+- Env Var:     ZCLONE_MAILRU_SPEEDUP_MAX_MEMORY
 - Type:        SizeSuffix
 - Default:     32Mi
 - Examples:
@@ -394,7 +394,7 @@ What should copy do if file checksum is mismatched or invalid.
 Properties:
 
 - Config:      check_hash
-- Env Var:     RCLONE_MAILRU_CHECK_HASH
+- Env Var:     ZCLONE_MAILRU_CHECK_HASH
 - Type:        bool
 - Default:     true
 - Examples:
@@ -412,7 +412,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_MAILRU_ENCODING
+- Env Var:     ZCLONE_MAILRU_ENCODING
 - Type:        Encoding
 - Default:     Slash,LtGt,DoubleQuote,Colon,Question,Asterisk,Pipe,BackSlash,Del,Ctl,InvalidUtf8,Dot
 
@@ -423,7 +423,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_MAILRU_DESCRIPTION
+- Env Var:     ZCLONE_MAILRU_DESCRIPTION
 - Type:        string
 - Required:    false
 

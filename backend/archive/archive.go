@@ -26,16 +26,16 @@ import (
 	"time"
 
 	// Import all the required archivers here
-	_ "github.com/rclone/rclone/backend/archive/squashfs"
-	_ "github.com/rclone/rclone/backend/archive/zip"
+	_ "zclone/backend/archive/squashfs"
+	_ "zclone/backend/archive/zip"
 
-	"github.com/rclone/rclone/backend/archive/archiver"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/hash"
+	"zclone/backend/archive/archiver"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fspath"
+	"zclone/fs/hash"
 )
 
 // Register with Fs

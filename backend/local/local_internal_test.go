@@ -14,20 +14,20 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/file"
-	"github.com/rclone/rclone/lib/readers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/config/configmap"
+	"zclone/fs/filter"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/fs/object"
+	"zclone/fs/operations"
+	"zclone/fstest"
+	"zclone/lib/encoder"
+	"zclone/lib/file"
+	"zclone/lib/readers"
 )
 
 // TestMain drives the tests
@@ -219,7 +219,7 @@ func TestSymlinkError(t *testing.T) {
 	assert.Equal(t, errLinksAndCopyLinks, err)
 }
 
-// putLink writes target as a translated link object (name + ".rclonelink") on f.
+// putLink writes target as a translated link object (name + ".zclonelink") on f.
 func putLink(ctx context.Context, f fs.Fs, name, target string) error {
 	in := bytes.NewBufferString(target)
 	src := object.NewStaticObjectInfo(name+fs.LinkSuffix, fstest.Time("2001-02-03T04:05:10Z"), int64(len(target)), true, nil, nil)
@@ -244,9 +244,9 @@ func linksMode(f *Fs) {
 }
 
 // TestSymlinkEscapeWriteThroughBlocked mirrors the GHSA-cf44-9pgv-m4xc PoC: a
-// malicious --links source serves "pwn.rclonelink" whose body is a path outside
+// malicious --links source serves "pwn.zclonelink" whose body is a path outside
 // the destination, plus a sibling "pwn/authkeys" that sorts after it and would
-// be written through the planted symlink. rclone reproduces the symlink (a
+// be written through the planted symlink. zclone reproduces the symlink (a
 // faithful backup of the source) but must refuse to write through it, so
 // nothing lands outside the destination (CWE-59).
 func TestSymlinkEscapeWriteThroughBlocked(t *testing.T) {
@@ -449,7 +449,7 @@ func TestLocalPath(t *testing.T) {
 		{name: "../marker.txt", want: refused},
 		{name: "sub/../../marker.txt", want: refused},
 		// Windows reserved device names are ordinary file names to
-		// rclone, which addresses the destination with \\?\ paths.
+		// zclone, which addresses the destination with \\?\ paths.
 		{name: "NUL", want: "NUL"},
 		{name: "sub/aux.c", want: "sub/aux.c"},
 		// An absolute name resolves relative to the root, as it always has.
@@ -613,7 +613,7 @@ func TestMetadata(t *testing.T) {
 	require.NoError(t, err)
 
 	// Check that operating on the symlink didn't change the file it was pointing to
-	// See: https://github.com/rclone/rclone/security/advisories/GHSA-hrxh-9w67-g4cv
+	// See: https://zclone/security/advisories/GHSA-hrxh-9w67-g4cv
 	assert.Equal(t, oMeta, oMetaNew, "metadata setting on symlink messed up file")
 
 	// Now run the same tests on the file
@@ -764,7 +764,7 @@ func testMetadata(t *testing.T, r *fstest.Run, o *Object, when time.Time) {
 // Check that the setuid, setgid and sticky bits from "mode" metadata are
 // stripped by default and only restored with --local-metadata-restore-special-bits.
 //
-// See: https://github.com/rclone/rclone/security/advisories/GHSA-945v-v9p3-v5xw
+// See: https://zclone/security/advisories/GHSA-945v-v9p3-v5xw
 func TestMetadataSpecialBits(t *testing.T) {
 	switch runtime.GOOS {
 	case "windows", "plan9", "js":
@@ -894,8 +894,8 @@ func testFilterSymlink(t *testing.T, copyLinks bool) {
 		require.NoError(t, fi.AddRule("+ included.file.link"))
 		require.NoError(t, fi.AddRule("+ included.dir.link/**"))
 	} else {
-		require.NoError(t, fi.AddRule("+ included.file.link.rclonelink"))
-		require.NoError(t, fi.AddRule("+ included.dir.link.rclonelink"))
+		require.NoError(t, fi.AddRule("+ included.file.link.zclonelink"))
+		require.NoError(t, fi.AddRule("+ included.dir.link.zclonelink"))
 	}
 	require.NoError(t, fi.AddRule("- *"))
 
@@ -916,7 +916,7 @@ func testFilterSymlink(t *testing.T, copyLinks bool) {
 	if copyLinks {
 		require.Equal(t, "[included.dir included.dir.link included.file included.file.link]", fmt.Sprint(entries))
 	} else {
-		require.Equal(t, "[dangling.link.rclonelink included.dir included.dir.link.rclonelink included.file included.file.link.rclonelink]", fmt.Sprint(entries))
+		require.Equal(t, "[dangling.link.zclonelink included.dir included.dir.link.zclonelink included.file included.file.link.zclonelink]", fmt.Sprint(entries))
 	}
 
 	// Add user filter flag
@@ -931,7 +931,7 @@ func testFilterSymlink(t *testing.T, copyLinks bool) {
 	if copyLinks {
 		require.Equal(t, "[included.dir included.dir.link included.file included.file.link]", fmt.Sprint(entries))
 	} else {
-		require.Equal(t, "[included.dir included.dir.link.rclonelink included.file included.file.link.rclonelink]", fmt.Sprint(entries))
+		require.Equal(t, "[included.dir included.dir.link.zclonelink included.file included.file.link.zclonelink]", fmt.Sprint(entries))
 	}
 
 	// Check listing through a symlink still works
@@ -978,10 +978,10 @@ func TestCopySymlink(t *testing.T) {
 	require.NoError(t, f.Mkdir(ctx, "dst"))
 
 	// Do copy from src into dst
-	src, err := f.NewObject(ctx, "src/link.txt.rclonelink")
+	src, err := f.NewObject(ctx, "src/link.txt.zclonelink")
 	require.NoError(t, err)
 	require.NotNil(t, src)
-	dst, err := operations.Copy(ctx, f, nil, "dst/link.txt.rclonelink", src)
+	dst, err := operations.Copy(ctx, f, nil, "dst/link.txt.zclonelink", src)
 	require.NoError(t, err)
 	require.NotNil(t, dst)
 

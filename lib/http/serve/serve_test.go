@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fstest/mockobject"
 	"github.com/stretchr/testify/assert"
+	"zclone/fs"
+	"zclone/fs/object"
+	"zclone/fstest/mockobject"
 )
 
 func TestObjectBadMethod(t *testing.T) {

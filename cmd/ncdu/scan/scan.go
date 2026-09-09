@@ -9,8 +9,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/walk"
+	"zclone/fs"
+	"zclone/fs/walk"
 )
 
 // Dir represents a directory found in the remote

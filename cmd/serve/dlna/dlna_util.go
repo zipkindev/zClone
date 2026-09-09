@@ -16,7 +16,7 @@ import (
 
 	"github.com/anacrolix/dms/soap"
 	"github.com/anacrolix/dms/upnp"
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 // Return a default "friendly name" for the server.
@@ -27,7 +27,7 @@ func makeDefaultFriendlyName() string {
 	} else {
 		hostName = " (" + hostName + ")"
 	}
-	return "rclone" + hostName
+	return "zclone" + hostName
 }
 
 func makeDeviceUUID(unique string) string {

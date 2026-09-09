@@ -44,19 +44,19 @@ var (
 	errHelperEnvSyntax    = errors.New("environment variable must have syntax env.NAME=[VALUE]")
 )
 
-// IsMountHelper returns true if rclone was invoked as mount helper:
+// IsMountHelper returns true if zclone was invoked as mount helper:
 // as /sbin/mount.rlone (by /bin/mount)
-// or /usr/bin/rclonefs (by fusermount or directly)
+// or /usr/bin/zclonefs (by fusermount or directly)
 func IsMountHelper() bool {
 	if runtime.GOOS == "windows" {
 		return false
 	}
 	me := filepath.Base(os.Args[0])
-	return me == "mount.rclone" || me == "rclonefs"
+	return me == "mount.zclone" || me == "zclonefs"
 }
 
 // convertMountHelperArgs converts "-o" styled mount helper arguments
-// into usual rclone flags
+// into usual zclone flags
 func convertMountHelperArgs(origArgs []string) ([]string, error) {
 	if IsDaemon() {
 		// The arguments have already been converted by the parent

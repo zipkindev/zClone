@@ -9,10 +9,10 @@ import (
 	"syscall"
 	"testing"
 
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fstest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs/operations"
+	"zclone/fstest"
 )
 
 // TestRmdirWindows tests that FILE_ATTRIBUTE_READONLY does not block Rmdir on windows.

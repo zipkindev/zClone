@@ -1,13 +1,13 @@
 ---
 title: "Cache"
-description: "Rclone docs for cache remote"
+description: "Zclone docs for cache remote"
 versionIntroduced: "v1.39"
 ---
 
 # Cache
 
 The `cache` remote wraps another existing remote and stores file structure
-and its data for long running tasks like `rclone mount`.
+and its data for long running tasks like `zclone mount`.
 
 It is **deprecated** so not recommended for use with new installations
 and may be removed at some point.
@@ -15,10 +15,10 @@ and may be removed at some point.
 ## Status
 
 The cache backend code is working but it currently doesn't
-have a maintainer so there are [outstanding bugs](https://github.com/rclone/rclone/issues?q=is%3Aopen+is%3Aissue+label%3Abug+label%3A%22Remote%3A+Cache%22) which aren't getting fixed.
+have a maintainer so there are [outstanding bugs](/) which aren't getting fixed.
 
 The cache backend is due to be phased out in favour of the VFS caching
-layer eventually which is more tightly integrated into rclone.
+layer eventually which is more tightly integrated into zclone.
 
 Until this happens we recommend only using the cache backend if you
 find you can't work without it. There are many docs online describing
@@ -34,7 +34,7 @@ with `cache`.
 Here is an example of how to make a remote called `test-cache`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -120,35 +120,35 @@ You can then use it like this,
 List directories in top level of your drive
 
 ```console
-rclone lsd test-cache:
+zclone lsd test-cache:
 ```
 
 List all the files in your drive
 
 ```console
-rclone ls test-cache:
+zclone ls test-cache:
 ```
 
 To start a cached mount
 
 ```console
-rclone mount --allow-other test-cache: /var/tmp/test-cache
+zclone mount --allow-other test-cache: /var/tmp/test-cache
 ```
 
 ### Write Features
 
 ### Offline uploading
 
-In an effort to make writing through cache more reliable, the backend 
+In an effort to make writing through cache more reliable, the backend
 now supports this feature which can be activated by specifying a
 `cache-tmp-upload-path`.
 
 A files goes through these states when using this feature:
 
 1. An upload is started (usually by copying a file on the cache remote)
-2. When the copy to the temporary location is complete the file is part 
+2. When the copy to the temporary location is complete the file is part
 of the cached remote and looks and behaves like any other file (reading included)
-3. After `cache-tmp-wait-time` passes and the file is next in line, `rclone move` 
+3. After `cache-tmp-wait-time` passes and the file is next in line, `zclone move`
 is used to move the file to the cloud provider
 4. Reading the file still works during the upload but most modifications on it will be prohibited
 5. Once the move is complete the file is unlocked for modifications as it
@@ -177,13 +177,13 @@ from the cache store immediately once the upload is finished.
 
 #### Multiple connections
 
-To counter the high latency between a local PC where rclone is running
+To counter the high latency between a local PC where zclone is running
 and cloud providers, the cache remote can split multiple requests to the
 cloud provider for smaller file chunks and combines them together locally
 where they can be available almost immediately before the reader usually
 needs them.
 
-This is similar to buffering when media files are played online. Rclone
+This is similar to buffering when media files are played online. Zclone
 will stay around the current marker but always try its best to stay ahead
 and prepare the data before.
 
@@ -202,7 +202,7 @@ which will be explored in the near future.
 **Note:** If Plex options are not configured, `cache` will function with its
 configured options without adapting any of its settings.
 
-How to enable? Run `rclone config` and add all the Plex options (endpoint, username
+How to enable? Run `zclone config` and add all the Plex options (endpoint, username
 and password) in your remote and it will be automatically enabled.
 
 Affected settings:
@@ -255,9 +255,9 @@ on Linux flavors and Windows as cache is heavily dependent on them.
 
 Any reports or feedback on how cache behaves on this OS is greatly appreciated.
 
-- [Issue #1935](https://github.com/rclone/rclone/issues/1935)
-- [Issue #1907](https://github.com/rclone/rclone/issues/1907)
-- [Issue #1834](https://github.com/rclone/rclone/issues/1834)
+- [Issue #1935](/)
+- [Issue #1907](/)
+- [Issue #1834](/)
 
 #### Risk of throttling
 
@@ -278,8 +278,8 @@ Some recommendations:
 
 Future enhancements:
 
-- [Issue #1937](https://github.com/rclone/rclone/issues/1937)
-- [Issue #1936](https://github.com/rclone/rclone/issues/1936)
+- [Issue #1937](/)
+- [Issue #1936](/)
 
 #### cache and crypt
 
@@ -312,7 +312,7 @@ on the SSH server.
 
 ### Cache and Remote Control (--rc)
 
-Cache supports the new `--rc` mode in rclone and can be remote controlled
+Cache supports the new `--rc` mode in zclone and can be remote controlled
 through the following end points: By default, the listener is disabled if
 you do not add the flag.
 
@@ -342,7 +342,7 @@ Normally should contain a ':' and a path, e.g. "myremote:path/to/dir",
 Properties:
 
 - Config:      remote
-- Env Var:     RCLONE_CACHE_REMOTE
+- Env Var:     ZCLONE_CACHE_REMOTE
 - Type:        string
 - Required:    true
 
@@ -353,7 +353,7 @@ The URL of the Plex server.
 Properties:
 
 - Config:      plex_url
-- Env Var:     RCLONE_CACHE_PLEX_URL
+- Env Var:     ZCLONE_CACHE_PLEX_URL
 - Type:        string
 - Required:    false
 
@@ -364,7 +364,7 @@ The username of the Plex user.
 Properties:
 
 - Config:      plex_username
-- Env Var:     RCLONE_CACHE_PLEX_USERNAME
+- Env Var:     ZCLONE_CACHE_PLEX_USERNAME
 - Type:        string
 - Required:    false
 
@@ -372,12 +372,12 @@ Properties:
 
 The password of the Plex user.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      plex_password
-- Env Var:     RCLONE_CACHE_PLEX_PASSWORD
+- Env Var:     ZCLONE_CACHE_PLEX_PASSWORD
 - Type:        string
 - Required:    false
 
@@ -392,7 +392,7 @@ will need to be cleared or unexpected EOF errors will occur.
 Properties:
 
 - Config:      chunk_size
-- Env Var:     RCLONE_CACHE_CHUNK_SIZE
+- Env Var:     ZCLONE_CACHE_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     5Mi
 - Examples:
@@ -405,14 +405,14 @@ Properties:
 
 #### --cache-info-age
 
-How long to cache file structure information (directory listings, file size, times, etc.). 
+How long to cache file structure information (directory listings, file size, times, etc.).
 If all write operations are done through the cache then you can safely make
 this value very large as the cache store will also be updated in real time.
 
 Properties:
 
 - Config:      info_age
-- Env Var:     RCLONE_CACHE_INFO_AGE
+- Env Var:     ZCLONE_CACHE_INFO_AGE
 - Type:        Duration
 - Default:     6h0m0s
 - Examples:
@@ -433,7 +433,7 @@ oldest chunks until it goes under this value.
 Properties:
 
 - Config:      chunk_total_size
-- Env Var:     RCLONE_CACHE_CHUNK_TOTAL_SIZE
+- Env Var:     ZCLONE_CACHE_CHUNK_TOTAL_SIZE
 - Type:        SizeSuffix
 - Default:     10Gi
 - Examples:
@@ -455,7 +455,7 @@ Skip all certificate verification when connecting to the Plex server.
 Properties:
 
 - Config:      plex_insecure
-- Env Var:     RCLONE_CACHE_PLEX_INSECURE
+- Env Var:     ZCLONE_CACHE_PLEX_INSECURE
 - Type:        string
 - Required:    false
 
@@ -468,9 +468,9 @@ The remote name is used as the DB file name.
 Properties:
 
 - Config:      db_path
-- Env Var:     RCLONE_CACHE_DB_PATH
+- Env Var:     ZCLONE_CACHE_DB_PATH
 - Type:        string
-- Default:     "$HOME/.cache/rclone/cache-backend"
+- Default:     "/var/folders/8n/pnkwx54j56l_j6l3zx2bqdb40000gp/T/tmp.noJAvAlFjP/Library/Caches/zclone/cache-backend"
 
 #### --cache-chunk-path
 
@@ -486,9 +486,9 @@ then "--cache-chunk-path" will use the same path as "--cache-db-path".
 Properties:
 
 - Config:      chunk_path
-- Env Var:     RCLONE_CACHE_CHUNK_PATH
+- Env Var:     ZCLONE_CACHE_CHUNK_PATH
 - Type:        string
-- Default:     "$HOME/.cache/rclone/cache-backend"
+- Default:     "/var/folders/8n/pnkwx54j56l_j6l3zx2bqdb40000gp/T/tmp.noJAvAlFjP/Library/Caches/zclone/cache-backend"
 
 #### --cache-db-purge
 
@@ -497,7 +497,7 @@ Clear all the cached data for this remote on start.
 Properties:
 
 - Config:      db_purge
-- Env Var:     RCLONE_CACHE_DB_PURGE
+- Env Var:     ZCLONE_CACHE_DB_PURGE
 - Type:        bool
 - Default:     false
 
@@ -512,7 +512,7 @@ this value to force it to perform cleanups more often.
 Properties:
 
 - Config:      chunk_clean_interval
-- Env Var:     RCLONE_CACHE_CHUNK_CLEAN_INTERVAL
+- Env Var:     ZCLONE_CACHE_CHUNK_CLEAN_INTERVAL
 - Type:        Duration
 - Default:     1m0s
 
@@ -531,7 +531,7 @@ able to provide data but your experience will be very stuttering.
 Properties:
 
 - Config:      read_retries
-- Env Var:     RCLONE_CACHE_READ_RETRIES
+- Env Var:     ZCLONE_CACHE_READ_RETRIES
 - Type:        int
 - Default:     10
 
@@ -542,7 +542,7 @@ How many workers should run in parallel to download chunks.
 Higher values will mean more parallel processing (better CPU needed)
 and more concurrent requests on the cloud provider.  This impacts
 several aspects like the cloud provider API limits, more stress on the
-hardware that rclone runs on but it also means that streams will be
+hardware that zclone runs on but it also means that streams will be
 more fluid and data will be available much more faster to readers.
 
 **Note**: If the optional Plex integration is enabled then this
@@ -552,7 +552,7 @@ specified here will be used as a maximum number of workers to use.
 Properties:
 
 - Config:      workers
-- Env Var:     RCLONE_CACHE_WORKERS
+- Env Var:     ZCLONE_CACHE_WORKERS
 - Type:        int
 - Default:     4
 
@@ -576,7 +576,7 @@ available on the local machine.
 Properties:
 
 - Config:      chunk_no_memory
-- Env Var:     RCLONE_CACHE_CHUNK_NO_MEMORY
+- Env Var:     ZCLONE_CACHE_CHUNK_NO_MEMORY
 - Type:        bool
 - Default:     false
 
@@ -603,7 +603,7 @@ still pass.
 Properties:
 
 - Config:      rps
-- Env Var:     RCLONE_CACHE_RPS
+- Env Var:     ZCLONE_CACHE_RPS
 - Type:        int
 - Default:     -1
 
@@ -618,7 +618,7 @@ cache store at the same time during upload.
 Properties:
 
 - Config:      writes
-- Env Var:     RCLONE_CACHE_WRITES
+- Env Var:     ZCLONE_CACHE_WRITES
 - Type:        bool
 - Default:     false
 
@@ -636,7 +636,7 @@ provider
 Properties:
 
 - Config:      tmp_upload_path
-- Env Var:     RCLONE_CACHE_TMP_UPLOAD_PATH
+- Env Var:     ZCLONE_CACHE_TMP_UPLOAD_PATH
 - Type:        string
 - Required:    false
 
@@ -653,7 +653,7 @@ to start the upload if a queue formed for this purpose.
 Properties:
 
 - Config:      tmp_wait_time
-- Env Var:     RCLONE_CACHE_TMP_WAIT_TIME
+- Env Var:     ZCLONE_CACHE_TMP_WAIT_TIME
 - Type:        Duration
 - Default:     15s
 
@@ -661,7 +661,7 @@ Properties:
 
 How long to wait for the DB to be available - 0 is unlimited.
 
-Only one process can have the DB open at any one time, so rclone waits
+Only one process can have the DB open at any one time, so zclone waits
 for this duration for the DB to become available before it gives an
 error.
 
@@ -670,7 +670,7 @@ If you set it to 0 then it will wait forever.
 Properties:
 
 - Config:      db_wait_time
-- Env Var:     RCLONE_CACHE_DB_WAIT_TIME
+- Env Var:     ZCLONE_CACHE_DB_WAIT_TIME
 - Type:        Duration
 - Default:     1s
 
@@ -681,7 +681,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_CACHE_DESCRIPTION
+- Env Var:     ZCLONE_CACHE_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -692,12 +692,12 @@ Here are the commands specific to the cache backend.
 Run them with:
 
 ```console
-rclone backend COMMAND remote:
+zclone backend COMMAND remote:
 ```
 
 The help below will explain what arguments each command takes.
 
-See the [backend](/commands/rclone_backend/) command for more
+See the [backend](/commands/zclone_backend/) command for more
 info on how to pass options and arguments.
 
 These can be run on a running backend using the rc command
@@ -708,7 +708,7 @@ These can be run on a running backend using the rc command
 Print stats on the cache backend in JSON format.
 
 ```console
-rclone backend stats remote: [options] [<arguments>+]
+zclone backend stats remote: [options] [<arguments>+]
 ```
 
 <!-- autogenerated options stop -->

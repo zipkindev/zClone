@@ -1,4 +1,4 @@
-// Package rc implements a remote control server and registry for rclone
+// Package rc implements a remote control server and registry for zclone
 //
 // To register your internal calls, call rc.Add(path, function).  Your
 // function should take and return a Param.  It can also return an
@@ -13,8 +13,8 @@ import (
 	_ "net/http/pprof" // install the pprof http handlers
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	libhttp "github.com/rclone/rclone/lib/http"
+	"zclone/fs"
+	libhttp "zclone/lib/http"
 )
 
 // OptionsInfo describes the Options in use
@@ -69,8 +69,8 @@ var OptionsInfo = fs.Options{{
 	Hide:    fs.OptionHideBoth,
 }, {
 	Name:    "rc_web_fetch_url",
-	Default: "https://api.github.com/repos/rclone/rclone-webui-react/releases/latest",
-	Help:    "URL to fetch the releases for webgui **DEPRECATED**",
+	Default: "",
+	Help:    "Release URL for webgui; disabled in the local distribution **DEPRECATED**",
 	Groups:  "RC",
 	Hide:    fs.OptionHideBoth,
 }, {

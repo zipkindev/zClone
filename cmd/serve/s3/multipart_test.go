@@ -17,19 +17,19 @@ import (
 
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
-	"github.com/rclone/gofakes3"
-	_ "github.com/rclone/rclone/backend/memory"
-	"github.com/rclone/rclone/cmd/serve/proxy"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/lib/multipart"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
+	"zclone/lib/gofakes3"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/memory"
+	"zclone/cmd/serve/proxy"
+	"zclone/fs"
+	"zclone/fs/object"
+	"zclone/fs/operations"
+	"zclone/fstest"
+	"zclone/lib/multipart"
+	"zclone/lib/random"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
 )
 
 // testBackingCounter hands out unique backing roots across test servers.
@@ -921,9 +921,9 @@ func TestMultipartCacheModeWritesNoServerSideMove(t *testing.T) {
 	requireOnly(t, f, bucket, object, object2)
 }
 
-// TestTempObjectsHiddenFromListings checks that the reserved .rclone_temp_
+// TestTempObjectsHiddenFromListings checks that the reserved .zclone_temp_
 // prefix, and the multipart prefix used before it was reserved, are hidden
-// from S3 listings while remaining visible to rclone itself for cleanup.
+// from S3 listings while remaining visible to zclone itself for cleanup.
 func TestTempObjectsHiddenFromListings(t *testing.T) {
 	core, f, bucket := newMultipartTestServer(t, false)
 	ctx := context.Background()

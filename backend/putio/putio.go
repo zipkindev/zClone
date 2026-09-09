@@ -6,13 +6,13 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/oauthutil"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/obscure"
+	"zclone/lib/dircache"
+	"zclone/lib/encoder"
+	"zclone/lib/oauthutil"
 )
 
 /*
@@ -29,8 +29,8 @@ canStream = false
 
 // Constants
 const (
-	rcloneClientID             = "4131"
-	rcloneObscuredClientSecret = "cMwrjWVmrHZp3gf1ZpCrlyGAmPpB-YY5BbVnO1fj-G9evcd8"
+	zcloneClientID             = "4131"
+	zcloneObscuredClientSecret = "cMwrjWVmrHZp3gf1ZpCrlyGAmPpB-YY5BbVnO1fj-G9evcd8"
 	minSleep                   = 10 * time.Millisecond
 	maxSleep                   = 2 * time.Second
 	decayConstant              = 1 // bigger for slower decay, exponential
@@ -44,8 +44,8 @@ var (
 		Scopes:       []string{},
 		AuthURL:      "https://api.put.io/v2/oauth2/authenticate",
 		TokenURL:     "https://api.put.io/v2/oauth2/access_token",
-		ClientID:     rcloneClientID,
-		ClientSecret: obscure.MustReveal(rcloneObscuredClientSecret),
+		ClientID:     zcloneClientID,
+		ClientSecret: obscure.MustReveal(zcloneObscuredClientSecret),
 		RedirectURL:  oauthutil.RedirectLocalhostURL,
 	}
 	// A regexp matching path names for ignoring unnecessary files

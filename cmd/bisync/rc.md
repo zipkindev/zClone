@@ -6,56 +6,56 @@ This takes the following parameters:
 - path2 (required) - (string) a remote directory string e.g. `drive:path2`
 - dryRun - (bool) dry-run mode
 - backupDir1 - (string) --backup-dir for Path1. Must be a non-overlapping path on
-the same remote.  
+the same remote.
 - backupDir2 - (string) --backup-dir for Path2. Must be a non-overlapping path on
-the same remote.  
-- checkAccess - (bool) Ensure expected RCLONE_TEST files are found on both
-Path1 and Path2 filesystems, else abort.  
-- checkFilename - (string) Filename for --check-access (default: RCLONE_TEST)  
+the same remote.
+- checkAccess - (bool) Ensure expected ZCLONE_TEST files are found on both
+Path1 and Path2 filesystems, else abort.
+- checkFilename - (string) Filename for --check-access (default: ZCLONE_TEST)
 - checkSync - (string) Controls comparison of final listings: true|false|only
-(default: true)  
+(default: true)
 - compare - (string) Comma-separated list of bisync-specific compare options ex.
-'size,modtime,checksum' (default: 'size,modtime')  
+'size,modtime,checksum' (default: 'size,modtime')
 - conflictLoser - (ConflictLoserAction) Action to take on the loser of a sync
 conflict (when there is a winner) or on both files (when there is no
-winner): , num, pathname, delete (default: num)  
+winner): , num, pathname, delete (default: num)
 - conflictResolve - (string) Automatically resolve conflicts by preferring the
 version that is: none, path1, path2, newer, older, larger, smaller (default:
-none)  
+none)
 - conflictSuffix - (string) Suffix to use when renaming a --conflict-loser. Can
 be either one string or two comma-separated strings to assign different
-suffixes to Path1/Path2. (default: 'conflict')  
+suffixes to Path1/Path2. (default: 'conflict')
 - createEmptySrcDirs - (bool) Sync creation and deletion of empty directories.
-(Not compatible with --remove-empty-dirs)  
+(Not compatible with --remove-empty-dirs)
 - downloadHash - (bool) Compute hash by downloading when otherwise
-unavailable. (warning: may be slow and use lots of data!)  
-- filtersFile - (string) Read filtering patterns from a file  
+unavailable. (warning: may be slow and use lots of data!)
+- filtersFile - (string) Read filtering patterns from a file
 - force - (bool) Bypass --max-delete safety check and run the sync. Consider
-using with --verbose  
+using with --verbose
 - ignoreListingChecksum - (bool) Do not use checksums for listings (add --ignore-
-checksum to additionally skip post-copy checksum checks)  
+checksum to additionally skip post-copy checksum checks)
 - maxLock - (Duration) Consider lock files older than this to be expired
-(default: 0 (never expire)) (minimum: 2m)  
+(default: 0 (never expire)) (minimum: 2m)
 - noCleanup - (bool) Retain working files (useful for troubleshooting and
-testing).  
+testing).
 - noSlowHash - (bool) Ignore listing checksums only on backends where they are
-slow  
+slow
 - recover - (bool) Automatically recover from interruptions without requiring --
-resync.  
+resync.
 - removeEmptyDirs - (bool) Remove ALL empty directories at the final cleanup
-step.  
+step.
 - resilient - (bool) Allow future runs to retry after certain less-serious
-errors, instead of requiring --resync.  
+errors, instead of requiring --resync.
 - resync - (bool) Performs the resync run. Equivalent to --resync-mode path1.
-Consider using --verbose or --dry-run first.  
+Consider using --verbose or --dry-run first.
 - resyncMode - (string) During resync, prefer the version that is: path1,
 path2, newer, older, larger, smaller (default: path1 if --resync, otherwise
-none for no resync.)  
+none for no resync.)
 - slowHashSyncOnly - (bool) Ignore slow checksums for listings and deltas, but
-still consider them during sync calls.  
+still consider them during sync calls.
 - workdir - (string) Use custom working dir - useful for testing. (default:
-/home/ncw/.cache/rclone/bisync)  
+/Users/mizipkin/Library/Caches/zclone/bisync)
 
-See [bisync command help](https://rclone.org/commands/rclone_bisync/)
-and [full bisync description](https://rclone.org/bisync/)
+See [bisync command help](//commands/zclone_bisync/)
+and [full bisync description](//bisync/)
 for more information.

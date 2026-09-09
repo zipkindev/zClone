@@ -9,7 +9,7 @@ versionIntroduced: "v1.44"
 The `union` backend joins several remotes together to make a single unified view
 of them.
 
-During the initial setup with `rclone config` you will specify the upstream
+During the initial setup with `zclone config` you will specify the upstream
 remotes as a space separated list. The upstream remotes can either be a local
 paths or other remotes.
 
@@ -23,11 +23,11 @@ to tag the remote as **read only**, **no create** or **writeback**, e.g.
   See the [writeback section](#writeback) for more info.
 
 Subfolders can be used in upstream remotes. Assume a union remote named `backup`
-with the remotes `mydrive:private/backup`. Invoking `rclone mkdir backup:desktop`
-is exactly the same as invoking `rclone mkdir mydrive:private/backup/desktop`.
+with the remotes `mydrive:private/backup`. Invoking `zclone mkdir backup:desktop`
+is exactly the same as invoking `zclone mkdir mydrive:private/backup/desktop`.
 
-There is no special handling of paths containing `..` segments. Invoking `rclone
-mkdir backup:../desktop` is exactly the same as invoking `rclone mkdir
+There is no special handling of paths containing `..` segments. Invoking `zclone
+mkdir backup:../desktop` is exactly the same as invoking `zclone mkdir
 mydrive:private/backup/../desktop`.
 
 ## Configuration
@@ -36,7 +36,7 @@ Here is an example of how to make a union called `remote` for local folders.
 First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -97,25 +97,25 @@ q) Quit config
 e/n/d/r/c/s/q> q
 ```
 
-Once configured you can then use `rclone` like this:
+Once configured you can then use `zclone` like this:
 
 List directories in top level in `remote1:dir1`, `remote2:dir2` and `remote3:dir3`
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in `remote1:dir1`, `remote2:dir2` and `remote3:dir3`
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 Copy another local directory to the union directory called source, which will be
 placed into `remote3:dir3`
 
 ```console
-rclone copy C:\source remote:source
+zclone copy C:\source remote:source
 ```
 
 ### Behavior / Policies
@@ -164,7 +164,7 @@ your upstreams support the respective quota fields.
 | lus, eplus | Used           |
 | lno, eplno | Objects        |
 
-To check if your upstream supports the field, run `rclone about remote: [flags]`
+To check if your upstream supports the field, run `zclone about remote: [flags]`
 and see if the required field exists.
 
 ### Filters
@@ -219,9 +219,9 @@ upstreams = /local:writeback remote:dir
 ```
 
 When files are opened for read, if the file is in `remote:dir` but not `/local`
-then rclone will copy the file entirely into `/local` before returning a
+then zclone will copy the file entirely into `/local` before returning a
 reference to the file in `/local`. The copy will be done with the equivalent of
-`rclone copy` so will use `--multi-thread-streams` if configured. Any copies
+`zclone copy` so will use `--multi-thread-streams` if configured. Any copies
 will be logged with an INFO log.
 
 When files are written, they will be written to both `remote:dir` and `/local`.
@@ -229,7 +229,7 @@ When files are written, they will be written to both `remote:dir` and `/local`.
 As many remotes as desired can be added to `upstreams` but there should only be
 one `:writeback` tag.
 
-Rclone does not manage the `:writeback` remote in any way other than writing
+Zclone does not manage the `:writeback` remote in any way other than writing
 files back to it. So if you need to expire old files or manage the size then you
 will have to do this yourself.
 
@@ -247,7 +247,7 @@ Can be 'upstreama:test/dir upstreamb:', '"upstreama:test/space:ro dir" upstreamb
 Properties:
 
 - Config:      upstreams
-- Env Var:     RCLONE_UNION_UPSTREAMS
+- Env Var:     ZCLONE_UNION_UPSTREAMS
 - Type:        string
 - Required:    true
 
@@ -258,7 +258,7 @@ Policy to choose upstream on ACTION category.
 Properties:
 
 - Config:      action_policy
-- Env Var:     RCLONE_UNION_ACTION_POLICY
+- Env Var:     ZCLONE_UNION_ACTION_POLICY
 - Type:        string
 - Default:     "epall"
 
@@ -269,7 +269,7 @@ Policy to choose upstream on CREATE category.
 Properties:
 
 - Config:      create_policy
-- Env Var:     RCLONE_UNION_CREATE_POLICY
+- Env Var:     ZCLONE_UNION_CREATE_POLICY
 - Type:        string
 - Default:     "epmfs"
 
@@ -280,7 +280,7 @@ Policy to choose upstream on SEARCH category.
 Properties:
 
 - Config:      search_policy
-- Env Var:     RCLONE_UNION_SEARCH_POLICY
+- Env Var:     ZCLONE_UNION_SEARCH_POLICY
 - Type:        string
 - Default:     "ff"
 
@@ -293,7 +293,7 @@ This option is only useful when a path preserving policy is used.
 Properties:
 
 - Config:      cache_time
-- Env Var:     RCLONE_UNION_CACHE_TIME
+- Env Var:     ZCLONE_UNION_CACHE_TIME
 - Type:        int
 - Default:     120
 
@@ -311,7 +311,7 @@ considered for use in lfs or eplfs policies.
 Properties:
 
 - Config:      min_free_space
-- Env Var:     RCLONE_UNION_MIN_FREE_SPACE
+- Env Var:     ZCLONE_UNION_MIN_FREE_SPACE
 - Type:        SizeSuffix
 - Default:     1Gi
 
@@ -322,7 +322,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_UNION_DESCRIPTION
+- Env Var:     ZCLONE_UNION_DESCRIPTION
 - Type:        string
 - Required:    false
 

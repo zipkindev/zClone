@@ -6,13 +6,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/backend/googlephotos/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/dirtree"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/mockobject"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/backend/googlephotos/api"
+	"zclone/fs"
+	"zclone/fs/dirtree"
+	"zclone/fstest"
+	"zclone/fstest/mockobject"
 )
 
 // time for directories

@@ -10,18 +10,18 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/backend/b2/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
-	"github.com/rclone/rclone/lib/bucket"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/lib/version"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/backend/b2/api"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/hash"
+	"zclone/fs/object"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
+	"zclone/lib/bucket"
+	"zclone/lib/random"
+	"zclone/lib/version"
 )
 
 // Test b2 string encoding

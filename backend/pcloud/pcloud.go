@@ -18,27 +18,27 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/backend/pcloud/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/oauthutil"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
 	"golang.org/x/oauth2"
+	"zclone/backend/pcloud/api"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/lib/dircache"
+	"zclone/lib/encoder"
+	"zclone/lib/oauthutil"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
 const (
-	rcloneClientID              = "DnONSzyJXpm"
-	rcloneEncryptedClientSecret = "ej1OIF39VOQQ0PXaSdK9ztkLw3tdLNscW2157TKNQdQKkICR4uU7aFg4eFM"
+	zcloneClientID              = "DnONSzyJXpm"
+	zcloneEncryptedClientSecret = "ej1OIF39VOQQ0PXaSdK9ztkLw3tdLNscW2157TKNQdQKkICR4uU7aFg4eFM"
 	minSleep                    = 10 * time.Millisecond
 	maxSleep                    = 2 * time.Second
 	decayConstant               = 2 // bigger for slower decay, exponential
@@ -52,8 +52,8 @@ var (
 		Scopes:  nil,
 		AuthURL: "https://my.pcloud.com/oauth2/authorize",
 		// TokenURL: "https://api.pcloud.com/oauth2_token", set by updateTokenURL
-		ClientID:     rcloneClientID,
-		ClientSecret: obscure.MustReveal(rcloneEncryptedClientSecret),
+		ClientID:     zcloneClientID,
+		ClientSecret: obscure.MustReveal(zcloneEncryptedClientSecret),
 		RedirectURL:  oauthutil.RedirectLocalhostURL,
 	}
 )
@@ -110,7 +110,7 @@ func init() {
 				encoder.EncodeInvalidUtf8),
 		}, {
 			Name:      "root_folder_id",
-			Help:      "Fill in for rclone to use a non root folder as its starting point.",
+			Help:      "Fill in for zclone to use a non root folder as its starting point.",
 			Default:   "d0",
 			Advanced:  true,
 			Sensitive: true,
@@ -118,9 +118,9 @@ func init() {
 			Name: "hostname",
 			Help: `Hostname to connect to.
 
-This is normally set when rclone initially does the oauth connection,
+This is normally set when zclone initially does the oauth connection,
 however you will need to set it by hand if you are using remote config
-with rclone authorize.
+with zclone authorize.
 `,
 			Default:  defaultHostname,
 			Advanced: true,
@@ -374,7 +374,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 		}
 		// XXX: update the old f here instead of returning tempF, since
 		// `features` were already filled with functions having *f as a receiver.
-		// See https://github.com/rclone/rclone/issues/2182
+		// See /
 		f.dirCache = tempF.dirCache
 		f.root = tempF.root
 		// return an error with an fs which points to the parent
@@ -587,7 +587,7 @@ func (f *Fs) listAllRootRecursive(ctx context.Context, dirID string, directories
 func (f *Fs) listAll(ctx context.Context, dirID string, directoriesOnly bool, filesOnly bool, recursive bool, fn listAllFn) (found bool, err error) {
 	// Special case: root directory with recursive listing
 	// pCloud API rejects folderid=0 with recursive=1 (error 1101)
-	// See: https://github.com/rclone/rclone/issues/9315
+	// See: /
 	if recursive && dirIDtoNumber(dirID) == "0" {
 		return f.listAllRootRecursive(ctx, dirID, directoriesOnly, filesOnly, fn)
 	}
@@ -1224,10 +1224,10 @@ func (f *Fs) changeNotifyLoop(ctx context.Context, notify func(string, fs.EntryT
 
 // Hashes returns the supported hash sets.
 func (f *Fs) Hashes() hash.Set {
-	// EU region supports SHA1 and SHA256 (but rclone doesn't
+	// EU region supports SHA1 and SHA256 (but zclone doesn't
 	// support SHA256 yet).
 	//
-	// https://forum.rclone.org/t/pcloud-to-local-no-hashes-in-common/19440
+	// /
 	if f.opt.Hostname == "eapi.pcloud.com" {
 		return hash.Set(hash.SHA1 | hash.SHA256)
 	}

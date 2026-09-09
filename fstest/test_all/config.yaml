@@ -211,7 +211,7 @@ backends:
    ignoretests:
      - cmd/bisync
  - backend:  "internetarchive"
-   remote:   "TestIA:rclone-integration-test-2"
+   remote:   "TestIA:zclone-integration-test-2"
    fastlist: true
    short:    true
    tests:
@@ -253,7 +253,7 @@ backends:
    remote:   "TestS3,directory_markers:"
    fastlist: true
  - backend:  "s3"
-   remote:   "TestS3Rclone:"
+   remote:   "TestS3Zclone:"
    fastlist: true
    ignoretests:
      - cmd/bisync
@@ -345,12 +345,12 @@ backends:
    ignoretests:
      - cmd/gitannex
  - backend:  "sftp"
-   remote:   "TestSFTPRclone:"
+   remote:   "TestSFTPZclone:"
    fastlist: false
    ignoretests:
      - cmd/gitannex
  - backend:  "sftp"
-   remote:   "TestSFTPRcloneSSH:"
+   remote:   "TestSFTPZcloneSSH:"
    fastlist: false
    ignoretests:
      - cmd/gitannex
@@ -412,7 +412,7 @@ backends:
    ignoretests:
      - cmd/gitannex
  - backend:  "ftp"
-   remote:   "TestFTPRclone:"
+   remote:   "TestFTPZclone:"
    fastlist: false
    ignoretests:
      - cmd/gitannex
@@ -504,13 +504,13 @@ backends:
  #     - TestIntegration/FsMkdir/FsEncoding/punctuation
  #     - TestIntegration/FsMkdir/FsEncoding/invalid_UTF-8
  #   env:
- #      - RCLONE_NO_CHECK_CERTIFICATE=true
+ #      - ZCLONE_NO_CHECK_CERTIFICATE=true
  #   fastlist: false
  #   ignoretests:
  #     - cmd/bisync
  #     - cmd/gitannex
  - backend:  "webdav"
-   remote:   "TestWebdavRclone:"
+   remote:   "TestWebdavZclone:"
    ignore:
      - TestFileReadAtZeroLength
    fastlist: false
@@ -603,23 +603,23 @@ backends:
    ignoretests:
      - cmd/gitannex
  - backend:  "smb"
-   remote:   "TestSMB:rclone"
+   remote:   "TestSMB:zclone"
    fastlist: false
    ignoretests:
      - cmd/gitannex
  - backend:  "smb"
-   remote:   "TestSMBKerberos:rclone"
+   remote:   "TestSMBKerberos:zclone"
    fastlist: false
    env:
-      - KRB5_CONFIG=/tmp/rclone_krb5/krb5.conf
-      - KRB5CCNAME=/tmp/rclone_krb5/ccache
+      - KRB5_CONFIG=/tmp/zclone_krb5/krb5.conf
+      - KRB5CCNAME=/tmp/zclone_krb5/ccache
    ignoretests:
      - cmd/gitannex
  - backend:  "smb"
-   remote:   "TestSMBKerberosCcache:rclone"
+   remote:   "TestSMBKerberosCcache:zclone"
    fastlist: false
    env:
-     - KRB5_CONFIG=/tmp/rclone_krb5_ccache/krb5.conf
+     - KRB5_CONFIG=/tmp/zclone_krb5_ccache/krb5.conf
    ignoretests:
      - cmd/gitannex
  - backend:  "storj"

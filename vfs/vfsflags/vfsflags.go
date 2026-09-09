@@ -2,9 +2,9 @@
 package vfsflags
 
 import (
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/vfs/vfscommon"
 	"github.com/spf13/pflag"
+	"zclone/fs/config/flags"
+	"zclone/vfs/vfscommon"
 )
 
 // AddFlags adds the non filing system specific flags to the command

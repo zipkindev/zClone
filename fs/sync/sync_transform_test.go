@@ -11,17 +11,17 @@ import (
 	"strings"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/all"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/walk"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/lib/transform"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/text/unicode/norm"
+	_ "zclone/backend/all"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/filter"
+	"zclone/fs/operations"
+	"zclone/fs/walk"
+	"zclone/fstest"
+	"zclone/lib/transform"
 )
 
 var debug = ``

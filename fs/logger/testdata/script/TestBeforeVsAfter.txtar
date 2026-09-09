@@ -2,15 +2,15 @@
 # src and dst are filled by the test Setup with two overlapping trees of files.
 
 # generating sumfiles:
-exec rclone md5sum $SRC --output-file $WORK/src-before.txt
-exec rclone md5sum $DST --output-file $WORK/dst-before.txt
+exec zclone md5sum $SRC --output-file $WORK/src-before.txt
+exec zclone md5sum $DST --output-file $WORK/dst-before.txt
 
 # running sync with output files:
-exec rclone sync $SRC $DST --match $WORK/SYNCmatch.txt --combined $WORK/SYNCcombined.txt --missing-on-src $WORK/SYNCmissingonsrc.txt --missing-on-dst $WORK/SYNCmissingondst.txt --error $WORK/SYNCerr.txt --differ $WORK/SYNCdiffer.txt --dest-after $WORK/SYNCdestafter.txt --format 'hp' --separator '  '
+exec zclone sync $SRC $DST --match $WORK/SYNCmatch.txt --combined $WORK/SYNCcombined.txt --missing-on-src $WORK/SYNCmissingonsrc.txt --missing-on-dst $WORK/SYNCmissingondst.txt --error $WORK/SYNCerr.txt --differ $WORK/SYNCdiffer.txt --dest-after $WORK/SYNCdestafter.txt --format 'hp' --separator '  '
 
 # generating sumfiles:
-exec rclone md5sum $SRC --output-file $WORK/src-after.txt
-exec rclone md5sum $DST --output-file $WORK/dst-after.txt
+exec zclone md5sum $SRC --output-file $WORK/src-after.txt
+exec zclone md5sum $DST --output-file $WORK/dst-after.txt
 
 # sorting them by line and diffing:
 exec sort $WORK/src-before.txt -o $WORK/src-before.txt

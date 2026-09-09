@@ -46,18 +46,18 @@ INFO  : Building Path1 and Path2 listings
 INFO  : Path1 checking for diffs
 INFO  : Path2 checking for diffs
 INFO  : Checking access health
-INFO  : Found 3 matching "RCLONE_TEST" files on both paths
+INFO  : Found 3 matching "ZCLONE_TEST" files on both paths
 INFO  : No changes found
 INFO  : Updating listings
 INFO  : Validating listings for Path1 "{path1/}" vs Path2 "{path2/}"
 INFO  : [32mBisync successful[0m
 [36m(08)  :[0m [34mcopy-listings exclude-initial[0m
 
-[36m(09)  :[0m [34mtest EXCLUDE - delete RCLONE_TEST files in excluded directories[0m
-[36m(10)  :[0m [34mdelete-file {path2/}subdir/subdirA/RCLONE_TEST[0m
-[36m(11)  :[0m [34mdelete-file {path1/}subdir-not/RCLONE_TEST[0m
-[36m(12)  :[0m [34mdelete-file {path2/}subdir-not/subdir-not2/RCLONE_TEST[0m
-[36m(13)  :[0m [34mdelete-file {path1/}subdirX/RCLONE_TEST[0m
+[36m(09)  :[0m [34mtest EXCLUDE - delete ZCLONE_TEST files in excluded directories[0m
+[36m(10)  :[0m [34mdelete-file {path2/}subdir/subdirA/ZCLONE_TEST[0m
+[36m(11)  :[0m [34mdelete-file {path1/}subdir-not/ZCLONE_TEST[0m
+[36m(12)  :[0m [34mdelete-file {path2/}subdir-not/subdir-not2/ZCLONE_TEST[0m
+[36m(13)  :[0m [34mdelete-file {path1/}subdirX/ZCLONE_TEST[0m
 
 [36m(14)  :[0m [34mtest EXCLUDE - test should PASS[0m
 [36m(15)  :[0m [34mbisync check-access filters-file={workdir/}exclude-other-filtersfile.txt[0m
@@ -77,16 +77,16 @@ INFO  : Building Path1 and Path2 listings
 INFO  : Path1 checking for diffs
 INFO  : Path2 checking for diffs
 INFO  : Checking access health
-INFO  : Found 3 matching "RCLONE_TEST" files on both paths
+INFO  : Found 3 matching "ZCLONE_TEST" files on both paths
 INFO  : No changes found
 INFO  : Updating listings
 INFO  : Validating listings for Path1 "{path1/}" vs Path2 "{path2/}"
 INFO  : [32mBisync successful[0m
 [36m(16)  :[0m [34mcopy-listings exclude-pass-run[0m
 
-[36m(17)  :[0m [34mtest EXCLUDE - delete RCLONE_TEST files in included directories[0m
-[36m(18)  :[0m [34mdelete-file {path2/}RCLONE_TEST[0m
-[36m(19)  :[0m [34mdelete-file {path1/}subdir/RCLONE_TEST[0m
+[36m(17)  :[0m [34mtest EXCLUDE - delete ZCLONE_TEST files in included directories[0m
+[36m(18)  :[0m [34mdelete-file {path2/}ZCLONE_TEST[0m
+[36m(19)  :[0m [34mdelete-file {path1/}subdir/ZCLONE_TEST[0m
 
 [36m(20)  :[0m [34mtest EXCLUDE - test should ABORT[0m
 [36m(21)  :[0m [34mbisync check-access filters-file={workdir/}exclude-other-filtersfile.txt[0m
@@ -104,14 +104,14 @@ INFO  : Synching Path1 "{path1/}" with Path2 "{path2/}"
 INFO  : Using filters file {workdir/}exclude-other-filtersfile.txt
 INFO  : Building Path1 and Path2 listings
 INFO  : Path1 checking for diffs
-INFO  : - [36mPath1[0m    [35m[31mFile was deleted[0m[0m          - [36msubdir/RCLONE_TEST[0m
+INFO  : - [36mPath1[0m    [35m[31mFile was deleted[0m[0m          - [36msubdir/ZCLONE_TEST[0m
 INFO  : Path1:    1 changes: [32m   0 new[0m, [33m   0 modified[0m, [31m   1 deleted[0m
 INFO  : Path2 checking for diffs
-INFO  : - [34mPath2[0m    [35m[31mFile was deleted[0m[0m          - [36mRCLONE_TEST[0m
+INFO  : - [34mPath2[0m    [35m[31mFile was deleted[0m[0m          - [36mZCLONE_TEST[0m
 INFO  : Path2:    1 changes: [32m   0 new[0m, [33m   0 modified[0m, [31m   1 deleted[0m
 INFO  : Checking access health
-ERROR : - [34m[0m         [35mAccess test failed: Path1 file not found in Path2[0m - [36mRCLONE_TEST[0m
-ERROR : - [34m[0m         [35mAccess test failed: Path2 file not found in Path1[0m - [36msubdir/RCLONE_TEST[0m
+ERROR : - [34m[0m         [35mAccess test failed: Path1 file not found in Path2[0m - [36mZCLONE_TEST[0m
+ERROR : - [34m[0m         [35mAccess test failed: Path2 file not found in Path1[0m - [36msubdir/ZCLONE_TEST[0m
 ERROR : [31mBisync critical error: check file check failed[0m
 ERROR : [31mBisync aborted. Must run --resync to recover.[0m
 Bisync error: bisync aborted
@@ -163,17 +163,17 @@ INFO  : Building Path1 and Path2 listings
 INFO  : Path1 checking for diffs
 INFO  : Path2 checking for diffs
 INFO  : Checking access health
-INFO  : Found 5 matching "RCLONE_TEST" files on both paths
+INFO  : Found 5 matching "ZCLONE_TEST" files on both paths
 INFO  : No changes found
 INFO  : Updating listings
 INFO  : Validating listings for Path1 "{path1/}" vs Path2 "{path2/}"
 INFO  : [32mBisync successful[0m
 [36m(31)  :[0m [34mcopy-listings include-initial[0m
 
-[36m(32)  :[0m [34mtest INCLUDE - delete RCLONE_TEST files in excluded directories[0m
-[36m(33)  :[0m [34mdelete-file {path2/}subdir/subdirA/RCLONE_TEST[0m
-[36m(34)  :[0m [34mdelete-file {path1/}subdir-not/RCLONE_TEST[0m
-[36m(35)  :[0m [34mdelete-file {path2/}subdir-not/subdir-not2/RCLONE_TEST[0m
+[36m(32)  :[0m [34mtest INCLUDE - delete ZCLONE_TEST files in excluded directories[0m
+[36m(33)  :[0m [34mdelete-file {path2/}subdir/subdirA/ZCLONE_TEST[0m
+[36m(34)  :[0m [34mdelete-file {path1/}subdir-not/ZCLONE_TEST[0m
+[36m(35)  :[0m [34mdelete-file {path2/}subdir-not/subdir-not2/ZCLONE_TEST[0m
 
 [36m(36)  :[0m [34mtest INCLUDE - test should PASS[0m
 [36m(37)  :[0m [34mbisync check-access filters-file={workdir/}include-other-filtersfile.txt[0m
@@ -193,17 +193,17 @@ INFO  : Building Path1 and Path2 listings
 INFO  : Path1 checking for diffs
 INFO  : Path2 checking for diffs
 INFO  : Checking access health
-INFO  : Found 5 matching "RCLONE_TEST" files on both paths
+INFO  : Found 5 matching "ZCLONE_TEST" files on both paths
 INFO  : No changes found
 INFO  : Updating listings
 INFO  : Validating listings for Path1 "{path1/}" vs Path2 "{path2/}"
 INFO  : [32mBisync successful[0m
 [36m(38)  :[0m [34mcopy-listings include-pass-run[0m
 
-[36m(39)  :[0m [34mtest INCLUDE - delete RCLONE_TEST files in included directories[0m
-[36m(40)  :[0m [34mdelete-file {path2/}RCLONE_TEST[0m
-[36m(41)  :[0m [34mdelete-file {path1/}subdir/RCLONE_TEST[0m
-[36m(42)  :[0m [34mdelete-file {path1/}subdirX/subdirX1/RCLONE_TEST[0m
+[36m(39)  :[0m [34mtest INCLUDE - delete ZCLONE_TEST files in included directories[0m
+[36m(40)  :[0m [34mdelete-file {path2/}ZCLONE_TEST[0m
+[36m(41)  :[0m [34mdelete-file {path1/}subdir/ZCLONE_TEST[0m
+[36m(42)  :[0m [34mdelete-file {path1/}subdirX/subdirX1/ZCLONE_TEST[0m
 
 [36m(43)  :[0m [34mtest INCLUDE - test should ABORT[0m
 [36m(44)  :[0m [34mbisync check-access filters-file={workdir/}include-other-filtersfile.txt[0m
@@ -221,17 +221,17 @@ INFO  : Synching Path1 "{path1/}" with Path2 "{path2/}"
 INFO  : Using filters file {workdir/}include-other-filtersfile.txt
 INFO  : Building Path1 and Path2 listings
 INFO  : Path1 checking for diffs
-INFO  : - [36mPath1[0m    [35m[31mFile was deleted[0m[0m          - [36msubdir/RCLONE_TEST[0m
-INFO  : - [36mPath1[0m    [35m[31mFile was deleted[0m[0m          - [36msubdirX/subdirX1/RCLONE_TEST[0m
+INFO  : - [36mPath1[0m    [35m[31mFile was deleted[0m[0m          - [36msubdir/ZCLONE_TEST[0m
+INFO  : - [36mPath1[0m    [35m[31mFile was deleted[0m[0m          - [36msubdirX/subdirX1/ZCLONE_TEST[0m
 INFO  : Path1:    2 changes: [32m   0 new[0m, [33m   0 modified[0m, [31m   2 deleted[0m
 INFO  : Path2 checking for diffs
-INFO  : - [34mPath2[0m    [35m[31mFile was deleted[0m[0m          - [36mRCLONE_TEST[0m
+INFO  : - [34mPath2[0m    [35m[31mFile was deleted[0m[0m          - [36mZCLONE_TEST[0m
 INFO  : Path2:    1 changes: [32m   0 new[0m, [33m   0 modified[0m, [31m   1 deleted[0m
 INFO  : Checking access health
-ERROR : Access test failed: Path1 count 3, Path2 count 4 - RCLONE_TEST
-ERROR : - [34m[0m         [35mAccess test failed: Path1 file not found in Path2[0m - [36mRCLONE_TEST[0m
-ERROR : - [34m[0m         [35mAccess test failed: Path2 file not found in Path1[0m - [36msubdir/RCLONE_TEST[0m
-ERROR : - [34m[0m         [35mAccess test failed: Path2 file not found in Path1[0m - [36msubdirX/subdirX1/RCLONE_TEST[0m
+ERROR : Access test failed: Path1 count 3, Path2 count 4 - ZCLONE_TEST
+ERROR : - [34m[0m         [35mAccess test failed: Path1 file not found in Path2[0m - [36mZCLONE_TEST[0m
+ERROR : - [34m[0m         [35mAccess test failed: Path2 file not found in Path1[0m - [36msubdir/ZCLONE_TEST[0m
+ERROR : - [34m[0m         [35mAccess test failed: Path2 file not found in Path1[0m - [36msubdirX/subdirX1/ZCLONE_TEST[0m
 ERROR : [31mBisync critical error: check file check failed[0m
 ERROR : [31mBisync aborted. Must run --resync to recover.[0m
 Bisync error: bisync aborted

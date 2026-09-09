@@ -1,6 +1,6 @@
 ---
 title: "Google Cloud Storage"
-description: "Rclone docs for Google Cloud Storage"
+description: "Zclone docs for Google Cloud Storage"
 versionIntroduced: "v1.02"
 ---
 
@@ -12,13 +12,13 @@ command.)  You may put subdirectories in too, e.g. `remote:bucket/path/to/dir`.
 ## Configuration
 
 The initial setup for google cloud storage involves getting a token from Google
-Cloud Storage which you need to do in your browser.  `rclone config` walks you
+Cloud Storage which you need to do in your browser.  `zclone config` walks you
 through it.
 
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -121,15 +121,15 @@ Choose a number from below, or type in your own value
    \ "DURABLE_REDUCED_AVAILABILITY"
 storage_class> 5
 Remote config
-Use web browser to automatically authenticate rclone with remote?
- * Say Y if the machine running rclone has a web browser you can use
- * Say N if running rclone on a (remote) machine without web browser access
+Use web browser to automatically authenticate zclone with remote?
+ * Say Y if the machine running zclone has a web browser you can use
+ * Say N if running zclone on a (remote) machine without web browser access
 If not sure try Y. If Y failed, try N.
 y) Yes
 n) No
 y/n> y
 If your browser doesn't open automatically go to the following link: http://127.0.0.1:53682/auth
-Log in and authorize rclone for access
+Log in and authorize zclone for access
 Waiting for code...
 Got code
 Configuration complete.
@@ -151,7 +151,7 @@ y/e/d> y
 See the [remote setup docs](/remote_setup/) for how to set it up on a
 machine without an internet-connected web browser available.
 
-Note that rclone runs a webserver on your local machine to collect the
+Note that zclone runs a webserver on your local machine to collect the
 token as returned from Google if using web browser to automatically
 authenticate. This only
 runs from the moment it opens your browser to the moment you get back
@@ -164,31 +164,31 @@ This remote is called `remote` and can now be used like this
 See all the buckets in your project
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 Make a new bucket
 
 ```console
-rclone mkdir remote:bucket
+zclone mkdir remote:bucket
 ```
 
 List the contents of a bucket
 
 ```console
-rclone ls remote:bucket
+zclone ls remote:bucket
 ```
 
 Sync `/home/local/directory` to the remote bucket, deleting any excess
 files in the bucket.
 
 ```console
-rclone sync --interactive /home/local/directory remote:bucket
+zclone sync --interactive /home/local/directory remote:bucket
 ```
 
 ### Service Account support
 
-You can set up rclone with Google Cloud Storage in an unattended mode,
+You can set up zclone with Google Cloud Storage in an unattended mode,
 i.e. not tied to a specific end-user Google account. This is useful
 when you want to synchronise files onto machines that don't have
 actively logged-in users, for example build machines.
@@ -203,13 +203,13 @@ like normal `User` permissions in
 so you can limit their access (e.g. make them read only). After
 creating an account, a JSON file containing the Service Account's
 credentials will be downloaded onto your machines. These credentials
-are what rclone will use for authentication.
+are what zclone will use for authentication.
 
 To use a Service Account instead of OAuth2 token flow, enter the path
 to your Service Account credentials at the `service_account_file`
-prompt and rclone won't use the browser based authentication
+prompt and zclone won't use the browser based authentication
 flow. If you'd rather stuff the contents of the credentials file into
-the rclone config file, you can set `service_account_credentials` with
+the zclone config file, you can set `service_account_credentials` with
 the actual contents of the file instead, or set the equivalent
 environment variable.
 
@@ -263,30 +263,30 @@ hit `CTRL-C` when you see *waiting for code*.  This will save the config without
 doing oauth flow
 
 ```console
-rclone config update ${REMOTE_NAME} access_token ya29.c.c0Axxxx
+zclone config update ${REMOTE_NAME} access_token ya29.c.c0Axxxx
 ```
 
-#### 5. Run rclone as usual
+#### 5. Run zclone as usual
 
 ```console
-rclone ls dev-gcs:${MY_BUCKET}/
+zclone ls dev-gcs:${MY_BUCKET}/
 ```
 
 ### More Info on Service Accounts
 
 - [Official GCS Docs](https://cloud.google.com/compute/docs/access/service-accounts)
-- [Guide on Service Accounts using Key Files (less secure, but similar concepts)](https://forum.rclone.org/t/access-using-google-service-account/24822/2)
+- [Guide on Service Accounts using Key Files (less secure, but similar concepts)](/)
 
 ### Anonymous Access
 
-For downloads of objects that permit public access you can configure rclone
+For downloads of objects that permit public access you can configure zclone
 to use anonymous access by setting `anonymous` to `true`.
 With unauthorized access you can't write or create files but only read or list
 those buckets and objects that have public read access.
 
 ### Application Default Credentials
 
-If no other source of credentials is provided, rclone will fall back
+If no other source of credentials is provided, zclone will fall back
 to
 [Application Default Credentials](https://cloud.google.com/video-intelligence/docs/common/auth#authenticating_with_application_default_credentials)
 this is useful both when you already have configured authentication
@@ -301,7 +301,7 @@ is no need to explicitly configure a project number.
 ### --fast-list
 
 This remote supports `--fast-list` which allows you to use fewer
-transactions in exchange for more memory. See the [rclone
+transactions in exchange for more memory. See the [zclone
 docs](/docs/#fast-list) for more details.
 
 ### Custom upload headers
@@ -330,17 +330,17 @@ Google's [gsutil](https://cloud.google.com/storage/docs/gsutil) tool stores
 modification time with one-second precision as `goog-reserved-file-mtime` in
 file metadata.
 
-To ensure compatibility with gsutil, rclone stores modification time in 2
+To ensure compatibility with gsutil, zclone stores modification time in 2
 separate metadata entries. `mtime` uses RFC3339 format with one-nanosecond
 precision. `goog-reserved-file-mtime` uses Unix timestamp format with one-second
-precision. To get modification time from object metadata, rclone reads the
+precision. To get modification time from object metadata, zclone reads the
 metadata in the following order: `mtime`, `goog-reserved-file-mtime`, object
 updated time.
 
-Note that rclone's default modify window is 1ns.
+Note that zclone's default modify window is 1ns.
 Files uploaded by gsutil only contain timestamps with one-second precision.
-If you use rclone to sync files previously uploaded by gsutil,
-rclone will attempt to update modification time for all these files.
+If you use zclone to sync files previously uploaded by gsutil,
+zclone will attempt to update modification time for all these files.
 To avoid these possibly unnecessary updates, use `--modify-window 1s`.
 
 ### Restricted filename characters
@@ -369,7 +369,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_id
-- Env Var:     RCLONE_GCS_CLIENT_ID
+- Env Var:     ZCLONE_GCS_CLIENT_ID
 - Type:        string
 - Required:    false
 
@@ -382,7 +382,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_secret
-- Env Var:     RCLONE_GCS_CLIENT_SECRET
+- Env Var:     ZCLONE_GCS_CLIENT_SECRET
 - Type:        string
 - Required:    false
 
@@ -395,7 +395,7 @@ Optional - needed only for list/create/delete buckets - see your developer conso
 Properties:
 
 - Config:      project_number
-- Env Var:     RCLONE_GCS_PROJECT_NUMBER
+- Env Var:     ZCLONE_GCS_PROJECT_NUMBER
 - Type:        string
 - Required:    false
 
@@ -408,7 +408,7 @@ Optional - needed only for requester pays.
 Properties:
 
 - Config:      user_project
-- Env Var:     RCLONE_GCS_USER_PROJECT
+- Env Var:     ZCLONE_GCS_USER_PROJECT
 - Type:        string
 - Required:    false
 
@@ -419,12 +419,12 @@ Service Account Credentials JSON file path.
 Leave blank normally.
 Needed only if you want use SA instead of interactive login.
 
-Leading `~` will be expanded in the file name as will environment variables such as `${RCLONE_CONFIG_DIR}`.
+Leading `~` will be expanded in the file name as will environment variables such as `${ZCLONE_CONFIG_DIR}`.
 
 Properties:
 
 - Config:      service_account_file
-- Env Var:     RCLONE_GCS_SERVICE_ACCOUNT_FILE
+- Env Var:     ZCLONE_GCS_SERVICE_ACCOUNT_FILE
 - Type:        string
 - Required:    false
 
@@ -437,7 +437,7 @@ Set to 'true' if you just want to download files and don't configure credentials
 Properties:
 
 - Config:      anonymous
-- Env Var:     RCLONE_GCS_ANONYMOUS
+- Env Var:     ZCLONE_GCS_ANONYMOUS
 - Type:        bool
 - Default:     false
 
@@ -448,7 +448,7 @@ Access Control List for new objects.
 Properties:
 
 - Config:      object_acl
-- Env Var:     RCLONE_GCS_OBJECT_ACL
+- Env Var:     ZCLONE_GCS_OBJECT_ACL
 - Type:        string
 - Required:    false
 - Examples:
@@ -478,7 +478,7 @@ Access Control List for new buckets.
 Properties:
 
 - Config:      bucket_acl
-- Env Var:     RCLONE_GCS_BUCKET_ACL
+- Env Var:     ZCLONE_GCS_BUCKET_ACL
 - Type:        string
 - Required:    false
 - Examples:
@@ -504,7 +504,7 @@ Access checks should use bucket-level IAM policies.
 If you want to upload objects to a bucket with Bucket Policy Only set
 then you will need to set this.
 
-When it is set, rclone:
+When it is set, zclone:
 
 - ignores ACLs set on buckets
 - ignores ACLs set on objects
@@ -516,7 +516,7 @@ Docs: https://cloud.google.com/storage/docs/bucket-policy-only
 Properties:
 
 - Config:      bucket_policy_only
-- Env Var:     RCLONE_GCS_BUCKET_POLICY_ONLY
+- Env Var:     ZCLONE_GCS_BUCKET_POLICY_ONLY
 - Type:        bool
 - Default:     false
 
@@ -527,7 +527,7 @@ Location for the newly created buckets.
 Properties:
 
 - Config:      location
-- Env Var:     RCLONE_GCS_LOCATION
+- Env Var:     ZCLONE_GCS_LOCATION
 - Type:        string
 - Required:    false
 - Examples:
@@ -613,7 +613,7 @@ The storage class to use when storing objects in Google Cloud Storage.
 Properties:
 
 - Config:      storage_class
-- Env Var:     RCLONE_GCS_STORAGE_CLASS
+- Env Var:     ZCLONE_GCS_STORAGE_CLASS
 - Type:        string
 - Required:    false
 - Examples:
@@ -641,7 +641,7 @@ Only applies if service_account_file and service_account_credentials is blank.
 Properties:
 
 - Config:      env_auth
-- Env Var:     RCLONE_GCS_ENV_AUTH
+- Env Var:     ZCLONE_GCS_ENV_AUTH
 - Type:        bool
 - Default:     false
 - Examples:
@@ -661,7 +661,7 @@ OAuth Access Token as a JSON blob.
 Properties:
 
 - Config:      token
-- Env Var:     RCLONE_GCS_TOKEN
+- Env Var:     ZCLONE_GCS_TOKEN
 - Type:        string
 - Required:    false
 
@@ -674,7 +674,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      auth_url
-- Env Var:     RCLONE_GCS_AUTH_URL
+- Env Var:     ZCLONE_GCS_AUTH_URL
 - Type:        string
 - Required:    false
 
@@ -687,7 +687,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      token_url
-- Env Var:     RCLONE_GCS_TOKEN_URL
+- Env Var:     ZCLONE_GCS_TOKEN_URL
 - Type:        string
 - Required:    false
 
@@ -702,7 +702,7 @@ Note that this option is NOT supported by all backends.
 Properties:
 
 - Config:      client_credentials
-- Env Var:     RCLONE_GCS_CLIENT_CREDENTIALS
+- Env Var:     ZCLONE_GCS_CLIENT_CREDENTIALS
 - Type:        bool
 - Default:     false
 
@@ -716,7 +716,7 @@ Needed only if you want use short-lived access token instead of interactive logi
 Properties:
 
 - Config:      access_token
-- Env Var:     RCLONE_GCS_ACCESS_TOKEN
+- Env Var:     ZCLONE_GCS_ACCESS_TOKEN
 - Type:        string
 - Required:    false
 
@@ -731,7 +731,7 @@ object ending with "/", to persist the folder.
 Properties:
 
 - Config:      directory_markers
-- Env Var:     RCLONE_GCS_DIRECTORY_MARKERS
+- Env Var:     ZCLONE_GCS_DIRECTORY_MARKERS
 - Type:        bool
 - Default:     false
 
@@ -740,13 +740,13 @@ Properties:
 If set, don't attempt to check the bucket exists or create it.
 
 This can be useful when trying to minimise the number of transactions
-rclone does if you know the bucket exists already.
+zclone does if you know the bucket exists already.
 
 
 Properties:
 
 - Config:      no_check_bucket
-- Env Var:     RCLONE_GCS_NO_CHECK_BUCKET
+- Env Var:     ZCLONE_GCS_NO_CHECK_BUCKET
 - Type:        bool
 - Default:     false
 
@@ -755,17 +755,17 @@ Properties:
 If set this will decompress gzip encoded objects.
 
 It is possible to upload objects to GCS with "Content-Encoding: gzip"
-set. Normally rclone will download these files as compressed objects.
+set. Normally zclone will download these files as compressed objects.
 
-If this flag is set then rclone will decompress these files with
-"Content-Encoding: gzip" as they are received. This means that rclone
+If this flag is set then zclone will decompress these files with
+"Content-Encoding: gzip" as they are received. This means that zclone
 can't check the size and hash but the file contents will be decompressed.
 
 
 Properties:
 
 - Config:      decompress
-- Env Var:     RCLONE_GCS_DECOMPRESS
+- Env Var:     ZCLONE_GCS_DECOMPRESS
 - Type:        bool
 - Default:     false
 
@@ -783,7 +783,7 @@ endpoint configuration.
 Properties:
 
 - Config:      endpoint
-- Env Var:     RCLONE_GCS_ENDPOINT
+- Env Var:     ZCLONE_GCS_ENDPOINT
 - Type:        string
 - Required:    false
 - Examples:
@@ -803,7 +803,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_GCS_ENCODING
+- Env Var:     ZCLONE_GCS_ENCODING
 - Type:        Encoding
 - Default:     Slash,CrLf,InvalidUtf8,Dot
 
@@ -814,7 +814,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_GCS_DESCRIPTION
+- Env Var:     ZCLONE_GCS_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -822,10 +822,10 @@ Properties:
 
 ## Limitations
 
-`rclone about` is not supported by the Google Cloud Storage backend. Backends without
-this capability cannot determine free space for an rclone mount or
-use policy `mfs` (most free space) as a member of an rclone union
+`zclone about` is not supported by the Google Cloud Storage backend. Backends without
+this capability cannot determine free space for an zclone mount or
+use policy `mfs` (most free space) as a member of an zclone union
 remote.
 
-See [List of backends that do not support rclone about](https://rclone.org/overview/#optional-features)
-and [rclone about](https://rclone.org/commands/rclone_about/).
+See [List of backends that do not support zclone about](//overview/#optional-features)
+and [zclone about](//commands/zclone_about/).

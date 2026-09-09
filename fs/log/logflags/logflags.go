@@ -2,9 +2,9 @@
 package logflags
 
 import (
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/log"
 	"github.com/spf13/pflag"
+	"zclone/fs/config/flags"
+	"zclone/fs/log"
 )
 
 // AddFlags adds the log flags to the flagSet

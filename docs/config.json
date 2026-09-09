@@ -4,9 +4,9 @@
     "group": "groups",
     "menu": "menu"
   },
-  "baseurl": "https://rclone.org",
-  "title": "rclone - rsync for cloud storage",
-  "description": "rclone - rsync for cloud storage: google drive, s3, gcs, azure, dropbox, box...",
+  "baseurl": "/",
+  "title": "zclone - rsync for cloud storage",
+  "description": "zclone - rsync for cloud storage: google drive, s3, gcs, azure, dropbox, box...",
   "canonifyurls": false,
   "disableKinds": [
     "taxonomy"

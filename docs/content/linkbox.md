@@ -1,6 +1,6 @@
 ---
 title: "Linkbox"
-description: "Rclone docs for Linkbox"
+description: "Zclone docs for Linkbox"
 versionIntroduced: "v1.65"
 ---
 
@@ -20,13 +20,13 @@ You will need:
 the API token. The API token is used for uploads and modifications,
 while email/password authentication is used for listing and
 downloading files. If you have an existing Linkbox remote, you will
-need to reconfigure it with `rclone config` to edit the remote and add
+need to reconfigure it with `zclone config` to edit the remote and add
 the email and password.
 
 First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -89,7 +89,7 @@ Token from https://www.linkbox.to/admin/account
 Properties:
 
 - Config:      token
-- Env Var:     RCLONE_LINKBOX_TOKEN
+- Env Var:     ZCLONE_LINKBOX_TOKEN
 - Type:        string
 - Required:    true
 
@@ -100,7 +100,7 @@ Email for login
 Properties:
 
 - Config:      email
-- Env Var:     RCLONE_LINKBOX_EMAIL
+- Env Var:     ZCLONE_LINKBOX_EMAIL
 - Type:        string
 - Required:    true
 
@@ -108,12 +108,12 @@ Properties:
 
 Password for login
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      password
-- Env Var:     RCLONE_LINKBOX_PASSWORD
+- Env Var:     ZCLONE_LINKBOX_PASSWORD
 - Type:        string
 - Required:    true
 
@@ -128,7 +128,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_LINKBOX_DESCRIPTION
+- Env Var:     ZCLONE_LINKBOX_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -136,5 +136,5 @@ Properties:
 
 ## Limitations
 
-Invalid UTF-8 bytes will also be [replaced](https://rclone.org/overview/#invalid-utf8),
+Invalid UTF-8 bytes will also be [replaced](//overview/#invalid-utf8),
 as they can't be used in JSON strings.

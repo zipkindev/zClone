@@ -6,9 +6,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
 )
 
 func hashedKeyCompare(t *testing.T, a, b string, shouldMatch bool) {
@@ -77,7 +77,7 @@ import (
 )
 
 func main() {
-	v := os.Getenv("RCLONE_PASSWORD_CHANGE")
+	v := os.Getenv("ZCLONE_PASSWORD_CHANGE")
 	if v == "" {
 		log.Fatal("Env var not found")
 	} else if v != "1" {

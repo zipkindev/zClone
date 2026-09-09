@@ -110,24 +110,24 @@ docs = [
 
 # Order to put the commands in - any not on here will be in sorted order
 commands_order = [
-    "rclone_config.md",
-    "rclone_copy.md",
-    "rclone_sync.md",
-    "rclone_move.md",
-    "rclone_delete.md",
-    "rclone_purge.md",
-    "rclone_mkdir.md",
-    "rclone_rmdir.md",
-    "rclone_check.md",
-    "rclone_ls.md",
-    "rclone_lsd.md",
-    "rclone_lsl.md",
-    "rclone_md5sum.md",
-    "rclone_sha1sum.md",
-    "rclone_size.md",
-    "rclone_version.md",
-    "rclone_cleanup.md",
-    "rclone_dedupe.md",
+    "zclone_config.md",
+    "zclone_copy.md",
+    "zclone_sync.md",
+    "zclone_move.md",
+    "zclone_delete.md",
+    "zclone_purge.md",
+    "zclone_mkdir.md",
+    "zclone_rmdir.md",
+    "zclone_check.md",
+    "zclone_ls.md",
+    "zclone_lsd.md",
+    "zclone_lsl.md",
+    "zclone_md5sum.md",
+    "zclone_sha1sum.md",
+    "zclone_size.md",
+    "zclone_version.md",
+    "zclone_cleanup.md",
+    "zclone_dedupe.md",
 ]    
 
 # Docs which aren't made into outfile
@@ -154,11 +154,11 @@ def read_doc(doc):
     # {{< img ... >}}
     contents = re.sub(r'\{\{<\s*img\s+(.*?)>\}\}', r"<img \1>", contents)
     # Make any img tags absolute
-    contents = re.sub(r'(<img.*?src=")/', r"\1https://rclone.org/", contents)
+    contents = re.sub(r'(<img.*?src=")/', r"\1//", contents)
     # Make [...](/links/) absolute
-    contents = re.sub(r'\]\((\/.*?\/(#.*)?)\)', r"](https://rclone.org\1)", contents)
+    contents = re.sub(r'\]\((\/.*?\/(#.*)?)\)', r"](/\1)", contents)
     # Add additional links on the front page
-    contents = re.sub(r'<!-- MAINPAGELINK -->', "- [Donate.](https://rclone.org/donate/)", contents)
+    contents = re.sub(r'<!-- MAINPAGELINK -->', "- [Donate.](//donate/)", contents)
     # Interpret provider shortcode
     # {{< provider name="Amazon S3" home="https://aws.amazon.com/s3/" config="/s3/" >}}
     contents = re.sub(r'\{\{<\s*provider.*?name="(.*?)".*?>\}\}', r"- \1", contents)
@@ -193,7 +193,7 @@ def read_commands(docpath):
         docs.append(read_command(command))
         files.remove(command)
     for command in sorted(files):
-        if command != "rclone.md":
+        if command != "zclone.md":
             docs.append(read_command(command))
     return "\n".join(docs)
 
@@ -202,16 +202,16 @@ def main():
     command_docs = read_commands(docpath).replace("\\", "\\\\") # escape \ so we can use command_docs in re.sub
     build_date = datetime.fromtimestamp(
             int(os.environ.get('SOURCE_DATE_EPOCH', time.time())), timezone.utc)
-    help_output = subprocess.check_output(["rclone", "help"]).decode("utf-8")
+    help_output = subprocess.check_output(["build/zclone", "help"]).decode("utf-8")
     with open(outfile, "w") as out:
         out.write("""\
-%% rclone(1) User Manual
+%% zclone(1) User Manual
 %% Nick Craig-Wood
 %% %s
 
 # NAME
 
-rclone - manage files on cloud storage
+zclone - manage files on cloud storage
 
 # SYNOPSIS
 
@@ -223,7 +223,7 @@ rclone - manage files on cloud storage
             contents = read_doc(doc)
             # Substitute the commands into doc.md
             if doc == "docs.md":
-                contents = re.sub(r"The main rclone commands.*?for the full list.", command_docs, contents, 0, re.S)
+                contents = re.sub(r"The main zclone commands.*?for the full list.", command_docs, contents, 0, re.S)
             out.write(contents)
     print("Written '%s'" % outfile)
 

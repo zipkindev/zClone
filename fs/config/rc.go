@@ -5,8 +5,8 @@ import (
 	"errors"
 	"os"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/rc"
+	"zclone/fs"
+	"zclone/fs/rc"
 )
 
 func init() {
@@ -54,7 +54,7 @@ Returns a JSON object:
 
 Where keys are remote names and values are the config parameters.
 
-See the [config dump](/commands/rclone_config_dump/) command for more information on the above.
+See the [config dump](/commands/zclone_config_dump/) command for more information on the above.
 `,
 	})
 }
@@ -74,7 +74,7 @@ Parameters:
 
 - name - name of remote to get
 
-See the [config dump](/commands/rclone_config_dump/) command for more information on the above.
+See the [config dump](/commands/zclone_config_dump/) command for more information on the above.
 `,
 	})
 }
@@ -97,7 +97,7 @@ func init() {
 Returns
 - remotes - array of remote names
 
-See the [listremotes](/commands/rclone_listremotes/) command for more information on the above.
+See the [listremotes](/commands/zclone_listremotes/) command for more information on the above.
 `,
 	})
 }
@@ -124,7 +124,7 @@ func init() {
 Returns a JSON object:
 - providers - array of objects
 
-See the [config providers](/commands/rclone_config_providers/) command
+See the [config providers](/commands/zclone_config_providers/) command
 for more information on the above.
 
 Note that the Options blocks are in the same format as returned by
@@ -172,7 +172,7 @@ func init() {
 - parameters - a map of \{ "key": "value" \} pairs
 ` + extraHelp + `
 
-See the [config ` + name + `](/commands/rclone_config_` + name + `/) command for more information on the above.`,
+See the [config ` + name + `](/commands/zclone_config_` + name + `/) command for more information on the above.`,
 		})
 	}
 }
@@ -241,7 +241,7 @@ Parameters:
 
 - name - name of remote to delete
 
-See the [config delete](/commands/rclone_config_delete/) command for more information on the above.
+See the [config delete](/commands/zclone_config_delete/) command for more information on the above.
 `,
 	})
 }
@@ -271,7 +271,7 @@ Returns:
 
 - removed - a list of the keys that were actually removed
 
-See the [config unset](/commands/rclone_config_unset/) command for more information on the above.
+See the [config unset](/commands/zclone_config_unset/) command for more information on the above.
 `,
 	})
 }
@@ -332,12 +332,12 @@ Returns a JSON object with the following keys:
 Eg
 
     {
-        "cache": "/home/USER/.cache/rclone",
-        "config": "/home/USER/.rclone.conf",
+        "cache": "/home/USER/.cache/zclone",
+        "config": "/home/USER/.zclone.conf",
         "temp": "/tmp"
     }
 
-See the [config paths](/commands/rclone_config_paths/) command for more information on the above.
+See the [config paths](/commands/zclone_config_paths/) command for more information on the above.
 `,
 	})
 }

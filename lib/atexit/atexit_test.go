@@ -5,8 +5,8 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/rclone/rclone/lib/exitcode"
 	"github.com/stretchr/testify/assert"
+	"zclone/lib/exitcode"
 )
 
 type fakeSignal struct{}

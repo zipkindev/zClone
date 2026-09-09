@@ -1,6 +1,6 @@
 //go:build !plan9
 
-// Package sftp implements an SFTP server to serve an rclone VFS
+// Package sftp implements an SFTP server to serve an zclone VFS
 package sftp
 
 import (
@@ -8,19 +8,19 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/serve"
-	"github.com/rclone/rclone/cmd/serve/proxy"
-	"github.com/rclone/rclone/cmd/serve/proxy/proxyflags"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/lib/systemd"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
-	"github.com/rclone/rclone/vfs/vfsflags"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	"zclone/cmd"
+	"zclone/cmd/serve"
+	"zclone/cmd/serve/proxy"
+	"zclone/cmd/serve/proxy/proxyflags"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/rc"
+	"zclone/lib/systemd"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
+	"zclone/vfs/vfsflags"
 )
 
 // OptionsInfo descripts the Options in use
@@ -135,9 +135,9 @@ You must provide some means of authentication, either with
 ` + "`--auth-proxy`" + `, or set the ` + "`--no-auth`" + ` flag for no
 authentication when logging in.
 
-If you don't supply a host ` + "`--key`" + ` then rclone will generate rsa, ecdsa
-and ed25519 variants, and cache them for later use in rclone's cache
-directory (see ` + "`rclone help flags cache-dir`" + `) in the "serve-sftp"
+If you don't supply a host ` + "`--key`" + ` then zclone will generate rsa, ecdsa
+and ed25519 variants, and cache them for later use in zclone's cache
+directory (see ` + "`zclone help flags cache-dir`" + `) in the "serve-sftp"
 directory.
 
 By default the server binds to localhost:2022 - if you want it to be
@@ -151,23 +151,23 @@ It can be configured with .socket and .service unit files as described in
 Socket activation can be tested ad-hoc with the ` + "`systemd-socket-activate`" + `command:
 
 ` + "```console" + `
-systemd-socket-activate -l 2222 -- rclone serve sftp :local:vfs/
+systemd-socket-activate -l 2222 -- zclone serve sftp :local:vfs/
 ` + "```" + `
 
-This will socket-activate rclone on the first connection to port 2222 over TCP.
+This will socket-activate zclone on the first connection to port 2222 over TCP.
 
-Note that the default of ` + "`--vfs-cache-mode off`" + ` is fine for the rclone
+Note that the default of ` + "`--vfs-cache-mode off`" + ` is fine for the zclone
 sftp backend, but it may not be with other SFTP clients.
 
-If ` + "`--stdio`" + ` is specified, rclone will serve SFTP over stdio, which can
+If ` + "`--stdio`" + ` is specified, zclone will serve SFTP over stdio, which can
 be used with sshd via ~/.ssh/authorized_keys, for example:
 
 ` + "```text" + `
-restrict,command="rclone serve sftp --stdio ./photos" ssh-rsa ...
+restrict,command="zclone serve sftp --stdio ./photos" ssh-rsa ...
 ` + "```" + `
 
 On the client you need to set ` + "`--transfers 1`" + ` when using ` + "`--stdio`" + `.
-Otherwise multiple instances of the rclone server are started by OpenSSH
+Otherwise multiple instances of the zclone server are started by OpenSSH
 which can lead to "corrupted on transfer" errors. This is the case because
 the client chooses indiscriminately which server to send commands to while
 the servers all have different views of the state of the filing system.

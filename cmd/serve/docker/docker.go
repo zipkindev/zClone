@@ -10,18 +10,18 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/mountlib"
-	"github.com/rclone/rclone/cmd/serve"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfsflags"
+	"zclone/cmd"
+	"zclone/cmd/mountlib"
+	"zclone/cmd/serve"
+	"zclone/fs/config/flags"
+	"zclone/vfs"
+	"zclone/vfs/vfsflags"
 )
 
 var (
-	pluginName  = "rclone"
+	pluginName  = "zclone"
 	pluginScope = "local"
-	baseDir     = "/var/lib/docker-volumes/rclone"
+	baseDir     = "/var/lib/docker-volumes/zclone"
 	sockDir     = "/run/docker/plugins" //lint:ignore U1000 unused when not building linux
 	defSpecDir  = "/etc/docker/plugins"
 	stateFile   = "docker-plugin.state"
@@ -44,7 +44,7 @@ func init() {
 	cmdFlags := Command.Flags()
 	// Add command specific flags
 	flags.StringVarP(cmdFlags, &baseDir, "base-dir", "", baseDir, "Base directory for volumes", "")
-	flags.StringVarP(cmdFlags, &socketAddr, "socket-addr", "", socketAddr, "Address <host:port> or absolute path (default: /run/docker/plugins/rclone.sock)", "")
+	flags.StringVarP(cmdFlags, &socketAddr, "socket-addr", "", socketAddr, "Address <host:port> or absolute path (default: /run/docker/plugins/zclone.sock)", "")
 	flags.IntVarP(cmdFlags, &socketGid, "socket-gid", "", socketGid, "GID for unix socket (default: current process GID)", "")
 	flags.BoolVarP(cmdFlags, &forgetState, "forget-state", "", forgetState, "Skip restoring previous state", "")
 	flags.BoolVarP(cmdFlags, &noSpec, "no-spec", "", noSpec, "Do not write spec file", "")

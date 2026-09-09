@@ -45,27 +45,27 @@ import (
 	"golang.org/x/net/http/httpguts"
 	"golang.org/x/sync/errgroup"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/chunksize"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/bucket"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/multipart"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/pool"
-	"github.com/rclone/rclone/lib/readers"
-	"github.com/rclone/rclone/lib/rest"
-	"github.com/rclone/rclone/lib/transferaccounter"
-	"github.com/rclone/rclone/lib/version"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/chunksize"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/fs/operations"
+	"zclone/lib/atexit"
+	"zclone/lib/bucket"
+	"zclone/lib/encoder"
+	"zclone/lib/multipart"
+	"zclone/lib/pacer"
+	"zclone/lib/pool"
+	"zclone/lib/readers"
+	"zclone/lib/rest"
+	"zclone/lib/transferaccounter"
+	"zclone/lib/version"
 )
 
 // Register with Fs
@@ -237,7 +237,7 @@ The minimum is 0 and the maximum is 5 GiB.`,
 			Help: `Chunk size to use for uploading.
 
 When uploading files larger than upload_cutoff or files with unknown
-size (e.g. from "rclone rcat" or uploaded with "rclone mount" or google
+size (e.g. from "zclone rcat" or uploaded with "zclone mount" or google
 photos or google docs) they will be uploaded as multipart uploads
 using this chunk size.
 
@@ -247,7 +247,7 @@ in memory per transfer.
 If you are transferring large files over high-speed links and you have
 enough memory, then increasing this will speed up the transfers.
 
-Rclone will automatically increase the chunk size when uploading a
+Zclone will automatically increase the chunk size when uploading a
 large file of known size to stay below the 10,000 chunks limit.
 
 Files of unknown size are uploaded with the configured
@@ -257,7 +257,7 @@ a file you can stream upload is 48 GiB.  If you wish to stream upload
 larger files then you will need to increase chunk_size.
 
 Increasing the chunk size decreases the accuracy of the progress
-statistics displayed with "-P" flag. Rclone treats chunk as sent when
+statistics displayed with "-P" flag. Zclone treats chunk as sent when
 it's buffered by the AWS SDK, when in fact it may still be uploading.
 A bigger chunk size means a bigger AWS SDK buffer and progress
 reporting more deviating from the truth.
@@ -274,7 +274,7 @@ when doing a multipart upload.
 This can be useful if a service does not support the AWS S3
 specification of 10,000 chunks.
 
-Rclone will automatically increase the chunk size when uploading a
+Zclone will automatically increase the chunk size when uploading a
 large file of a known size to stay below this number of chunks limit.
 `,
 			Default:  maxUploadParts,
@@ -293,7 +293,7 @@ The minimum is 1 byte and the maximum is 5 GiB.`,
 			Name: "disable_checksum",
 			Help: `Don't store MD5 checksum with object metadata.
 
-Normally rclone will calculate the MD5 checksum of the input before
+Normally zclone will calculate the MD5 checksum of the input before
 uploading it so it can add it to metadata on the object. This is great
 for data integrity checking but can cause long delays for large files
 to start uploading.`,
@@ -303,9 +303,9 @@ to start uploading.`,
 			Name: "shared_credentials_file",
 			Help: `Path to the shared credentials file.
 
-If env_auth = true then rclone can use a shared credentials file.
+If env_auth = true then zclone can use a shared credentials file.
 
-If this variable is empty rclone will look for the
+If this variable is empty zclone will look for the
 "AWS_SHARED_CREDENTIALS_FILE" env variable. If the env value is empty
 it will default to the current user's home directory.
 
@@ -317,7 +317,7 @@ it will default to the current user's home directory.
 			Name: "profile",
 			Help: `Profile to use in the shared credentials file.
 
-If env_auth = true then rclone can use a shared credentials file. This
+If env_auth = true then zclone can use a shared credentials file. This
 variable controls which profile is used in that file.
 
 If empty it will default to the environment variable "AWS_PROFILE" or
@@ -369,13 +369,13 @@ this may help to speed up the transfers.`,
 			Name: "force_path_style",
 			Help: `If true use path style access if false use virtual hosted style.
 
-If this is true (the default) then rclone will use path style access,
-if false then rclone will use virtual path style. See [the AWS S3
+If this is true (the default) then zclone will use path style access,
+if false then zclone will use virtual path style. See [the AWS S3
 docs](https://docs.aws.amazon.com/AmazonS3/latest/userguide/VirtualHosting.html)
 for more info.
 
 Some providers (e.g. AWS, Aliyun OSS, Netease COS, or Tencent COS) require this set to
-false - rclone will do this automatically based on the provider
+false - zclone will do this automatically based on the provider
 setting.
 
 Note that if your bucket isn't a valid DNS name, i.e. has '.' or '_' in,
@@ -387,8 +387,8 @@ you'll need to set this to true.
 			Name: "v2_auth",
 			Help: `If true use v2 authentication.
 
-If this is false (the default) then rclone will use v4 authentication.
-If it is set then rclone will use v2 authentication.
+If this is false (the default) then zclone will use v4 authentication.
+If it is set then zclone will use v2 authentication.
 
 Use this only if v4 signatures don't work, e.g. pre Jewel/v10 CEPH.`,
 			Default:  false,
@@ -443,7 +443,7 @@ enumerate objects in a bucket.
 However in May 2016 the ListObjectsV2 call was introduced. This is
 much higher performance and should be used if at all possible.
 
-If set to the default, 0, rclone will guess according to the provider
+If set to the default, 0, zclone will guess according to the provider
 set which list objects method to call. If it guesses wrong, then it
 may be set manually here.
 `,
@@ -455,9 +455,9 @@ may be set manually here.
 
 Some providers support URL encoding listings and where this is
 available this is more reliable when using control characters in file
-names. If this is set to unset (the default) then rclone will choose
+names. If this is set to unset (the default) then zclone will choose
 according to the provider setting what to apply, but you can override
-rclone's choice here.
+zclone's choice here.
 `,
 			Default:  fs.Tristate{},
 			Advanced: true,
@@ -466,7 +466,7 @@ rclone's choice here.
 			Help: `If set, don't attempt to check the bucket exists or create it.
 
 This can be useful when trying to minimise the number of transactions
-rclone does if you know the bucket exists already.
+zclone does if you know the bucket exists already.
 
 It can also be needed if the user you are using does not have bucket
 creation permissions. Before v1.52.0 this would have passed silently
@@ -479,9 +479,9 @@ due to a bug.
 			Help: `If set, don't HEAD uploaded objects to check integrity.
 
 This can be useful when trying to minimise the number of transactions
-rclone does.
+zclone does.
 
-Setting it means that if rclone receives a 200 OK message after
+Setting it means that if zclone receives a 200 OK message after
 uploading an object with PUT then it will assume that it got uploaded
 properly.
 
@@ -497,7 +497,7 @@ It reads the following items from the response for a single part PUT:
 
 For multipart uploads these items aren't read.
 
-If an source object of unknown length is uploaded then rclone **will** do a
+If an source object of unknown length is uploaded then zclone **will** do a
 HEAD request.
 
 Setting this flag increases the chance for undetected upload failures,
@@ -551,7 +551,7 @@ There is currently an unsolved issue with the s3 (specifically minio) backend
 and HTTP/2.  HTTP/2 is enabled by default for the s3 backend but can be
 disabled here.  When the issue is solved this flag will be removed.
 
-See: https://github.com/rclone/rclone/issues/4673, https://github.com/rclone/rclone/issues/3631
+See: / /
 
 `,
 		}, {
@@ -581,7 +581,7 @@ This should be true, false or left unset to use the default for the provider.
 			Name: "use_unsigned_payload",
 			Help: `Whether to use an unsigned payload in PutObject
 
-Rclone has to avoid the AWS SDK seeking the body when calling
+Zclone has to avoid the AWS SDK seeking the body when calling
 PutObject. The AWS provider can add checksums in the trailer to avoid
 seeking but other providers can't.
 
@@ -593,10 +593,10 @@ This should be true, false or left unset to use the default for the provider.
 			Name: "use_presigned_request",
 			Help: `Whether to use a presigned request or PutObject for single part uploads
 
-If this is false rclone will use PutObject from the AWS SDK to upload
+If this is false zclone will use PutObject from the AWS SDK to upload
 an object.
 
-Versions of rclone < 1.59 use presigned requests to upload a single
+Versions of zclone < 1.59 use presigned requests to upload a single
 part object and setting this flag to true will re-enable that
 functionality. This shouldn't be necessary except in exceptional
 circumstances or for testing.
@@ -647,10 +647,10 @@ Deleted files will always show with a timestamp.
 			Help: `If set this will decompress gzip encoded objects.
 
 It is possible to upload objects to S3 with "Content-Encoding: gzip"
-set. Normally rclone will download these files as compressed objects.
+set. Normally zclone will download these files as compressed objects.
 
-If this flag is set then rclone will decompress these files with
-"Content-Encoding: gzip" as they are received. This means that rclone
+If this flag is set then zclone will decompress these files with
+"Content-Encoding: gzip" as they are received. This means that zclone
 can't check the size and hash but the file contents will be decompressed.
 `,
 			Advanced: true,
@@ -670,13 +670,13 @@ A symptom of this would be receiving errors like
 
     ERROR corrupted on transfer: sizes differ NNN vs MMM
 
-If you set this flag and rclone downloads an object with
-Content-Encoding: gzip set and chunked transfer encoding, then rclone
+If you set this flag and zclone downloads an object with
+Content-Encoding: gzip set and chunked transfer encoding, then zclone
 will decompress the object on the fly.
 
-If this is set to unset (the default) then rclone will choose
+If this is set to unset (the default) then zclone will choose
 according to the provider setting what to apply, but you can override
-rclone's choice here.
+zclone's choice here.
 `, "|", "`"),
 			Default:  fs.Tristate{},
 			Advanced: true,
@@ -684,7 +684,7 @@ rclone's choice here.
 			Name: "use_accept_encoding_gzip",
 			Help: strings.ReplaceAll(`Whether to send |Accept-Encoding: gzip| header.
 
-By default, rclone will append |Accept-Encoding: gzip| to the request to download
+By default, zclone will append |Accept-Encoding: gzip| to the request to download
 compressed objects whenever possible.
 
 However some providers such as Google Cloud Storage may alter the HTTP headers, breaking
@@ -710,7 +710,7 @@ In this case, you might want to try disabling this option.
 			Hide:     fs.OptionHideBoth,
 		}, {
 			Name: "use_already_exists",
-			Help: strings.ReplaceAll(`Set if rclone should report BucketAlreadyExists errors on bucket creation.
+			Help: strings.ReplaceAll(`Set if zclone should report BucketAlreadyExists errors on bucket creation.
 
 At some point during the evolution of the s3 protocol, AWS started
 returning an |AlreadyOwnedByYou| error when attempting to create a
@@ -721,28 +721,28 @@ Unfortunately exactly what has been implemented by s3 clones is a
 little inconsistent, some return |AlreadyOwnedByYou|, some return
 |BucketAlreadyExists| and some return no error at all.
 
-This is important to rclone because it ensures the bucket exists by
+This is important to zclone because it ensures the bucket exists by
 creating it on quite a lot of operations (unless
 |--s3-no-check-bucket| is used).
 
-If rclone knows the provider can return |AlreadyOwnedByYou| or returns
+If zclone knows the provider can return |AlreadyOwnedByYou| or returns
 no error then it can report |BucketAlreadyExists| errors when the user
-attempts to create a bucket not owned by them. Otherwise rclone
+attempts to create a bucket not owned by them. Otherwise zclone
 ignores the |BucketAlreadyExists| error which can lead to confusion.
 
-This should be automatically set correctly for all providers rclone
+This should be automatically set correctly for all providers zclone
 knows about - please make a bug report if not.
 `, "|", "`"),
 			Default:  fs.Tristate{},
 			Advanced: true,
 		}, {
 			Name: "use_multipart_uploads",
-			Help: `Set if rclone should use multipart uploads.
+			Help: `Set if zclone should use multipart uploads.
 
 You can change this if you want to disable the use of multipart uploads.
 This shouldn't be necessary in normal operation.
 
-This should be automatically set correctly for all providers rclone
+This should be automatically set correctly for all providers zclone
 knows about - please make a bug report if not.
 `,
 			Default:  fs.Tristate{},
@@ -757,35 +757,35 @@ The S3 standard returns object versions newest first. Some backends
 Set this quirk if --s3-version-at or --s3-versions produce incorrect
 results with your backend.
 
-This should be automatically set correctly for all providers rclone
+This should be automatically set correctly for all providers zclone
 knows about - please make a bug report if not.
 `,
 			Default:  fs.Tristate{},
 			Advanced: true,
 		}, {
 			Name: "use_x_id",
-			Help: `Set if rclone should add x-id URL parameters.
+			Help: `Set if zclone should add x-id URL parameters.
 
 You can change this if you want to disable the AWS SDK from
 adding x-id URL parameters.
 
 This shouldn't be necessary in normal operation.
 
-This should be automatically set correctly for all providers rclone
+This should be automatically set correctly for all providers zclone
 knows about - please make a bug report if not.
 `,
 			Default:  fs.Tristate{},
 			Advanced: true,
 		}, {
 			Name: "sign_accept_encoding",
-			Help: `Set if rclone should include Accept-Encoding as part of the signature.
+			Help: `Set if zclone should include Accept-Encoding as part of the signature.
 
-You can change this if you want to stop rclone including
+You can change this if you want to stop zclone including
 Accept-Encoding as part of the signature.
 
 This shouldn't be necessary in normal operation.
 
-This should be automatically set correctly for all providers rclone
+This should be automatically set correctly for all providers zclone
 knows about - please make a bug report if not.
 `,
 			Default:  fs.Tristate{},
@@ -807,12 +807,12 @@ Note that Directory Buckets do not support:
 - Versioning
 - |Content-Encoding: gzip|
 
-Rclone limitations with Directory Buckets:
+Zclone limitations with Directory Buckets:
 
-- rclone does not support creating Directory Buckets with |rclone mkdir|
-- ... or removing them with |rclone rmdir| yet
-- Directory Buckets do not appear when doing |rclone lsf| at the top level.
-- Rclone can't remove auto created directories yet. In theory this should
+- zclone does not support creating Directory Buckets with |zclone mkdir|
+- ... or removing them with |zclone rmdir| yet
+- Directory Buckets do not appear when doing |zclone lsf| at the top level.
+- Zclone can't remove auto created directories yet. In theory this should
   work with |directory_markers = true| but it doesn't.
 - Directories don't seem to appear in recursive (ListR) listings.
 `, "|", "`"),
@@ -971,7 +971,7 @@ const (
 	metaMtime   = "mtime"     // the meta key to store mtime in - e.g. X-Amz-Meta-Mtime
 	metaMD5Hash = "md5chksum" // the meta key to store md5hash in
 	// The maximum size of object we can COPY - this should be 5 GiB but is < 5 GB for b2 compatibility
-	// See https://forum.rclone.org/t/copying-files-within-a-b2-bucket/16680/76
+	// See /
 	maxSizeForCopy      = 4768 * 1024 * 1024
 	maxUploadParts      = 10000 // maximum allowed number of parts in a multi-part upload
 	minChunkSize        = fs.SizeSuffix(1024 * 1024 * 5)
@@ -1046,7 +1046,7 @@ var systemMetadataInfo = map[string]fs.MetadataHelp{
 		ReadOnly: true,
 	},
 	"mtime": {
-		Help:    "Time of last modification, read from rclone metadata",
+		Help:    "Time of last modification, read from zclone metadata",
 		Type:    "RFC 3339",
 		Example: "2006-01-02T15:04:05.999999999Z07:00",
 	},
@@ -1685,7 +1685,7 @@ func checkUploadCutoff(cs fs.SizeSuffix) error {
 }
 
 func (f *Fs) setUploadCutoff(cs fs.SizeSuffix) (old fs.SizeSuffix, err error) {
-	if f.opt.Provider != "Rclone" {
+	if f.opt.Provider != "Zclone" {
 		err = checkUploadCutoff(cs)
 	}
 	if err == nil {
@@ -2466,7 +2466,7 @@ func (f *Fs) list(ctx context.Context, opt listOpt, fn listFn) error {
 	// it doesn't encode CommonPrefixes.
 	// See: https://tracker.ceph.com/issues/41870
 	//
-	// This does not work under IBM COS also: See https://github.com/rclone/rclone/issues/3345
+	// This does not work under IBM COS also: See /
 	// though maybe it does on some versions.
 	//
 	// This does work with minio but was only added relatively recently
@@ -3338,23 +3338,23 @@ to the Frequent Access tier.
 Usage examples:
 
 ` + "```console" + `
-rclone backend restore s3:bucket/path/to/ --include /object -o priority=PRIORITY -o lifetime=DAYS
-rclone backend restore s3:bucket/path/to/directory -o priority=PRIORITY -o lifetime=DAYS
-rclone backend restore s3:bucket -o priority=PRIORITY -o lifetime=DAYS
-rclone backend restore s3:bucket/path/to/directory -o priority=PRIORITY
+zclone backend restore s3:bucket/path/to/ --include /object -o priority=PRIORITY -o lifetime=DAYS
+zclone backend restore s3:bucket/path/to/directory -o priority=PRIORITY -o lifetime=DAYS
+zclone backend restore s3:bucket -o priority=PRIORITY -o lifetime=DAYS
+zclone backend restore s3:bucket/path/to/directory -o priority=PRIORITY
 ` + "```" + `
 
 This flag also obeys the filters. Test first with --interactive/-i or --dry-run
 flags.
 
 ` + "```console" + `
-rclone --interactive backend restore --include "*.txt" s3:bucket/path -o priority=Standard -o lifetime=1
+zclone --interactive backend restore --include "*.txt" s3:bucket/path -o priority=Standard -o lifetime=1
 ` + "```" + `
 
 All the objects shown will be marked for restore, then:
 
 ` + "```console" + `
-rclone backend restore --include "*.txt" s3:bucket/path -o priority=Standard -o lifetime=1
+zclone backend restore --include "*.txt" s3:bucket/path -o priority=Standard -o lifetime=1
 ` + "```" + `
 
 It returns a list of status dictionaries with Remote and Status
@@ -3389,9 +3389,9 @@ Archive Access tier to the Frequent Access tier.
 Usage examples:
 
 ` + "```console" + `
-rclone backend restore-status s3:bucket/path/to/object
-rclone backend restore-status s3:bucket/path/to/directory
-rclone backend restore-status -o all s3:bucket/path/to/directory
+zclone backend restore-status s3:bucket/path/to/object
+zclone backend restore-status s3:bucket/path/to/directory
+zclone backend restore-status -o all s3:bucket/path/to/directory
 ` + "```" + `
 
 This command does not obey the filters.
@@ -3440,7 +3440,7 @@ It returns a list of status dictionaries:
 Usage examples:
 
 ` + "```console" + `
-rclone backend list-multipart s3:bucket/path/to/object
+zclone backend list-multipart s3:bucket/path/to/object
 ` + "```" + `
 
 It returns a dictionary of buckets with values as lists of unfinished
@@ -3451,7 +3451,7 @@ a bucket or with a bucket and path.
 
 ` + "```json" + `
 {
-    "rclone": [
+    "zclone": [
         {
             "Initiated": "2020-06-26T14:20:36Z",
             "Initiator": {
@@ -3467,8 +3467,8 @@ a bucket or with a bucket and path.
             "UploadId": "XXX"
         }
     ],
-    "rclone-1000files": [],
-    "rclone-dst": []
+    "zclone-1000files": [],
+    "zclone-dst": []
 }
 ` + "```",
 }, {
@@ -3483,11 +3483,11 @@ what it would do.
 Usage examples:
 
 ` + "```console" + `
-rclone backend cleanup s3:bucket/path/to/object
-rclone backend cleanup -o max-age=7w s3:bucket/path/to/object
+zclone backend cleanup s3:bucket/path/to/object
+zclone backend cleanup -o max-age=7w s3:bucket/path/to/object
 ` + "```" + `
 
-Durations are parsed as per the rest of rclone, 2h, 7d, 7w etc.`,
+Durations are parsed as per the rest of zclone, 2h, 7d, 7w etc.`,
 	Opts: map[string]string{
 		"max-age": "Max age of upload to delete.",
 	},
@@ -3503,7 +3503,7 @@ what it would do.
 Usage example:
 
 ` + "```console" + `
-rclone backend cleanup-hidden s3:bucket/path/to/dir
+zclone backend cleanup-hidden s3:bucket/path/to/dir
 ` + "```",
 }, {
 	Name:  "versioning",
@@ -3515,9 +3515,9 @@ supplied.
 Usage examples:
 
 ` + "```console" + `
-rclone backend versioning s3:bucket # read status only
-rclone backend versioning s3:bucket Enabled
-rclone backend versioning s3:bucket Suspended
+zclone backend versioning s3:bucket # read status only
+zclone backend versioning s3:bucket Enabled
+zclone backend versioning s3:bucket Suspended
 ` + "```" + `
 
 It may return "Enabled", "Suspended" or "Unversioned". Note that once
@@ -3531,9 +3531,9 @@ for a running s3 backend.
 Usage examples:
 
 ` + "```console" + `
-rclone backend set s3: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
-rclone rc backend/command command=set fs=s3: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
-rclone rc backend/command command=set fs=s3: -o session_token=X -o access_key_id=X -o secret_access_key=X
+zclone backend set s3: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
+zclone rc backend/command command=set fs=s3: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
+zclone rc backend/command command=set fs=s3: -o session_token=X -o access_key_id=X -o secret_access_key=X
 ` + "```" + `
 
 The option keys are named as they are in the config file.

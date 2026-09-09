@@ -1,7 +1,7 @@
 // Package googlephotos provides an interface to Google Photos
 package googlephotos
 
-// FIXME Resumable uploads not implemented - rclone can't resume uploads in general
+// FIXME Resumable uploads not implemented - zclone can't resume uploads in general
 
 import (
 	"context"
@@ -18,22 +18,22 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/backend/googlephotos/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/dirtree"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/batcher"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/oauthutil"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
 	"golang.org/x/oauth2/google"
+	"zclone/backend/googlephotos/api"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/dirtree"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/batcher"
+	"zclone/lib/encoder"
+	"zclone/lib/oauthutil"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
 var (
@@ -42,13 +42,13 @@ var (
 	errCantRmdir   = errors.New("can't remove this directory")
 	errAlbumDelete = errors.New("google photos API does not implement deleting albums")
 	errRemove      = errors.New("google photos API only implements removing files from albums")
-	errOwnAlbums   = errors.New("google photos API only allows uploading to albums rclone created")
+	errOwnAlbums   = errors.New("google photos API only allows uploading to albums zclone created")
 	errReadOnly    = errors.New("can't upload files in read only mode")
 )
 
 const (
-	rcloneClientID              = "202264815644-rt1o1c9evjaotbpbab10m83i8cnjk077.apps.googleusercontent.com"
-	rcloneEncryptedClientSecret = "kLJLretPefBgrDHosdml_nlF64HZ9mUcO85X5rdjYBPP8ChA-jr3Ow"
+	zcloneClientID              = "202264815644-rt1o1c9evjaotbpbab10m83i8cnjk077.apps.googleusercontent.com"
+	zcloneEncryptedClientSecret = "kLJLretPefBgrDHosdml_nlF64HZ9mUcO85X5rdjYBPP8ChA-jr3Ow"
 	rootURL                     = "https://photoslibrary.googleapis.com/v1"
 	listChunks                  = 100 // chunk size to read directory listings
 	albumChunks                 = 50  // chunk size to read album listings
@@ -80,8 +80,8 @@ var (
 		Scopes:       scopesReadWrite,
 		AuthURL:      google.Endpoint.AuthURL,
 		TokenURL:     google.Endpoint.TokenURL,
-		ClientID:     rcloneClientID,
-		ClientSecret: obscure.MustReveal(rcloneEncryptedClientSecret),
+		ClientID:     zcloneClientID,
+		ClientSecret: obscure.MustReveal(zcloneEncryptedClientSecret),
 		RedirectURL:  oauthutil.RedirectURL,
 	}
 
@@ -101,10 +101,10 @@ func gphotosOAuthOptions() []fs.Option {
 	opts := []fs.Option{}
 	for _, opt := range oauthutil.SharedOptions {
 		if opt.Name == config.ConfigClientID {
-			opt.Help = "OAuth Client Id.\n\nCreating your own is now strongly recommended.\nIf you leave this blank rclone uses a shared client_id which is being retired and will stop working during 2026.\nSee https://rclone.org/googlephotos/#making-your-own-client-id for how to create your own."
+			opt.Help = "OAuth Client Id.\n\nCreating your own is now strongly recommended.\nIf you leave this blank zclone uses a shared client_id which is being retired and will stop working during 2026.\nSee //googlephotos/#making-your-own-client-id for how to create your own."
 		}
 		if opt.Name == config.ConfigClientSecret {
-			opt.Help = "OAuth Client Secret.\n\nLeave blank to use rclone's shared client_id.\nIf you created your own client_id then enter its client secret here."
+			opt.Help = "OAuth Client Secret.\n\nLeave blank to use zclone's shared client_id.\nIf you created your own client_id then enter its client secret here."
 		}
 		opts = append(opts, opt)
 	}
@@ -139,7 +139,7 @@ func init() {
 				if clientID, _ := m.Get(config.ConfigClientID); clientID != "" {
 					return fs.ConfigGoto("oauth")
 				}
-				return oauthutil.SharedClientIDConfigConfirm("client_id_warning", "Google Photos", "https://rclone.org/googlephotos/#making-your-own-client-id")
+				return oauthutil.SharedClientIDConfigConfirm("client_id_warning", "Google Photos", "//googlephotos/#making-your-own-client-id")
 			case "client_id_warning":
 				if configIn.Result == "true" {
 					// Continue using the shared client_id
@@ -160,14 +160,14 @@ func init() {
 				// Warn the user as required by google photos integration
 				return fs.ConfigConfirm("warning2", true, "config_warning", `Warning
 
-IMPORTANT: All media items uploaded to Google Photos with rclone
+IMPORTANT: All media items uploaded to Google Photos with zclone
 are stored in full resolution at original quality.  These uploads
 will count towards storage in your Google Account.`)
 
 			case "warning2":
-				// Warn the user that rclone can no longer download photos it didnt upload from google photos
+				// Warn the user that zclone can no longer download photos it didnt upload from google photos
 				return fs.ConfigConfirm("warning_done", true, "config_warning", `Warning
-IMPORTANT: Due to Google policy changes rclone can now only download photos it uploaded.`)
+IMPORTANT: Due to Google policy changes zclone can now only download photos it uploaded.`)
 
 			case "warning_done":
 				return nil, nil
@@ -179,17 +179,17 @@ IMPORTANT: Due to Google policy changes rclone can now only download photos it u
 			Default: false,
 			Help: `Set to make the Google Photos backend read only.
 
-If you choose read only then rclone will only request read only access
-to your photos, otherwise rclone will request full access.`,
+If you choose read only then zclone will only request read only access
+to your photos, otherwise zclone will request full access.`,
 		}, {
 			Name:    "read_size",
 			Default: false,
 			Help: `Set to read the size of media items.
 
-Normally rclone does not read the size of media items since this takes
+Normally zclone does not read the size of media items since this takes
 another transaction.  This isn't necessary for syncing.  However
-rclone mount needs to know the size of files in advance of reading
-them, so setting this flag when using rclone mount is recommended if
+zclone mount needs to know the size of files in advance of reading
+them, so setting this flag when using zclone mount is recommended if
 you want to read the media.`,
 			Advanced: true,
 		}, {
@@ -202,7 +202,7 @@ you want to read the media.`,
 			Default: false,
 			Help: `Also view and download archived media.
 
-By default, rclone does not request archived media. Thus, when syncing,
+By default, zclone does not request archived media. Thus, when syncing,
 archived media is not visible in directory listings or transferred.
 
 Note that media in albums is always visible and synced, no matter
@@ -227,7 +227,7 @@ unchanged images.
 
 This runs a headless browser in the background.
 
-Download the software from [gphotosdl](https://github.com/rclone/gphotosdl)
+Download the software from [gphotosdl](https://github.com/zclone/gphotosdl)
 
 First run with
 
@@ -239,7 +239,7 @@ and run
     gphotosdl
 
 Then supply the parameter |--gphotos-proxy "http://localhost:8282"| to make
-rclone use the proxy.
+zclone use the proxy.
 `, "|", "`"),
 			Advanced: true,
 		}, {
@@ -385,7 +385,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 		return nil, err
 	}
 
-	oauthutil.SharedClientIDWarning(name, "Google Photos", "https://rclone.org/googlephotos/#making-your-own-client-id", m)
+	oauthutil.SharedClientIDWarning(name, "Google Photos", "//googlephotos/#making-your-own-client-id", m)
 
 	baseClient := fshttp.NewClient(ctx)
 	oAuthClient, ts, err := oauthutil.NewClientWithBaseClient(ctx, name, m, oauthConfig, baseClient)

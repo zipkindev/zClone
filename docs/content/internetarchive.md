@@ -1,6 +1,6 @@
 ---
 title: "Internet Archive"
-description: "Rclone docs for Internet Archive"
+description: "Zclone docs for Internet Archive"
 versionIntroduced: "v1.59"
 ---
 
@@ -21,20 +21,20 @@ Once you have made a remote, you can use it like this:
 Make a new item
 
 ```console
-rclone mkdir remote:item
+zclone mkdir remote:item
 ```
 
 List the contents of a item
 
 ```console
-rclone ls remote:item
+zclone ls remote:item
 ```
 
 Sync `/home/local/directory` to the remote item, deleting any excess
 files in the item.
 
 ```console
-rclone sync --interactive /home/local/directory remote:item
+zclone sync --interactive /home/local/directory remote:item
 ```
 
 ## Notes
@@ -49,7 +49,7 @@ This queue has a limit, and it may block you from uploading, or even deleting.
 You should avoid uploading a lot of small files for better behavior.
 
 You can optionally wait for the server's processing to finish, by setting
-non-zero value to `wait_archive` key. By making it wait, rclone can do normal
+non-zero value to `wait_archive` key. By making it wait, zclone can do normal
 file comparison. Make sure to set a large enough value (e.g. `30m0s` for smaller
 files) as it can take a long time depending on server's queue.
 
@@ -57,7 +57,7 @@ files) as it can take a long time depending on server's queue.
 
 This backend supports setting, updating and reading metadata of each file.
 The metadata will appear as file metadata on Internet Archive.
-However, some fields are reserved by both Internet Archive and rclone.
+However, some fields are reserved by both Internet Archive and zclone.
 
 The following are reserved by Internet Archive:
 
@@ -76,11 +76,11 @@ Trying to set values to these keys is ignored with a warning.
 Only setting `mtime` is an exception. Doing so make it the identical
 behavior as setting ModTime.
 
-rclone reserves all the keys starting with `rclone-`. Setting value for
+zclone reserves all the keys starting with `zclone-`. Setting value for
 these keys will give you warnings, but values are set according to request.
 
 If there are multiple values for a key, only the first one is returned.
-This is a limitation of rclone, that supports one value per one key.
+This is a limitation of zclone, that supports one value per one key.
 It can be triggered when you did a server-side copy.
 
 Reading metadata will also provide custom (non-standard nor reserved) ones.
@@ -88,7 +88,7 @@ Reading metadata will also provide custom (non-standard nor reserved) ones.
 ## Filtering auto generated files
 
 The Internet Archive automatically creates metadata files after
-upload. These can cause problems when doing an `rclone sync` as rclone
+upload. These can cause problems when doing an `zclone sync` as zclone
 will try, and fail, to delete them. These metadata files are not
 changeable, as they are created by the Internet Archive automatically.
 
@@ -96,7 +96,7 @@ These auto-created files can be excluded from the sync using [metadata
 filtering](/filtering/#metadata).
 
 ```console
-rclone sync ... --metadata-exclude "source=metadata" --metadata-exclude "format=Metadata"
+zclone sync ... --metadata-exclude "source=metadata" --metadata-exclude "format=Metadata"
 ```
 
 Which excludes from the sync any files which have the
@@ -111,7 +111,7 @@ Most applies to the other providers as well, any differences are described [belo
 First run
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process.
@@ -156,7 +156,7 @@ Enter a string value. Press Enter for the default (https://archive.org).
 front_endpoint> 
 Option disable_checksum.
 Don't store MD5 checksum with object metadata.
-Normally rclone will calculate the MD5 checksum of the input before
+Normally zclone will calculate the MD5 checksum of the input before
 uploading it so it can ask the server to check the object against checksum.
 This is great for data integrity checking but can cause long delays for
 large files to start uploading.
@@ -198,7 +198,7 @@ You can find one here: https://archive.org/account/s3.php
 Properties:
 
 - Config:      access_key_id
-- Env Var:     RCLONE_INTERNETARCHIVE_ACCESS_KEY_ID
+- Env Var:     ZCLONE_INTERNETARCHIVE_ACCESS_KEY_ID
 - Type:        string
 - Required:    false
 
@@ -211,7 +211,7 @@ Leave blank for anonymous access.
 Properties:
 
 - Config:      secret_access_key
-- Env Var:     RCLONE_INTERNETARCHIVE_SECRET_ACCESS_KEY
+- Env Var:     ZCLONE_INTERNETARCHIVE_SECRET_ACCESS_KEY
 - Type:        string
 - Required:    false
 
@@ -224,7 +224,7 @@ Setting this to false is useful for uploading files that are already in a format
 Properties:
 
 - Config:      item_derive
-- Env Var:     RCLONE_INTERNETARCHIVE_ITEM_DERIVE
+- Env Var:     ZCLONE_INTERNETARCHIVE_ITEM_DERIVE
 - Type:        bool
 - Default:     true
 
@@ -241,7 +241,7 @@ Leave blank for default value.
 Properties:
 
 - Config:      endpoint
-- Env Var:     RCLONE_INTERNETARCHIVE_ENDPOINT
+- Env Var:     ZCLONE_INTERNETARCHIVE_ENDPOINT
 - Type:        string
 - Default:     "https://s3.us.archive.org"
 
@@ -254,7 +254,7 @@ Leave blank for default value.
 Properties:
 
 - Config:      front_endpoint
-- Env Var:     RCLONE_INTERNETARCHIVE_FRONT_ENDPOINT
+- Env Var:     ZCLONE_INTERNETARCHIVE_FRONT_ENDPOINT
 - Type:        string
 - Default:     "https://archive.org"
 
@@ -266,14 +266,14 @@ Format is key=value and the 'x-archive-meta-' prefix is automatically added.
 Properties:
 
 - Config:      item_metadata
-- Env Var:     RCLONE_INTERNETARCHIVE_ITEM_METADATA
+- Env Var:     ZCLONE_INTERNETARCHIVE_ITEM_METADATA
 - Type:        stringArray
 - Default:     []
 
 #### --internetarchive-disable-checksum
 
-Don't ask the server to test against MD5 checksum calculated by rclone.
-Normally rclone will calculate the MD5 checksum of the input before
+Don't ask the server to test against MD5 checksum calculated by zclone.
+Normally zclone will calculate the MD5 checksum of the input before
 uploading it so it can ask the server to check the object against checksum.
 This is great for data integrity checking but can cause long delays for
 large files to start uploading.
@@ -281,7 +281,7 @@ large files to start uploading.
 Properties:
 
 - Config:      disable_checksum
-- Env Var:     RCLONE_INTERNETARCHIVE_DISABLE_CHECKSUM
+- Env Var:     ZCLONE_INTERNETARCHIVE_DISABLE_CHECKSUM
 - Type:        bool
 - Default:     true
 
@@ -294,7 +294,7 @@ Only enable if you need to be guaranteed to be reflected after write operations.
 Properties:
 
 - Config:      wait_archive
-- Env Var:     RCLONE_INTERNETARCHIVE_WAIT_ARCHIVE
+- Env Var:     ZCLONE_INTERNETARCHIVE_WAIT_ARCHIVE
 - Type:        Duration
 - Default:     0s
 
@@ -307,7 +307,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_INTERNETARCHIVE_ENCODING
+- Env Var:     ZCLONE_INTERNETARCHIVE_ENCODING
 - Type:        Encoding
 - Default:     Slash,LtGt,CrLf,Del,Ctl,InvalidUtf8,Dot
 
@@ -318,7 +318,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_INTERNETARCHIVE_DESCRIPTION
+- Env Var:     ZCLONE_INTERNETARCHIVE_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -326,7 +326,7 @@ Properties:
 
 Metadata fields provided by Internet Archive.
 If there are multiple values for a key, only the first one is returned.
-This is a limitation of Rclone, that supports one value per one key.
+This is a limitation of Zclone, that supports one value per one key.
 
 Owner is able to add custom keys. Metadata feature grabs all the keys including them.
 
@@ -337,17 +337,17 @@ Here are the possible system metadata items for the internetarchive backend.
 | crc32 | CRC32 calculated by Internet Archive | string | 01234567 | **Y** |
 | format | Name of format identified by Internet Archive | string | Comma-Separated Values | **Y** |
 | md5 | MD5 hash calculated by Internet Archive | string | 01234567012345670123456701234567 | **Y** |
-| mtime | Time of last modification, managed by Rclone | RFC 3339 | 2006-01-02T15:04:05.999999999Z | **Y** |
+| mtime | Time of last modification, managed by Zclone | RFC 3339 | 2006-01-02T15:04:05.999999999Z | **Y** |
 | name | Full file path, without the bucket part | filename | backend/internetarchive/internetarchive.go | **Y** |
 | old_version | Whether the file was replaced and moved by keep-old-version flag | boolean | true | **Y** |
-| rclone-ia-mtime | Time of last modification, managed by Internet Archive | RFC 3339 | 2006-01-02T15:04:05.999999999Z | N |
-| rclone-mtime | Time of last modification, managed by Rclone | RFC 3339 | 2006-01-02T15:04:05.999999999Z | N |
-| rclone-update-track | Random value used by Rclone for tracking changes inside Internet Archive | string | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa | N |
 | sha1 | SHA1 hash calculated by Internet Archive | string | 0123456701234567012345670123456701234567 | **Y** |
 | size | File size in bytes | decimal number | 123456 | **Y** |
 | source | The source of the file | string | original | **Y** |
-| summation | Check https://forum.rclone.org/t/31922 for how it is used | string | md5 | **Y** |
+| summation | Check / for how it is used | string | md5 | **Y** |
 | viruscheck | The last time viruscheck process was run for the file (?) | unixtime | 1654191352 | **Y** |
+| zclone-ia-mtime | Time of last modification, managed by Internet Archive | RFC 3339 | 2006-01-02T15:04:05.999999999Z | N |
+| zclone-mtime | Time of last modification, managed by Zclone | RFC 3339 | 2006-01-02T15:04:05.999999999Z | N |
+| zclone-update-track | Random value used by Zclone for tracking changes inside Internet Archive | string | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa | N |
 
 See the [metadata](/docs/#metadata) docs for more info.
 

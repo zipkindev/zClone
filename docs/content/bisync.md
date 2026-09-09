@@ -1,6 +1,6 @@
 ---
 title: "Bisync"
-description: "Bidirectional cloud sync solution in rclone"
+description: "Bidirectional cloud sync solution in zclone"
 versionIntroduced: "v1.58"
 ---
 
@@ -8,16 +8,16 @@ versionIntroduced: "v1.58"
 
 `bisync` is considered an **advanced command**, so use with care.
 Make sure you have read and understood the entire
-[manual](https://rclone.org/bisync) (especially the [Limitations](#limitations)
+[manual](//bisync) (especially the [Limitations](#limitations)
 section) before using, or data loss can result. Questions can be asked in the
-[Rclone Forum](https://forum.rclone.org/).
+[Zclone Forum](/).
 
 ## Getting started {#getting-started}
 
-- [Install rclone](/install/) and setup your remotes.
-- Bisync will create its working directory   at `~/.cache/rclone/bisync` on
-  Linux, `/Users/yourusername/Library/Caches/rclone/bisync` on Mac,   or
-  `C:\Users\MyLogin\AppData\Local\rclone\bisync` on Windows.   Make sure that this
+- [Install zclone](/install/) and setup your remotes.
+- Bisync will create its working directory   at `~/.cache/zclone/bisync` on
+  Linux, `/Users/yourusername/Library/Caches/zclone/bisync` on Mac,   or
+  `C:\Users\MyLogin\AppData\Local\zclone\bisync` on Windows.   Make sure that this
   location is writable.
 - Run bisync with the `--resync` flag, specifying the paths
   to the local and remote sync directory roots.
@@ -32,7 +32,7 @@ section) before using, or data loss can result. Questions can be asked in the
 For example, your first command might look like this:
 
 ```console
-rclone bisync remote1:path1 remote2:path2 --create-empty-src-dirs --compare size,modtime,checksum --slow-hash-sync-only --resilient -MvP --drive-skip-gdocs --fix-case --resync --dry-run
+zclone bisync remote1:path1 remote2:path2 --create-empty-src-dirs --compare size,modtime,checksum --slow-hash-sync-only --resilient -MvP --drive-skip-gdocs --fix-case --resync --dry-run
 ```
 
 If all looks good, run it again without `--dry-run`.
@@ -41,7 +41,7 @@ After that, remove `--resync` as well.
 Here is a typical run log (with timestamps removed for clarity):
 
 ```console
-rclone bisync /testdir/path1/ /testdir/path2/ --verbose
+zclone bisync /testdir/path1/ /testdir/path2/ --verbose
 INFO  : Synching Path1 "/testdir/path1/" with Path2 "/testdir/path2/"
 INFO  : Path1 checking for diffs
 INFO  : - Path1    File is new                         - file11.txt
@@ -87,19 +87,19 @@ INFO  : Bisync successful
 ## Command line syntax
 
 ```console
-$ rclone bisync --help
+$ zclone bisync --help
 Usage:
-  rclone bisync remote1:path1 remote2:path2 [flags]
+  zclone bisync remote1:path1 remote2:path2 [flags]
 
 Positional arguments:
   Path1, Path2  Local path, or remote storage with ':' plus optional path.
-                Type 'rclone listremotes' for list of configured remotes.
+                Type 'zclone listremotes' for list of configured remotes.
 
 Optional Flags:
       --backup-dir1 string                   --backup-dir for Path1. Must be a non-overlapping path on the same remote.
       --backup-dir2 string                   --backup-dir for Path2. Must be a non-overlapping path on the same remote.
-      --check-access                         Ensure expected RCLONE_TEST files are found on both Path1 and Path2 filesystems, else abort.
-      --check-filename string                Filename for --check-access (default: RCLONE_TEST)
+      --check-access                         Ensure expected ZCLONE_TEST files are found on both Path1 and Path2 filesystems, else abort.
+      --check-filename string                Filename for --check-access (default: ZCLONE_TEST)
       --check-sync string                    Controls comparison of final listings: true|false|only (default: true) (default "true")
       --compare string                       Comma-separated list of bisync-specific compare options ex. 'size,modtime,checksum' (default: 'size,modtime')
       --conflict-loser ConflictLoserAction   Action to take on the loser of a sync conflict (when there is a winner) or on both files (when there is no winner): , num, pathname, delete (default: num)
@@ -128,11 +128,11 @@ Optional Flags:
   -v, --verbose                              Increases logging verbosity. May be specified more than once for more details.
 ```
 
-Arbitrary rclone flags may be specified on the
-[bisync command line](/commands/rclone_bisync/), for example
-`rclone bisync ./testdir/path1/ gdrive:testdir/path2/ --drive-skip-gdocs -v -v
+Arbitrary zclone flags may be specified on the
+[bisync command line](/commands/zclone_bisync/), for example
+`zclone bisync ./testdir/path1/ gdrive:testdir/path2/ --drive-skip-gdocs -v -v
 --timeout 10s`
-Note that interactions of various rclone flags with bisync process flow
+Note that interactions of various zclone flags with bisync process flow
 has not been fully tested yet.
 
 ### Paths
@@ -148,7 +148,7 @@ Path1 and Path2 are treated equally, in that neither has priority for file
 changes (except during [`--resync`](#resync)), and access efficiency does not
 change whether a remote is on Path1 or Path2.
 
-The listings in bisync working directory (default: `~/.cache/rclone/bisync`)
+The listings in bisync working directory (default: `~/.cache/zclone/bisync`)
 are named based on the Path1 and Path2 arguments so that separate syncs
 to individual directories within the tree may be set up, e.g.:
 `path_to_local_tree..dropbox_subdir.lst`.
@@ -170,8 +170,8 @@ The `--resync` sequence is roughly equivalent to the following
 (but see [`--resync-mode`](#resync-mode) for other options):
 
 ```console
-rclone copy Path2 Path1 --ignore-existing [--create-empty-src-dirs]
-rclone copy Path1 Path2 [--create-empty-src-dirs]
+zclone copy Path2 Path1 --ignore-existing [--create-empty-src-dirs]
+zclone copy Path1 Path2 [--create-empty-src-dirs]
 ```
 
 The base directories on both Path1 and Path2 filesystems must exist
@@ -180,7 +180,7 @@ that both paths are valid.
 
 When using `--resync`, a newer version of a file on the Path2 filesystem
 will (by default) be overwritten by the Path1 filesystem version.
-(Note that this is [NOT entirely symmetrical](https://github.com/rclone/rclone/issues/5681#issuecomment-938761815),
+(Note that this is [NOT entirely symmetrical](/),
 and more symmetrical options can be specified with the
 [`--resync-mode`](#resync-mode) flag.)
 Carefully evaluate deltas using [--dry-run](/flags/#non-backend-flags).
@@ -246,7 +246,7 @@ the `--resync`.
 - `newer` - the newer file (by `modtime`) is considered the winner, regardless
 of which side it came from. This may result in having a mix of some winners
 from Path1, and some winners from Path2. (The implementation is analogous to
-running `rclone copy --update` in both directions.)
+running `zclone copy --update` in both directions.)
 - `older` - same as `newer`, except the older file is considered the winner,
 and the newer file is considered the loser.
 - `larger` - the larger file (by `size`) is considered the winner (regardless
@@ -278,7 +278,7 @@ differences between resync and non-resync runs.).
 - `--conflict-resolve`, `--conflict-loser`, and `--conflict-suffix` do not
 apply during `--resync`, and unlike these flags, nothing is renamed during
 `--resync`. When a file differs on both sides during `--resync`, one version
-always overwrites the other (much like in `rclone copy`.) (Consider using
+always overwrites the other (much like in `zclone copy`.) (Consider using
 [`--backup-dir`](#backup-dir1-and-backup-dir2) to retain a backup of the losing
 version.)
 - Unlike for `--conflict-resolve`, `--resync-mode none` is not a valid option
@@ -297,19 +297,19 @@ other.
 ### --check-access
 
 Access check files are an additional safety measure against data loss.
-bisync will ensure it can find matching `RCLONE_TEST` files in the same places
+bisync will ensure it can find matching `ZCLONE_TEST` files in the same places
 in the Path1 and Path2 filesystems.
-`RCLONE_TEST` files are not generated automatically.
+`ZCLONE_TEST` files are not generated automatically.
 For `--check-access` to succeed, you must first either:
-**A)** Place one or more `RCLONE_TEST` files in both systems, or
+**A)** Place one or more `ZCLONE_TEST` files in both systems, or
 **B)** Set `--check-filename` to a filename already in use in various locations
 throughout your sync'd fileset. Recommended methods for **A)** include:
 
-- `rclone touch Path1/RCLONE_TEST` (create a new file)
-- `rclone copyto Path1/RCLONE_TEST Path2/RCLONE_TEST` (copy an existing file)
-- `rclone copy Path1/RCLONE_TEST Path2/RCLONE_TEST  --include "RCLONE_TEST"`
+- `zclone touch Path1/ZCLONE_TEST` (create a new file)
+- `zclone copyto Path1/ZCLONE_TEST Path2/ZCLONE_TEST` (copy an existing file)
+- `zclone copy Path1/ZCLONE_TEST Path2/ZCLONE_TEST  --include "ZCLONE_TEST"`
 (copy multiple files at once, recursively)
-- create the files manually (outside of rclone)
+- create the files manually (outside of zclone)
 - run `bisync` once *without* `--check-access` to set matching files on both filesystems
 will also work, but is not preferred, due to potential for user error
 (you are temporarily disabling the safety feature).
@@ -317,18 +317,18 @@ will also work, but is not preferred, due to potential for user error
 Note that `--check-access` is still enforced on `--resync`, so `bisync --resync --check-access`
 will not work as a method of initially setting the files
 (this is to ensure that bisync can't
-[inadvertently circumvent its own safety switch](https://forum.rclone.org/t/bisync-bugs-and-feature-requests/37636#:~:text=3.%20%2D%2Dcheck%2Daccess%20doesn%27t%20always%20fail%20when%20it%20should).)
+[inadvertently circumvent its own safety switch](/).)
 
-Time stamps and file contents for `RCLONE_TEST` files are not important, just
+Time stamps and file contents for `ZCLONE_TEST` files are not important, just
 the names and locations. If you have symbolic links in your sync tree it is
-recommended to place `RCLONE_TEST` files in the linked-to directory tree to
+recommended to place `ZCLONE_TEST` files in the linked-to directory tree to
 protect against bisync assuming a bunch of deleted files if the linked-to tree
 should not be accessible. See also the [--check-filename](--check-filename) flag.
 
 ### --check-filename
 
 Name of the file(s) used in access health validation.
-The default `--check-filename` is `RCLONE_TEST`.
+The default `--check-filename` is `ZCLONE_TEST`.
 One or more files having this filename must exist, synchronized between your
 source and destination filesets, in order for `--check-access` to succeed.
 See [--check-access](#check-access) for additional details.
@@ -459,12 +459,12 @@ Both `--no-slow-hash` and `--slow-hash-sync-only` have no effect without
 If `--download-hash` is set, bisync will use best efforts to obtain an MD5
 checksum by downloading and computing on-the-fly, when checksums are not
 otherwise available (for example, a remote that doesn't support them.) Note
-that since rclone has to download the entire file, this may dramatically slow
+that since zclone has to download the entire file, this may dramatically slow
 down your bisync runs, and is also likely to use a lot of data, so it is
 probably not practical for bisync paths with a large total file size. However,
 it can be a good option for syncing small-but-important files with maximum
 accuracy (for example, a source code repo on a `crypt` remote.) An additional
-advantage over methods like [`cryptcheck`](/commands/rclone_cryptcheck/) is
+advantage over methods like [`cryptcheck`](/commands/zclone_cryptcheck/) is
 that the original file is not required for comparison (for example,
 `--download-hash` can be used to bisync two different crypt remotes with
 different passwords.)
@@ -478,9 +478,9 @@ internals of the generated export file.) Therefore, bisync automatically skips
 `--download-hash` for files with a size less than 0.
 
 See also: [`Hasher`](/hasher/) backend,
-[`cryptcheck`](/commands/rclone_cryptcheck/) command,
-[`rclone check --download`](/commands/rclone_check/) option,
-[`md5sum`](/commands/rclone_md5sum/) command
+[`cryptcheck`](/commands/zclone_cryptcheck/) command,
+[`zclone check --download`](/commands/zclone_check/) option,
+[`md5sum`](/commands/zclone_md5sum/) command
 
 ### --max-delete
 
@@ -502,7 +502,7 @@ Also see the [all files changed](#all-files-changed) check.
 
 ### --filters-file {#filters-file}
 
-By using rclone filter features you can exclude file types or directory
+By using zclone filter features you can exclude file types or directory
 sub-trees from the sync.
 See the [bisync filters](#filtering) section and generic
 [--filter-from](/filtering/#filter-from-read-filtering-patterns-from-a-file)
@@ -656,7 +656,7 @@ and slashes are also best avoided as they are often interpreted as directory
 separators.) To address this particular issue, an additional `{MacFriendlyTime}`
 (or just `{mac}`) option is supported, which results in `2006-01-02 0304PM`.
 
-Note that `--conflict-suffix` is entirely separate from rclone's main
+Note that `--conflict-suffix` is entirely separate from zclone's main
 [`--sufix`](/docs/#suffix-string) flag. This is intentional, as users may wish
 to use both flags simultaneously, if also using
 [`--backup-dir`](#backup-dir1-and-backup-dir2).
@@ -698,8 +698,8 @@ other, if there were changes during or after the run. This is normal, and any
 differences will be detected and synced on the next run.
 
 For a robust integrity check of the current state of the remotes (as opposed to
-just their listing snapshots), consider using [`check`](commands/rclone_check/)
-(or [`cryptcheck`](/commands/rclone_cryptcheck/), if at least one path is a
+just their listing snapshots), consider using [`check`](commands/zclone_check/)
+(or [`cryptcheck`](/commands/zclone_cryptcheck/), if at least one path is a
 `crypt` remote) instead of `--check-sync`, keeping in mind that differences are
 expected if files changed during or after your last bisync run.
 
@@ -708,13 +708,13 @@ For example, a possible sequence could look like this:
 1. Normally scheduled bisync run:
 
     ```console
-    rclone bisync Path1 Path2 -MPc --check-access --max-delete 10 --filters-file /path/to/filters.txt -v --no-cleanup --ignore-listing-checksum --disable ListR --checkers=16 --drive-pacer-min-sleep=10ms --create-empty-src-dirs --resilient
+    zclone bisync Path1 Path2 -MPc --check-access --max-delete 10 --filters-file /path/to/filters.txt -v --no-cleanup --ignore-listing-checksum --disable ListR --checkers=16 --drive-pacer-min-sleep=10ms --create-empty-src-dirs --resilient
     ```
 
 2. Periodic independent integrity check (perhaps scheduled nightly or weekly):
 
     ```console
-    rclone check -MvPc Path1 Path2 --filter-from /path/to/filters.txt
+    zclone check -MvPc Path1 Path2 --filter-from /path/to/filters.txt
     ```
 
 3. If diffs are found, you have some choices to correct them.
@@ -722,7 +722,7 @@ If one side is more up-to-date and you want to make the other side match it,
 you could run:
 
     ```console
-    rclone sync Path1 Path2 --filter-from /path/to/filters.txt --create-empty-src-dirs -MPc -v
+    zclone sync Path1 Path2 --filter-from /path/to/filters.txt --create-empty-src-dirs -MPc -v
     ```
 
 (or switch Path1 and Path2 to make Path2 the source-of-truth)
@@ -731,9 +731,9 @@ Or, if neither side is totally up-to-date, you could run a `--resync` to bring t
 back into agreement (but remember that this could cause deleted files to
 re-appear.)
 
-*Note also that `rclone check` does not currently include empty directories,
+*Note also that `zclone check` does not currently include empty directories,
 so if you want to know if any empty directories are out of sync,
-consider alternatively running the above `rclone sync` command with `--dry-run` added.
+consider alternatively running the above `zclone sync` command with `--dry-run` added.
 
 See also: [Concurrent modifications](#concurrent-modifications), [`--resilient`](#resilient)
 
@@ -858,7 +858,7 @@ override `--backup-dir`.
 Example:
 
 ```console
-rclone bisync /Users/someuser/some/local/path/Bisync gdrive:Bisync --backup-dir1 /Users/someuser/some/local/path/BackupDir --backup-dir2 gdrive:BackupDir --suffix -2023-08-26 --suffix-keep-extension --check-access --max-delete 10 --filters-file /Users/someuser/some/local/path/bisync_filters.txt --no-cleanup --ignore-listing-checksum --checkers=16 --drive-pacer-min-sleep=10ms --create-empty-src-dirs --resilient -MvP --drive-skip-gdocs --fix-case
+zclone bisync /Users/someuser/some/local/path/Bisync gdrive:Bisync --backup-dir1 /Users/someuser/some/local/path/BackupDir --backup-dir2 gdrive:BackupDir --suffix -2023-08-26 --suffix-keep-extension --check-access --max-delete 10 --filters-file /Users/someuser/some/local/path/bisync_filters.txt --no-cleanup --ignore-listing-checksum --checkers=16 --drive-pacer-min-sleep=10ms --create-empty-src-dirs --resilient -MvP --drive-skip-gdocs --fix-case
 ```
 
 In this example, if the user deletes a file in
@@ -895,7 +895,7 @@ On each successive run it will:
   `.conflict1`, `.conflict2`, etc. file versions, according to
   [`--conflict-resolve`](#conflict-resolve), [`--conflict-loser`](#conflict-loser),
   and [`--conflict-suffix`](#conflict-suffix) settings.
-- File system access health check using `RCLONE_TEST` files
+- File system access health check using `ZCLONE_TEST` files
   (see the `--check-access` flag).
 - Abort on excessive deletes - protects against a failed listing
   being interpreted as all the files were deleted.
@@ -907,35 +907,35 @@ On each successive run it will:
 
  Type         | Description                                   | Result                   | Implementation
 --------------|-----------------------------------------------|--------------------------|-----------------------------
-Path2 new     | File is new on Path2, does not exist on Path1 | Path2 version survives   | `rclone copy` Path2 to Path1
-Path2 newer   | File is newer on Path2, unchanged on Path1    | Path2 version survives   | `rclone copy` Path2 to Path1
-Path2 deleted | File is deleted on Path2, unchanged on Path1  | File is deleted          | `rclone delete` Path1
-Path1 new     | File is new on Path1, does not exist on Path2 | Path1 version survives   | `rclone copy` Path1 to Path2
-Path1 newer   | File is newer on Path1, unchanged on Path2    | Path1 version survives   | `rclone copy` Path1 to Path2
-Path1 older   | File is older on Path1, unchanged on Path2    | *Path1 version survives* | `rclone copy` Path1 to Path2
-Path2 older   | File is older on Path2, unchanged on Path1    | *Path2 version survives* | `rclone copy` Path2 to Path1
-Path1 deleted | File no longer exists on Path1                | File is deleted          | `rclone delete` Path2
+Path2 new     | File is new on Path2, does not exist on Path1 | Path2 version survives   | `zclone copy` Path2 to Path1
+Path2 newer   | File is newer on Path2, unchanged on Path1    | Path2 version survives   | `zclone copy` Path2 to Path1
+Path2 deleted | File is deleted on Path2, unchanged on Path1  | File is deleted          | `zclone delete` Path1
+Path1 new     | File is new on Path1, does not exist on Path2 | Path1 version survives   | `zclone copy` Path1 to Path2
+Path1 newer   | File is newer on Path1, unchanged on Path2    | Path1 version survives   | `zclone copy` Path1 to Path2
+Path1 older   | File is older on Path1, unchanged on Path2    | *Path1 version survives* | `zclone copy` Path1 to Path2
+Path2 older   | File is older on Path2, unchanged on Path1    | *Path2 version survives* | `zclone copy` Path2 to Path1
+Path1 deleted | File no longer exists on Path1                | File is deleted          | `zclone delete` Path2
 
 ### Unusual sync checks
 
  Type                           | Description                           | Result                             | Implementation
 --------------------------------|---------------------------------------|------------------------------------|-----------------------
 Path1 new/changed AND Path2 new/changed AND Path1 == Path2       | File is new/changed on Path1 AND new/changed on Path2 AND Path1 version is currently identical to Path2 | No change | None
-Path1 new AND Path2 new         | File is new on Path1 AND new on Path2 (and Path1 version is NOT identical to Path2) | Conflicts handled according to [`--conflict-resolve`](#conflict-resolve) & [`--conflict-loser`](#conflict-loser) settings | default: `rclone copy` renamed `Path2.conflict2` file to Path1, `rclone copy` renamed `Path1.conflict1` file to Path2
-Path2 newer AND Path1 changed   | File is newer on Path2 AND also changed (newer/older/size) on Path1 (and Path1 version is NOT identical to Path2) | Conflicts handled according to [`--conflict-resolve`](#conflict-resolve) & [`--conflict-loser`](#conflict-loser) settings | default: `rclone copy` renamed `Path2.conflict2` file to Path1, `rclone copy` renamed `Path1.conflict1` file to Path2
-Path2 newer AND Path1 deleted   | File is newer on Path2 AND also deleted on Path1 | Path2 version survives  | `rclone copy` Path2 to Path1
-Path2 deleted AND Path1 changed | File is deleted on Path2 AND changed (newer/older/size) on Path1 | Path1 version survives |`rclone copy` Path1 to Path2
-Path1 deleted AND Path2 changed | File is deleted on Path1 AND changed (newer/older/size) on Path2 | Path2 version survives  | `rclone copy` Path2 to Path1
+Path1 new AND Path2 new         | File is new on Path1 AND new on Path2 (and Path1 version is NOT identical to Path2) | Conflicts handled according to [`--conflict-resolve`](#conflict-resolve) & [`--conflict-loser`](#conflict-loser) settings | default: `zclone copy` renamed `Path2.conflict2` file to Path1, `zclone copy` renamed `Path1.conflict1` file to Path2
+Path2 newer AND Path1 changed   | File is newer on Path2 AND also changed (newer/older/size) on Path1 (and Path1 version is NOT identical to Path2) | Conflicts handled according to [`--conflict-resolve`](#conflict-resolve) & [`--conflict-loser`](#conflict-loser) settings | default: `zclone copy` renamed `Path2.conflict2` file to Path1, `zclone copy` renamed `Path1.conflict1` file to Path2
+Path2 newer AND Path1 deleted   | File is newer on Path2 AND also deleted on Path1 | Path2 version survives  | `zclone copy` Path2 to Path1
+Path2 deleted AND Path1 changed | File is deleted on Path2 AND changed (newer/older/size) on Path1 | Path1 version survives |`zclone copy` Path1 to Path2
+Path1 deleted AND Path2 changed | File is deleted on Path1 AND changed (newer/older/size) on Path2 | Path2 version survives  | `zclone copy` Path2 to Path1
 
-As of `rclone v1.64`, bisync is now better at detecting *false positive* sync
+As of `zclone v1.64`, bisync is now better at detecting *false positive* sync
 conflicts, which would previously have resulted in unnecessary renames and
 duplicates. Now, when bisync comes to a file that it wants to rename (because it
 is new/changed on both sides), it first checks whether the Path1 and Path2
 versions are currently *identical* (using the same underlying function as
-[`check`](commands/rclone_check/).) If bisync concludes that the files are
+[`check`](commands/zclone_check/).) If bisync concludes that the files are
 identical, it will skip them and move on. Otherwise, it will create renamed
 duplicates, as before. This behavior also [improves the experience of renaming
-directories](https://forum.rclone.org/t/bisync-bugs-and-feature-requests/37636#:~:text=Renamed%20directories),
+directories](/),
 as a `--resync` is no longer required, so long as the same change has been made
 on both sides.
 
@@ -975,8 +975,8 @@ Most of these events come up due to an error status from an internal call.
 On such a critical error the `{...}.path1.lst` and `{...}.path2.lst`
 listing files are renamed to extension `.lst-err`, which blocks any future
 bisync runs (since the normal `.lst` files are not found).
-Bisync keeps them under `bisync` subdirectory of the rclone cache directory,
-typically at `${HOME}/.cache/rclone/bisync/` on Linux.
+Bisync keeps them under `bisync` subdirectory of the zclone cache directory,
+typically at `${HOME}/.cache/zclone/bisync/` on Linux.
 
 Some errors are considered temporary and re-running the bisync is not blocked.
 The *critical return* blocks further bisync runs.
@@ -987,7 +987,7 @@ See also: [`--resilient`](#resilient), [`--recover`](#recover),
 ### Lock file
 
 When bisync is running, a lock file is created in the bisync working directory,
-typically at `~/.cache/rclone/bisync/PATH1..PATH2.lck` on Linux.
+typically at `~/.cache/zclone/bisync/PATH1..PATH2.lck` on Linux.
 If bisync should crash or hang, the lock file will remain in place and block
 any further runs of bisync *for the same paths*.
 Delete the lock file as part of debugging the situation.
@@ -1004,7 +1004,7 @@ lest there be replicated files, deleted files and general mayhem.
 
 ### Exit codes
 
-`rclone bisync` returns the following codes to calling program:
+`zclone bisync` returns the following codes to calling program:
 
 - `0` on a successful run,
 - `1` for a non-critical failing run (a rerun may be successful),
@@ -1043,27 +1043,17 @@ expire on its own, if using `--max-lock`.)
 
 ### Supported backends
 
-Bisync is integration-tested against all rclone backends to verify compatibility.
+Bisync is integration-tested against all zclone backends to verify compatibility.
 Most backends (including all backends not listed below) are deemed fully
 supported with no known issues. Occasionally, however, these tests reveal issues
 with particular backends, usually related to a provider-specific limitation
-beyond rclone's control (for example, disallowed special characters and filename
+beyond zclone's control (for example, disallowed special characters and filename
 encodings.)
 
 The following backends have known issues that need more investigation:
 
 <!--- start list_failures - DO NOT EDIT THIS SECTION - use make commanddocs --->
-- `TestHuaweiDrive` (`huaweidrive`)
-  - [`TestBisyncRemoteLocal/ext_paths`](https://pub.rclone.org/integration-tests/current/huaweidrive-cmd.bisync-TestHuaweiDrive-1.txt)
-  - [`TestBisyncRemoteLocal/extended_filenames`](https://pub.rclone.org/integration-tests/current/huaweidrive-cmd.bisync-TestHuaweiDrive-1.txt)
-  - [`TestBisyncRemoteLocal/normalization`](https://pub.rclone.org/integration-tests/current/huaweidrive-cmd.bisync-TestHuaweiDrive-1.txt)
-  - [`TestBisyncLocalRemote/ext_paths`](https://pub.rclone.org/integration-tests/current/huaweidrive-cmd.bisync-TestHuaweiDrive-1.txt)
-  - [`TestBisyncLocalRemote/extended_filenames`](https://pub.rclone.org/integration-tests/current/huaweidrive-cmd.bisync-TestHuaweiDrive-1.txt)
-  - [4 more](https://pub.rclone.org/integration-tests/current/)
-- `TestPcloud` (`pcloud`)
-  - [`TestBisyncRemoteRemote/check_access`](https://pub.rclone.org/integration-tests/current/pcloud-cmd.bisync-TestPcloud-1.txt)
-  - [`TestBisyncRemoteRemote/rmdirs`](https://pub.rclone.org/integration-tests/current/pcloud-cmd.bisync-TestPcloud-1.txt)
-- Updated: 2026-07-31-010017
+Integration test reports are not published by this local distribution.
 <!--- end list_failures - DO NOT EDIT THIS SECTION - use make commanddocs --->
 
 The following backends either have not been tested recently or have known issues
@@ -1093,20 +1083,20 @@ that are deemed unfixable for the time being:
 - `TestQuatrix` (`quatrix`)
 - `TestS3GCS` (`s3`)
   - `TestBisyncRemoteRemote/extended_filenames`
-- `TestS3Rclone` (`s3`)
+- `TestS3Zclone` (`s3`)
 - `TestSFTPRsyncNet` (`sftp`)
 - `TestStorj` (`storj`)
 - `TestWebdavNextcloud` (`webdav`)
 - `TestWebdavOwncloud` (`webdav`)
 - `TestnStorage` (`netstorage`)
 <!--- end list_ignores - DO NOT EDIT THIS SECTION - use make commanddocs --->
-([more info](https://github.com/rclone/rclone/blob/master/fstest/test_all/config.yaml))
+([more info](/))
 
-The above lists are updated for each stable release of rclone. For test results
-updated nightly based on the latest beta, visit rclone's [integration test
-status page](https://pub.rclone.org/integration-tests/current/).
+The above lists are updated for each stable release of zclone. For test results
+updated nightly based on the latest beta, visit zclone's [integration test
+status page](/).
 
-Early beta versions of `rclone bisync` required both underlying backends to support
+Early beta versions of `zclone bisync` required both underlying backends to support
 modification times, and refused to run otherwise.
 This limitation has been lifted as of `v1.66`, as bisync now supports comparing
 checksum and/or size instead of (or in addition to) modtime.
@@ -1115,15 +1105,15 @@ See [`--compare`](#compare) for details.
 ### Concurrent modifications
 
 When using **Local, FTP or SFTP** remotes with [`--inplace`](/docs/#inplace),
-rclone does not create *temporary* files at the destination when copying, and
+zclone does not create *temporary* files at the destination when copying, and
 thus if the connection is lost the created file may be corrupt, which will
 likely propagate back to the original path on the next sync, resulting in data
 loss. It is therefore recommended to *omit* `--inplace`.
 
 Files that **change during** a bisync run may result in data loss. Prior to
-`rclone v1.66`, this was commonly seen in highly dynamic environments, where the
+`zclone v1.66`, this was commonly seen in highly dynamic environments, where the
 filesystem was getting hammered by running processes during the sync. As of
-`rclone v1.66`, bisync was redesigned to use a "snapshot" model, greatly
+`zclone v1.66`, bisync was redesigned to use a "snapshot" model, greatly
 reducing the risks from changes during a sync. Changes that are not detected
 during the current sync will now be detected during the following sync, and will
 no longer cause the entire run to throw a critical error. There is additionally
@@ -1131,16 +1121,16 @@ a mechanism to mark files as needing to be internally rechecked next time, for
 added safety. It should therefore no longer be necessary to sync only at quiet
 times -- however, note that an error can still occur if a file happens to change
 at the exact moment it's being read/written by bisync (same as would happen in
-`rclone sync`.) (See also: [`--ignore-checksum`](/docs/#ignore-checksum),
+`zclone sync`.) (See also: [`--ignore-checksum`](/docs/#ignore-checksum),
 [`--local-no-check-updated`](/local/#local-no-check-updated))
 
 ### Empty directories
 
 By default, new/deleted empty directories on one path are *not* propagated to
-the other side. This is because bisync (and rclone) natively works on files, not
+the other side. This is because bisync (and zclone) natively works on files, not
 directories. However, this can be changed with the `--create-empty-src-dirs` flag,
-which works in much the same way as in [`sync`](/commands/rclone_sync/) and
-[`copy`](/commands/rclone_copy/). When used, empty directories created or
+which works in much the same way as in [`sync`](/commands/zclone_sync/) and
+[`copy`](/commands/zclone_copy/). When used, empty directories created or
 deleted on one side will also be created or deleted on the other side. The
 following should be noted:
 
@@ -1162,27 +1152,27 @@ Bisync sees this as all files in the old directory name as deleted and all
 files in the new directory name as new.
 
 A recommended solution is to use [`--track-renames`](/docs/#track-renames),
-which is now supported in bisync as of `rclone v1.66`.
+which is now supported in bisync as of `zclone v1.66`.
 Note that `--track-renames` is not available during `--resync`,
 as `--resync` does not delete anything (`--track-renames` only supports `sync`,
 not `copy`.)
 
 Otherwise, the most effective and efficient method of renaming a directory
-is to rename it to the same name on both sides. (As of `rclone v1.64`,
+is to rename it to the same name on both sides. (As of `zclone v1.64`,
 a `--resync` is no longer required after doing so, as bisync will automatically
 detect that Path1 and Path2 are in agreement.)
 
 Note that although the flag --track-renames ensures that renamed/moved files won't
 be deleted and uploaded again, they are still counted as deleted files for purposes
 of the --max-delete flag (as this check happens before the rename detection
-operation). See [this issue](https://github.com/rclone/rclone/issues/8685).
+operation). See [this issue](/).
 
 ### `--fast-list` used by default
 
-Unlike most other rclone commands, bisync uses [`--fast-list`](/docs/#fast-list)
+Unlike most other zclone commands, bisync uses [`--fast-list`](/docs/#fast-list)
 by default, for backends that support it. In many cases this is desirable, however,
 there are some scenarios in which bisync could be faster *without* `--fast-list`,
-and there is also a [known issue concerning Google Drive users with many empty directories](https://github.com/rclone/rclone/commit/cbf3d4356135814921382dd3285d859d15d0aa77).
+and there is also a [known issue concerning Google Drive users with many empty directories](/).
 For now, the recommended way to avoid using `--fast-list` is to add `--disable ListR`
 to all bisync commands. The default behavior may change in a future version.
 
@@ -1190,7 +1180,7 @@ to all bisync commands. The default behavior may change in a future version.
 
 As of `v1.66`, case and unicode form differences no longer cause critical errors,
 and normalization (when comparing between filesystems) is handled according to
-the same flags and defaults as `rclone sync`. See the following options (all of
+the same flags and defaults as `zclone sync`. See the following options (all of
 which are supported by bisync) to control this behavior more granularly:
 
 - [`--fix-case`](/docs/#fix-case)
@@ -1211,7 +1201,7 @@ Bisync has been tested on Windows 8.1, Windows 10 Pro 64-bit and on Windows
 GitHub runners.
 
 Drive letters are allowed, including drive letters mapped to network drives
-(`rclone bisync J:\localsync GDrive:`).
+(`zclone bisync J:\localsync GDrive:`).
 If a drive letter is omitted, the shell current drive is the default.
 Drive letters are a single character follows by `:`, so cloud names
 must be more than one character long.
@@ -1219,7 +1209,7 @@ must be more than one character long.
 Absolute paths (with or without a drive letter), and relative paths
 (with or without a drive letter) are supported.
 
-Working directory is created at `C:\Users\MyLogin\AppData\Local\rclone\bisync`.
+Working directory is created at `C:\Users\MyLogin\AppData\Local\zclone\bisync`.
 
 Note that bisync output may show a mix of forward `/` and back `\` slashes.
 
@@ -1231,7 +1221,7 @@ vs. case dependent Linux
 See [filtering documentation](/filtering/)
 for how filter rules are written and interpreted.
 
-Bisync's [`--filters-file`](#filters-file) flag slightly extends the rclone's
+Bisync's [`--filters-file`](#filters-file) flag slightly extends the zclone's
 [--filter-from](/filtering/#filter-from-read-filtering-patterns-from-a-file)
 filtering mechanism.
 For a given bisync run you may provide *only one* `--filters-file`.
@@ -1260,10 +1250,10 @@ below.
 1. Begin with excluding directory trees:
     - e.g. `- /AppData/`
     - `**` on the end is not necessary. Once a given directory level
-      is excluded then everything beneath it won't be looked at by rclone.
+      is excluded then everything beneath it won't be looked at by zclone.
     - Exclude such directories that are unneeded, are big, dynamically thrashed,
       or where there may be access permission issues.
-    - Excluding such dirs first will make rclone operations (much) faster.
+    - Excluding such dirs first will make zclone operations (much) faster.
     - Specific files may also be excluded, as with the Dropbox exclusions
       example below.
 2. Decide if it's easier (or cleaner) to:
@@ -1275,7 +1265,7 @@ below.
     - `**` on the end specifies to include the full depth of the specified tree.
     - With Include-style filters, files at the Path1/Path2 root are not included.
       They may be included with `+ /*`.
-    - Place RCLONE_TEST files within these included directory trees.
+    - Place ZCLONE_TEST files within these included directory trees.
       They will only be looked for in these directory trees.
     - Finish by excluding everything else by adding `- **` at the end
       of the filters file.
@@ -1291,7 +1281,7 @@ below.
 A few rules for the syntax of a filter file expanding on
 [filtering documentation](/filtering/):
 
-- Lines may start with spaces and tabs - rclone strips leading whitespace.
+- Lines may start with spaces and tabs - zclone strips leading whitespace.
 - If the first non-whitespace character is a `#` then the line is a comment
   and will be ignored.
 - Blank lines are ignored.
@@ -1340,11 +1330,11 @@ to be synched with a network drive (Path2).
 
 Note also that Windows implements several "library" links such as
 `C:\Users\MyLogin\My Documents\My Music` pointing to `C:\Users\MyLogin\Music`.
-rclone sees these as links, so you must add `--links` to the
+zclone sees these as links, so you must add `--links` to the
 bisync command line if you which to follow these links. I find that I get
 permission errors in trying to follow the links, so I don't include the
-rclone `--links` flag, but then you get lots of `Can't follow symlink…`
-noise from rclone about not following the links. This noise can be
+zclone `--links` flag, but then you get lots of `Can't follow symlink…`
+noise from zclone about not following the links. This noise can be
 quashed by adding `--quiet` to the bisync command line.
 
 ## Example exclude-style filters files for use with Dropbox {#exclude-filters}
@@ -1356,17 +1346,17 @@ quashed by adding `--quiet` to the bisync command line.
 - bisync testing creates `/testdir/` at the top level of the sync tree,
   and usually deletes the tree after the test. If a normal sync should run
   while the `/testdir/` tree exists the `--check-access` phase may fail
-  due to unbalanced RCLONE_TEST files.
+  due to unbalanced ZCLONE_TEST files.
   The `- /testdir/` filter blocks this tree from being synched.
   You don't need this exclusion if you are not doing bisync development testing.
 - Everything else beneath the Path1/Path2 root will be synched.
-- RCLONE_TEST files may be placed anywhere within the tree, including the root.
+- ZCLONE_TEST files may be placed anywhere within the tree, including the root.
 
 ### Example filters file for Dropbox {#example-filters-file}
 
 ```text
 # Filter file for use with bisync
-# See https://rclone.org/filtering/ for filtering rules
+# See //filtering/ for filtering rules
 # NOTICE: If you make changes to this file you MUST do a --resync run.
 #         Run with --dry-run to see what changes will be made.
 
@@ -1391,8 +1381,8 @@ quashed by adding `--quiet` to the bisync command line.
 
 At the start of a bisync run, listings are gathered for Path1 and Path2
 while using the user's `--filters-file`. During the check access phase,
-bisync scans these listings for `RCLONE_TEST` files.
-Any `RCLONE_TEST` files hidden by the `--filters-file` are *not* in the
+bisync scans these listings for `ZCLONE_TEST` files.
+Any `ZCLONE_TEST` files hidden by the `--filters-file` are *not* in the
 listings and thus not checked during the check access phase.
 
 ## Troubleshooting {#troubleshooting}
@@ -1438,7 +1428,7 @@ copied to Path1 then the threatened deletes on Path2 may be disregarded.
 
 ### Retries
 
-Rclone has built-in retries. If you run with `--verbose` you'll see
+Zclone has built-in retries. If you run with `--verbose` you'll see
 error and retry messages such as shown below. This is usually not a bug.
 If at the end of the run, you see `Bisync successful` and not
 `Bisync critical error` or `Bisync aborted` then the run was successful,
@@ -1446,10 +1436,10 @@ and you can ignore the error messages.
 
 The following run shows an intermittent fail. Lines *5* and *6* are
 low-level messages. Line *6* is a bubbled-up *warning* message, conveying
-the error. Rclone normally retries failing commands, so there may be
+the error. Zclone normally retries failing commands, so there may be
 numerous such messages in the log.
 
-Since there are no final error/warning messages on line *7*, rclone has
+Since there are no final error/warning messages on line *7*, zclone has
 recovered from failure after a retry, and the overall sync was successful.
 
 ```text
@@ -1471,7 +1461,7 @@ See the [Runtime Error Handling](#error-handling) section.
 2021/05/12 00:49:40 INFO  : Google drive root '': not deleting files as there were IO errors
 2021/05/12 00:49:40 ERROR : Attempt 3/3 failed with 3 errors and: not deleting files as there were IO errors
 2021/05/12 00:49:40 ERROR : Failed to sync: not deleting files as there were IO errors
-2021/05/12 00:49:40 NOTICE: WARNING  rclone sync try 3 failed.           - /path/to/local/tree/
+2021/05/12 00:49:40 NOTICE: WARNING  zclone sync try 3 failed.           - /path/to/local/tree/
 2021/05/12 00:49:40 ERROR : Bisync aborted. Must run --resync to recover.
 ```
 
@@ -1489,7 +1479,7 @@ consider using the flag
 
 As of `v1.66`, [Google Docs](/drive/#import-export-of-google-documents)
 (including Google Sheets, Slides, etc.) are now supported in bisync, subject to
-the same options, defaults, and limitations as in `rclone sync`. When bisyncing
+the same options, defaults, and limitations as in `zclone sync`. When bisyncing
 drive with non-drive backends, the drive -> non-drive direction is controlled
 by [`--drive-export-formats`](/drive/#drive-export-formats) (default
 `"docx,xlsx,pptx,svg"`) and the non-drive -> drive direction is controlled by
@@ -1542,7 +1532,7 @@ To ignore Google Docs entirely, use
 
 ### Cron {#cron}
 
-Rclone does not yet have a built-in capability to monitor the local file
+Zclone does not yet have a built-in capability to monitor the local file
 system for changes and must be blindly run periodically.
 On Windows this can be done using a *Task Scheduler*,
 on Linux you can use *Cron* which is described below.
@@ -1557,18 +1547,18 @@ and an OwnCloud server, with output logged to a runlog file:
 #                Month (1-12 or Jan-Dec)
 #                     Day of Week (0-6 or Sun-Sat)
 #                         Command
-  */5  *    *    *    *   /path/to/rclone bisync /local/files MyCloud: --check-access --filters-file /path/to/bysync-filters.txt --log-file /path/to//bisync.log
+  */5  *    *    *    *   /path/to/zclone bisync /local/files MyCloud: --check-access --filters-file /path/to/bysync-filters.txt --log-file /path/to//bisync.log
 ```
 
 See [crontab syntax](https://www.man7.org/linux/man-pages/man1/crontab.1p.html#INPUT_FILES)
 for the details of crontab time interval expressions.
 
-If you run `rclone bisync` as a cron job, redirect stdout/stderr to a file.
+If you run `zclone bisync` as a cron job, redirect stdout/stderr to a file.
 The 2nd example runs a sync to Dropbox every hour and logs all stdout (via the `>>`)
 and stderr (via `2>&1`) to a log file.
 
 ```text
-0 * * * * /path/to/rclone bisync /path/to/local/dropbox Dropbox: --check-access --filters-file /home/user/filters.txt >> /path/to/logs/dropbox-run.log 2>&1
+0 * * * * /path/to/zclone bisync /path/to/local/dropbox Dropbox: --check-access --filters-file /home/user/filters.txt >> /path/to/logs/dropbox-run.log 2>&1
 ```
 
 ### Sharing an encrypted folder tree between hosts
@@ -1579,7 +1569,7 @@ but what if you have some highly sensitive files to be synched?
 Usage of a cloud service is for exchanging both routine and sensitive
 personal files between one's home network, one's personal notebook when on the
 road, and with one's work computer. The routine data is not sensitive.
-For the sensitive data, configure an rclone [crypt remote](/crypt/) to point to
+For the sensitive data, configure an zclone [crypt remote](/crypt/) to point to
 a subdirectory within the local disk tree that is bisync'd to Dropbox,
 and then set up an bisync for this local crypt directory to a directory
 outside of the main sync tree.
@@ -1590,8 +1580,8 @@ outside of the main sync tree.
   There are numerous subdirectories.
 - `/path/to/DBoxroot/crypt` is the root subdirectory for files
   that are encrypted. This local directory target is setup as an
-  rclone crypt remote named `Dropcrypt:`.
-  See [rclone.conf](#rclone-conf-snippet) snippet below.
+  zclone crypt remote named `Dropcrypt:`.
+  See [zclone.conf](#zclone-conf-snippet) snippet below.
 - `/path/to/my/unencrypted/files` is the root of my sensitive
   files - not encrypted, not within the tree synched to Dropbox.
 - To sync my local unencrypted files with the encrypted Dropbox versions
@@ -1605,15 +1595,15 @@ outside of the main sync tree.
 ### Windows notebook setup
 
 - The Dropbox client runs keeping the local tree `C:\Users\MyLogin\Dropbox`
-  always in sync with Dropbox. I could have used `rclone bisync` instead.
+  always in sync with Dropbox. I could have used `zclone bisync` instead.
 - A separate directory tree at `C:\Users\MyLogin\Documents\DropLocal`
   hosts the tree of unencrypted files/folders.
 - To sync my local unencrypted files with the encrypted
   Dropbox versions I manually run the following command:
-  `rclone bisync C:\Users\MyLogin\Documents\DropLocal Dropcrypt:`.
+  `zclone bisync C:\Users\MyLogin\Documents\DropLocal Dropcrypt:`.
 - The Dropbox client then syncs the changes with Dropbox.
 
-### rclone.conf snippet {#rclone-conf-snippet}
+### zclone.conf snippet {#zclone-conf-snippet}
 
 ```ini
 [Dropbox]
@@ -1632,18 +1622,18 @@ password = ...
 
 ## Testing {#testing}
 
-You should read this section only if you are developing for rclone.
-You need to have rclone source code locally to work with bisync tests.
+You should read this section only if you are developing for zclone.
+You need to have zclone source code locally to work with bisync tests.
 
 Bisync has a dedicated test framework implemented in the `bisync_test.go`
-file located in the rclone source tree. The test suite is based on the
+file located in the zclone source tree. The test suite is based on the
 `go test` command. Series of tests are stored in subdirectories below the
 `cmd/bisync/testdata` directory. Individual tests can be invoked by their
 directory name, e.g.
 `go test . -case basic -remote local -remote2 gdrive: -v`
 
 Tests will make a temporary folder on remote and purge it afterwards.
-If during test run there are intermittent errors and rclone retries,
+If during test run there are intermittent errors and zclone retries,
 these errors will be captured and flagged as invalid MISCOMPAREs.
 Rerunning the test will let it pass. Consider such failures as noise.
 
@@ -1676,7 +1666,7 @@ Options:
   -verbose          Run tests verbosely
 ```
 
-Note: unlike rclone flags which must be prefixed by double dash (`--`), the
+Note: unlike zclone flags which must be prefixed by double dash (`--`), the
 test command flags can be equally prefixed by a single `-` or double dash.
 
 ### Running tests
@@ -1690,9 +1680,9 @@ test command flags can be equally prefixed by a single `-` or double dash.
 - The first argument after `go test` should be a relative name of the
   directory containing bisync source code. If you run tests right from there,
   the argument will be `.` (current directory) as in most examples below.
-  If you run bisync tests from the rclone source directory, the command
+  If you run bisync tests from the zclone source directory, the command
   should be `go test ./cmd/bisync ...`.
-- The test engine will mangle rclone output to ensure comparability
+- The test engine will mangle zclone output to ensure comparability
   with golden listings and logs.
 - Test scenarios are located in `./cmd/bisync/testdata`. The test `-case`
   argument should match the full name of a subdirectory under that
@@ -1711,8 +1701,8 @@ test command flags can be equally prefixed by a single `-` or double dash.
 ### Test execution flow
 
 1. The base setup in the `initial` directory of the testcase is applied
-   on the Path1 and Path2 filesystems (via rclone copy the initial directory
-   to Path1, then rclone sync Path1 to Path2).
+   on the Path1 and Path2 filesystems (via zclone copy the initial directory
+   to Path1, then zclone sync Path1 to Path2).
 2. The commands in the scenario.txt file are applied, with output directed
    to the `test.log` file in the test working directory.
    Typically, the first actual command in the `scenario.txt` file is
@@ -1745,9 +1735,9 @@ test command flags can be equally prefixed by a single `-` or double dash.
   independent of the `-no-cleanup` usage.
 - You will likely want to add `- /testdir/` to your normal
   bisync `--filters-file` so that normal syncs do not attempt to sync
-  the test temporary directories, which may have `RCLONE_TEST` miscompares
+  the test temporary directories, which may have `ZCLONE_TEST` miscompares
   in some testcases which would otherwise trip the `--check-access` system.
-  The `--check-access` mechanism is hard-coded to ignore `RCLONE_TEST`
+  The `--check-access` mechanism is hard-coded to ignore `ZCLONE_TEST`
   files beneath `bisync/testdata`, so the test cases may reside on the
   synched tree even if there are check file mismatches in the test tree.
 - Some Dropbox tests can fail, notably printing the following message:
@@ -1771,7 +1761,7 @@ means that they should match when run with a different cloud service.
 
 Your normal workflow might be as follows:
 
-1. Git-clone the rclone sources locally
+1. Git-clone the zclone sources locally
 2. Modify bisync source and check that it builds
 3. Run the whole test suite `go test ./cmd/bisync -remote local`
 4. If some tests show log difference, recheck them individually, e.g.:
@@ -1829,9 +1819,9 @@ Your normal workflow might be as follows:
   Similar to above but destination must include both directory
   and the new file name at destination.
 - `copy-dir <src> <dst>` and `sync-dir <src> <dst>`
-  Copy/sync a directory. Equivalent of `rclone copy` and `rclone sync`.
+  Copy/sync a directory. Equivalent of `zclone copy` and `zclone sync`.
 - `list-dirs <dir>`
-  Equivalent to `rclone lsf -R --dirs-only <dir>`
+  Equivalent to `zclone lsf -R --dirs-only <dir>`
 - `bisync [options]`
   Runs bisync against `-remote` and `-remote2`.
 
@@ -1890,18 +1880,18 @@ remote cloud. The file full path length was on average 35 characters
 
 ## References
 
-rclone's bisync implementation was derived from
-the [rclonesync-V2](https://github.com/cjnaz/rclonesync-V2) project,
+zclone's bisync implementation was derived from
+the [zclonesync-V2](https://github.com/cjnaz/zclonesync-V2) project,
 including documentation and test mechanisms,
 with [@cjnaz](https://github.com/cjnaz)'s full support and encouragement.
 
-`rclone bisync` is similar in nature to a range of other projects:
+`zclone bisync` is similar in nature to a range of other projects:
 
 - [unison](https://github.com/bcpierce00/unison)
 - [syncthing](https://github.com/syncthing/syncthing)
-- [cjnaz/rclonesync](https://github.com/cjnaz/rclonesync-V2)
+- [cjnaz/zclonesync](https://github.com/cjnaz/zclonesync-V2)
 - [ConorWilliams/rsinc](https://github.com/ConorWilliams/rsinc)
-- [jwink3101/syncrclone](https://github.com/Jwink3101/syncrclone)
+- [jwink3101/synczclone](https://github.com/Jwink3101/synczclone)
 - [DavideRossi/upback](https://github.com/DavideRossi/upback)
 
 Bisync adopts the differential synchronization technique, which is
@@ -1965,7 +1955,7 @@ essentially marking the file as needing to be rechecked next time.
 - Initial listing snapshots of Path1 and Path2 are now generated concurrently,
 using the same "march" infrastructure as `check` and `sync`,
 for performance improvements and less
-[risk of error](https://forum.rclone.org/t/bisync-bugs-and-feature-requests/37636#:~:text=4.%20Listings%20should%20alternate%20between%20paths%20to%20minimize%20errors).
+[risk of error](/).
 - Fixed handling of unicode normalization and case insensitivity, support for
 [`--fix-case`](/docs/#fix-case), [`--ignore-case-sync`](/docs/#ignore-case-sync),
 [`--no-unicode-normalization`](/docs/#no-unicode-normalization)
@@ -1996,24 +1986,24 @@ version of a file gets kept during a `--resync`.
 
 ### `v1.64`
 
-- Fixed an [issue](https://forum.rclone.org/t/bisync-bugs-and-feature-requests/37636#:~:text=1.%20Dry%20runs%20are%20not%20completely%20dry)
+- Fixed an [issue](/)
 causing dry runs to inadvertently commit filter changes
 
-- Fixed an [issue](https://forum.rclone.org/t/bisync-bugs-and-feature-requests/37636#:~:text=2.%20%2D%2Dresync%20deletes%20data%2C%20contrary%20to%20docs)
+- Fixed an [issue](/)
 causing `--resync` to erroneously delete empty folders and duplicate files
 unique to Path2
 - `--check-access` is now enforced during `--resync`, preventing data loss in
-[certain user error scenarios](https://forum.rclone.org/t/bisync-bugs-and-feature-requests/37636#:~:text=%2D%2Dcheck%2Daccess%20doesn%27t%20always%20fail%20when%20it%20should)
-- Fixed an [issue](https://forum.rclone.org/t/bisync-bugs-and-feature-requests/37636#:~:text=5.%20Bisync%20reads%20files%20in%20excluded%20directories%20during%20delete%20operations)
+[certain user error scenarios](/)
+- Fixed an [issue](/)
 causing bisync to consider more files than necessary due to overbroad filters
 during delete operations
-- [Improved detection of false positive change conflicts](https://forum.rclone.org/t/bisync-bugs-and-feature-requests/37636#:~:text=1.%20Identical%20files%20should%20be%20left%20alone%2C%20even%20if%20new/newer/changed%20on%20both%20sides)
+- [Improved detection of false positive change conflicts](/)
 (identical files are now left alone instead of renamed)
-- Added [support for `--create-empty-src-dirs`](https://forum.rclone.org/t/bisync-bugs-and-feature-requests/37636#:~:text=3.%20Bisync%20should%20create/delete%20empty%20directories%20as%20sync%20does%2C%20when%20%2D%2Dcreate%2Dempty%2Dsrc%2Ddirs%20is%20passed)
+- Added [support for `--create-empty-src-dirs`](/)
 - Added experimental `--resilient` mode to allow
-[recovery from self-correctable errors](https://forum.rclone.org/t/bisync-bugs-and-feature-requests/37636#:~:text=2.%20Bisync%20should%20be%20more%20resilient%20to%20self%2Dcorrectable%20errors)
-- Added [new `--ignore-listing-checksum` flag](https://forum.rclone.org/t/bisync-bugs-and-feature-requests/37636#:~:text=6.%20%2D%2Dignore%2Dchecksum%20should%20be%20split%20into%20two%20flags%20for%20separate%20purposes)
+[recovery from self-correctable errors](/)
+- Added [new `--ignore-listing-checksum` flag](/)
 to distinguish from `--ignore-checksum`
-- [Performance improvements](https://forum.rclone.org/t/bisync-bugs-and-feature-requests/37636#:~:text=6.%20Deletes%20take%20several%20times%20longer%20than%20copies)
+- [Performance improvements](/)
 for large remotes
 - Documentation and testing improvements

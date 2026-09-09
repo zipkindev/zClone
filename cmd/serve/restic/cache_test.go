@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rclone/rclone/fstest/mockobject"
 	"github.com/stretchr/testify/assert"
+	"zclone/fstest/mockobject"
 )
 
 func (c *cache) String() string {

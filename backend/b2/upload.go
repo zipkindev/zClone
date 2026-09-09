@@ -14,16 +14,16 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/rclone/rclone/backend/b2/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/chunksize"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/pool"
-	"github.com/rclone/rclone/lib/rest"
-	"github.com/rclone/rclone/lib/transferaccounter"
 	"golang.org/x/sync/errgroup"
+	"zclone/backend/b2/api"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/chunksize"
+	"zclone/fs/hash"
+	"zclone/lib/atexit"
+	"zclone/lib/pool"
+	"zclone/lib/rest"
+	"zclone/lib/transferaccounter"
 )
 
 type hashAppendingReader struct {

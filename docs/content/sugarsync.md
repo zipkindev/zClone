@@ -1,6 +1,6 @@
 ---
 title: "SugarSync"
-description: "Rclone docs for SugarSync"
+description: "Zclone docs for SugarSync"
 versionIntroduced: "v1.51"
 ---
 
@@ -13,12 +13,12 @@ file backup, access, syncing, and sharing.
 ## Configuration
 
 The initial setup for SugarSync involves getting a token from SugarSync which you
-can do with rclone. `rclone config` walks you through it.
+can do with zclone. `zclone config` walks you through it.
 
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -38,18 +38,18 @@ XX / Sugarsync
    \ "sugarsync"
 [snip]
 Storage> sugarsync
-** See help for sugarsync backend at: https://rclone.org/sugarsync/ **
+** See help for sugarsync backend at: //sugarsync/ **
 
 Sugarsync App ID.
-Leave blank to use rclone's.
+Leave blank to use zclone's.
 Enter a string value. Press Enter for the default ("").
 app_id> 
 Sugarsync Access Key ID.
-Leave blank to use rclone's.
+Leave blank to use zclone's.
 Enter a string value. Press Enter for the default ("").
 access_key_id> 
 Sugarsync Private Access Key
-Leave blank to use rclone's.
+Leave blank to use zclone's.
 Enter a string value. Press Enter for the default ("").
 private_access_key> 
 Permanently delete files if true
@@ -78,25 +78,25 @@ y/e/d> y
 Note that the config asks for your email and password but doesn't
 store them, it only uses them to get the initial token.
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 List directories (sync folders) in top level of your SugarSync
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your SugarSync folder "Test"
 
 ```console
-rclone ls remote:Test
+zclone ls remote:Test
 ```
 
 To copy a local directory to an SugarSync folder called backup
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
 Paths are specified as `remote:path`
@@ -104,14 +104,14 @@ Paths are specified as `remote:path`
 Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 
 **NB** you can't create files in the top level folder you have to
-create a folder, which rclone will create as a "Sync Folder" with
+create a folder, which zclone will create as a "Sync Folder" with
 SugarSync.
 
 ### Modification times and hashes
 
 SugarSync does not support modification times or hashes, therefore
 syncing will default to `--size-only` checking.  Note that using
-`--update` will work as rclone can read the time files were uploaded.
+`--update` will work as zclone can read the time files were uploaded.
 
 ### Restricted filename characters
 
@@ -138,12 +138,12 @@ Here are the Standard options specific to sugarsync (Sugarsync).
 
 Sugarsync App ID.
 
-Leave blank to use rclone's.
+Leave blank to use zclone's.
 
 Properties:
 
 - Config:      app_id
-- Env Var:     RCLONE_SUGARSYNC_APP_ID
+- Env Var:     ZCLONE_SUGARSYNC_APP_ID
 - Type:        string
 - Required:    false
 
@@ -151,12 +151,12 @@ Properties:
 
 Sugarsync Access Key ID.
 
-Leave blank to use rclone's.
+Leave blank to use zclone's.
 
 Properties:
 
 - Config:      access_key_id
-- Env Var:     RCLONE_SUGARSYNC_ACCESS_KEY_ID
+- Env Var:     ZCLONE_SUGARSYNC_ACCESS_KEY_ID
 - Type:        string
 - Required:    false
 
@@ -164,12 +164,12 @@ Properties:
 
 Sugarsync Private Access Key.
 
-Leave blank to use rclone's.
+Leave blank to use zclone's.
 
 Properties:
 
 - Config:      private_access_key
-- Env Var:     RCLONE_SUGARSYNC_PRIVATE_ACCESS_KEY
+- Env Var:     ZCLONE_SUGARSYNC_PRIVATE_ACCESS_KEY
 - Type:        string
 - Required:    false
 
@@ -181,7 +181,7 @@ otherwise put them in the deleted files.
 Properties:
 
 - Config:      hard_delete
-- Env Var:     RCLONE_SUGARSYNC_HARD_DELETE
+- Env Var:     ZCLONE_SUGARSYNC_HARD_DELETE
 - Type:        bool
 - Default:     false
 
@@ -193,12 +193,12 @@ Here are the Advanced options specific to sugarsync (Sugarsync).
 
 Sugarsync refresh token.
 
-Leave blank normally, will be auto configured by rclone.
+Leave blank normally, will be auto configured by zclone.
 
 Properties:
 
 - Config:      refresh_token
-- Env Var:     RCLONE_SUGARSYNC_REFRESH_TOKEN
+- Env Var:     ZCLONE_SUGARSYNC_REFRESH_TOKEN
 - Type:        string
 - Required:    false
 
@@ -206,12 +206,12 @@ Properties:
 
 Sugarsync authorization.
 
-Leave blank normally, will be auto configured by rclone.
+Leave blank normally, will be auto configured by zclone.
 
 Properties:
 
 - Config:      authorization
-- Env Var:     RCLONE_SUGARSYNC_AUTHORIZATION
+- Env Var:     ZCLONE_SUGARSYNC_AUTHORIZATION
 - Type:        string
 - Required:    false
 
@@ -219,12 +219,12 @@ Properties:
 
 Sugarsync authorization expiry.
 
-Leave blank normally, will be auto configured by rclone.
+Leave blank normally, will be auto configured by zclone.
 
 Properties:
 
 - Config:      authorization_expiry
-- Env Var:     RCLONE_SUGARSYNC_AUTHORIZATION_EXPIRY
+- Env Var:     ZCLONE_SUGARSYNC_AUTHORIZATION_EXPIRY
 - Type:        string
 - Required:    false
 
@@ -232,12 +232,12 @@ Properties:
 
 Sugarsync user.
 
-Leave blank normally, will be auto configured by rclone.
+Leave blank normally, will be auto configured by zclone.
 
 Properties:
 
 - Config:      user
-- Env Var:     RCLONE_SUGARSYNC_USER
+- Env Var:     ZCLONE_SUGARSYNC_USER
 - Type:        string
 - Required:    false
 
@@ -245,12 +245,12 @@ Properties:
 
 Sugarsync root id.
 
-Leave blank normally, will be auto configured by rclone.
+Leave blank normally, will be auto configured by zclone.
 
 Properties:
 
 - Config:      root_id
-- Env Var:     RCLONE_SUGARSYNC_ROOT_ID
+- Env Var:     ZCLONE_SUGARSYNC_ROOT_ID
 - Type:        string
 - Required:    false
 
@@ -258,12 +258,12 @@ Properties:
 
 Sugarsync deleted folder id.
 
-Leave blank normally, will be auto configured by rclone.
+Leave blank normally, will be auto configured by zclone.
 
 Properties:
 
 - Config:      deleted_id
-- Env Var:     RCLONE_SUGARSYNC_DELETED_ID
+- Env Var:     ZCLONE_SUGARSYNC_DELETED_ID
 - Type:        string
 - Required:    false
 
@@ -276,7 +276,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_SUGARSYNC_ENCODING
+- Env Var:     ZCLONE_SUGARSYNC_ENCODING
 - Type:        Encoding
 - Default:     Slash,Ctl,InvalidUtf8,Dot
 
@@ -287,7 +287,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_SUGARSYNC_DESCRIPTION
+- Env Var:     ZCLONE_SUGARSYNC_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -295,10 +295,10 @@ Properties:
 
 ## Limitations
 
-`rclone about` is not supported by the SugarSync backend. Backends without
-this capability cannot determine free space for an rclone mount or
-use policy `mfs` (most free space) as a member of an rclone union
+`zclone about` is not supported by the SugarSync backend. Backends without
+this capability cannot determine free space for an zclone mount or
+use policy `mfs` (most free space) as a member of an zclone union
 remote.
 
-See [List of backends that do not support rclone about](https://rclone.org/overview/#optional-features)
-and [rclone about](https://rclone.org/commands/rclone_about/).
+See [List of backends that do not support zclone about](//overview/#optional-features)
+and [zclone about](//commands/zclone_about/).

@@ -14,14 +14,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/bisync/bilib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
+	"zclone/cmd"
+	"zclone/cmd/bisync/bilib"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/flags"
+	"zclone/fs/filter"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
 
 	"github.com/spf13/cobra"
 )
@@ -66,7 +66,7 @@ type Options struct {
 // Default values
 const (
 	DefaultMaxDelete     int    = 50
-	DefaultCheckFilename string = "RCLONE_TEST"
+	DefaultCheckFilename string = "ZCLONE_TEST"
 )
 
 // DefaultWorkdir is default working directory

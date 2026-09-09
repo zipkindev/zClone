@@ -12,10 +12,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/readers"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/fs"
+	"zclone/fs/hash"
+	"zclone/lib/readers"
+	"zclone/lib/rest"
 )
 
 // Object describes a FileLu object

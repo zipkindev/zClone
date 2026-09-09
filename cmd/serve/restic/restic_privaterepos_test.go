@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rclone/rclone/cmd"
 	"github.com/stretchr/testify/require"
+	"zclone/cmd"
 )
 
 // newAuthenticatedRequest returns a new HTTP request with the given params.
@@ -27,7 +27,7 @@ func TestResticPrivateRepositories(t *testing.T) {
 	_, err := io.ReadFull(rand.Reader, buf)
 	require.NoError(t, err)
 
-	// setup rclone with a local backend in a temporary directory
+	// setup zclone with a local backend in a temporary directory
 	tempdir := t.TempDir()
 
 	opt := newOpt()

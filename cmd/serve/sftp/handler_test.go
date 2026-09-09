@@ -16,14 +16,14 @@ import (
 	"time"
 
 	"github.com/pkg/sftp"
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/cmd/serve/proxy"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/ssh"
+	_ "zclone/backend/local"
+	"zclone/cmd/serve/proxy"
+	"zclone/fs"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
 )
 
 // startTestSSHClient starts an sftp server serving a temporary local directory

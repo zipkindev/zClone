@@ -4,11 +4,11 @@ package md5sum
 import (
 	"context"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/hashsum"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/cmd/hashsum"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
 )
 
 func init() {
@@ -28,9 +28,9 @@ not supported by the remote, no hash will be returned.  With the
 download flag, the file will be downloaded from the remote and
 hashed locally enabling MD5 for any remote.
 
-For other algorithms, see the [hashsum](/commands/rclone_hashsum/)
-command. Running ` + "`rclone md5sum remote:path`" + ` is equivalent
-to running ` + "`rclone hashsum MD5 remote:path`" + `.
+For other algorithms, see the [hashsum](/commands/zclone_hashsum/)
+command. Running ` + "`zclone md5sum remote:path`" + ` is equivalent
+to running ` + "`zclone hashsum MD5 remote:path`" + `.
 
 This command can also hash data received on standard input (stdin),
 by not passing a remote:path, or by passing a hyphen as remote:path

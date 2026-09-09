@@ -18,13 +18,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/rest"
 	"golang.org/x/net/html"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/rest"
 )
 
 var (
@@ -67,12 +67,12 @@ You can set multiple headers, e.g. '"Cookie","name=value","Authorization","xxx"'
 Use this if your target website does not use / on the end of
 directories.
 
-A / on the end of a path is how rclone normally tells the difference
-between files and directories.  If this flag is set, then rclone will
+A / on the end of a path is how zclone normally tells the difference
+between files and directories.  If this flag is set, then zclone will
 treat all files with Content-Type: text/html as directories and read
 URLs from them rather than downloading them.
 
-Note that this may cause rclone to confuse genuine HTML files with
+Note that this may cause zclone to confuse genuine HTML files with
 directories.`,
 			Default:  false,
 			Advanced: true,
@@ -82,15 +82,15 @@ directories.`,
 
 HEAD requests are mainly used to find file sizes in dir listing.
 If your site is being very slow to load then you can try this option.
-Normally rclone does a HEAD request for each potential file in a
+Normally zclone does a HEAD request for each potential file in a
 directory listing to:
 
 - find its size
 - check it really exists
 - check to see if it is a directory
 
-If you set this option, rclone will not do the HEAD request. This will mean
-that directory listings are much quicker, but rclone won't have the times or
+If you set this option, zclone will not do the HEAD request. This will mean
+that directory listings are much quicker, but zclone won't have the times or
 sizes of any files, and some files that don't exist may be in the listing.`,
 			Default:  false,
 			Advanced: true,
@@ -832,9 +832,9 @@ for a running http backend.
 Usage examples:
 
 ` + "```console" + `
-rclone backend set remote: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
-rclone rc backend/command command=set fs=remote: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
-rclone rc backend/command command=set fs=remote: -o url=https://example.com
+zclone backend set remote: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
+zclone rc backend/command command=set fs=remote: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
+zclone rc backend/command command=set fs=remote: -o url=https://example.com
 ` + "```" + `
 
 The option keys are named as they are in the config file.

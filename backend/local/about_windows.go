@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"unsafe"
 
-	"github.com/rclone/rclone/fs"
 	"golang.org/x/sys/windows"
+	"zclone/fs"
 )
 
 var getFreeDiskSpace = windows.NewLazySystemDLL("kernel32.dll").NewProc("GetDiskFreeSpaceExW")

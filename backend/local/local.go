@@ -18,18 +18,18 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/file"
-	"github.com/rclone/rclone/lib/readers"
 	"golang.org/x/text/unicode/norm"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/filter"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/lib/encoder"
+	"zclone/lib/file"
+	"zclone/lib/readers"
 )
 
 // Constants
@@ -79,7 +79,7 @@ supported by all file systems) under the "user.*" prefix.
 
 Metadata is supported on files and directories.
 
-When restoring metadata with ` + "`--metadata`" + ` rclone applies the
+When restoring metadata with ` + "`--metadata`" + ` zclone applies the
 "mode", "uid" and "gid" from the source. These come from the source
 remote which may not be trusted, so restoring metadata as root from an
 untrusted source can change file ownership and is not recommended. The
@@ -137,13 +137,13 @@ skipped.`,
 				Name: "zero_size_links",
 				Help: `Assume the Stat size of links is zero (and read them instead) (deprecated).
 
-Rclone used to use the Stat size of links as the link size, but this fails in quite a few places:
+Zclone used to use the Stat size of links as the link size, but this fails in quite a few places:
 
 - Windows
 - On some virtual filesystems (such ash LucidLink)
 - Android
 
-So rclone now always reads the link.
+So zclone now always reads the link.
 `,
 				Default:  false,
 				Advanced: true,
@@ -155,14 +155,14 @@ So rclone now always reads the link.
 This flag can be used to normalize file names into unicode NFC form
 that are read from the local filesystem.
 
-Rclone does not normally touch the encoding of file names it reads from
+Zclone does not normally touch the encoding of file names it reads from
 the file system.
 
 This can be useful when using macOS as it normally provides decomposed (NFD)
 unicode which in some language (eg Korean) doesn't display properly on
 some OSes.
 
-Note that rclone compares filenames with unicode normalization in the sync
+Note that zclone compares filenames with unicode normalization in the sync
 routine so this flag shouldn't normally be used.`,
 				Default:  false,
 				Advanced: true,
@@ -171,18 +171,18 @@ routine so this flag shouldn't normally be used.`,
 				Name: "no_check_updated",
 				Help: `Don't check to see if the files change during upload.
 
-Normally rclone checks the size and modification time of files as they
+Normally zclone checks the size and modification time of files as they
 are being uploaded and aborts with a message which starts "can't copy -
 source file is being updated" if the file changes during upload.
 
 However on some file systems this modification time check may fail (e.g.
-[Glusterfs #2206](https://github.com/rclone/rclone/issues/2206)) so this
+[Glusterfs #2206](/)) so this
 check can be disabled with this flag.
 
-If this flag is set, rclone will use its best efforts to transfer a
+If this flag is set, zclone will use its best efforts to transfer a
 file which is being updated. If the file is only having things
-appended to it (e.g. a log) then rclone will transfer the log file with
-the size it had the first time rclone saw it.
+appended to it (e.g. a log) then zclone will transfer the log file with
+the size it had the first time zclone saw it.
 
 If the file is being modified throughout (not just appended to) then
 the transfer may fail with a hash check failure.
@@ -235,7 +235,7 @@ to override the default choice.`,
 				Name: "no_clone",
 				Help: `Disable reflink cloning for server-side copies.
 
-Normally, for local-to-local transfers, rclone will "clone" the file when
+Normally, for local-to-local transfers, zclone will "clone" the file when
 possible, and fall back to "copying" only when cloning is not supported.
 
 Cloning creates a shallow copy (or "reflink") which initially shares blocks with
@@ -268,7 +268,7 @@ Use this flag to disable preallocation.`,
 				Name: "no_sparse",
 				Help: `Disable sparse files for multi-thread downloads.
 
-On Windows platforms rclone will make sparse files when doing
+On Windows platforms zclone will make sparse files when doing
 multi-thread downloads. This avoids long pauses on large files where
 the OS zeros the file. However sparse files may be undesirable as they
 cause disk fragmentation and can be slow to work with.`,
@@ -279,11 +279,11 @@ cause disk fragmentation and can be slow to work with.`,
 				Name: "no_set_modtime",
 				Help: `Disable setting modtime.
 
-Normally rclone updates modification time of files after they are done
+Normally zclone updates modification time of files after they are done
 uploading. This can cause permissions issues on Linux platforms when 
-the user rclone is running as does not own the file uploaded, such as
+the user zclone is running as does not own the file uploaded, such as
 when copying to a CIFS mount owned by another user. If this option is 
-enabled, rclone will no longer update the modtime after copying a file.`,
+enabled, zclone will no longer update the modtime after copying a file.`,
 				Default:  false,
 				Advanced: true,
 			},
@@ -291,8 +291,8 @@ enabled, rclone will no longer update the modtime after copying a file.`,
 				Name: "metadata_restore_special_bits",
 				Help: `Restore the setuid, setgid and sticky bits from metadata.
 
-When restoring metadata with --metadata rclone applies the "mode" from
-the source. By default rclone applies only the permission bits and
+When restoring metadata with --metadata zclone applies the "mode" from
+the source. By default zclone applies only the permission bits and
 strips the setuid, setgid and sticky bits.
 
 The "mode" comes from the source remote which may not be trusted.
@@ -302,7 +302,7 @@ in particular when restoring from an untrusted source while running as
 root. For this reason these bits are not restored by default.
 
 If you trust the source and want the setuid, setgid and sticky bits
-restored - for example when restoring a system backup made by rclone -
+restored - for example when restoring a system backup made by zclone -
 set this flag.`,
 				Default:  false,
 				Advanced: true,
@@ -312,7 +312,7 @@ set this flag.`,
 				Help: `Make out-of-space errors fatal during transfers.
 
 When enabled, an ENOSPC error during a write returns a fatal error so
-that rclone aborts rather than retrying the operation. Useful for
+that zclone aborts rather than retrying the operation. Useful for
 backup scripts that should halt loudly on a full disk rather than spin
 retrying.`,
 				Default:  false,
@@ -322,13 +322,13 @@ retrying.`,
 				Name: "time_type",
 				Help: `Set what kind of time is returned.
 
-Normally rclone does all operations on the mtime or Modification time.
+Normally zclone does all operations on the mtime or Modification time.
 
-If you set this flag then rclone will return the Modified time as whatever
-you set here. So if you use "rclone lsl --local-time-type ctime" then
+If you set this flag then zclone will return the Modified time as whatever
+you set here. So if you use "zclone lsl --local-time-type ctime" then
 you will see ctimes in the listing.
 
-If the OS doesn't support returning the time_type specified then rclone
+If the OS doesn't support returning the time_type specified then zclone
 will silently replace it with the modification time which all OSes support.
 
 - mtime is supported by all OSes
@@ -497,7 +497,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 	if err == nil {
 		f.dev = readDevice(fi, f.opt.OneFileSystem)
 	}
-	// Check to see if this is a .rclonelink if not found
+	// Check to see if this is a .zclonelink if not found
 	hasLinkSuffix := strings.HasSuffix(f.root, fs.LinkSuffix)
 	if hasLinkSuffix && opt.TranslateSymlinks && os.IsNotExist(err) {
 		fi, err = f.lstat(strings.TrimSuffix(f.root, fs.LinkSuffix))
@@ -970,7 +970,7 @@ func (f *Fs) readPrecision() (precision time.Duration) {
 	precision = time.Second
 
 	// Create temporary file and test it
-	fd, err := os.CreateTemp("", "rclone")
+	fd, err := os.CreateTemp("", "zclone")
 	if err != nil {
 		// If failed return 1s
 		// fmt.Println("Failed to create temp file", err)

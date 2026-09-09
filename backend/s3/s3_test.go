@@ -9,13 +9,13 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
-	"github.com/rclone/rclone/lib/bucket"
-	"github.com/rclone/rclone/lib/pacer"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
+	"zclone/lib/bucket"
+	"zclone/lib/pacer"
 )
 
 func SetupS3Test(t *testing.T) (context.Context, *Options, *http.Client) {

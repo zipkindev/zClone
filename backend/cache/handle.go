@@ -13,8 +13,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/operations"
+	"zclone/fs"
+	"zclone/fs/operations"
 )
 
 var uploaderMap = make(map[string]*backgroundWriter)

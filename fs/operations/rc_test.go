@@ -13,16 +13,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/lib/diskusage"
-	"github.com/rclone/rclone/lib/rest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
+	"zclone/fs/rc"
+	"zclone/fstest"
+	"zclone/lib/diskusage"
+	"zclone/lib/rest"
 )
 
 func rcNewRun(t *testing.T, method string) (*fstest.Run, *rc.Call) {

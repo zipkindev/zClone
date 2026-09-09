@@ -6,7 +6,7 @@ set -e
 NAME=seafile6
 SEAFILE_IP=127.0.0.1
 SEAFILE_PORT=8086
-SEAFILE_ADMIN_EMAIL=seafile@rclone.org
+SEAFILE_ADMIN_EMAIL=seafile@zclone.org
 SEAFILE_ADMIN_PASSWORD=qebiwob7wafixif8sojiboj4
 SEAFILE_TEST_DATA=${SEAFILE_TEST_DATA:-/tmp/seafile-test-data}
 SEAFILE_VERSION=latest
@@ -41,7 +41,7 @@ start() {
     echo type=seafile
     echo url=http://${SEAFILE_IP}:${SEAFILE_PORT}/
     echo user=${SEAFILE_ADMIN_EMAIL}
-    echo pass=$(rclone obscure ${SEAFILE_ADMIN_PASSWORD})
+    echo pass=$(zclone obscure ${SEAFILE_ADMIN_PASSWORD})
     echo library=My Library
 }
 

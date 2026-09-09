@@ -14,9 +14,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fspath"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fspath"
 )
 
 // Store the hashes of the overridden config
@@ -234,7 +234,7 @@ func ConfigStringFull(f Fs) string {
 //
 // No cleanup is performed, the caller must call Purge on the Fs themselves.
 func TemporaryLocalFs(ctx context.Context) (Fs, error) {
-	path, err := os.MkdirTemp("", "rclone-spool")
+	path, err := os.MkdirTemp("", "zclone-spool")
 	if err == nil {
 		err = os.Remove(path)
 	}

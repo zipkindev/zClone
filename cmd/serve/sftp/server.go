@@ -22,15 +22,15 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/rclone/rclone/cmd/serve/proxy"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/lib/env"
-	"github.com/rclone/rclone/lib/file"
-	sdActivation "github.com/rclone/rclone/lib/sdactivation"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
 	"golang.org/x/crypto/ssh"
+	"zclone/cmd/serve/proxy"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/lib/env"
+	"zclone/lib/file"
+	sdActivation "zclone/lib/sdactivation"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
 )
 
 // server contains everything to run the server

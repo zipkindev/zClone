@@ -12,23 +12,23 @@ import (
 	"time"
 
 	"github.com/coreos/go-semver/semver"
-	protonDriveAPI "github.com/rclone/Proton-API-Bridge"
-	"github.com/rclone/go-proton-api"
+	protonDriveAPI "zclone/lib/protonapibridge"
+	"zclone/lib/protonapi"
 
 	"github.com/pquerna/otp/totp"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/readers"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/dircache"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
+	"zclone/lib/readers"
 )
 
 /*
@@ -79,8 +79,8 @@ func init() {
 			Name: "mailbox_password",
 			Help: `The mailbox password of your two-password proton account.
 
-For more information regarding the mailbox password, please check the 
-following official knowledge base article: 
+For more information regarding the mailbox password, please check the
+following official knowledge base article:
 https://proton.me/support/the-difference-between-the-mailbox-password-and-login-password
 `,
 			IsPassword: true,
@@ -91,7 +91,7 @@ https://proton.me/support/the-difference-between-the-mailbox-password-and-login-
 
 The value can also be provided with --protondrive-2fa=000000
 
-The 2FA code of your proton drive account if the account is set up with 
+The 2FA code of your proton drive account if the account is set up with
 two-factor authentication`,
 			Required: false,
 		}, {
@@ -100,7 +100,7 @@ two-factor authentication`,
 
 The value can also be provided with --protondrive-otp-secret-key=ABCDEFGHIJKLMNOPQRSTUVWXYZ234567
 
-The OTP secret key of your proton drive account if the account is set up with 
+The OTP secret key of your proton drive account if the account is set up with
 two-factor authentication`,
 			Required:   false,
 			Sensitive:  true,
@@ -144,21 +144,21 @@ two-factor authentication`,
 		}, {
 			Name: "original_file_size",
 			Help: `Return the file size before encryption
-			
-The size of the encrypted file will be different from (bigger than) the 
-original file size. Unless there is a reason to return the file size 
-after encryption is performed, otherwise, set this option to true, as 
-features like Open() which will need to be supplied with original content 
+
+The size of the encrypted file will be different from (bigger than) the
+original file size. Unless there is a reason to return the file size
+after encryption is performed, otherwise, set this option to true, as
+features like Open() which will need to be supplied with original content
 size, will fail to operate properly`,
 			Advanced: true,
 			Default:  true,
 		}, {
 			Name: "app_version",
-			Help: `The app version string 
+			Help: `The app version string
 
 			The app version string identifies the client that is currently performing
 			the API request. Third-party Proton Drive integrations should use the form
-			external-drive-<project>@<version>. If this option is left empty, rclone
+			external-drive-<project>@<version>. If this option is left empty, zclone
 			derives a compliant value from its own version. This value is sent with
 			every API request; the option itself is optional.`,
 			Advanced: true,
@@ -166,18 +166,18 @@ size, will fail to operate properly`,
 			Name: "replace_existing_draft",
 			Help: `Create a new revision when filename conflict is detected
 
-When a file upload is cancelled or failed before completion, a draft will be 
-created and the subsequent upload of the same file to the same location will be 
+When a file upload is cancelled or failed before completion, a draft will be
+created and the subsequent upload of the same file to the same location will be
 reported as a conflict.
 
 The value can also be set by --protondrive-replace-existing-draft=true
 
-If the option is set to true, the draft will be replaced and then the upload 
-operation will restart. If there are other clients also uploading at the same 
-file location at the same time, the behavior is currently unknown. Need to set 
+If the option is set to true, the draft will be replaced and then the upload
+operation will restart. If there are other clients also uploading at the same
+file location at the same time, the behavior is currently unknown. Need to set
 to true for integration tests.
-If the option is set to false, an error "a draft exist - usually this means a 
-file is being uploaded at another client, or, there was a failed upload attempt" 
+If the option is set to false, an error "a draft exist - usually this means a
+file is being uploaded at another client, or, there was a failed upload attempt"
 will be returned, and no upload will happen.`,
 			Advanced: true,
 			Default:  false,
@@ -185,18 +185,18 @@ will be returned, and no upload will happen.`,
 			Name: "enable_caching",
 			Help: `Caches the files and folders metadata to reduce API calls
 
-Notice: If you are mounting ProtonDrive as a VFS, please disable this feature, 
-as the current implementation doesn't update or clear the cache when there are 
-external changes. 
+Notice: If you are mounting ProtonDrive as a VFS, please disable this feature,
+as the current implementation doesn't update or clear the cache when there are
+external changes.
 
-The files and folders on ProtonDrive are represented as links with keyrings, 
+The files and folders on ProtonDrive are represented as links with keyrings,
 which can be cached to improve performance and be friendly to the API server.
 
-The cache is currently built for the case when the rclone is the only instance 
+The cache is currently built for the case when the zclone is the only instance
 performing operations to the mount point. The event system, which is the proton
-API system that provides visibility of what has changed on the drive, is yet 
-to be implemented, so updates from other clients won’t be reflected in the 
-cache. Thus, if there are concurrent clients accessing the same mount point, 
+API system that provides visibility of what has changed on the drive, is yet
+to be implemented, so updates from other clients won’t be reflected in the
+cache. Thus, if there are concurrent clients accessing the same mount point,
 then we might have a problem with caching the stale data.`,
 			Advanced: true,
 			Default:  true,
@@ -361,8 +361,8 @@ func deAuthHandler() {
 	clearConfigMap(_mapper)
 }
 
-func protonDriveAppVersionFromRcloneVersion(version string) string {
-	const fallback = "external-drive-rclone@1.0.0-stable"
+func protonDriveAppVersionFromZcloneVersion(version string) string {
+	const fallback = "external-drive-zclone@1.0.0-stable"
 
 	version = strings.TrimSpace(strings.TrimPrefix(version, "v"))
 	version = protonDriveInvalidVersionChars.ReplaceAllString(version, "-")
@@ -376,7 +376,7 @@ func protonDriveAppVersionFromRcloneVersion(version string) string {
 	}
 
 	appVersion := fmt.Sprintf(
-		"external-drive-rclone@%d.%d.%d",
+		"external-drive-zclone@%d.%d.%d",
 		parsedVersion.Major,
 		parsedVersion.Minor,
 		parsedVersion.Patch,
@@ -449,7 +449,7 @@ func isDecimalString(value string) bool {
 	return true
 }
 
-// protonLogger adapts rclone's fs.Debugf/Logf/Errorf into the
+// protonLogger adapts zclone's fs.Debugf/Logf/Errorf into the
 // resty.Logger / common.Logger shape expected by Proton-API-Bridge and
 // go-proton-api so that library output participates in -v / -vv levels
 // and is captured by --log-file.
@@ -463,16 +463,16 @@ func newProtonDrive(ctx context.Context, f *Fs, opt *Options, m configmap.Mapper
 	config := protonDriveAPI.NewDefaultConfig()
 	config.AppVersion = opt.AppVersion
 	if config.AppVersion == "" {
-		config.AppVersion = protonDriveAppVersionFromRcloneVersion(fs.Version)
+		config.AppVersion = protonDriveAppVersionFromZcloneVersion(fs.Version)
 	}
 	config.UserAgent = f.ci.UserAgent // opt.UserAgent
 
-	// Route HTTP through rclone's transport so global flags such as
+	// Route HTTP through zclone's transport so global flags such as
 	// --dump headers, --no-check-certificate, --user-agent, --bind,
 	// --ca-cert and --header all take effect against Proton Drive.
 	config.Transport = fshttp.NewTransport(ctx)
 
-	// Route bridge and go-proton-api log output through rclone's
+	// Route bridge and go-proton-api log output through zclone's
 	// logging system so it honours -v / -vv and --log-file.
 	config.Logger = protonLogger{f: f}
 
@@ -633,7 +633,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 		f.features.Fill(ctx, &tempF)
 		// XXX: update the old f here instead of returning tempF, since
 		// `features` were already filled with functions having *f as a receiver.
-		// See https://github.com/rclone/rclone/issues/2182
+		// See /
 		f.dirCache = tempF.dirCache
 		f.root = tempF.root
 		// return an error with an fs which points to the parent
@@ -832,7 +832,7 @@ func (f *Fs) CreateDir(ctx context.Context, pathID, leaf string) (string, error)
 
 // Put in to the remote path with the modTime given of the given size
 //
-// When called from outside an Fs by rclone, src.Size() will always be >= 0.
+// When called from outside an Fs by zclone, src.Size() will always be >= 0.
 // But for unknown-sized objects (indicated by src.Size() == -1), Put should either
 // return an error or upload it properly (rather than e.g. calling panic).
 //
@@ -1095,7 +1095,7 @@ func (o *Object) Open(ctx context.Context, options ...fs.OpenOption) (io.ReadClo
 
 // Update in to the object with the modTime given of the given size
 //
-// When called from outside an Fs by rclone, src.Size() will always be >= 0.
+// When called from outside an Fs by zclone, src.Size() will always be >= 0.
 // But for unknown-sized objects (indicated by src.Size() == -1), Upload should either
 // return an error or update the object properly (rather than e.g. calling panic).
 func (o *Object) Update(ctx context.Context, in io.Reader, src fs.ObjectInfo, options ...fs.OpenOption) error {

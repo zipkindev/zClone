@@ -16,11 +16,11 @@ import (
 	krb "github.com/jcmturner/gokrb5/v8/client"
 	"github.com/jcmturner/gokrb5/v8/config"
 	"github.com/jcmturner/gokrb5/v8/credentials"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/pacer"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/hash"
+	"zclone/lib/pacer"
 )
 
 // Fs represents a HDFS server
@@ -301,7 +301,7 @@ func (f *Fs) Move(ctx context.Context, src fs.Object, remote string) (fs.Object,
 	}
 
 	// Do the move
-	// Note that the underlying HDFS library hard-codes Overwrite=True, but this is expected rclone behaviour.
+	// Note that the underlying HDFS library hard-codes Overwrite=True, but this is expected zclone behaviour.
 	err = f.client.Rename(sourcePath, targetPath)
 	if err != nil {
 		return nil, err

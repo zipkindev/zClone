@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"path"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/kv"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/cache"
+	"zclone/fs/fspath"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
+	"zclone/lib/kv"
 )
 
 // Command the backend to run a named command
@@ -49,7 +49,7 @@ var commandHelp = []fs.CommandHelp{{
 Usage example:
 
 ` + "```console" + `
-rclone backend drop hasher:
+zclone backend drop hasher:
 ` + "```",
 }, {
 	Name:  "dump",
@@ -67,7 +67,7 @@ rclone backend drop hasher:
 Usage example:
 
 ` + "```console" + `
-rclone backend import hasher:subdir md5 /path/to/sum.md5
+zclone backend import hasher:subdir md5 /path/to/sum.md5
 ` + "```",
 }, {
 	Name:  "stickyimport",
@@ -77,7 +77,7 @@ rclone backend import hasher:subdir md5 /path/to/sum.md5
 Usage example:
 
 ` + "```console" + `
-rclone backend stickyimport hasher:subdir md5 remote:path/to/sum.md5
+zclone backend stickyimport hasher:subdir md5 remote:path/to/sum.md5
 ` + "```",
 }}
 

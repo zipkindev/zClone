@@ -3,7 +3,7 @@
 
 //go:build plan9
 
-// Package ftp implements an FTP server for rclone
+// Package ftp implements an FTP server for zclone
 package ftp
 
 import "github.com/spf13/cobra"

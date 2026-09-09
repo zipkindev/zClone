@@ -17,19 +17,19 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/backend/ulozto/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/ulozto/api"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/dircache"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
 // TODO Uloz.to only supports file names of 255 characters or less and silently truncates names that are longer.
@@ -78,7 +78,7 @@ doc https://uloz.to/upload-resumable-api-beta or obtained from customer service.
 			},
 			{
 				Name: "root_folder_slug",
-				Help: `If set, rclone will use this folder as the root folder for all operations. For example,
+				Help: `If set, zclone will use this folder as the root folder for all operations. For example,
 if the slug identifies 'foo/bar/', 'ulozto:baz' is equivalent to 'ulozto:foo/bar/baz' without
 any root slug set.`,
 				Default:   "",
@@ -122,7 +122,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 		return nil, err
 	}
 
-	// Strip leading and trailing slashes, see https://github.com/rclone/rclone/issues/7796 for details.
+	// Strip leading and trailing slashes, see / for details.
 	root = strings.Trim(root, "/")
 
 	client := fshttp.NewClient(ctx)
@@ -694,11 +694,11 @@ func (f *Fs) Hashes() hash.Set {
 // The files themselves are immutable so there's no danger that the file changes, and we'll forget to update the hashes.
 // It is theoretically possible to rewrite the description to provide incorrect information for a file. However, in case
 // it's a real attack vector, a nefarious person already has write access to the repo, and the situation is above
-// rclone's pay grade already.
+// zclone's pay grade already.
 type DescriptionEncodedMetadata struct {
 	Md5Hash            []byte // The MD5 hash of the file
 	Sha256Hash         []byte // The SHA256 hash of the file
-	ModTimeEpochMicros int64  // The mtime of the file, as set by rclone
+	ModTimeEpochMicros int64  // The mtime of the file, as set by zclone
 }
 
 func (md *DescriptionEncodedMetadata) encode() (string, error) {
@@ -746,7 +746,7 @@ type Object struct {
 	slug          string    // ID of the object
 	remoteFsMtime time.Time // The time the object was last modified in the remote fs.
 	// Metadata not available natively and encoded in the description field. May not be present if the encoded metadata
-	// is not present (e.g. if file wasn't uploaded by rclone) or invalid.
+	// is not present (e.g. if file wasn't uploaded by zclone) or invalid.
 	encodedMetadata *DescriptionEncodedMetadata
 }
 
@@ -1011,7 +1011,7 @@ func (f *Fs) FindLeaf(ctx context.Context, folderSlug, leaf string) (leafSlug st
 		}
 	}
 
-	// Uloz.to allows creation of multiple files / folders with the same name in the same parent folder. rclone always
+	// Uloz.to allows creation of multiple files / folders with the same name in the same parent folder. zclone always
 	// expects folder paths to be unique (no other file or folder with the same name should exist). As a result we also
 	// need to look at the files to return the correct error if necessary.
 	files, err := f.listFiles(ctx, folderSlug, leaf)

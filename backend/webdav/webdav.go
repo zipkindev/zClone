@@ -28,20 +28,20 @@ import (
 	"github.com/Azure/go-ntlmssp"
 	"golang.org/x/sync/singleflight"
 
-	"github.com/rclone/rclone/backend/webdav/api"
-	"github.com/rclone/rclone/backend/webdav/odrvcookie"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/webdav/api"
+	"zclone/backend/webdav/odrvcookie"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
 const (
@@ -97,8 +97,8 @@ func init() {
 				Value: "sharepoint-ntlm",
 				Help:  "Sharepoint with NTLM authentication, usually self-hosted or on-premises",
 			}, {
-				Value: "rclone",
-				Help:  "rclone WebDAV server to serve a remote over HTTP via the WebDAV protocol",
+				Value: "zclone",
+				Help:  "zclone WebDAV server to serve a remote over HTTP via the WebDAV protocol",
 			}, {
 				Value: "other",
 				Help:  "Other site/service or software",
@@ -170,20 +170,20 @@ Set to 0 to disable chunked uploading.
 				Name: "auth_redirect",
 				Help: `Preserve authentication on redirect.
 
-If the server redirects rclone to a new domain when it is trying to
-read a file then normally rclone will drop the Authorization: header
+If the server redirects zclone to a new domain when it is trying to
+read a file then normally zclone will drop the Authorization: header
 from the request.
 
 This is standard security practice to avoid sending your credentials
 to an unknown webserver.
 
 However this is desirable in some circumstances. If you are getting
-an error like "401 Unauthorized" when rclone is attempting to read
+an error like "401 Unauthorized" when zclone is attempting to read
 files from the webdav server then you can try this option.
 
 Note that enabling this also permits sending your credentials over a
 plaintext HTTP connection if the server redirects from HTTPS to HTTP,
-which rclone otherwise refuses to do.
+which zclone otherwise refuses to do.
 `,
 				Advanced: true,
 				Default:  false,
@@ -701,7 +701,7 @@ func (f *Fs) setQuirks(ctx context.Context, vendor string) error {
 		f.srv.SetCookie(&spCookies.FedAuth, &spCookies.RtFa)
 
 		// sharepoint, unlike the other vendors, only lists files if the depth header is set to 0
-		// however, rclone defaults to 1 since it provides recursive directory listing
+		// however, zclone defaults to 1 since it provides recursive directory listing
 		// to determine if we may have found a file, the request has to be resent
 		// with the depth set to 0
 		f.retryWithZeroDepth = true
@@ -715,7 +715,7 @@ func (f *Fs) setQuirks(ctx context.Context, vendor string) error {
 		// so we must perform an extra check to detect this
 		// condition and return a proper error code.
 		f.checkBeforePurge = true
-	case "rclone":
+	case "zclone":
 		f.canStream = true
 		f.precision = time.Second
 		f.useOCMtime = true
@@ -1114,7 +1114,7 @@ func (f *Fs) purgeCheck(ctx context.Context, dir string, check bool) error {
 		// This provider returns status 204 even if the purged directory
 		// does not really exist so we perform an extra check here.
 		// Only the existence is checked, all other errors must be
-		// ignored here to make the rclone test suite pass.
+		// ignored here to make the zclone test suite pass.
 		_, err := f.readMetaDataForPath(ctx, dir)
 		if err == fs.ErrorObjectNotFound {
 			return fs.ErrorDirNotFound

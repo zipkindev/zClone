@@ -13,16 +13,16 @@ import (
 	"testing"
 
 	"github.com/pkg/sftp"
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/cmd/serve/proxy"
-	"github.com/rclone/rclone/cmd/serve/servetest"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/vfs/vfscommon"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	"zclone/cmd/serve/proxy"
+	"zclone/cmd/serve/servetest"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/obscure"
+	"zclone/fs/rc"
+	"zclone/vfs/vfscommon"
 )
 
 const (

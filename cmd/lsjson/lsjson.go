@@ -7,12 +7,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/ls/lshelp"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/cmd/ls/lshelp"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/operations"
 )
 
 var (
@@ -86,7 +86,7 @@ Different options may also affect which properties are included:
 - If ` + "`--encrypted`" + ` is not specified the Encrypted and EncryptedPath
   properties will be omitted - even for encrypted remotes.
 - If ` + "`--metadata`" + ` is set then an additional Metadata property will be
-  returned. This will have [metadata](/docs/#metadata) in rclone standard format
+  returned. This will have [metadata](/docs/#metadata) in zclone standard format
   as a JSON object.
 
 The default is to list directories and files/objects, but this can be changed

@@ -9,7 +9,7 @@ import (
 	"io"
 	"text/template"
 
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 // GetTemplate returns the rootDesc XML template

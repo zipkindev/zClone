@@ -11,15 +11,15 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/dirtree"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/walk"
-	"github.com/rclone/rclone/vfs/vfscommon"
 	"golang.org/x/text/unicode/norm"
+	"zclone/fs"
+	"zclone/fs/dirtree"
+	"zclone/fs/list"
+	"zclone/fs/log"
+	"zclone/fs/object"
+	"zclone/fs/operations"
+	"zclone/fs/walk"
+	"zclone/vfs/vfscommon"
 )
 
 // Dir represents a directory entry

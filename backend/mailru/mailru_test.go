@@ -4,8 +4,8 @@ package mailru_test
 import (
 	"testing"
 
-	"github.com/rclone/rclone/backend/mailru"
-	"github.com/rclone/rclone/fstest/fstests"
+	"zclone/backend/mailru"
+	"zclone/fstest/fstests"
 )
 
 // TestIntegration runs integration tests against the remote

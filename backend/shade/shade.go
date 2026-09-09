@@ -17,18 +17,18 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/backend/shade/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/shade/api"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/fs/object"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
 const (
@@ -70,7 +70,7 @@ func init() {
 		NewFs:       NewFS,
 		Options: []fs.Option{{
 			Name:      "drive_id",
-			Help:      "The ID of your drive, see this in the drive settings. Individual rclone configs must be made per drive.",
+			Help:      "The ID of your drive, see this in the drive settings. Individual zclone configs must be made per drive.",
 			Required:  true,
 			Sensitive: false,
 		}, {
@@ -99,12 +99,12 @@ func init() {
 			Advanced: true,
 		}, {
 			Name:     "token",
-			Help:     "JWT Token for performing Shade FS operations. Don't set this value - rclone will set it automatically",
+			Help:     "JWT Token for performing Shade FS operations. Don't set this value - zclone will set it automatically",
 			Default:  "",
 			Advanced: true,
 		}, {
 			Name:     "token_expiry",
-			Help:     "JWT Token Expiration time. Don't set this value - rclone will set it automatically",
+			Help:     "JWT Token Expiration time. Don't set this value - zclone will set it automatically",
 			Default:  "",
 			Advanced: true,
 		}, {
@@ -948,7 +948,7 @@ func (o *Object) Open(ctx context.Context, options ...fs.OpenOption) (io.ReadClo
 
 // Update in to the object with the modTime given of the given size
 //
-// When called from outside an Fs by rclone, src.Size() will always be >= 0.
+// When called from outside an Fs by zclone, src.Size() will always be >= 0.
 // But for unknown-sized objects (indicated by src.Size() == -1), Upload should either
 // return an error or update the object properly (rather than e.g. calling panic).
 func (o *Object) Update(ctx context.Context, in io.Reader, src fs.ObjectInfo, options ...fs.OpenOption) error {

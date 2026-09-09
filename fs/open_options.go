@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/rclone/rclone/fs/hash"
+	"zclone/fs/hash"
 )
 
 // OpenOption is an interface describing options for Open

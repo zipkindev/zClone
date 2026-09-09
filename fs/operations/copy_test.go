@@ -12,13 +12,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/sync"
-	"github.com/rclone/rclone/fstest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/operations"
+	"zclone/fs/sync"
+	"zclone/fstest"
 )
 
 func TestTruncateString(t *testing.T) {

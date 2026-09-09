@@ -9,12 +9,12 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/filter"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/flags"
+	"zclone/fs/filter"
 )
 
 var (
@@ -179,7 +179,7 @@ the source (file or environment).
 
 Result can be filtered by a filter argument which applies to all attributes,
 and/or filter flags specific for each attribute. The values must be specified
-according to regular rclone filtering pattern syntax.
+according to regular zclone filtering pattern syntax.
 
 By default filtering uses non-anchored matching, so ` + "`--type box`" + ` also
 matches ` + "`dropbox`" + `. Use ` + "`--exact`" + ` to match complete values only.`,

@@ -10,15 +10,15 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/backend/webdav"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configfile"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/backend/local"
+	"zclone/backend/webdav"
+	"zclone/fs"
+	"zclone/fs/config/configfile"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/obscure"
+	"zclone/fs/operations"
 )
 
 var (

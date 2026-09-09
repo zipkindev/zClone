@@ -8,10 +8,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/config/flags"
 )
 
 var (
@@ -49,7 +49,7 @@ var commandDefinition = &cobra.Command{
 	Long: `Prints quota information about a remote to standard
 output. The output is typically used, free, quota and trash contents.
 
-E.g. Typical output from ` + "`rclone about remote:`" + ` is:
+E.g. Typical output from ` + "`zclone about remote:`" + ` is:
 
 ` + "```text" + `
 Total:   17 GiB
@@ -95,8 +95,8 @@ A ` + "`--json`" + ` flag generates conveniently machine-readable output, e.g.
 Not all backends print all fields. Information is not included if it is not
 provided by a backend. Where the value is unlimited it is omitted.
 
-Some backends does not support the ` + "`rclone about`" + ` command at all,
-see complete list in [documentation](https://rclone.org/overview/#optional-features).`,
+Some backends does not support the ` + "`zclone about`" + ` command at all,
+see complete list in [documentation](//overview/#optional-features).`,
 	Annotations: map[string]string{
 		"versionIntroduced": "v1.41",
 		// "groups":            "",

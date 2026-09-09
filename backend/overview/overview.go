@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rclone/rclone/docs/data/backends"
 	"gopkg.in/yaml.v3"
+	"zclone/docs/data/backends"
 )
 
 // BackendConfig defines information about the backend

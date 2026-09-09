@@ -6,14 +6,14 @@ import (
 	"os"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
-	"github.com/rclone/rclone/lib/kv"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/config/obscure"
+	"zclone/fs/operations"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
+	"zclone/lib/kv"
 )
 
 func putFile(ctx context.Context, t *testing.T, f fs.Fs, name, data string) fs.Object {

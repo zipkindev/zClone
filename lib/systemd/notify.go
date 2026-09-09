@@ -5,8 +5,8 @@ import (
 	"sync"
 
 	"github.com/coreos/go-systemd/v22/daemon"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/atexit"
+	"zclone/fs"
+	"zclone/lib/atexit"
 )
 
 // Notify systemd that the service is ready. This returns a

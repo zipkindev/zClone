@@ -1,6 +1,6 @@
 //go:build linux
 
-// Package mount implements a FUSE mounting system for rclone remotes.
+// Package mount implements a FUSE mounting system for zclone remotes.
 package mount
 
 import (
@@ -9,9 +9,9 @@ import (
 
 	"bazil.org/fuse"
 	fusefs "bazil.org/fuse/fs"
-	"github.com/rclone/rclone/cmd/mountlib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/vfs"
+	"zclone/cmd/mountlib"
+	"zclone/fs"
+	"zclone/vfs"
 )
 
 func init() {
@@ -23,7 +23,7 @@ func init() {
 func mountOptions(VFS *vfs.VFS, device string, opt *mountlib.Options) (options []fuse.MountOption) {
 	options = []fuse.MountOption{
 		fuse.MaxReadahead(uint32(opt.MaxReadAhead)),
-		fuse.Subtype("rclone"),
+		fuse.Subtype("zclone"),
 		fuse.FSName(device),
 
 		// Options from benchmarking in the fuse module

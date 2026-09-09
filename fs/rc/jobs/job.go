@@ -16,11 +16,11 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/rc"
 	"golang.org/x/sync/errgroup"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/cache"
+	"zclone/fs/rc"
 )
 
 // Fill in these to avoid circular dependencies
@@ -129,7 +129,7 @@ type Jobs struct {
 var (
 	running = newJobs()
 	jobID   atomic.Int64
-	// executeID is a unique ID for this rclone execution
+	// executeID is a unique ID for this zclone execution
 	executeID = uuid.New().String()
 )
 
@@ -362,7 +362,7 @@ Results:
 - error - error from the job or empty string for no error
 - finished - boolean whether the job has finished or not
 - id - as passed in above
-- executeId - rclone instance ID (changes after restart); combined with id uniquely identifies a job
+- executeId - zclone instance ID (changes after restart); combined with id uniquely identifies a job
 - startTime - time the job started (e.g. "2018-10-26T18:50:20.528336039+01:00")
 - success - boolean - true for success false otherwise
 - output - output of the job as would have been returned if called synchronously
@@ -401,7 +401,7 @@ func init() {
 
 Results:
 
-- executeId - string id of rclone executing (change after restart)
+- executeId - string id of zclone executing (change after restart)
 - jobids - array of integer job ids (starting at 1 on each restart)
 - runningIds - array of integer job ids that are running
 - finishedIds - array of integer job ids that are finished
@@ -563,7 +563,7 @@ func init() {
 	rc.Add(rc.Call{
 		Path:  "job/batch",
 		Fn:    rcBatch,
-		Title: "Run a batch of rclone rc commands concurrently.",
+		Title: "Run a batch of zclone rc commands concurrently.",
 		Help: strings.ReplaceAll(`
 This takes the following parameters:
 
@@ -587,7 +587,7 @@ Returns:
 For example:
 
 |||sh
-rclone rc job/batch --json '{
+zclone rc job/batch --json '{
   "inputs": [
     {
       "_path": "rc/noop",

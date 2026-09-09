@@ -20,11 +20,11 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/lib/readers"
 	"google.golang.org/api/drive/v3"
 	"google.golang.org/api/googleapi"
+	"zclone/fs"
+	"zclone/fs/fserrors"
+	"zclone/lib/readers"
 )
 
 const (

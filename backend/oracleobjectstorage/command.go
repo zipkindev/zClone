@@ -13,8 +13,8 @@ import (
 
 	"github.com/oracle/oci-go-sdk/v65/common"
 	"github.com/oracle/oci-go-sdk/v65/objectstorage"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/operations"
+	"zclone/fs"
+	"zclone/fs/operations"
 )
 
 // ------------------------------------------------------------
@@ -36,7 +36,7 @@ var commandHelp = []fs.CommandHelp{{
 Usage example:
 
 ` + "```console" + `
-rclone backend rename oos:bucket relative-object-path-under-bucket object-new-name
+zclone backend rename oos:bucket relative-object-path-under-bucket object-new-name
 ` + "```",
 	Opts: nil,
 }, {
@@ -47,7 +47,7 @@ rclone backend rename oos:bucket relative-object-path-under-bucket object-new-na
 Usage example:
 
 ` + "```console" + `
-rclone backend list-multipart-uploads oos:bucket/path/to/object
+zclone backend list-multipart-uploads oos:bucket/path/to/object
 ` + "```" + `
 
 It returns a dictionary of buckets with values as lists of unfinished
@@ -81,11 +81,11 @@ what it would do.
 Usage examples:
 
 ` + "```console" + `
-rclone backend cleanup oos:bucket/path/to/object
-rclone backend cleanup -o max-age=7w oos:bucket/path/to/object
+zclone backend cleanup oos:bucket/path/to/object
+zclone backend cleanup -o max-age=7w oos:bucket/path/to/object
 ` + "```" + `
 
-Durations are parsed as per the rest of rclone, 2h, 7d, 7w etc.`,
+Durations are parsed as per the rest of zclone, 2h, 7d, 7w etc.`,
 	Opts: map[string]string{
 		"max-age": "Max age of upload to delete.",
 	},
@@ -98,20 +98,20 @@ Standard storage.
 Usage examples:
 
 ` + "```console" + `
-rclone backend restore oos:bucket/path/to/directory -o hours=HOURS
-rclone backend restore oos:bucket -o hours=HOURS
+zclone backend restore oos:bucket/path/to/directory -o hours=HOURS
+zclone backend restore oos:bucket -o hours=HOURS
 ` + "```" + `
 
 This flag also obeys the filters. Test first with --interactive/-i or --dry-run flags
 
 ` + "```console" + `
-rclone --interactive backend restore --include "*.txt" oos:bucket/path -o hours=72
+zclone --interactive backend restore --include "*.txt" oos:bucket/path -o hours=72
 ` + "```" + `
 
 All the objects shown will be marked for restore, then:
 
 ` + "```console" + `
-rclone backend restore --include "*.txt" oos:bucket/path -o hours=72
+zclone backend restore --include "*.txt" oos:bucket/path -o hours=72
 ` + "```" + `
 
 It returns a list of status dictionaries with Object Name and Status keys.

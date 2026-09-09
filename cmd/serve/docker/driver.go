@@ -13,12 +13,12 @@ import (
 	"time"
 
 	"github.com/coreos/go-systemd/v22/daemon"
-	"github.com/rclone/rclone/cmd/mountlib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/file"
-	"github.com/rclone/rclone/vfs/vfscommon"
+	"zclone/cmd/mountlib"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/lib/atexit"
+	"zclone/lib/file"
+	"zclone/vfs/vfscommon"
 )
 
 const (

@@ -7,9 +7,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/filter"
+	"zclone/fs"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/filter"
 )
 
 // isMap returns true if v's underlying type is a map

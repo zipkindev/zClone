@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rclone/rclone/fs/fspath"
+	"zclone/fs/fspath"
 )
 
 type layoutMode string
 
-// All layout modes from git-annex-remote-rclone are supported.
+// All layout modes from git-annex-remote-zclone are supported.
 const (
 	layoutModeLower       layoutMode = "lower"
 	layoutModeDirectory   layoutMode = "directory"

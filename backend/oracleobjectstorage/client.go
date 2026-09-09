@@ -14,9 +14,9 @@ import (
 	"github.com/oracle/oci-go-sdk/v65/common"
 	"github.com/oracle/oci-go-sdk/v65/common/auth"
 	"github.com/oracle/oci-go-sdk/v65/objectstorage"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
+	"zclone/fs"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
 )
 
 func expandPath(filepath string) (expandedPath string) {
@@ -99,7 +99,7 @@ func modifyClient(ctx context.Context, opt *Options, client *common.BaseClient) 
 }
 
 // getClient makes http client according to the global options
-// this has rclone specific options support like dump headers, body etc.
+// this has zclone specific options support like dump headers, body etc.
 func getHTTPClient(ctx context.Context) *http.Client {
 	return fshttp.NewClient(ctx)
 }

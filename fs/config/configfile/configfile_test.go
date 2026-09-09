@@ -9,9 +9,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rclone/rclone/fs/config"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs/config"
 )
 
 var configData = `[one]
@@ -31,7 +31,7 @@ fruit = banana
 
 // Fill up a temporary config file with the testdata filename passed in
 func setConfigFile(t *testing.T, data string) func() {
-	out, err := os.CreateTemp("", "rclone-configfile-test")
+	out, err := os.CreateTemp("", "zclone-configfile-test")
 	require.NoError(t, err)
 	filePath := out.Name()
 

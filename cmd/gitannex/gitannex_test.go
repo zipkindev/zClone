@@ -15,10 +15,10 @@ import (
 
 	// Without this import, the various backends would be unavailable. It looks
 	// unused, but the act of importing runs the package's `init()` function.
-	_ "github.com/rclone/rclone/backend/all"
+	_ "zclone/backend/all"
 
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fstest"
+	"zclone/fs/fspath"
+	"zclone/fstest"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -37,11 +37,11 @@ func TestFixArgsForSymlinkIdentity(t *testing.T) {
 
 func TestFixArgsForSymlinkCorrectName(t *testing.T) {
 	assert.Equal(t,
-		maybeTransformArgs([]string{"git-annex-remote-rclone-builtin"}),
-		[]string{"git-annex-remote-rclone-builtin", "gitannex"})
+		maybeTransformArgs([]string{"git-annex-remote-zclone-builtin"}),
+		[]string{"git-annex-remote-zclone-builtin", "gitannex"})
 	assert.Equal(t,
-		maybeTransformArgs([]string{"/path/to/git-annex-remote-rclone-builtin"}),
-		[]string{"/path/to/git-annex-remote-rclone-builtin", "gitannex"})
+		maybeTransformArgs([]string{"/path/to/git-annex-remote-zclone-builtin"}),
+		[]string{"/path/to/git-annex-remote-zclone-builtin", "gitannex"})
 }
 
 type messageParserTestCase struct {
@@ -326,9 +326,9 @@ func (h *testState) requireWriteLine(line string) {
 // Preconfigure the handle. This enables the calling test to skip the PREPARE
 // handshake.
 func (h *testState) preconfigureServer() {
-	h.server.configRcloneRemoteName = h.remoteName
+	h.server.configZcloneRemoteName = h.remoteName
 	h.server.configPrefix = h.remotePrefix
-	h.server.configRcloneLayout = string(layoutModeNodir)
+	h.server.configZcloneLayout = string(layoutModeNodir)
 	h.server.configsDone = true
 }
 
@@ -460,15 +460,15 @@ var fstestTestCases = []testCase{
 			h.requireWriteLine("LISTCONFIGS")
 
 			require.Regexp(t,
-				regexp.MustCompile(`^CONFIG rcloneremotename \(synonyms: target\) (.|\n)*$`),
+				regexp.MustCompile(`^CONFIG zcloneremotename \(synonyms: target\) (.|\n)*$`),
 				h.requireReadLine(),
 			)
 			require.Regexp(t,
-				regexp.MustCompile(`^CONFIG rcloneprefix \(synonyms: prefix\) (.|\n)*$`),
+				regexp.MustCompile(`^CONFIG zcloneprefix \(synonyms: prefix\) (.|\n)*$`),
 				h.requireReadLine(),
 			)
 			require.Regexp(t,
-				regexp.MustCompile(`^CONFIG rclonelayout \(synonyms: rclone_layout\) (.|\n)*$`),
+				regexp.MustCompile(`^CONFIG zclonelayout \(synonyms: zclone_layout\) (.|\n)*$`),
 				h.requireReadLine(),
 			)
 			h.requireReadLineExact("CONFIGEND")
@@ -486,15 +486,15 @@ var fstestTestCases = []testCase{
 			require.True(t, h.server.extensionInfo)
 
 			h.requireWriteLine("PREPARE")
-			h.requireReadLineExact("GETCONFIG rcloneremotename")
+			h.requireReadLineExact("GETCONFIG zcloneremotename")
 			h.requireWriteLine("VALUE " + h.remoteName)
-			h.requireReadLineExact("GETCONFIG rcloneprefix")
+			h.requireReadLineExact("GETCONFIG zcloneprefix")
 			h.requireWriteLine("VALUE " + h.remotePrefix)
-			h.requireReadLineExact("GETCONFIG rclonelayout")
+			h.requireReadLineExact("GETCONFIG zclonelayout")
 			h.requireWriteLine("VALUE frankencase")
 			h.requireReadLineExact("PREPARE-SUCCESS")
 
-			require.Equal(t, h.server.configRcloneRemoteName, h.remoteName)
+			require.Equal(t, h.server.configZcloneRemoteName, h.remoteName)
 			require.Equal(t, h.server.configPrefix, h.remotePrefix)
 			require.True(t, h.server.configsDone)
 
@@ -511,15 +511,15 @@ var fstestTestCases = []testCase{
 			require.True(t, h.server.extensionInfo)
 
 			h.requireWriteLine("PREPARE")
-			h.requireReadLineExact("GETCONFIG rcloneremotename")
+			h.requireReadLineExact("GETCONFIG zcloneremotename")
 			h.requireWriteLine("VALUE " + h.remoteName)
-			h.requireReadLineExact("GETCONFIG rcloneprefix")
+			h.requireReadLineExact("GETCONFIG zcloneprefix")
 			h.requireWriteLine("VALUE " + h.remotePrefix)
-			h.requireReadLineExact("GETCONFIG rclonelayout")
+			h.requireReadLineExact("GETCONFIG zclonelayout")
 			h.requireWriteLine("VALUE nonexistentLayoutMode")
 			h.requireReadLineExact("PREPARE-SUCCESS")
 
-			require.Equal(t, h.server.configRcloneRemoteName, h.remoteName)
+			require.Equal(t, h.server.configZcloneRemoteName, h.remoteName)
 			require.Equal(t, h.server.configPrefix, h.remotePrefix)
 			require.True(t, h.server.configsDone)
 
@@ -540,15 +540,15 @@ var fstestTestCases = []testCase{
 			require.True(t, h.server.extensionInfo)
 
 			h.requireWriteLine("PREPARE")
-			h.requireReadLineExact("GETCONFIG rcloneremotename")
+			h.requireReadLineExact("GETCONFIG zcloneremotename")
 			h.requireWriteLine("VALUE thisRemoteDoesNotExist")
-			h.requireReadLineExact("GETCONFIG rcloneprefix")
+			h.requireReadLineExact("GETCONFIG zcloneprefix")
 			h.requireWriteLine("VALUE " + h.remotePrefix)
-			h.requireReadLineExact("GETCONFIG rclonelayout")
+			h.requireReadLineExact("GETCONFIG zclonelayout")
 			h.requireWriteLine("VALUE frankencase")
 			h.requireReadLineExact("PREPARE-SUCCESS")
 
-			require.Equal(t, h.server.configRcloneRemoteName, "thisRemoteDoesNotExist")
+			require.Equal(t, h.server.configZcloneRemoteName, "thisRemoteDoesNotExist")
 			require.Equal(t, h.server.configPrefix, h.remotePrefix)
 			require.True(t, h.server.configsDone)
 
@@ -569,15 +569,15 @@ var fstestTestCases = []testCase{
 			require.True(t, h.server.extensionInfo)
 
 			h.requireWriteLine("PREPARE")
-			h.requireReadLineExact("GETCONFIG rcloneremotename")
+			h.requireReadLineExact("GETCONFIG zcloneremotename")
 			h.requireWriteLine("VALUE " + h.remotePrefix)
-			h.requireReadLineExact("GETCONFIG rcloneprefix")
+			h.requireReadLineExact("GETCONFIG zcloneprefix")
 			h.requireWriteLine("VALUE /foo")
-			h.requireReadLineExact("GETCONFIG rclonelayout")
+			h.requireReadLineExact("GETCONFIG zclonelayout")
 			h.requireWriteLine("VALUE frankencase")
 			h.requireReadLineExact("PREPARE-SUCCESS")
 
-			require.Equal(t, h.server.configRcloneRemoteName, h.remotePrefix)
+			require.Equal(t, h.server.configZcloneRemoteName, h.remotePrefix)
 			require.Equal(t, h.server.configPrefix, "/foo")
 			require.True(t, h.server.configsDone)
 
@@ -597,15 +597,15 @@ var fstestTestCases = []testCase{
 		testProtocolFunc: func(t *testing.T, h *testState) {
 			h.requireReadLineExact("VERSION 1")
 			h.requireWriteLine("PREPARE")
-			h.requireReadLineExact("GETCONFIG rcloneremotename")
+			h.requireReadLineExact("GETCONFIG zcloneremotename")
 			h.requireWriteLine("VALUE :nonexistentBackend:")
-			h.requireReadLineExact("GETCONFIG rcloneprefix")
+			h.requireReadLineExact("GETCONFIG zcloneprefix")
 			h.requireWriteLine("VALUE /foo")
-			h.requireReadLineExact("GETCONFIG rclonelayout")
+			h.requireReadLineExact("GETCONFIG zclonelayout")
 			h.requireWriteLine("VALUE frankencase")
 			h.requireReadLineExact("PREPARE-SUCCESS")
 
-			require.Equal(t, ":nonexistentBackend:", h.server.configRcloneRemoteName)
+			require.Equal(t, ":nonexistentBackend:", h.server.configZcloneRemoteName)
 			require.Equal(t, "/foo", h.server.configPrefix)
 			require.True(t, h.server.configsDone)
 
@@ -621,15 +621,15 @@ var fstestTestCases = []testCase{
 		testProtocolFunc: func(t *testing.T, h *testState) {
 			h.requireReadLineExact("VERSION 1")
 			h.requireWriteLine("PREPARE")
-			h.requireReadLineExact("GETCONFIG rcloneremotename")
+			h.requireReadLineExact("GETCONFIG zcloneremotename")
 			h.requireWriteLine("VALUE :local:")
-			h.requireReadLineExact("GETCONFIG rcloneprefix")
+			h.requireReadLineExact("GETCONFIG zcloneprefix")
 			h.requireWriteLine("VALUE /foo")
-			h.requireReadLineExact("GETCONFIG rclonelayout")
+			h.requireReadLineExact("GETCONFIG zclonelayout")
 			h.requireWriteLine("VALUE frankencase")
 			h.requireReadLineExact("PREPARE-SUCCESS")
 
-			require.Equal(t, ":local:", h.server.configRcloneRemoteName)
+			require.Equal(t, ":local:", h.server.configZcloneRemoteName)
 			require.Equal(t, "/foo", h.server.configPrefix)
 			require.True(t, h.server.configsDone)
 
@@ -644,15 +644,15 @@ var fstestTestCases = []testCase{
 		testProtocolFunc: func(t *testing.T, h *testState) {
 			h.requireReadLineExact("VERSION 1")
 			h.requireWriteLine("PREPARE")
-			h.requireReadLineExact("GETCONFIG rcloneremotename")
+			h.requireReadLineExact("GETCONFIG zcloneremotename")
 			h.requireWriteLine("VALUE :local")
-			h.requireReadLineExact("GETCONFIG rcloneprefix")
+			h.requireReadLineExact("GETCONFIG zcloneprefix")
 			h.requireWriteLine("VALUE /foo")
-			h.requireReadLineExact("GETCONFIG rclonelayout")
+			h.requireReadLineExact("GETCONFIG zclonelayout")
 			h.requireWriteLine("VALUE frankencase")
 			h.requireReadLineExact("PREPARE-SUCCESS")
 
-			require.Equal(t, ":local", h.server.configRcloneRemoteName)
+			require.Equal(t, ":local", h.server.configZcloneRemoteName)
 			require.Equal(t, "/foo", h.server.configPrefix)
 			require.True(t, h.server.configsDone)
 
@@ -668,15 +668,15 @@ var fstestTestCases = []testCase{
 		testProtocolFunc: func(t *testing.T, h *testState) {
 			h.requireReadLineExact("VERSION 1")
 			h.requireWriteLine("PREPARE")
-			h.requireReadLineExact("GETCONFIG rcloneremotename")
+			h.requireReadLineExact("GETCONFIG zcloneremotename")
 			h.requireWriteLine("VALUE :local,description=banana:")
-			h.requireReadLineExact("GETCONFIG rcloneprefix")
+			h.requireReadLineExact("GETCONFIG zcloneprefix")
 			h.requireWriteLine("VALUE /foo")
-			h.requireReadLineExact("GETCONFIG rclonelayout")
+			h.requireReadLineExact("GETCONFIG zclonelayout")
 			h.requireWriteLine("VALUE frankencase")
 			h.requireReadLineExact("PREPARE-SUCCESS")
 
-			require.Equal(t, ":local,description=banana:", h.server.configRcloneRemoteName)
+			require.Equal(t, ":local,description=banana:", h.server.configZcloneRemoteName)
 			require.Equal(t, "/foo", h.server.configPrefix)
 			require.True(t, h.server.configsDone)
 
@@ -691,15 +691,15 @@ var fstestTestCases = []testCase{
 		testProtocolFunc: func(t *testing.T, h *testState) {
 			h.requireReadLineExact("VERSION 1")
 			h.requireWriteLine("PREPARE")
-			h.requireReadLineExact("GETCONFIG rcloneremotename")
+			h.requireReadLineExact("GETCONFIG zcloneremotename")
 			h.requireWriteLine("VALUE :local,description=banana:/bad/path")
-			h.requireReadLineExact("GETCONFIG rcloneprefix")
+			h.requireReadLineExact("GETCONFIG zcloneprefix")
 			h.requireWriteLine("VALUE /foo")
-			h.requireReadLineExact("GETCONFIG rclonelayout")
+			h.requireReadLineExact("GETCONFIG zclonelayout")
 			h.requireWriteLine("VALUE frankencase")
 			h.requireReadLineExact("PREPARE-SUCCESS")
 
-			require.Equal(t, ":local,description=banana:/bad/path", h.server.configRcloneRemoteName)
+			require.Equal(t, ":local,description=banana:/bad/path", h.server.configZcloneRemoteName)
 			require.Equal(t, "/foo", h.server.configPrefix)
 			require.True(t, h.server.configsDone)
 
@@ -713,21 +713,21 @@ var fstestTestCases = []testCase{
 	{
 		label: "HandlesPrepareWithRemoteContainingOptions",
 		testProtocolFunc: func(t *testing.T, h *testState) {
-			const envVar = "RCLONE_CONFIG_fake_remote_TYPE"
+			const envVar = "ZCLONE_CONFIG_fake_remote_TYPE"
 			require.NoError(t, os.Setenv(envVar, "memory"))
 			t.Cleanup(func() { require.NoError(t, os.Unsetenv(envVar)) })
 
 			h.requireReadLineExact("VERSION 1")
 			h.requireWriteLine("PREPARE")
-			h.requireReadLineExact("GETCONFIG rcloneremotename")
+			h.requireReadLineExact("GETCONFIG zcloneremotename")
 			h.requireWriteLine("VALUE fake_remote,banana=yes:")
-			h.requireReadLineExact("GETCONFIG rcloneprefix")
+			h.requireReadLineExact("GETCONFIG zcloneprefix")
 			h.requireWriteLine("VALUE /foo")
-			h.requireReadLineExact("GETCONFIG rclonelayout")
+			h.requireReadLineExact("GETCONFIG zclonelayout")
 			h.requireWriteLine("VALUE frankencase")
 			h.requireReadLineExact("PREPARE-SUCCESS")
 
-			require.Equal(t, "fake_remote,banana=yes:", h.server.configRcloneRemoteName)
+			require.Equal(t, "fake_remote,banana=yes:", h.server.configZcloneRemoteName)
 			require.Equal(t, "/foo", h.server.configPrefix)
 			require.True(t, h.server.configsDone)
 
@@ -747,19 +747,19 @@ var fstestTestCases = []testCase{
 			require.True(t, h.server.extensionInfo)
 
 			h.requireWriteLine("PREPARE")
-			h.requireReadLineExact("GETCONFIG rcloneremotename")
+			h.requireReadLineExact("GETCONFIG zcloneremotename")
 			// TODO check what git-annex does when asked for a config value it does not have.
 			h.requireWriteLine("VALUE")
 			h.requireReadLineExact("GETCONFIG target")
 			h.requireWriteLine("VALUE " + h.remoteName)
 
-			h.requireReadLineExact("GETCONFIG rcloneprefix")
+			h.requireReadLineExact("GETCONFIG zcloneprefix")
 			h.requireWriteLine("VALUE " + h.remotePrefix)
-			h.requireReadLineExact("GETCONFIG rclonelayout")
+			h.requireReadLineExact("GETCONFIG zclonelayout")
 			h.requireWriteLine("VALUE frankencase")
 			h.requireReadLineExact("PREPARE-SUCCESS")
 
-			require.Equal(t, h.server.configRcloneRemoteName, h.remoteName)
+			require.Equal(t, h.server.configZcloneRemoteName, h.remoteName)
 			require.Equal(t, h.server.configPrefix, h.remotePrefix)
 			require.True(t, h.server.configsDone)
 
@@ -776,24 +776,24 @@ var fstestTestCases = []testCase{
 			require.True(t, h.server.extensionInfo)
 
 			h.requireWriteLine("PREPARE")
-			h.requireReadLineExact("GETCONFIG rcloneremotename")
+			h.requireReadLineExact("GETCONFIG zcloneremotename")
 
 			remoteNameWithSpaces := fmt.Sprintf(" %s ", h.remoteName)
 			prefixWithWhitespace := fmt.Sprintf(" %s\t", h.remotePrefix)
 
 			h.requireWriteLine(fmt.Sprintf("VALUE %s", remoteNameWithSpaces))
 
-			h.requireReadLineExact("GETCONFIG rcloneprefix")
+			h.requireReadLineExact("GETCONFIG zcloneprefix")
 			h.requireWriteLine(fmt.Sprintf("VALUE %s", prefixWithWhitespace))
 
-			h.requireReadLineExact("GETCONFIG rclonelayout")
+			h.requireReadLineExact("GETCONFIG zclonelayout")
 			h.requireWriteLine("VALUE")
-			h.requireReadLineExact("GETCONFIG rclone_layout")
+			h.requireReadLineExact("GETCONFIG zclone_layout")
 			h.requireWriteLine("VALUE")
 
 			h.requireReadLineExact("PREPARE-SUCCESS")
 
-			require.Equal(t, h.server.configRcloneRemoteName, remoteNameWithSpaces)
+			require.Equal(t, h.server.configZcloneRemoteName, remoteNameWithSpaces)
 			require.Equal(t, h.server.configPrefix, prefixWithWhitespace)
 			require.True(t, h.server.configsDone)
 
@@ -823,7 +823,7 @@ var fstestTestCases = []testCase{
 			require.True(t, h.server.extensionInfo)
 
 			h.requireWriteLine("PREPARE")
-			h.requireReadLineExact("GETCONFIG rcloneremotename")
+			h.requireReadLineExact("GETCONFIG zcloneremotename")
 			h.requireWriteLine("ERROR ineffable error")
 			h.requireReadLineExact("PREPARE-FAILURE Error getting configs")
 
@@ -1420,7 +1420,7 @@ func TestGitAnnexFstestBackendCases(t *testing.T) {
 			remoteName, remotePath, err := fspath.SplitFs(r.FremoteName)
 			require.NoError(t, err)
 
-			// The gitannex command requires the `rcloneremotename` is the name
+			// The gitannex command requires the `zcloneremotename` is the name
 			// of a remote or a colon-prefixed backend name like ":local:", so
 			// the empty string will not suffice.
 			if remoteName == "" {

@@ -13,8 +13,8 @@ import (
 	"path/filepath"
 	"strconv"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/fs"
+	"zclone/lib/rest"
 )
 
 func (o *Object) updateViaTus(ctx context.Context, in io.Reader, contentType string, src fs.ObjectInfo, options ...fs.OpenOption) (err error) {
@@ -95,7 +95,7 @@ func (o *Object) CreateUploader(ctx context.Context, u *Upload, options ...fs.Op
 	// opts.ExtraHeaders["mtime"] = strconv.FormatInt(src.ModTime(ctx).Unix(), 10)
 
 	var tusLocation string
-	// rclone http call
+	// zclone http call
 	err := o.fs.pacer.CallNoRetry(func() (bool, error) {
 		var retry bool
 		res, err := o.fs.srv.Call(ctx, &opts)

@@ -1,40 +1,40 @@
 ---
 title: "Remote Control / API"
-description: "Remote controlling rclone with its API"
+description: "Remote controlling zclone with its API"
 versionIntroduced: "v1.40"
 ---
 
-# Remote controlling rclone with its API
+# Remote controlling zclone with its API
 
-If rclone is run with the `--rc` flag then it starts an HTTP server
-which can be used to remote control rclone using its API.
+If zclone is run with the `--rc` flag then it starts an HTTP server
+which can be used to remote control zclone using its API.
 
 You can either use the [rc](#api-rc) command to access the API
 or [use HTTP directly](#api-http).
 
-If you just want to run a remote control then see the [rcd](/commands/rclone_rcd/)
+If you just want to run a remote control then see the [rcd](/commands/zclone_rcd/)
 command.
 
 ## Security {#security}
 
 **Access to the rc API is equivalent to shell access as the user running
-rclone.** Treat the rc port as you would an interactive login on the host.
+zclone.** Treat the rc port as you would an interactive login on the host.
 
 Any caller who can reach the API (and pass authentication, if it is enabled)
 can, among other things:
 
-- **Run OS commands** as the rclone user. `core/command` re-executes the rclone
+- **Run OS commands** as the zclone user. `core/command` re-executes the zclone
   binary with arbitrary arguments, and several backend options shell out to
   programs, so even creating a remote with `config/create` can lead to command
   execution.
-- **Read and write any file** reachable by the rclone process, by pointing
+- **Read and write any file** reachable by the zclone process, by pointing
   `operations/*` or `sync/*` at a `local` remote (or via `--rc-files` /
-  `--rc-serve`). Writing arbitrary files as the rclone user is itself a route to
+  `--rc-serve`). Writing arbitrary files as the zclone user is itself a route to
   code execution.
-- **Read back stored credentials.** rclone configs routinely hold cloud-provider
+- **Read back stored credentials.** zclone configs routinely hold cloud-provider
   secrets. `config/dump` and friends expose them, so a compromise of the rc
   reaches every configured backend.
-- **Change rclone's runtime behaviour** with `options/set`, **manage remotes**
+- **Change zclone's runtime behaviour** with `options/set`, **manage remotes**
   with `config/*`, and **stop the process** with `core/quit`.
 
 There is currently no per-endpoint capability or scope system: authentication is
@@ -50,7 +50,7 @@ Consequently:
   [`--rc-no-auth`](#--rc-no-auth).
 - **Use authentication and TLS** (`--rc-user`/`--rc-pass` or `--rc-htpasswd`,
   plus `--rc-cert`/`--rc-key`) whenever the port is reachable by anyone you do
-  not fully trust, and raise `--rc-min-tls-version`.
+  not fully trust. Zclone defaults to TLS 1.2 when TLS is enabled.
 
 ## Supported parameters
 
@@ -85,7 +85,7 @@ Maximum size of request header (default 4096).
 ### --rc-min-tls-version=VALUE
 
 The minimum TLS version that is acceptable. Valid values are "tls1.0",
-"tls1.1", "tls1.2" and "tls1.3" (default "tls1.0").
+"tls1.1", "tls1.2" and "tls1.3" (default "tls1.2").
 
 ### --rc-user=VALUE
 
@@ -97,7 +97,7 @@ Password for authentication.
 
 ### --rc-realm=VALUE
 
-Realm for authentication (default "rclone").
+Realm for authentication (default "zclone").
 
 ### --rc-server-read-timeout=DURATION
 
@@ -127,7 +127,7 @@ Default Off.
 ### global.* connection string options and the rc
 
 Remotes instantiated by the rc do not let [connection
-string](/docs/#connection-strings) `global.*` options change rclone's
+string](/docs/#connection-strings) `global.*` options change zclone's
 process-wide configuration. Remotes created directly on the command
 line or defined in the config file are unaffected.
 
@@ -145,13 +145,13 @@ Default Off.
 
 Path to local files to serve on the HTTP server.
 
-If this is set then rclone will serve the files in that directory.  It
+If this is set then zclone will serve the files in that directory.  It
 will also open the root in the web browser if specified.  This is for
-implementing browser based GUIs for rclone functions.
+implementing browser based GUIs for zclone functions.
 
-If `--rc-user` or `--rc-pass` is set then the URL that is opened will
-have the authorization in the URL in the `http://user:pass@localhost/`
-style.
+If authentication is configured, the browser URL never contains credentials.
+Use the browser's normal authentication prompt or a reverse proxy that supplies
+credentials securely.
 
 Default Off.
 
@@ -164,43 +164,13 @@ the `--metrics-*` flags instead.
 
 Default Off.
 
-### --rc-web-gui
-
-Set this flag to serve the default web gui on the same port as rclone.
-
-Default Off.
-
 ### --rc-allow-origin
 
 Set the allowed Access-Control-Allow-Origin for rc requests.
 
-Can be used with --rc-web-gui if the rclone is running on different IP than the web-gui.
-
-Default is IP address on which rc is running.
-
-### --rc-web-fetch-url
-
-Set the URL to fetch the rclone-web-gui files from.
-
-Default <https://api.github.com/repos/rclone/rclone-webui-react/releases/latest>.
-
-### --rc-web-gui-update
-
-Set this flag to check and update rclone-webui-react from the rc-web-fetch-url.
-
-Default Off.
-
-### --rc-web-gui-force-update
-
-Set this flag to force update rclone-webui-react from the rc-web-fetch-url.
-
-Default Off.
-
-### --rc-web-gui-no-open-browser
-
-Set this flag to disable opening browser automatically when using web-gui.
-
-Default Off.
+Use a specific trusted origin when the RC API is accessed by a browser. The
+`zclone gui` command configures its own local origin; its legacy
+`--rc-web-gui*` flags are disabled and have been superseded by that command.
 
 ### --rc-job-expire-duration=DURATION
 
@@ -212,8 +182,8 @@ Interval duration to check for expired async jobs (default 10s).
 
 ### --rc-no-auth
 
-By default rclone will require authorisation to have been set up on
-the rc interface in order to use any methods which access any rclone
+By default zclone will require authorisation to have been set up on
+the rc interface in order to use any methods which access any zclone
 remotes.  Eg `operations/list` is denied as it involved creating a
 remote as is `sync/copy`.
 
@@ -233,15 +203,15 @@ Default is root
 
 User-specified template.
 
-## Accessing the remote control via the rclone rc command {#api-rc}
+## Accessing the remote control via the zclone rc command {#api-rc}
 
-Rclone itself implements the remote control protocol in its `rclone
+Zclone itself implements the remote control protocol in its `zclone
 rc` command.
 
 You can use it like this:
 
 ```console
-$ rclone rc rc/noop param1=one param2=two
+$ zclone rc rc/noop param1=one param2=two
 {
     "param1": "one",
     "param2": "two"
@@ -252,27 +222,27 @@ If the remote is running on a different URL than the default
 `http://localhost:5572/`, use the `--url` option to specify it:
 
 ```console
-rclone rc --url http://some.remote:1234/ rc/noop
+zclone rc --url http://some.remote:1234/ rc/noop
 ```
 
 Or, if the remote is listening on a Unix socket, use the `--unix-socket` option
 instead:
 
 ```console
-rclone rc --unix-socket /tmp/rclone.sock rc/noop
+zclone rc --unix-socket /tmp/zclone.sock rc/noop
 ```
 
-Run `rclone rc` on its own, without any commands, to see the help for the
+Run `zclone rc` on its own, without any commands, to see the help for the
 installed remote control commands. Note that this also needs to connect to the
 remote server.
 
 ## JSON input
 
-`rclone rc` also supports a `--json` flag which can be used to send
+`zclone rc` also supports a `--json` flag which can be used to send
 more complicated input parameters.
 
 ```console
-$ rclone rc --json '{ "p1": [1,"2",null,4], "p2": { "a":1, "b":2 } }' rc/noop
+$ zclone rc --json '{ "p1": [1,"2",null,4], "p2": { "a":1, "b":2 } }' rc/noop
 {
     "p1": [
         1,
@@ -292,13 +262,13 @@ JSON string rather than using the `--json` flag which simplifies the
 command line.
 
 ```console
-rclone rc operations/list fs=/tmp remote=test opt='{"showHash": true}'
+zclone rc operations/list fs=/tmp remote=test opt='{"showHash": true}'
 ```
 
 Rather than
 
 ```console
-rclone rc operations/list --json '{"fs": "/tmp", "remote": "test", "opt": {"showHash": true}}'
+zclone rc operations/list --json '{"fs": "/tmp", "remote": "test", "opt": {"showHash": true}}'
 ```
 
 ## Special parameters
@@ -332,23 +302,23 @@ an async response from a completed one without inspecting the body.
 Starting a job with the `_async` flag:
 
 ```console
-$ rclone rc --json '{ "p1": [1,"2",null,4], "p2": { "a":1, "b":2 }, "_async": true }' rc/noop
+$ zclone rc --json '{ "p1": [1,"2",null,4], "p2": { "a":1, "b":2 }, "_async": true }' rc/noop
 {
     "jobid": 2,
     "executeId": "d794c33c-463e-4acf-b911-f4b23e4f40b7"
 }
 ```
 
-The `jobid` is a unique identifier for the job within this rclone instance.
-The `executeId` identifies the rclone process instance and changes after
-rclone restart. Together, the pair (`executeId`, `jobid`) uniquely identifies
-a job across rclone restarts.
+The `jobid` is a unique identifier for the job within this zclone instance.
+The `executeId` identifies the zclone process instance and changes after
+zclone restart. Together, the pair (`executeId`, `jobid`) uniquely identifies
+a job across zclone restarts.
 
 Query the status to see if the job has finished.  For more information
 on the meaning of these return parameters see the `job/status` call.
 
 ```console
-$ rclone rc --json '{ "jobid":2 }' job/status
+$ zclone rc --json '{ "jobid":2 }' job/status
 {
     "duration": 0.000124163,
     "endTime": "2018-10-27T11:38:07.911245881+01:00",
@@ -377,7 +347,7 @@ $ rclone rc --json '{ "jobid":2 }' job/status
 `job/list` can be used to show running or recently completed jobs along with their status
 
 ```console
-$ rclone rc job/list
+$ zclone rc job/list
 {
     "executeId": "d794c33c-463e-4acf-b911-f4b23e4f40b7",
     "finished_ids": [
@@ -394,7 +364,7 @@ $ rclone rc job/list
 ```
 
 This shows:
-- `executeId` - the current rclone instance ID (same for all jobs, changes after restart)
+- `executeId` - the current zclone instance ID (same for all jobs, changes after restart)
 - `jobids` - array of all job IDs (both running and finished)
 - `running_ids` - array of currently running job IDs
 - `finished_ids` - array of finished job IDs
@@ -410,14 +380,14 @@ This should be in the same format as the `main` key returned by
 [options/get](#options-get).
 
 ```console
-rclone rc --loopback options/get blocks=main
+zclone rc --loopback options/get blocks=main
 ```
 
 You can see more help on these options with this command (see [the
 options blocks section](#option-blocks) for more info).
 
 ```console
-rclone rc --loopback options/info blocks=main
+zclone rc --loopback options/info blocks=main
 ```
 
 For example, if you wished to run a sync with the `--checksum`
@@ -433,16 +403,16 @@ Or pass it flat at the top level:
 "checksum": true
 ```
 
-If using `rclone rc` this could be passed as
+If using `zclone rc` this could be passed as
 
 ```console
-rclone rc sync/sync ... _config='{"CheckSum": true}'
+zclone rc sync/sync ... _config='{"CheckSum": true}'
 ```
 
 Or simply flat:
 
 ```console
-rclone rc sync/sync ... checksum=true
+zclone rc sync/sync ... checksum=true
 ```
 
 If both flat parameters and `_config` are supplied, the parameters in the legacy `_config` block will take precedence.
@@ -480,14 +450,14 @@ This should be in the same format as the `filter` key returned by
 [options/get](#options-get).
 
 ```console
-rclone rc --loopback options/get blocks=filter
+zclone rc --loopback options/get blocks=filter
 ```
 
 You can see more help on these options with this command (see [the
 options blocks section](#option-blocks) for more info).
 
 ```console
-rclone rc --loopback options/info blocks=filter
+zclone rc --loopback options/info blocks=filter
 ```
 
 For example, if you wished to run a sync with these flags
@@ -508,16 +478,16 @@ Or pass them flat at the top level:
 "max_size":"1M", "include":["a","b"], "max_age":"42s"
 ```
 
-If using `rclone rc` this could be passed as
+If using `zclone rc` this could be passed as
 
 ```console
-rclone rc ... _filter='{"MaxSize":"1M", "IncludeRule":["a","b"], "MaxAge":"42s"}'
+zclone rc ... _filter='{"MaxSize":"1M", "IncludeRule":["a","b"], "MaxAge":"42s"}'
 ```
 
 Or simply flat:
 
 ```console
-rclone rc ... max_size=1M include="a,b" max_age=42s
+zclone rc ... max_size=1M include="a,b" max_age=42s
 ```
 
 If both flat parameters and `_filter` are supplied, the parameters in the legacy `_filter` block will take precedence.
@@ -555,7 +525,7 @@ value. This allows caller to group stats under their own name.
 Stats for specific group can be accessed by passing `group` to `core/stats`:
 
 ```console
-$ rclone rc --json '{ "group": "job/1" }' core/stats
+$ zclone rc --json '{ "group": "job/1" }' core/stats
 {
     "speed": 12345
     ...
@@ -589,8 +559,8 @@ call and taken by the [options/set](#options-set) calls as well as the
 
 The calls [options/info](#options-info) (for the main config) and
 [config/providers](#config-providers) (for the backend config) may be
-used to get information on the rclone configuration options. This can
-be used to build user interfaces for displaying and setting any rclone
+used to get information on the zclone configuration options. This can
+be used to build user interfaces for displaying and setting any zclone
 option.
 
 These consist of arrays of `Option` blocks. These have the following
@@ -613,7 +583,7 @@ format. Each block describes a single option.
 | NoPrefix   | bool       | N | set if the option for this should not use the backend prefix |
 | Advanced   | bool       | N | set if this is an advanced config option |
 | Exclusive  | bool       | N | set if the answer can only be one of the examples (empty string allowed unless Required or Default is set) |
-| Sensitive  | bool       | N | set if this option should be redacted when using `rclone config redacted` |
+| Sensitive  | bool       | N | set if this option should be redacted when using `zclone config redacted` |
 
 An example of this might be the `--log-level` flag. Note that the
 `Name` of the option becomes the command line flag with `_` replaced
@@ -653,14 +623,14 @@ with `-`.
 
 Note that the `Help` may be multiple lines separated by `\n`. The
 first line will always be a short sentence and this is the sentence
-shown when running `rclone help flags`.
+shown when running `zclone help flags`.
 
 ## Specifying remotes to work on
 
 Remotes are specified with the `fs=`, `srcFs=`, `dstFs=`
 parameters depending on the command being used.
 
-The parameters can be a string as per the rest of rclone, eg
+The parameters can be a string as per the rest of zclone, eg
 `s3:bucket/path` or `:sftp:/my/dir`. They can also be specified as
 JSON blobs.
 
@@ -721,7 +691,7 @@ Returns:
 
 Example:
 
-    rclone rc backend/command command=noop fs=. -o echo=yes -o blue -a path1 -a path2
+    zclone rc backend/command command=noop fs=. -o echo=yes -o blue -a path1 -a path2
 
 Returns
 
@@ -744,11 +714,11 @@ Returns
 Note that this is the direct equivalent of using this "backend"
 command:
 
-    rclone backend noop . -o echo=yes -o blue path1 path2
+    zclone backend noop . -o echo=yes -o blue path1 path2
 
 Note that arguments must be preceded by the "-a" flag
 
-See the [backend](/commands/rclone_backend/) command for more information.
+See the [backend](/commands/zclone_backend/) command for more information.
 
 ### cache/expire: Purge a remote from cache {#cache-expire}
 
@@ -759,8 +729,8 @@ Params:
 
 Eg
 
-    rclone rc cache/expire remote=path/to/sub/folder/
-    rclone rc cache/expire remote=/ withData=true
+    zclone rc cache/expire remote=path/to/sub/folder/
+    zclone rc cache/expire remote=/ withData=true
 
 ### cache/fetch: Fetch file chunks {#cache-fetch}
 
@@ -784,7 +754,7 @@ Some valid examples are:
 Any parameter with a key that starts with "file" can be used to
 specify files to fetch, e.g.
 
-    rclone rc cache/fetch chunks=0 file=hello file2=home/goodbye
+    zclone rc cache/fetch chunks=0 file=hello file2=home/goodbye
 
 File names will automatically be encrypted when the a crypt remote
 is used on top of the cache.
@@ -813,7 +783,7 @@ This takes the following parameters:
     - result - result to restart with - used with continue
 
 
-See the [config create](/commands/rclone_config_create/) command for more information on the above.
+See the [config create](/commands/zclone_config_create/) command for more information on the above.
 
 ### config/delete: Delete a remote in the config file. {#config-delete}
 
@@ -821,7 +791,7 @@ Parameters:
 
 - name - name of remote to delete
 
-See the [config delete](/commands/rclone_config_delete/) command for more information on the above.
+See the [config delete](/commands/zclone_config_delete/) command for more information on the above.
 
 ### config/dump: Dumps the config file. {#config-dump}
 
@@ -830,7 +800,7 @@ Returns a JSON object:
 
 Where keys are remote names and values are the config parameters.
 
-See the [config dump](/commands/rclone_config_dump/) command for more information on the above.
+See the [config dump](/commands/zclone_config_dump/) command for more information on the above.
 
 ### config/get: Get a remote in the config file. {#config-get}
 
@@ -838,14 +808,14 @@ Parameters:
 
 - name - name of remote to get
 
-See the [config dump](/commands/rclone_config_dump/) command for more information on the above.
+See the [config dump](/commands/zclone_config_dump/) command for more information on the above.
 
 ### config/listremotes: Lists the remotes in the config file and defined in environment variables. {#config-listremotes}
 
 Returns
 - remotes - array of remote names
 
-See the [listremotes](/commands/rclone_listremotes/) command for more information on the above.
+See the [listremotes](/commands/zclone_listremotes/) command for more information on the above.
 
 ### config/oauthstatus: Get the status of the OAuth authentication server. {#config-oauthstatus}
 
@@ -867,7 +837,7 @@ Eg
 Stops the OAuth authentication server if one is running.
 
 This can be used to recover from an interrupted OAuth flow without
-restarting rclone. If no OAuth authentication is in progress, an error
+restarting zclone. If no OAuth authentication is in progress, an error
 is returned.
 
 ### config/password: password the config for a remote. {#config-password}
@@ -878,7 +848,7 @@ This takes the following parameters:
 - parameters - a map of \{ "key": "value" \} pairs
 
 
-See the [config password](/commands/rclone_config_password/) command for more information on the above.
+See the [config password](/commands/zclone_config_password/) command for more information on the above.
 
 ### config/paths: Reads the config file path and other important paths. {#config-paths}
 
@@ -891,19 +861,19 @@ Returns a JSON object with the following keys:
 Eg
 
     {
-        "cache": "/home/USER/.cache/rclone",
-        "config": "/home/USER/.rclone.conf",
+        "cache": "/home/USER/.cache/zclone",
+        "config": "/home/USER/.zclone.conf",
         "temp": "/tmp"
     }
 
-See the [config paths](/commands/rclone_config_paths/) command for more information on the above.
+See the [config paths](/commands/zclone_config_paths/) command for more information on the above.
 
 ### config/providers: Shows how providers are configured in the config file. {#config-providers}
 
 Returns a JSON object:
 - providers - array of objects
 
-See the [config providers](/commands/rclone_config_providers/) command
+See the [config providers](/commands/zclone_config_providers/) command
 for more information on the above.
 
 Note that the Options blocks are in the same format as returned by
@@ -937,7 +907,7 @@ Returns:
 
 - removed - a list of the keys that were actually removed
 
-See the [config unset](/commands/rclone_config_unset/) command for more information on the above.
+See the [config unset](/commands/zclone_config_unset/) command for more information on the above.
 
 ### config/update: update the config for a remote. {#config-update}
 
@@ -956,7 +926,7 @@ This takes the following parameters:
     - result - result to restart with - used with continue
 
 
-See the [config update](/commands/rclone_config_update/) command for more information on the above.
+See the [config update](/commands/zclone_config_update/) command for more information on the above.
 
 ### core/bwlimit: Set the bandwidth limit. {#core-bwlimit}
 
@@ -965,21 +935,21 @@ a single bandwidth limit entry or a pair of upload:download bandwidth.
 
 Eg
 
-    rclone rc core/bwlimit rate=off
+    zclone rc core/bwlimit rate=off
     {
         "bytesPerSecond": -1,
         "bytesPerSecondTx": -1,
         "bytesPerSecondRx": -1,
         "rate": "off"
     }
-    rclone rc core/bwlimit rate=1M
+    zclone rc core/bwlimit rate=1M
     {
         "bytesPerSecond": 1048576,
         "bytesPerSecondTx": 1048576,
         "bytesPerSecondRx": 1048576,
         "rate": "1M"
     }
-    rclone rc core/bwlimit rate=1M:100k
+    zclone rc core/bwlimit rate=1M:100k
     {
         "bytesPerSecond": 1048576,
         "bytesPerSecondTx": 1048576,
@@ -990,7 +960,7 @@ Eg
 
 If the rate parameter is not supplied then the bandwidth is queried
 
-    rclone rc core/bwlimit
+    zclone rc core/bwlimit
     {
         "bytesPerSecond": 1048576,
         "bytesPerSecondTx": 1048576,
@@ -1004,7 +974,7 @@ except only one bandwidth may be specified.
 In either case "rate" is returned as a human-readable string, and
 "bytesPerSecond" is returned as a number.
 
-### core/command: Run a rclone terminal command over rc. {#core-command}
+### core/command: Run a zclone terminal command over rc. {#core-command}
 
 This takes the following parameters:
 
@@ -1020,13 +990,13 @@ Returns:
 
 - result - result from the backend command.
     - Only set when using returnType "COMBINED_OUTPUT".
-- error	 - set if rclone exits with an error code.
+- error	 - set if zclone exits with an error code.
 - returnType - one of ("COMBINED_OUTPUT", "STREAM", "STREAM_ONLY_STDOUT", "STREAM_ONLY_STDERR").
 
 Example:
 
-    rclone rc core/command command=ls -a mydrive:/ -o max-depth=1
-    rclone rc core/command -a ls -a mydrive:/ -o max-depth=1
+    zclone rc core/command command=ls -a mydrive:/ -o max-depth=1
+    zclone rc core/command -a ls -a mydrive:/ -o max-depth=1
 
 Returns:
 
@@ -1048,7 +1018,7 @@ OR
 
 This does not take any parameters
 
-This call is for rclone GUI programs to enumerate local disks and
+This call is for zclone GUI programs to enumerate local disks and
 important directories for doing transfers to and from. The list
 returned will include the root directory and the user's home directory
 and any mounted disks. The returned items should be usable directly as
@@ -1091,7 +1061,7 @@ memory problems.
 
 ### core/group-list: Returns list of stats. {#core-group-list}
 
-This returns list of stats groups currently in memory. 
+This returns list of stats groups currently in memory.
 
 Returns the following values:
 ```
@@ -1114,14 +1084,14 @@ are explained in the go docs: https://golang.org/pkg/runtime/#MemStats
 
 The most interesting values for most people are:
 
-- HeapAlloc - this is the amount of memory rclone is actually using
-- HeapSys - this is the amount of memory rclone has obtained from the OS
+- HeapAlloc - this is the amount of memory zclone is actually using
+- HeapSys - this is the amount of memory zclone has obtained from the OS
 - Sys - this is the total amount of memory requested from the OS
    - It is virtual memory so may include unused memory
 
 ### core/obscure: Obscures a string passed in. {#core-obscure}
 
-Pass a clear string and rclone will obscure it for the config file:
+Pass a clear string and zclone will obscure it for the config file:
 - clear - string
 
 Returns:
@@ -1130,7 +1100,7 @@ Returns:
 ### core/pid: Return PID of current process {#core-pid}
 
 This returns PID of current process.
-Useful for stopping rclone process.
+Useful for stopping zclone process.
 
 ### core/quit: Terminates the app. {#core-quit}
 
@@ -1141,7 +1111,7 @@ Useful for stopping rclone process.
 
 This returns all available stats:
 
-	rclone rc core/stats
+	zclone rc core/stats
 
 If group is not provided then summed up stats for all groups will be
 returned.
@@ -1159,7 +1129,7 @@ Returns the following values:
 	"checks": number of files checked,
 	"deletedDirs": number of directories deleted,
 	"deletes" : number of files deleted,
-	"elapsedTime": time in floating point seconds since rclone was started,
+	"elapsedTime": time in floating point seconds since zclone was started,
 	"errors": number of errors,
 	"eta": estimated time in seconds until the group completes,
 	"fatalError": boolean whether there has been at least one fatal error,
@@ -1208,7 +1178,7 @@ Parameters
 
 ### core/stats-reset: Reset stats. {#core-stats-reset}
 
-This clears counters, errors and finished transfers for all stats or specific 
+This clears counters, errors and finished transfers for all stats or specific
 stats group if group is provided.
 
 Parameters
@@ -1219,7 +1189,7 @@ Parameters
 
 This returns stats about completed transfers:
 
-	rclone rc core/transferred
+	zclone rc core/transferred
 
 If group is not provided then completed transfers for all groups will be
 returned.
@@ -1251,11 +1221,11 @@ Returns the following values:
 
 **Authentication is not required for this call.**
 
-### core/version: Shows the current version of rclone, Go and the OS. {#core-version}
+### core/version: Shows the current version of zclone, Go and the OS. {#core-version}
 
-This shows the current versions of rclone, Go and the OS:
+This shows the current versions of zclone, Go and the OS:
 
-- version - rclone version, e.g. "v1.71.2"
+- version - zclone version, e.g. "v1.71.2"
 - decomposed - version number as [major, minor, patch]
 - isGit - boolean - true if this was compiled from the git version
 - isBeta - boolean - true if this is a beta version
@@ -1265,7 +1235,7 @@ This shows the current versions of rclone, Go and the OS:
 - osArch - cpu architecture in use (e.g. "arm64 (ARMv8 compatible)")
 - arch - cpu architecture in use according to Go GOARCH (e.g. "arm64")
 - goVersion - version of Go runtime in use (e.g. "go1.25.0")
-- linking - type of rclone executable (static or dynamic)
+- linking - type of zclone executable (static or dynamic)
 - goTags - space separated build tags or "none"
 
 **Authentication is not required for this call.**
@@ -1372,7 +1342,7 @@ This returns the number of entries in the fs cache.
 Returns
 - entries - number of items in the cache
 
-### job/batch: Run a batch of rclone rc commands concurrently. {#job-batch}
+### job/batch: Run a batch of zclone rc commands concurrently. {#job-batch}
 
 This takes the following parameters:
 
@@ -1396,7 +1366,7 @@ Returns:
 For example:
 
 ```sh
-rclone rc job/batch --json '{
+zclone rc job/batch --json '{
   "inputs": [
     {
       "_path": "rc/noop",
@@ -1437,7 +1407,7 @@ Parameters: None.
 
 Results:
 
-- executeId - string id of rclone executing (change after restart)
+- executeId - string id of zclone executing (change after restart)
 - jobids - array of integer job ids (starting at 1 on each restart)
 - runningIds - array of integer job ids that are running
 - finishedIds - array of integer job ids that are finished
@@ -1458,7 +1428,7 @@ Results:
 - error - error from the job or empty string for no error
 - finished - boolean whether the job has finished or not
 - id - as passed in above
-- executeId - rclone instance ID (changes after restart); combined with id uniquely identifies a job
+- executeId - zclone instance ID (changes after restart); combined with id uniquely identifies a job
 - startTime - time the job started (e.g. "2018-10-26T18:50:20.528336039+01:00")
 - success - boolean - true for success false otherwise
 - output - output of the job as would have been returned if called synchronously
@@ -1488,12 +1458,12 @@ This takes no parameters and returns
 
 Eg
 
-    rclone rc mount/listmounts
+    zclone rc mount/listmounts
 
 ### mount/mount: Create a new mount point {#mount-mount}
 
-rclone allows Linux, FreeBSD, macOS and Windows to mount any of
-Rclone's cloud storage systems as a file system with FUSE.
+zclone allows Linux, FreeBSD, macOS and Windows to mount any of
+Zclone's cloud storage systems as a file system with FUSE.
 
 If no mountType is provided, the priority is given as follows: 1. mount 2.cmount 3.mount2
 
@@ -1523,18 +1493,18 @@ This returns the following values:
 Example:
 
 ```console
-rclone rc mount/mount fs=mydrive: mountPoint=/home/<user>/mountPoint
-rclone rc mount/mount fs=mydrive: mountPoint=/home/<user>/mountPoint mountType=mount
-rclone rc mount/mount fs=TestDrive: mountPoint=/mnt/tmp vfsOpt='{"CacheMode": 2}' mountOpt='{"AllowOther": true}'
-rclone rc mount/mount fs=TestDrive: mountPoint=/mnt/tmp vfs_cache_mode=writes volname=MyTestVolume
-rclone rc mount/mount fs=mydrive: mountPoint=* mountType=cmount
+zclone rc mount/mount fs=mydrive: mountPoint=/home/<user>/mountPoint
+zclone rc mount/mount fs=mydrive: mountPoint=/home/<user>/mountPoint mountType=mount
+zclone rc mount/mount fs=TestDrive: mountPoint=/mnt/tmp vfsOpt='{"CacheMode": 2}' mountOpt='{"AllowOther": true}'
+zclone rc mount/mount fs=TestDrive: mountPoint=/mnt/tmp vfs_cache_mode=writes volname=MyTestVolume
+zclone rc mount/mount fs=mydrive: mountPoint=* mountType=cmount
 ```
 
 The vfsOpt are as described in options/get and can be seen in the
 "vfs" section when running and the mountOpt can be seen in the "mount" section:
 
 ```console
-rclone rc options/get
+zclone rc options/get
 ```
 
 ### mount/types: Show all possible mount types {#mount-types}
@@ -1550,12 +1520,12 @@ be passed to mount/mount as the mountType parameter.
 
 Eg
 
-    rclone rc mount/types
+    zclone rc mount/types
 
 ### mount/unmount: Unmount selected active mount {#mount-unmount}
 
-rclone allows Linux, FreeBSD, macOS and Windows to
-mount any of Rclone's cloud storage systems as a file system with
+zclone allows Linux, FreeBSD, macOS and Windows to
+mount any of Zclone's cloud storage systems as a file system with
 FUSE.
 
 This takes the following parameters:
@@ -1564,19 +1534,19 @@ This takes the following parameters:
 
 Example:
 
-    rclone rc mount/unmount mountPoint=/home/<user>/mountPoint
+    zclone rc mount/unmount mountPoint=/home/<user>/mountPoint
 
 ### mount/unmountall: Unmount all active mounts {#mount-unmountall}
 
-rclone allows Linux, FreeBSD, macOS and Windows to
-mount any of Rclone's cloud storage systems as a file system with
+zclone allows Linux, FreeBSD, macOS and Windows to
+mount any of Zclone's cloud storage systems as a file system with
 FUSE.
 
 This takes no parameters and returns error if unmount does not succeed.
 
 Eg
 
-    rclone rc mount/unmountall
+    zclone rc mount/unmountall
 
 ### operations/about: Return the space used on the remote {#operations-about}
 
@@ -1584,9 +1554,9 @@ This takes the following parameters:
 
 - fs - a remote name string e.g. "drive:"
 
-The result is as returned from rclone about --json
+The result is as returned from zclone about --json
 
-See the [about](/commands/rclone_about/) command for more information on the above.
+See the [about](/commands/zclone_about/) command for more information on the above.
 
 ### operations/check: check the source and destination are the same {#operations-check}
 
@@ -1642,7 +1612,7 @@ This takes the following parameters:
 
 - fs - a remote name string e.g. "drive:"
 
-See the [cleanup](/commands/rclone_cleanup/) command for more information on the above.
+See the [cleanup](/commands/zclone_cleanup/) command for more information on the above.
 
 ### operations/copyfile: Copy a file from source remote to destination remote {#operations-copyfile}
 
@@ -1662,7 +1632,7 @@ This takes the following parameters:
 - url - string, URL to read from
  - autoFilename - boolean, set to true to retrieve destination file name from url
 
-See the [copyurl](/commands/rclone_copyurl/) command for more information on the above.
+See the [copyurl](/commands/zclone_copyurl/) command for more information on the above.
 
 ### operations/delete: Remove files in the path {#operations-delete}
 
@@ -1670,7 +1640,7 @@ This takes the following parameters:
 
 - fs - a remote name string e.g. "drive:"
 
-See the [delete](/commands/rclone_delete/) command for more information on the above.
+See the [delete](/commands/zclone_delete/) command for more information on the above.
 
 ### operations/deletefile: Remove the single file pointed to {#operations-deletefile}
 
@@ -1679,7 +1649,7 @@ This takes the following parameters:
 - fs - a remote name string e.g. "drive:"
 - remote - a path within that remote e.g. "dir"
 
-See the [deletefile](/commands/rclone_deletefile/) command for more information on the above.
+See the [deletefile](/commands/zclone_deletefile/) command for more information on the above.
 
 ### operations/fsinfo: Return information about the remote {#operations-fsinfo}
 
@@ -1793,7 +1763,7 @@ This returns info about the remote passed in;
 
 This command does not have a command line equivalent so use this instead:
 
-    rclone rc --loopback operations/fsinfo fs=remote:
+    zclone rc --loopback operations/fsinfo fs=remote:
 
 ### operations/hashsum: Produces a hashsum file for all the objects in the path. {#operations-hashsum}
 
@@ -1825,17 +1795,17 @@ Returns:
 
 Example:
 
-    $ rclone rc --loopback operations/hashsum fs=bin hashType=MD5 download=true base64=true
+    $ zclone rc --loopback operations/hashsum fs=bin hashType=MD5 download=true base64=true
     {
         "hashType": "md5",
         "hashsum": [
             "WTSVLpuiXyJO_kGzJerRLg==  backend-versions.sh",
-            "v1b_OlWCJO9LtNq3EIKkNQ==  bisect-go-rclone.sh",
-            "VHbmHzHh4taXzgag8BAIKQ==  bisect-rclone.sh",
+            "v1b_OlWCJO9LtNq3EIKkNQ==  bisect-go-zclone.sh",
+            "VHbmHzHh4taXzgag8BAIKQ==  bisect-zclone.sh",
         ]
     }
 
-See the [hashsum](/commands/rclone_hashsum/) command for more information on the above.
+See the [hashsum](/commands/zclone_hashsum/) command for more information on the above.
 
 ### operations/hashsumfile: Produces a hash for a single file. {#operations-hashsumfile}
 
@@ -1861,13 +1831,13 @@ Returns:
 
 Example:
 
-    $ rclone rc --loopback operations/hashsumfile fs=/ remote=/bin/bash hashType=MD5 download=true base64=true
+    $ zclone rc --loopback operations/hashsumfile fs=/ remote=/bin/bash hashType=MD5 download=true base64=true
     {
         "hashType": "md5",
         "hash": "MDMw-fG2YXs7Uz5Nz-H68A=="
     }
 
-See the [hashsum](/commands/rclone_hashsum/) command for more information on the above.
+See the [hashsum](/commands/zclone_hashsum/) command for more information on the above.
 
 ### operations/list: List the given remote and path in JSON format {#operations-list}
 
@@ -1892,7 +1862,7 @@ Returns:
 - list
     - This is an array of objects as described in the lsjson command
 
-See the [lsjson](/commands/rclone_lsjson/) command for more information on the above and examples.
+See the [lsjson](/commands/zclone_lsjson/) command for more information on the above and examples.
 
 ### operations/mkdir: Make a destination directory or container {#operations-mkdir}
 
@@ -1901,7 +1871,7 @@ This takes the following parameters:
 - fs - a remote name string e.g. "drive:"
 - remote - a path within that remote e.g. "dir"
 
-See the [mkdir](/commands/rclone_mkdir/) command for more information on the above.
+See the [mkdir](/commands/zclone_mkdir/) command for more information on the above.
 
 ### operations/movefile: Move a file from source remote to destination remote {#operations-movefile}
 
@@ -1925,7 +1895,7 @@ Returns:
 
 - url - URL of the resource
 
-See the [link](/commands/rclone_link/) command for more information on the above.
+See the [link](/commands/zclone_link/) command for more information on the above.
 
 ### operations/purge: Remove a directory or container and all of its contents {#operations-purge}
 
@@ -1934,7 +1904,7 @@ This takes the following parameters:
 - fs - a remote name string e.g. "drive:"
 - remote - a path within that remote e.g. "dir"
 
-See the [purge](/commands/rclone_purge/) command for more information on the above.
+See the [purge](/commands/zclone_purge/) command for more information on the above.
 
 ### operations/rmdir: Remove an empty directory or container {#operations-rmdir}
 
@@ -1943,7 +1913,7 @@ This takes the following parameters:
 - fs - a remote name string e.g. "drive:"
 - remote - a path within that remote e.g. "dir"
 
-See the [rmdir](/commands/rclone_rmdir/) command for more information on the above.
+See the [rmdir](/commands/zclone_rmdir/) command for more information on the above.
 
 ### operations/rmdirs: Remove all the empty directories in the path {#operations-rmdirs}
 
@@ -1953,7 +1923,7 @@ This takes the following parameters:
 - remote - a path within that remote e.g. "dir"
 - leaveRoot - boolean, set to true not to delete the root
 
-See the [rmdirs](/commands/rclone_rmdirs/) command for more information on the above.
+See the [rmdirs](/commands/zclone_rmdirs/) command for more information on the above.
 
 ### operations/settier: Changes storage tier or class on all files in the path {#operations-settier}
 
@@ -1961,7 +1931,7 @@ This takes the following parameters:
 
 - fs - a remote name string e.g. "drive:"
 
-See the [settier](/commands/rclone_settier/) command for more information on the above.
+See the [settier](/commands/zclone_settier/) command for more information on the above.
 
 ### operations/settierfile: Changes storage tier or class on the single file pointed to {#operations-settierfile}
 
@@ -1981,7 +1951,7 @@ Returns:
 - count - number of files
 - bytes - number of bytes in those files
 
-See the [size](/commands/rclone_size/) command for more information on the above.
+See the [size](/commands/zclone_size/) command for more information on the above.
 
 ### operations/stat: Give information about the supplied file or directory {#operations-stat}
 
@@ -1999,7 +1969,7 @@ The result is
 Note that if you are only interested in files then it is much more
 efficient to set the filesOnly flag in the options.
 
-See the [lsjson](/commands/rclone_lsjson/) command for more information on the above and examples.
+See the [lsjson](/commands/zclone_lsjson/) command for more information on the above and examples.
 
 ### operations/uploadfile: Upload file using multiform/form-data {#operations-uploadfile}
 
@@ -2028,7 +1998,7 @@ Note that these are the global options which are unaffected by use of
 the _config and _filter parameters. If you wish to read the parameters
 set in _config or _filter use options/local.
 
-This shows the internal names of the option within rclone which should
+This shows the internal names of the option within zclone which should
 map to the external options very easily with a few exceptions.
 
 ### options/info: Get info about all the global options {#options-info}
@@ -2057,7 +2027,7 @@ Likewise with "_filter".
 This call is mostly useful for seeing if _config and _filter passing
 is working.
 
-This shows the internal names of the option within rclone which should
+This shows the internal names of the option within zclone which should
 map to the external options very easily with a few exceptions.
 
 ### options/set: Set an option {#options-set}
@@ -2077,95 +2047,16 @@ For example:
 
 This sets DEBUG level logs (-vv) (these can be set by number or string)
 
-    rclone rc options/set --json '{"main": {"LogLevel": "DEBUG"}}'
-    rclone rc options/set --json '{"main": {"LogLevel": 8}}'
+    zclone rc options/set --json '{"main": {"LogLevel": "DEBUG"}}'
+    zclone rc options/set --json '{"main": {"LogLevel": 8}}'
 
 And this sets INFO level logs (-v)
 
-    rclone rc options/set --json '{"main": {"LogLevel": "INFO"}}'
+    zclone rc options/set --json '{"main": {"LogLevel": "INFO"}}'
 
 And this sets NOTICE level logs (normal without -v)
 
-    rclone rc options/set --json '{"main": {"LogLevel": "NOTICE"}}'
-
-### pluginsctl/addPlugin: Add a plugin using url {#pluginsctl-addPlugin}
-
-Used for adding a plugin to the webgui.
-
-This takes the following parameters:
-
-- url - http url of the github repo where the plugin is hosted (http://github.com/rclone/rclone-webui-react).
-
-Example:
-
-   rclone rc pluginsctl/addPlugin
-
-### pluginsctl/getPluginsForType: Get plugins with type criteria {#pluginsctl-getPluginsForType}
-
-This shows all possible plugins by a mime type.
-
-This takes the following parameters:
-
-- type - supported mime type by a loaded plugin e.g. (video/mp4, audio/mp3).
-- pluginType - filter plugins based on their type e.g. (DASHBOARD, FILE_HANDLER, TERMINAL).
-
-Returns:
-
-- loadedPlugins - list of current production plugins.
-- testPlugins - list of temporarily loaded development plugins, usually running on a different server.
-
-Example:
-
-   rclone rc pluginsctl/getPluginsForType type=video/mp4
-
-### pluginsctl/listPlugins: Get the list of currently loaded plugins {#pluginsctl-listPlugins}
-
-This allows you to get the currently enabled plugins and their details.
-
-This takes no parameters and returns:
-
-- loadedPlugins - list of current production plugins.
-- testPlugins - list of temporarily loaded development plugins, usually running on a different server.
-
-E.g.
-
-   rclone rc pluginsctl/listPlugins
-
-### pluginsctl/listTestPlugins: Show currently loaded test plugins {#pluginsctl-listTestPlugins}
-
-Allows listing of test plugins with the rclone.test set to true in package.json of the plugin.
-
-This takes no parameters and returns:
-
-- loadedTestPlugins - list of currently available test plugins.
-
-E.g.
-
-    rclone rc pluginsctl/listTestPlugins
-
-### pluginsctl/removePlugin: Remove a loaded plugin {#pluginsctl-removePlugin}
-
-This allows you to remove a plugin using it's name.
-
-This takes parameters:
-
-- name - name of the plugin in the format `author`/`plugin_name`.
-
-E.g.
-
-   rclone rc pluginsctl/removePlugin name=rclone/video-plugin
-
-### pluginsctl/removeTestPlugin: Remove  a test plugin {#pluginsctl-removeTestPlugin}
-
-This allows you to remove a plugin using it's name.
-
-This takes the following parameters:
-
-- name - name of the plugin in the format `author`/`plugin_name`.
-
-Example:
-
-    rclone rc pluginsctl/removeTestPlugin name=rclone/rclone-webui-react
+    zclone rc options/set --json '{"main": {"LogLevel": "NOTICE"}}'
 
 ### rc/error: This returns an error {#rc-error}
 
@@ -2189,7 +2080,7 @@ the commands response.
 ### rc/noop: Echo the input to the output parameters {#rc-noop}
 
 This echoes the input parameters to the output parameters for testing
-purposes.  It can be used to check that rclone is still alive and to
+purposes.  It can be used to check that zclone is still alive and to
 check that parameter passing is working properly.
 
 **Authentication is not required for this call.**
@@ -2197,7 +2088,7 @@ check that parameter passing is working properly.
 ### rc/noopauth: Echo the input to the output parameters requiring auth {#rc-noopauth}
 
 This echoes the input parameters to the output parameters for testing
-purposes.  It can be used to check that rclone is still alive and to
+purposes.  It can be used to check that zclone is still alive and to
 check that parameter passing is working properly.
 
 ### rc/panic: This returns an error by panicking {#rc-panic}
@@ -2221,7 +2112,7 @@ Each list element will have
 
 Eg
 
-    rclone rc serve/list
+    zclone rc serve/list
 
 Returns
 
@@ -2257,7 +2148,7 @@ This takes the following parameters:
 - `addr` - the ip:port to run the server on, eg ":1234" or "localhost:1234"
 
 Other parameters are as described in the documentation for the
-relevant [rclone serve](/commands/rclone_serve/) command line options.
+relevant [zclone serve](/commands/zclone_serve/) command line options.
 To translate a command line option to an rc parameter, remove the
 leading `--` and replace `-` with `_`, so `--vfs-cache-mode` becomes
 `vfs_cache_mode`.
@@ -2266,9 +2157,9 @@ Option parameters (such as VFS, proxy, and protocol-specific options) can be pas
 
 Examples:
 
-    rclone rc serve/start type=nfs fs=remote: addr=:4321 vfs_cache_mode=full
-    rclone rc serve/start --json '{"type":"nfs","fs":"remote:","addr":":1234","vfs_cache_mode":"full"}'
-    rclone rc serve/start type=webdav fs=remote: vfsOpt='{"CacheMode": 2}' proxyOpt='{"AuthProxy": "http://127.0.0.1:8080"}'
+    zclone rc serve/start type=nfs fs=remote: addr=:4321 vfs_cache_mode=full
+    zclone rc serve/start --json '{"type":"nfs","fs":"remote:","addr":":1234","vfs_cache_mode":"full"}'
+    zclone rc serve/start type=webdav fs=remote: vfsOpt='{"CacheMode": 2}' proxyOpt='{"AuthProxy": "http://127.0.0.1:8080"}'
 
 This will give the reply
 
@@ -2295,7 +2186,7 @@ This will give an empty response if successful or an error if not.
 
 Example:
 
-    rclone rc serve/stop id=12345
+    zclone rc serve/stop id=12345
 
 ### serve/stopall: Stop all active servers {#serve-stopall}
 
@@ -2303,7 +2194,7 @@ Stop all active servers.
 
 This will stop all active servers.
 
-    rclone rc serve/stopall
+    zclone rc serve/stopall
 
 ### serve/types: Show all possible serve types {#serve-types}
 
@@ -2318,7 +2209,7 @@ be passed to serve/start as the serveType parameter.
 
 Eg
 
-    rclone rc serve/types
+    zclone rc serve/types
 
 Returns
 
@@ -2342,58 +2233,58 @@ This takes the following parameters:
 - path2 (required) - (string) a remote directory string e.g. `drive:path2`
 - dryRun - (bool) dry-run mode
 - backupDir1 - (string) --backup-dir for Path1. Must be a non-overlapping path on
-the same remote.  
+the same remote.
 - backupDir2 - (string) --backup-dir for Path2. Must be a non-overlapping path on
-the same remote.  
-- checkAccess - (bool) Ensure expected RCLONE_TEST files are found on both
-Path1 and Path2 filesystems, else abort.  
-- checkFilename - (string) Filename for --check-access (default: RCLONE_TEST)  
+the same remote.
+- checkAccess - (bool) Ensure expected ZCLONE_TEST files are found on both
+Path1 and Path2 filesystems, else abort.
+- checkFilename - (string) Filename for --check-access (default: ZCLONE_TEST)
 - checkSync - (string) Controls comparison of final listings: true|false|only
-(default: true)  
+(default: true)
 - compare - (string) Comma-separated list of bisync-specific compare options ex.
-'size,modtime,checksum' (default: 'size,modtime')  
+'size,modtime,checksum' (default: 'size,modtime')
 - conflictLoser - (ConflictLoserAction) Action to take on the loser of a sync
 conflict (when there is a winner) or on both files (when there is no
-winner): , num, pathname, delete (default: num)  
+winner): , num, pathname, delete (default: num)
 - conflictResolve - (string) Automatically resolve conflicts by preferring the
 version that is: none, path1, path2, newer, older, larger, smaller (default:
-none)  
+none)
 - conflictSuffix - (string) Suffix to use when renaming a --conflict-loser. Can
 be either one string or two comma-separated strings to assign different
-suffixes to Path1/Path2. (default: 'conflict')  
+suffixes to Path1/Path2. (default: 'conflict')
 - createEmptySrcDirs - (bool) Sync creation and deletion of empty directories.
-(Not compatible with --remove-empty-dirs)  
+(Not compatible with --remove-empty-dirs)
 - downloadHash - (bool) Compute hash by downloading when otherwise
-unavailable. (warning: may be slow and use lots of data!)  
-- filtersFile - (string) Read filtering patterns from a file  
+unavailable. (warning: may be slow and use lots of data!)
+- filtersFile - (string) Read filtering patterns from a file
 - force - (bool) Bypass --max-delete safety check and run the sync. Consider
-using with --verbose  
+using with --verbose
 - ignoreListingChecksum - (bool) Do not use checksums for listings (add --ignore-
-checksum to additionally skip post-copy checksum checks)  
+checksum to additionally skip post-copy checksum checks)
 - maxLock - (Duration) Consider lock files older than this to be expired
-(default: 0 (never expire)) (minimum: 2m)  
+(default: 0 (never expire)) (minimum: 2m)
 - noCleanup - (bool) Retain working files (useful for troubleshooting and
-testing).  
+testing).
 - noSlowHash - (bool) Ignore listing checksums only on backends where they are
-slow  
+slow
 - recover - (bool) Automatically recover from interruptions without requiring --
-resync.  
+resync.
 - removeEmptyDirs - (bool) Remove ALL empty directories at the final cleanup
-step.  
+step.
 - resilient - (bool) Allow future runs to retry after certain less-serious
-errors, instead of requiring --resync.  
+errors, instead of requiring --resync.
 - resync - (bool) Performs the resync run. Equivalent to --resync-mode path1.
-Consider using --verbose or --dry-run first.  
+Consider using --verbose or --dry-run first.
 - resyncMode - (string) During resync, prefer the version that is: path1,
 path2, newer, older, larger, smaller (default: path1 if --resync, otherwise
-none for no resync.)  
+none for no resync.)
 - slowHashSyncOnly - (bool) Ignore slow checksums for listings and deltas, but
-still consider them during sync calls.  
+still consider them during sync calls.
 - workdir - (string) Use custom working dir - useful for testing. (default:
-/home/ncw/.cache/rclone/bisync)  
+/home/ncw/.cache/zclone/bisync)
 
-See [bisync command help](https://rclone.org/commands/rclone_bisync/)
-and [full bisync description](https://rclone.org/bisync/)
+See [bisync command help](//commands/zclone_bisync/)
+and [full bisync description](//bisync/)
 for more information.
 
 ### sync/copy: copy a directory from source remote to destination remote {#sync-copy}
@@ -2405,7 +2296,7 @@ This takes the following parameters:
 - createEmptySrcDirs - create empty src directories on destination if set
 
 
-See the [copy](/commands/rclone_copy/) command for more information on the above.
+See the [copy](/commands/zclone_copy/) command for more information on the above.
 
 ### sync/move: move a directory from source remote to destination remote {#sync-move}
 
@@ -2417,7 +2308,7 @@ This takes the following parameters:
 - deleteEmptySrcDirs - delete empty src directories if set
 
 
-See the [move](/commands/rclone_move/) command for more information on the above.
+See the [move](/commands/zclone_move/) command for more information on the above.
 
 ### sync/sync: sync a directory from source remote to destination remote {#sync-sync}
 
@@ -2428,7 +2319,7 @@ This takes the following parameters:
 - createEmptySrcDirs - create empty src directories on destination if set
 
 
-See the [sync](/commands/rclone_sync/) command for more information on the above.
+See the [sync](/commands/zclone_sync/) command for more information on the above.
 
 ### vfs/forget: Forget files or directories in the directory cache. {#vfs-forget}
 
@@ -2438,14 +2329,14 @@ re-read from the remote when needed.
 If no paths are passed in then it will forget all the paths in the
 directory cache.
 
-    rclone rc vfs/forget
+    zclone rc vfs/forget
 
 Otherwise pass files or dirs in as file=path or dir=path.  Any
 parameter key starting with file will forget that file and any
 starting with dir will forget that dir, e.g.
 
-    rclone rc vfs/forget file=hello file2=goodbye dir=home/junk
- 
+    zclone rc vfs/forget file=hello file2=goodbye dir=home/junk
+
 This command takes an "fs" parameter. If this parameter is not
 supplied and if there is only one VFS in use then that VFS will be
 used. If there is more than one VFS in use then the "fs" parameter
@@ -2470,7 +2361,7 @@ When the interval=duration parameter is set, the poll-interval value
 is updated and the polling function is notified.
 Setting interval=0 disables poll-interval.
 
-    rclone rc vfs/poll-interval interval=5m
+    zclone rc vfs/poll-interval interval=5m
 
 The timeout=duration parameter can be used to specify a time to wait
 for the current poll function to apply the new value.
@@ -2482,7 +2373,7 @@ not reached.
 If poll-interval is updated or disabled temporarily, some changes
 might not get picked up by the polling function, depending on the
 used remote.
- 
+
 This command takes an "fs" parameter. If this parameter is not
 supplied and if there is only one VFS in use then that VFS will be
 used. If there is more than one VFS in use then the "fs" parameter
@@ -2511,13 +2402,13 @@ the `--vfs-cache-mode` is off, it will return an empty result.
     }
 
 The `expiry` time is the time until the file is eligible for being
-uploaded in floating point seconds. This may go negative. As rclone
+uploaded in floating point seconds. This may go negative. As zclone
 only transfers `--transfers` files at once, only the lowest
 `--transfers` expiry times will have `uploading` as `true`. So there
 may be files with negative expiry times for which `uploading` is
 `false`.
 
- 
+
 This command takes an "fs" parameter. If this parameter is not
 supplied and if there is only one VFS in use then that VFS will be
 used. If there is more than one VFS in use then the "fs" parameter
@@ -2552,7 +2443,7 @@ This takes the following parameters
 
 This returns an empty result on success, or an error.
 
- 
+
 This command takes an "fs" parameter. If this parameter is not
 supplied and if there is only one VFS in use then that VFS will be
 used. If there is more than one VFS in use then the "fs" parameter
@@ -2565,16 +2456,16 @@ directory cache.
 
 If no paths are passed in then it will refresh the root directory.
 
-    rclone rc vfs/refresh
+    zclone rc vfs/refresh
 
 Otherwise pass directories in as dir=path. Any parameter key
 starting with dir will refresh that directory, e.g.
 
-    rclone rc vfs/refresh dir=home/junk dir2=data/misc
+    zclone rc vfs/refresh dir=home/junk dir2=data/misc
 
 If the parameter recursive=true is given the whole directory tree
 will get refreshed. This refresh will use --fast-list if enabled.
- 
+
 This command takes an "fs" parameter. If this parameter is not
 supplied and if there is only one VFS in use then that VFS will be
 used. If there is more than one VFS in use then the "fs" parameter
@@ -2592,8 +2483,8 @@ This returns stats for the selected VFS.
             "files": 0,
             "hashType": 1,
             "outOfSpace": false,
-            "path": "/home/user/.cache/rclone/vfs/local/mnt/a",
-            "pathMeta": "/home/user/.cache/rclone/vfsMeta/local/mnt/a",
+            "path": "/home/user/.cache/zclone/vfs/local/mnt/a",
+            "pathMeta": "/home/user/.cache/zclone/vfsMeta/local/mnt/a",
             "uploadsInProgress": 0,
             "uploadsQueued": 0
         },
@@ -2612,7 +2503,7 @@ This returns stats for the selected VFS.
         }
     }
 
- 
+
 This command takes an "fs" parameter. If this parameter is not
 supplied and if there is only one VFS in use then that VFS will be
 used. If there is more than one VFS in use then the "fs" parameter
@@ -2624,7 +2515,7 @@ must be supplied.
 
 ## Accessing the remote control via HTTP {#api-http}
 
-Rclone implements a simple HTTP based protocol.
+Zclone implements a simple HTTP based protocol.
 
 Each endpoint takes an JSON object and returns a JSON object or an
 error.  The JSON objects are essentially a map of string names to
@@ -2773,7 +2664,7 @@ curl -H "Content-Type: application/json" -X POST -d '{"potato":2,"sausage":1}' '
 }
 ```
 
-## Debugging rclone with pprof
+## Debugging zclone with pprof
 
 If you use the `--rc` flag this will also enable the use of the go
 profiling tools on the same port.
@@ -2790,7 +2681,7 @@ To use these, first [install go](https://golang.org/doc/install).
 
 ### Debugging memory use
 
-To profile rclone's memory use you can run:
+To profile zclone's memory use you can run:
 
 ```console
 go tool pprof -web http://localhost:5572/debug/pprof/heap
@@ -2805,14 +2696,14 @@ You can also use the `-text` flag to produce a textual summary
 $ go tool pprof -text http://localhost:5572/debug/pprof/heap
 Showing nodes accounting for 1537.03kB, 100% of 1537.03kB total
       flat  flat%   sum%        cum   cum%
- 1024.03kB 66.62% 66.62%  1024.03kB 66.62%  github.com/rclone/rclone/vendor/golang.org/x/net/http2/hpack.addDecoderNode
+ 1024.03kB 66.62% 66.62%  1024.03kB 66.62%  zclone/vendor/golang.org/x/net/http2/hpack.addDecoderNode
      513kB 33.38%   100%      513kB 33.38%  net/http.newBufioWriterSize
-         0     0%   100%  1024.03kB 66.62%  github.com/rclone/rclone/cmd/all.init
-         0     0%   100%  1024.03kB 66.62%  github.com/rclone/rclone/cmd/serve.init
-         0     0%   100%  1024.03kB 66.62%  github.com/rclone/rclone/cmd/serve/restic.init
-         0     0%   100%  1024.03kB 66.62%  github.com/rclone/rclone/vendor/golang.org/x/net/http2.init
-         0     0%   100%  1024.03kB 66.62%  github.com/rclone/rclone/vendor/golang.org/x/net/http2/hpack.init
-         0     0%   100%  1024.03kB 66.62%  github.com/rclone/rclone/vendor/golang.org/x/net/http2/hpack.init.0
+         0     0%   100%  1024.03kB 66.62%  zclone/cmd/all.init
+         0     0%   100%  1024.03kB 66.62%  zclone/cmd/serve.init
+         0     0%   100%  1024.03kB 66.62%  zclone/cmd/serve/restic.init
+         0     0%   100%  1024.03kB 66.62%  zclone/vendor/golang.org/x/net/http2.init
+         0     0%   100%  1024.03kB 66.62%  zclone/vendor/golang.org/x/net/http2/hpack.init
+         0     0%   100%  1024.03kB 66.62%  zclone/vendor/golang.org/x/net/http2/hpack.init.0
          0     0%   100%  1024.03kB 66.62%  main.init
          0     0%   100%      513kB 33.38%  net/http.(*conn).readRequest
          0     0%   100%      513kB 33.38%  net/http.(*conn).serve
@@ -2843,10 +2734,10 @@ Here is how to use some of them:
 - 30-second CPU profile: `go tool pprof http://localhost:5572/debug/pprof/profile`
 - 5-second execution trace: `wget http://localhost:5572/debug/pprof/trace?seconds=5`
 - Goroutine blocking profile
-  - Enable first with: `rclone rc debug/set-block-profile-rate rate=1` ([docs](#debug-set-block-profile-rate))
+  - Enable first with: `zclone rc debug/set-block-profile-rate rate=1` ([docs](#debug-set-block-profile-rate))
   - `go tool pprof http://localhost:5572/debug/pprof/block`
 - Contended mutexes:
-  - Enable first with: `rclone rc debug/set-mutex-profile-fraction rate=1` ([docs](#debug-set-mutex-profile-fraction))
+  - Enable first with: `zclone rc debug/set-mutex-profile-fraction rate=1` ([docs](#debug-set-mutex-profile-fraction))
   - `go tool pprof http://localhost:5572/debug/pprof/mutex`
 
 See the [net/http/pprof docs](https://golang.org/pkg/net/http/pprof/)

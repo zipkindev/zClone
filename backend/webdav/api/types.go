@@ -10,15 +10,15 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
+	"zclone/fs"
+	"zclone/fs/hash"
 )
 
 const (
 	// Wed, 27 Sep 2017 14:28:34 GMT
 	timeFormat = time.RFC1123
 	// The same as time.RFC1123 with optional leading zeros on the date
-	// see https://github.com/rclone/rclone/issues/2574
+	// see /
 	noZerosRFC1123 = "Mon, _2 Jan 2006 15:04:05 MST"
 )
 

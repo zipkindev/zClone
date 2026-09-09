@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
 )
 
 // Global hashsum flags for reuse in hashsum, md5sum, sha1sum
@@ -94,7 +94,7 @@ download flag, the file will be downloaded from the remote and
 hashed locally enabling any hash for any remote.
 
 For the MD5 and SHA1 algorithms there are also dedicated commands,
-[md5sum](/commands/rclone_md5sum/) and [sha1sum](/commands/rclone_sha1sum/).
+[md5sum](/commands/zclone_md5sum/) and [sha1sum](/commands/zclone_sha1sum/).
 
 This command can also hash data received on standard input (stdin),
 by not passing a remote:path, or by passing a hyphen as remote:path
@@ -104,13 +104,13 @@ as a relative path).
 Run without a hash to see the list of all supported hashes, e.g.
 
 ` + "```console" + `
-$ rclone hashsum
+$ zclone hashsum
 ` + hash.HelpString(0) + "```" + `
 
 Then
 
 ` + "```console" + `
-rclone hashsum MD5 remote:path
+zclone hashsum MD5 remote:path
 ` + "```" + `
 
 Note that hash names are case insensitive and values are output in lower case.`,

@@ -8,10 +8,10 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/rclone/rclone/backend/filelu/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/filelu/api"
+	"zclone/fs"
+	"zclone/fs/fserrors"
+	"zclone/lib/rest"
 )
 
 // multipartInit starts a new multipart upload and returns server details.

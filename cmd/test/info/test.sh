@@ -1,10 +1,10 @@
 #!/usr/bin/env zsh
 #
 # example usage: 
-# $GOPATH/src/github.com/rclone/rclone/cmd/info/test.sh --list | \
-#   parallel -P20 $GOPATH/src/github.com/rclone/rclone/cmd/info/test.sh
+# $GOPATH/src/zclone/cmd/info/test.sh --list | \
+#   parallel -P20 $GOPATH/src/zclone/cmd/info/test.sh
 
-export PATH=$GOPATH/src/github.com/rclone/rclone:$PATH
+export PATH=$GOPATH/src/zclone:$PATH
 
 typeset -A allRemotes
 allRemotes=(
@@ -37,7 +37,7 @@ for remote; do
   case $remote in
     Local)
       l=Local$(uname)
-      export RCLONE_CONFIG_${l:u}_TYPE=local
+      export ZCLONE_CONFIG_${l:u}_TYPE=local
       dir=$l:infotest;;
     TestGCS)
       dir=$remote:$GCS_BUCKET/infotest;;
@@ -45,7 +45,7 @@ for remote; do
       dir=$remote:infotest;;
   esac
 
-  rclone purge    $dir || :
-  rclone info -vv $dir --write-json=info-$remote.json ${=allRemotes[$remote]:-} &> info-$remote.log
-  rclone ls   -vv $dir &> info-$remote.list
+  zclone purge    $dir || :
+  zclone info -vv $dir --write-json=info-$remote.json ${=allRemotes[$remote]:-} &> info-$remote.log
+  zclone ls   -vv $dir &> info-$remote.list
 done

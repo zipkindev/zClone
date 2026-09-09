@@ -35,9 +35,9 @@ start() {
     # wait until the test network is upload ready
     timeout 300 bash -c "wait_for_sia ${SIA_CONN}/renter/uploadready"
 
-    # confirm backend type in the generated rclone.conf
+    # confirm backend type in the generated zclone.conf
     echo "type=sia"
-    # override keys in the Sia section of generated rclone.conf
+    # override keys in the Sia section of generated zclone.conf
     echo "api_url=http://${SIA_CONN}/"
     # hint test harness where to probe for connection
     echo "_connect=${SIA_CONN}"

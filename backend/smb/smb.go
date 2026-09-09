@@ -13,16 +13,16 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/bucket"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/env"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/readers"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/hash"
+	"zclone/lib/bucket"
+	"zclone/lib/encoder"
+	"zclone/lib/env"
+	"zclone/lib/pacer"
+	"zclone/lib/readers"
 )
 
 const (
@@ -69,7 +69,7 @@ func init() {
 			Name: "spn",
 			Help: `Service principal name.
 
-Rclone presents this name to the server. Some servers use this as further
+Zclone presents this name to the server. Some servers use this as further
 authentication, and it often needs to be set for clusters. For example:
 
     cifs/remotehost:1020
@@ -81,7 +81,7 @@ Leave blank if not sure.
 			Name: "use_kerberos",
 			Help: `Use Kerberos authentication.
 
-If set, rclone will use Kerberos authentication instead of NTLM. This
+If set, zclone will use Kerberos authentication instead of NTLM. This
 requires a valid Kerberos configuration and credentials cache to be
 available, either in the default locations or as specified by the
 KRB5_CONFIG and KRB5CCNAME environment variables.
@@ -93,7 +93,7 @@ KRB5_CONFIG and KRB5CCNAME environment variables.
 			Help: `Max time before closing idle connections.
 
 If no connections have been returned to the connection pool in the time
-given, rclone will empty the connection pool.
+given, zclone will empty the connection pool.
 
 Set to 0 to keep connections indefinitely.
 `,
@@ -891,14 +891,14 @@ func (o *Object) split() (shareName, filepath string) {
 }
 
 func (f *Fs) toSambaPath(path string) string {
-	// 1. encode via Rclone's escaping system
+	// 1. encode via Zclone's escaping system
 	// 2. convert to backslash-separated path
 	return strings.ReplaceAll(f.opt.Enc.FromStandardPath(path), "/", "\\")
 }
 
 func (f *Fs) toNativePath(path string) string {
 	// 1. convert *back* to slash-separated path
-	// 2. encode via Rclone's escaping system
+	// 2. encode via Zclone's escaping system
 	return f.opt.Enc.ToStandardPath(strings.ReplaceAll(path, "\\", "/"))
 }
 

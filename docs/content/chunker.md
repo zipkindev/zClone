@@ -22,7 +22,7 @@ Note that anything inside `remote:path` will be chunked and anything outside
 won't. This means that if you are using a bucket-based remote (e.g. S3, B2, swift)
 then you should probably put the bucket in the remote `s3:bucket`.
 
-Now configure `chunker` using `rclone config`. We will call this one `overlay`
+Now configure `chunker` using `zclone config`. We will call this one `overlay`
 to separate it from the `remote` itself.
 
 ```text
@@ -86,14 +86,14 @@ y/e/d> y
 ### Specifying the remote
 
 In normal use, make sure the remote has a `:` in. If you specify the remote
-without a `:` then rclone will use a local directory of that name.
-So if you use a remote of `/path/to/secret/files` then rclone will
-chunk stuff in that directory. If you use a remote of `name` then rclone
+without a `:` then zclone will use a local directory of that name.
+So if you use a remote of `/path/to/secret/files` then zclone will
+chunk stuff in that directory. If you use a remote of `name` then zclone
 will put files in a directory called `name` in the current directory.
 
 ### Chunking
 
-When rclone starts a file upload, chunker checks the file size. If it
+When zclone starts a file upload, chunker checks the file size. If it
 doesn't exceed the configured chunk size, chunker will just pass the file
 to the wrapped remote (however, see caveat below). If a file is large, chunker
 will transparently cut data in pieces with temporary names and stream them one
@@ -114,7 +114,7 @@ assembles it by concatenating data chunks in order. As the split is trivial
 one could even manually concatenate data chunks together to obtain the
 original content.
 
-When the `list` rclone command scans a directory on wrapped remote,
+When the `list` zclone command scans a directory on wrapped remote,
 the potential chunk files are accounted for, grouped and assembled into
 composite directory entries. Any temporary chunks are hidden.
 
@@ -137,9 +137,9 @@ chunker on the remaining files.
 
 #### Chunk names
 
-The default chunk name format is `*.rclone_chunk.###`, hence by default
-chunk names are `BIG_FILE_NAME.rclone_chunk.001`,
-`BIG_FILE_NAME.rclone_chunk.002` etc. You can configure another name format
+The default chunk name format is `*.zclone_chunk.###`, hence by default
+chunk names are `BIG_FILE_NAME.zclone_chunk.001`,
+`BIG_FILE_NAME.zclone_chunk.002` etc. You can configure another name format
 using the `name_format` configuration file option. The format uses asterisk
 `*` as a placeholder for the base file name and one or more consecutive
 hash characters `#` as a placeholder for sequential chunk number.
@@ -160,7 +160,7 @@ match the configured format and treats non-conforming file names as normal
 non-chunked files.
 
 When using `norename` transactions, chunk names will additionally have a unique
-file version suffix. For example, `BIG_FILE_NAME.rclone_chunk.001_bp562k`.
+file version suffix. For example, `BIG_FILE_NAME.zclone_chunk.001_bp562k`.
 
 ### Metadata
 
@@ -168,7 +168,7 @@ Besides data chunks chunker will by default create metadata object for
 a composite file. The object is named after the original file.
 Chunker allows user to disable metadata completely (the `none` format).
 Note that metadata is normally not created for files smaller than the
-configured chunk size. This may change in future rclone releases.
+configured chunk size. This may change in future zclone releases.
 
 #### Simple JSON metadata format
 
@@ -258,14 +258,14 @@ style or chunk naming scheme is to:
 - Create another directory (most probably on the same cloud storage)
   and configure a new remote with desired metadata format,
   hash type, chunk naming etc.
-- Now run `rclone sync --interactive oldchunks: newchunks:` and all your data
+- Now run `zclone sync --interactive oldchunks: newchunks:` and all your data
   will be transparently converted in transfer.
   This may take some time, yet chunker will try server-side
   copy if possible.
 - After checking data integrity you may remove configuration section
   of the old remote.
 
-If rclone gets killed during a long operation on a big composite file,
+If zclone gets killed during a long operation on a big composite file,
 hidden temporary chunks may stay in the directory. They will not be
 shown by the `list` command but will eat up your account quota.
 Please note that the `deletefile` command deletes only active
@@ -286,7 +286,7 @@ names when an operation completes successfully.
 Chunker encodes chunk number in file name, so with default `name_format`
 setting it adds 17 characters. Also chunker adds 7 characters of temporary
 suffix during operations. Many file systems limit base file name without path
-by 255 characters. Using rclone's crypt remote as a base file system limits
+by 255 characters. Using zclone's crypt remote as a base file system limits
 file name by 143 characters. Thus, maximum name length is 231 for most files
 and 119 for chunker-over-crypt. A user in need can change name format to
 e.g. `*.rcc##` and save 10 characters (provided at most 99 chunks per file).
@@ -295,7 +295,7 @@ Note that a move implemented using the copy-and-delete method may incur
 double charging with some cloud storage providers.
 
 Chunker will not automatically rename existing chunks when you run
-`rclone config` on a live remote and change the chunk name format.
+`zclone config` on a live remote and change the chunk name format.
 Beware that in result of this some files which have been treated as chunks
 before the change can pop up in directory listings as normal files
 and vice versa. The same warning holds for the chunk size.
@@ -306,9 +306,9 @@ If wrapped remote is case insensitive, the chunker overlay will inherit
 that property (so you can't have a file called "Hello.doc" and "hello.doc"
 in the same directory).
 
-Chunker included in rclone releases up to `v1.54` can sometimes fail to
-detect metadata produced by recent versions of rclone. We recommend users
-to keep rclone up-to-date to avoid data corruption.
+Chunker included in zclone releases up to `v1.54` can sometimes fail to
+detect metadata produced by recent versions of zclone. We recommend users
+to keep zclone up-to-date to avoid data corruption.
 
 Changing `transactions` is dangerous and requires explicit migration.
 
@@ -327,7 +327,7 @@ Normally should contain a ':' and a path, e.g. "myremote:path/to/dir",
 Properties:
 
 - Config:      remote
-- Env Var:     RCLONE_CHUNKER_REMOTE
+- Env Var:     ZCLONE_CHUNKER_REMOTE
 - Type:        string
 - Required:    true
 
@@ -338,7 +338,7 @@ Files larger than chunk size will be split in chunks.
 Properties:
 
 - Config:      chunk_size
-- Env Var:     RCLONE_CHUNKER_CHUNK_SIZE
+- Env Var:     ZCLONE_CHUNKER_CHUNK_SIZE
 - Type:        SizeSuffix
 - Default:     2Gi
 
@@ -351,7 +351,7 @@ All modes but "none" require metadata.
 Properties:
 
 - Config:      hash_type
-- Env Var:     RCLONE_CHUNKER_HASH_TYPE
+- Env Var:     ZCLONE_CHUNKER_HASH_TYPE
 - Type:        string
 - Default:     "md5"
 - Examples:
@@ -389,9 +389,9 @@ Possible chunk files are ignored if their name does not match given format.
 Properties:
 
 - Config:      name_format
-- Env Var:     RCLONE_CHUNKER_NAME_FORMAT
+- Env Var:     ZCLONE_CHUNKER_NAME_FORMAT
 - Type:        string
-- Default:     "*.rclone_chunk.###"
+- Default:     "*.zclone_chunk.###"
 
 #### --chunker-start-from
 
@@ -402,7 +402,7 @@ By default chunk numbers start from 1.
 Properties:
 
 - Config:      start_from
-- Env Var:     RCLONE_CHUNKER_START_FROM
+- Env Var:     ZCLONE_CHUNKER_START_FROM
 - Type:        int
 - Default:     1
 
@@ -416,7 +416,7 @@ Metadata is a small JSON file named after the composite file.
 Properties:
 
 - Config:      meta_format
-- Env Var:     RCLONE_CHUNKER_META_FORMAT
+- Env Var:     ZCLONE_CHUNKER_META_FORMAT
 - Type:        string
 - Default:     "simplejson"
 - Examples:
@@ -435,7 +435,7 @@ Choose how chunker should handle files with missing or invalid chunks.
 Properties:
 
 - Config:      fail_hard
-- Env Var:     RCLONE_CHUNKER_FAIL_HARD
+- Env Var:     ZCLONE_CHUNKER_FAIL_HARD
 - Type:        bool
 - Default:     false
 - Examples:
@@ -451,7 +451,7 @@ Choose how chunker should handle temporary files during transactions.
 Properties:
 
 - Config:      transactions
-- Env Var:     RCLONE_CHUNKER_TRANSACTIONS
+- Env Var:     ZCLONE_CHUNKER_TRANSACTIONS
 - Type:        string
 - Default:     "rename"
 - Examples:
@@ -460,8 +460,8 @@ Properties:
   - "norename"
     - Leave temporary file names and write transaction ID to metadata file.
     - Metadata is required for no rename transactions (meta format cannot be "none").
-    - If you are using norename transactions you should be careful not to downgrade Rclone
-    - as older versions of Rclone don't support this transaction style and will misinterpret
+    - If you are using norename transactions you should be careful not to downgrade Zclone
+    - as older versions of Zclone don't support this transaction style and will misinterpret
     - files manipulated by norename transactions.
     - This method is EXPERIMENTAL, don't use on production systems.
   - "auto"
@@ -476,7 +476,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_CHUNKER_DESCRIPTION
+- Env Var:     ZCLONE_CHUNKER_DESCRIPTION
 - Type:        string
 - Required:    false
 

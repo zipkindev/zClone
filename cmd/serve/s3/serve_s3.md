@@ -1,6 +1,6 @@
 `serve s3` implements a basic s3 server that serves a remote via s3.
 This can be viewed with an s3 client, or you can make an [s3 type
-remote](/s3/) to read and write to it with rclone.
+remote](/s3/) to read and write to it with zclone.
 
 `serve s3` is considered **Experimental** so use with care.
 
@@ -13,22 +13,22 @@ docs](https://docs.aws.amazon.com/general/latest/gr/signature-version-4.html)).
 `--auth-key` is not provided then `serve s3` will allow anonymous
 access.
 
-Like all rclone flags `--auth-key` can be set via environment
-variables, in this case `RCLONE_AUTH_KEY`. Since this flag can be
-repeated, the input to `RCLONE_AUTH_KEY` is CSV encoded. Because the
+Like all zclone flags `--auth-key` can be set via environment
+variables, in this case `ZCLONE_AUTH_KEY`. Since this flag can be
+repeated, the input to `ZCLONE_AUTH_KEY` is CSV encoded. Because the
 `accessKey,secretKey` has a comma in, this means it needs to be in
 quotes.
 
 ```console
-export RCLONE_AUTH_KEY='"user,pass"'
-rclone serve s3 ...
+export ZCLONE_AUTH_KEY='"user,pass"'
+zclone serve s3 ...
 ```
 
 Or to supply multiple identities:
 
 ```console
-export RCLONE_AUTH_KEY='"user1,pass1","user2,pass2"'
-rclone serve s3 ...
+export ZCLONE_AUTH_KEY='"user1,pass1","user2,pass2"'
+zclone serve s3 ...
 ```
 
 Setting this variable without quotes will produce an error.
@@ -54,17 +54,17 @@ For a simple set up, to serve `remote:path` over s3, run the server
 like this:
 
 ```console
-rclone serve s3 --auth-key ACCESS_KEY_ID,SECRET_ACCESS_KEY remote:path
+zclone serve s3 --auth-key ACCESS_KEY_ID,SECRET_ACCESS_KEY remote:path
 ```
 
 For example, to use a simple folder in the filesystem, run the server
 with a command like this:
 
 ```console
-rclone serve s3 --auth-key ACCESS_KEY_ID,SECRET_ACCESS_KEY local:/path/to/folder
+zclone serve s3 --auth-key ACCESS_KEY_ID,SECRET_ACCESS_KEY local:/path/to/folder
 ```
 
-The `rclone.conf` for the server could look like this:
+The `zclone.conf` for the server could look like this:
 
 ```ini
 [local]
@@ -73,16 +73,16 @@ type = local
 
 The `local` configuration is optional though. If you run the server with a
 `remote:path` like `/path/to/folder` (without the `local:` prefix and without an
-`rclone.conf` file), rclone will fall back to a default configuration, which
+`zclone.conf` file), zclone will fall back to a default configuration, which
 will be visible as a warning in the logs. But it will run nonetheless.
 
-This will be compatible with an rclone (client) remote configuration which
+This will be compatible with an zclone (client) remote configuration which
 is defined like this:
 
 ```ini
 [serves3]
 type = s3
-provider = Rclone
+provider = Zclone
 endpoint = http://127.0.0.1:8080/
 access_key_id = ACCESS_KEY_ID
 secret_access_key = SECRET_ACCESS_KEY
@@ -103,7 +103,7 @@ renamed into place on success; these remotes need to support a server-side
 move or copy for this (nearly all do - without move or copy the upload is
 written directly and a failed PUT may leave a partial object at the key). If
 `serve s3` is killed part-way through an upload the temporary object (named
-with a leading `.rclone_temp_put_`) may be left behind; it is hidden from
+with a leading `.zclone_temp_put_`) may be left behind; it is hidden from
 S3 listings but must be removed manually.
 
 ### Multipart uploads
@@ -173,7 +173,7 @@ remote as if it had completed.
   (except on the few remotes with no server-side move or copy, as
   above).
 - Multipart uploads go through the VFS like any other upload, so they
-  show in rclone's transfer stats and obey `--bwlimit`.
+  show in zclone's transfer stats and obey `--bwlimit`.
 - Backend-agnostic - it only needs the remote to support a server-side
   move or copy for the rename into place, which nearly all do; a remote
   without streaming upload support spools to local disk as above.
@@ -206,7 +206,7 @@ remote as if it had completed.
   runs concurrently with the parts arriving; with the local disk spool
   or the VFS cache the upload to the remote only starts on completion.
 - If `serve s3` is killed part-way through an upload the temporary
-  object (named with a leading `.rclone_temp_multipart_`) may be left
+  object (named with a leading `.zclone_temp_multipart_`) may be left
   behind; it is hidden from S3 listings but must be removed manually.
 
 #### Multipart uploads and the VFS cache
@@ -256,15 +256,15 @@ The trade-offs of the VFS cache:
 - If `serve s3` is killed part-way through an upload, the temporary
   file survives in the cache and the VFS cache recovery uploads it to
   the remote on restart as a temporary object (named with a leading
-  `.rclone_temp_multipart_`); as with the streaming path, it is
+  `.zclone_temp_multipart_`); as with the streaming path, it is
   hidden from S3 listings but must be removed manually.
 
 #### Cleaning up temporary objects
 
 If `serve s3` is killed part-way through an upload it can leave a
-temporary object behind, named with a leading `.rclone_temp_`. This
+temporary object behind, named with a leading `.zclone_temp_`. This
 whole prefix is reserved: any object whose name (the last
-`/`-separated segment of its key) starts with `.rclone_temp_` is
+`/`-separated segment of its key) starts with `.zclone_temp_` is
 hidden from S3 listings, so don't give real objects such names - an
 existing object with such a name disappears from listings (though it
 stays accessible directly by its key: only listings hide reserved
@@ -273,14 +273,14 @@ temporary object never holds acknowledged data - uploads whose
 temporary object survived were never confirmed to the client - so old
 ones are safe to delete:
 
-    rclone delete --min-age 24h --include ".rclone_temp_*" remote:path
+    zclone delete --min-age 24h --include ".zclone_temp_*" remote:path
 
 The `--min-age` protects uploads which are still in progress: make sure
 it is longer than your longest upload, especially if several `serve s3`
 instances share the same remote.
 
-rclone v1.75 named its temporary multipart objects
-`.rclone_multipart_upload_*`; leftovers from an older server are also
+zclone v1.75 named its temporary multipart objects
+`.zclone_multipart_upload_*`; leftovers from an older server are also
 hidden from listings and can be cleaned up the same way.
 
 #### Abandoned uploads
@@ -321,13 +321,13 @@ buffers the upload in the VFS cache on disk and takes precedence over
 ### Bugs
 
 Multipart server side copies do not work (see
-[#7454](https://github.com/rclone/rclone/issues/7454)). These take a
+[#7454](/)). These take a
 very long time and eventually fail. The default threshold for
 multipart server side copies is 5G which is the maximum it can be, so
 files above this side will fail to be server side copied.
 
 For a current list of `serve s3` bugs see the [serve
-s3](https://github.com/rclone/rclone/labels/serve%20s3) bug category
+s3](/) bug category
 on GitHub.
 
 ### Limitations
@@ -337,19 +337,19 @@ ignore all files in the root. You can use `CreateBucket` to create
 folders under the root, but you can't create empty folders under other
 folders not in the root.
 
-When using `PutObject` or `DeleteObject`, rclone will automatically
+When using `PutObject` or `DeleteObject`, zclone will automatically
 create or clean up empty folders. If you don't want to clean up empty
 folders automatically, use `--no-cleanup`.
 
-When using `ListObjects`, rclone will use `/` when the delimiter is
+When using `ListObjects`, zclone will use `/` when the delimiter is
 empty. This reduces backend requests with no effect on most
 operations, but if the delimiter is something other than `/` and
-empty, rclone will do a full recursive search of the backend, which
+empty, zclone will do a full recursive search of the backend, which
 can take some time.
 
 Versioning is not currently supported.
 
-Metadata will only be saved in memory other than the rclone `mtime`
+Metadata will only be saved in memory other than the zclone `mtime`
 metadata which will be set as the modification time of the file.
 
 ### Object names

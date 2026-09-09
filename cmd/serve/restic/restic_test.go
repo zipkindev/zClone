@@ -12,14 +12,14 @@ import (
 	"os/exec"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/all"
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/serve/servetest"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/fstest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/all"
+	"zclone/cmd"
+	"zclone/cmd/serve/servetest"
+	"zclone/fs"
+	"zclone/fs/rc"
+	"zclone/fstest"
 )
 
 const (
@@ -133,7 +133,7 @@ func (f *listErrorFs) List(ctx context.Context, dir string) (entries fs.DirEntri
 
 func TestListErrors(t *testing.T) {
 	ctx := context.Background()
-	// setup rclone with a local backend in a temporary directory
+	// setup zclone with a local backend in a temporary directory
 	tempdir := t.TempDir()
 	opt := newOpt()
 
@@ -158,7 +158,7 @@ func (f *newObjectErrorFs) NewObject(ctx context.Context, remote string) (fs.Obj
 
 func TestServeErrors(t *testing.T) {
 	ctx := context.Background()
-	// setup rclone with a local backend in a temporary directory
+	// setup zclone with a local backend in a temporary directory
 	tempdir := t.TempDir()
 	opt := newOpt()
 

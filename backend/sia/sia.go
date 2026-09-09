@@ -13,19 +13,19 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/backend/sia/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/readers"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/sia/api"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
+	"zclone/lib/readers"
+	"zclone/lib/rest"
 )
 
 const (
@@ -497,7 +497,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 	return f, nil
 }
 
-// errorHandler translates Siad errors into native rclone filesystem errors.
+// errorHandler translates Siad errors into native zclone filesystem errors.
 // Sadly this is using string matching since Siad can't expose meaningful codes.
 func errorHandler(resp *http.Response) error {
 	body, err := rest.ReadBody(resp)

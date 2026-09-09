@@ -6,10 +6,10 @@ import (
 	"context"
 	"testing"
 
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/fs/rc/jobs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs/rc"
+	"zclone/fs/rc/jobs"
 )
 
 func TestInternalPanic(t *testing.T) {

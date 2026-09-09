@@ -24,22 +24,22 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/walk"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/testserver"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/lib/readers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/config"
+	"zclone/fs/fserrors"
+	"zclone/fs/fspath"
+	"zclone/fs/hash"
+	"zclone/fs/object"
+	"zclone/fs/operations"
+	"zclone/fs/walk"
+	"zclone/fstest"
+	"zclone/fstest/testserver"
+	"zclone/lib/encoder"
+	"zclone/lib/random"
+	"zclone/lib/readers"
 )
 
 // InternalTester is an optional interface for Fs which allows to execute internal tests
@@ -387,7 +387,7 @@ func Run(t *testing.T, opt *Opt) {
 		}
 		file1Contents string
 		file1MimeType = "text/csv"
-		file1Metadata = fs.Metadata{"rclonetest": "potato"}
+		file1Metadata = fs.Metadata{"zclonetest": "potato"}
 		file2         = fstest.Item{
 			ModTime: fstest.Time("2001-02-03T04:05:10.123123123Z"),
 			Path:    `hello? sausage/êé/Hello, 世界/ " ' @ < > & ? + ≠/z.txt`,
@@ -399,7 +399,7 @@ func Run(t *testing.T, opt *Opt) {
 		unwrappableFsMethods = []string{"Command"} // these Fs methods don't need to be wrapped ever
 	)
 
-	if strings.HasSuffix(os.Getenv("RCLONE_CONFIG"), "/notfound") && *fstest.RemoteName == "" && !opt.QuickTestOK {
+	if strings.HasSuffix(os.Getenv("ZCLONE_CONFIG"), "/notfound") && *fstest.RemoteName == "" && !opt.QuickTestOK {
 		t.Skip("quicktest only")
 	}
 
@@ -2091,7 +2091,7 @@ func Run(t *testing.T, opt *Opt) {
 							return
 						}
 						// For OneDrive Personal, link expiry is a premium feature
-						// Don't let it fail the test (https://github.com/rclone/rclone/issues/5420)
+						// Don't let it fail the test (/)
 						if fsInfo.Name == "onedrive" && strings.Contains(err.Error(), "accountUpgradeRequired") {
 							t.Log("treating accountUpgradeRequired as success for PublicLink")
 							link, err = "bogus link to "+remote, nil
@@ -2808,7 +2808,7 @@ func Run(t *testing.T, opt *Opt) {
 		// an object in that folder, whose name is taken from a directory that
 		// exists in the absolute root.
 		// This test is added after
-		// https://github.com/rclone/rclone/issues/3164.
+		// /
 		t.Run("FsRootCollapse", func(t *testing.T) {
 			deepRemoteName := subRemoteName + "/deeper/nonexisting/directory"
 			deepRemote, err := fs.NewFs(context.Background(), deepRemoteName)

@@ -9,10 +9,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/lib/file"
 	"github.com/unknwon/goconfig" //nolint:misspell // Don't include misspell when running golangci-lint
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/lib/file"
 )
 
 // Install installs the config file handler

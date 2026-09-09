@@ -8,16 +8,16 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/atexit"
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/svc/eventlog"
+	"zclone/fs"
+	"zclone/lib/atexit"
 )
 
 const (
 	errorID    = uint32(windows.ERROR_INTERNAL_ERROR)
 	infoID     = uint32(windows.ERROR_SUCCESS)
-	sourceName = "rclone"
+	sourceName = "zclone"
 )
 
 var (

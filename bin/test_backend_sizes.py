@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Test the sizes in the rclone binary of each backend by compiling
-rclone with and without the backend and measuring the difference.
+Test the sizes in the zclone binary of each backend by compiling
+zclone with and without the backend and measuring the difference.
 
 Run with no arguments to test all backends or a supply a list of
 backends to test.
@@ -20,7 +20,7 @@ compile_command = ["go", "build", "--ldflags", "-s", "-trimpath"]
 # disable CGO as that makes a lot of difference to binary size
 os.environ["CGO_ENABLED"]="0"
 
-match_backend = re.compile(r'"github.com/rclone/rclone/backend/(.*?)"')
+match_backend = re.compile(r'"zclone/backend/(.*?)"')
 
 def read_backends():
     """
@@ -42,7 +42,7 @@ def write_all(orig_all, backend):
     """
     with open(all_backends, "w") as fd:
         for line in orig_all.split("\n"):
-            match = re.search(r'"github.com/rclone/rclone/backend/(.*?)"', line)
+            match = re.search(r'"zclone/backend/(.*?)"', line)
             # Comment out line matching backend
             if match and match.group(1) == backend:
                 line = "// " + line
@@ -56,12 +56,12 @@ def compile():
     Compile the binary, returning the size
     """
     subprocess.check_call(compile_command)
-    return os.stat("rclone").st_size
+    return os.stat("zclone").st_size
         
 def main():
     # change directory to the one with this script in
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    # change directory to the main rclone source
+    # change directory to the main zclone source
     os.chdir("..")
 
     to_test = sys.argv[1:]

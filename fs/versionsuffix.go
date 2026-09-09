@@ -1,4 +1,4 @@
 package fs
 
-// VersionSuffix of rclone containing the pre-release label if any
+// VersionSuffix of zclone containing the pre-release label if any
 var VersionSuffix = "DEV"

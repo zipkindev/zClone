@@ -1,5 +1,5 @@
 // Package servetest provides infrastructure for running loopback
-// tests of "rclone serve backend:" against the backend integration
+// tests of "zclone serve backend:" against the backend integration
 // tests.
 package servetest
 
@@ -13,13 +13,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rclone/rclone/cmd/serve/proxy"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/testserver"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/cmd/serve/proxy"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fstest"
+	"zclone/fstest/testserver"
 )
 
 var subRun = flag.String("sub-run", "", "pass this to the -run command of the backend tests")
@@ -91,7 +91,7 @@ func run(t *testing.T, name string, start StartFn, useProxy bool, backingRemote 
 
 	// Configure the backend with environment variables
 	cmd.Env = os.Environ()
-	prefix := "RCLONE_CONFIG_" + strings.ToUpper(remoteName[:len(remoteName)-1]) + "_"
+	prefix := "ZCLONE_CONFIG_" + strings.ToUpper(remoteName[:len(remoteName)-1]) + "_"
 	for k, v := range config {
 		cmd.Env = append(cmd.Env, prefix+strings.ToUpper(k)+"="+v)
 	}

@@ -1,6 +1,6 @@
 ---
 title: "Box"
-description: "Rclone docs for Box"
+description: "Zclone docs for Box"
 versionIntroduced: "v1.38"
 ---
 
@@ -12,14 +12,14 @@ Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 
 The initial setup for Box involves getting a token from Box which you
 can do either in your browser, or with a config.json downloaded from Box
-to use JWT authentication.  `rclone config` walks you through it.
+to use JWT authentication.  `zclone config` walks you through it.
 
 ## Configuration
 
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -53,21 +53,21 @@ access_token>
 
 Enter a string value. Press Enter for the default ("user").
 Choose a number from below, or type in your own value
- 1 / Rclone should act on behalf of a user
+ 1 / Zclone should act on behalf of a user
    \ "user"
- 2 / Rclone should act on behalf of a service account
+ 2 / Zclone should act on behalf of a service account
    \ "enterprise"
 box_sub_type>
 Remote config
-Use web browser to automatically authenticate rclone with remote?
- * Say Y if the machine running rclone has a web browser you can use
- * Say N if running rclone on a (remote) machine without web browser access
+Use web browser to automatically authenticate zclone with remote?
+ * Say Y if the machine running zclone has a web browser you can use
+ * Say N if running zclone on a (remote) machine without web browser access
 If not sure try Y. If Y failed, try N.
 y) Yes
 n) No
 y/n> y
 If your browser doesn't open automatically go to the following link: http://127.0.0.1:53682/auth?state=XXXXXXXXXXXXXXXXXXXXXX
-Log in and authorize rclone for access
+Log in and authorize zclone for access
 Waiting for code...
 Got code
 Configuration complete.
@@ -86,37 +86,37 @@ y/e/d> y
 See the [remote setup docs](/remote_setup/) for how to set it up on a
 machine without an internet-connected web browser available.
 
-Note that rclone runs a webserver on your local machine to collect the
+Note that zclone runs a webserver on your local machine to collect the
 token as returned from Box. This only runs from the moment it opens
 your browser to the moment you get back the verification code.  This
 is on `http://127.0.0.1:53682/` and this may require you to unblock
 it temporarily if you are running a host firewall.
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 List directories in top level of your Box
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your Box
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 To copy a local directory to an Box directory called backup
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
-### Using rclone with an Enterprise account with SSO
+### Using zclone with an Enterprise account with SSO
 
 If you have an "Enterprise" account type with Box with single sign on
-(SSO), you need to create a password to use Box with rclone. This can
+(SSO), you need to create a password to use Box with zclone. This can
 be done at your Enterprise Box account by going to Settings, "Account"
 Tab, and then set the password in the "Authentication" field.
 
@@ -136,7 +136,7 @@ This means that if you
 - Copy the config file with a box refresh token in and use it in two places
 - Get an error on a token refresh
 
-then rclone will return an error which includes the text `Invalid
+then zclone will return an error which includes the text `Invalid
 refresh token`.
 
 To fix this you will need to use oauth2 again to update the refresh
@@ -148,7 +148,7 @@ did the authentication on.
 Here is how to do it.
 
 ```console
-$ rclone config
+$ zclone config
 Current remotes:
 
 Name                 Type
@@ -187,15 +187,15 @@ Token already configured - replace it?
 y) Yes
 n) No
 y/n> y
-Use web browser to automatically authenticate rclone with remote?
- * Say Y if the machine running rclone has a web browser you can use
- * Say N if running rclone on a (remote) machine without web browser access
+Use web browser to automatically authenticate zclone with remote?
+ * Say Y if the machine running zclone has a web browser you can use
+ * Say N if running zclone on a (remote) machine without web browser access
 If not sure try Y. If Y failed, try N.
 y) Yes
 n) No
 y/n> y
 If your browser doesn't open automatically go to the following link: http://127.0.0.1:53682/auth
-Log in and authorize rclone for access
+Log in and authorize zclone for access
 Waiting for code...
 Got code
 Configuration complete.
@@ -239,7 +239,7 @@ as they can't be used in JSON strings.
 
 ### Transfers
 
-For files above 50 MiB rclone will use a chunked transfer.  Rclone will
+For files above 50 MiB zclone will use a chunked transfer.  Zclone will
 upload up to `--transfers` chunks at the same time (shared among all
 the multipart uploads).  Chunks are buffered in memory and are
 normally 8 MiB so increasing `--transfers` will increase memory use.
@@ -249,7 +249,7 @@ normally 8 MiB so increasing `--transfers` will increase memory use.
 Depending on the enterprise settings for your user, the item will
 either be actually deleted from Box or moved to the trash.
 
-Emptying the trash is supported via the rclone however cleanup command
+Emptying the trash is supported via the zclone however cleanup command
 however this deletes every trashed file and folder individually so it
 may take a very long time.
 Emptying the trash via the  WebUI does not have this limitation
@@ -257,22 +257,22 @@ so it is advised to empty the trash via the WebUI.
 
 ### Root folder ID
 
-You can set the `root_folder_id` for rclone.  This is the directory
-(identified by its `Folder ID`) that rclone considers to be the root
+You can set the `root_folder_id` for zclone.  This is the directory
+(identified by its `Folder ID`) that zclone considers to be the root
 of your Box drive.
 
-Normally you will leave this blank and rclone will determine the
+Normally you will leave this blank and zclone will determine the
 correct root to use itself.
 
-However you can set this to restrict rclone to a specific folder
+However you can set this to restrict zclone to a specific folder
 hierarchy.
 
 In order to do this you will have to find the `Folder ID` of the
-directory you wish rclone to display.  This will be the last segment
+directory you wish zclone to display.  This will be the last segment
 of the URL when you open the relevant folder in the Box web
 interface.
 
-So if the folder you want rclone to use has a URL which looks like
+So if the folder you want zclone to use has a URL which looks like
 `https://app.box.com/folder/11xxxxxxxxx8`
 in the browser, then you use `11xxxxxxxxx8` as
 the `root_folder_id` in the config.
@@ -291,7 +291,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_id
-- Env Var:     RCLONE_BOX_CLIENT_ID
+- Env Var:     ZCLONE_BOX_CLIENT_ID
 - Type:        string
 - Required:    false
 
@@ -304,7 +304,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_secret
-- Env Var:     RCLONE_BOX_CLIENT_SECRET
+- Env Var:     ZCLONE_BOX_CLIENT_SECRET
 - Type:        string
 - Required:    false
 
@@ -314,12 +314,12 @@ Box App config.json location
 
 Leave blank normally.
 
-Leading `~` will be expanded in the file name as will environment variables such as `${RCLONE_CONFIG_DIR}`.
+Leading `~` will be expanded in the file name as will environment variables such as `${ZCLONE_CONFIG_DIR}`.
 
 Properties:
 
 - Config:      box_config_file
-- Env Var:     RCLONE_BOX_BOX_CONFIG_FILE
+- Env Var:     ZCLONE_BOX_BOX_CONFIG_FILE
 - Type:        string
 - Required:    false
 
@@ -332,7 +332,7 @@ Leave blank normally.
 Properties:
 
 - Config:      access_token
-- Env Var:     RCLONE_BOX_ACCESS_TOKEN
+- Env Var:     ZCLONE_BOX_ACCESS_TOKEN
 - Type:        string
 - Required:    false
 
@@ -343,14 +343,14 @@ Properties:
 Properties:
 
 - Config:      box_sub_type
-- Env Var:     RCLONE_BOX_BOX_SUB_TYPE
+- Env Var:     ZCLONE_BOX_BOX_SUB_TYPE
 - Type:        string
 - Default:     "user"
 - Examples:
   - "user"
-    - Rclone should act on behalf of a user.
+    - Zclone should act on behalf of a user.
   - "enterprise"
-    - Rclone should act on behalf of a service account.
+    - Zclone should act on behalf of a service account.
 
 ### Advanced options
 
@@ -363,7 +363,7 @@ OAuth Access Token as a JSON blob.
 Properties:
 
 - Config:      token
-- Env Var:     RCLONE_BOX_TOKEN
+- Env Var:     ZCLONE_BOX_TOKEN
 - Type:        string
 - Required:    false
 
@@ -376,7 +376,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      auth_url
-- Env Var:     RCLONE_BOX_AUTH_URL
+- Env Var:     ZCLONE_BOX_AUTH_URL
 - Type:        string
 - Required:    false
 
@@ -389,7 +389,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      token_url
-- Env Var:     RCLONE_BOX_TOKEN_URL
+- Env Var:     ZCLONE_BOX_TOKEN_URL
 - Type:        string
 - Required:    false
 
@@ -404,18 +404,18 @@ Note that this option is NOT supported by all backends.
 Properties:
 
 - Config:      client_credentials
-- Env Var:     RCLONE_BOX_CLIENT_CREDENTIALS
+- Env Var:     ZCLONE_BOX_CLIENT_CREDENTIALS
 - Type:        bool
 - Default:     false
 
 #### --box-root-folder-id
 
-Fill in for rclone to use a non root folder as its starting point.
+Fill in for zclone to use a non root folder as its starting point.
 
 Properties:
 
 - Config:      root_folder_id
-- Env Var:     RCLONE_BOX_ROOT_FOLDER_ID
+- Env Var:     ZCLONE_BOX_ROOT_FOLDER_ID
 - Type:        string
 - Default:     "0"
 
@@ -426,7 +426,7 @@ Cutoff for switching to multipart upload (>= 50 MiB).
 Properties:
 
 - Config:      upload_cutoff
-- Env Var:     RCLONE_BOX_UPLOAD_CUTOFF
+- Env Var:     ZCLONE_BOX_UPLOAD_CUTOFF
 - Type:        SizeSuffix
 - Default:     50Mi
 
@@ -437,7 +437,7 @@ Max number of times to try committing a multipart file.
 Properties:
 
 - Config:      commit_retries
-- Env Var:     RCLONE_BOX_COMMIT_RETRIES
+- Env Var:     ZCLONE_BOX_COMMIT_RETRIES
 - Type:        int
 - Default:     100
 
@@ -448,7 +448,7 @@ Size of listing chunk 1-1000.
 Properties:
 
 - Config:      list_chunk
-- Env Var:     RCLONE_BOX_LIST_CHUNK
+- Env Var:     ZCLONE_BOX_LIST_CHUNK
 - Type:        int
 - Default:     1000
 
@@ -459,7 +459,7 @@ Only show items owned by the login (email address) passed in.
 Properties:
 
 - Config:      owned_by
-- Env Var:     RCLONE_BOX_OWNED_BY
+- Env Var:     ZCLONE_BOX_OWNED_BY
 - Type:        string
 - Required:    false
 
@@ -467,7 +467,7 @@ Properties:
 
 Impersonate this user ID when using a service account.
 
-Setting this flag allows rclone, when using a JWT service account, to
+Setting this flag allows zclone, when using a JWT service account, to
 act on behalf of another user by setting the as-user header.
 
 The user ID is the Box identifier for a user. User IDs can found for
@@ -481,7 +481,7 @@ See: https://developer.box.com/guides/authentication/jwt/as-user/
 Properties:
 
 - Config:      impersonate
-- Env Var:     RCLONE_BOX_IMPERSONATE
+- Env Var:     ZCLONE_BOX_IMPERSONATE
 - Type:        string
 - Required:    false
 
@@ -494,7 +494,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_BOX_ENCODING
+- Env Var:     ZCLONE_BOX_ENCODING
 - Type:        Encoding
 - Default:     Slash,BackSlash,Del,Ctl,RightSpace,InvalidUtf8,Dot
 
@@ -505,7 +505,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_BOX_DESCRIPTION
+- Env Var:     ZCLONE_BOX_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -516,26 +516,26 @@ Properties:
 Note that Box is case insensitive so you can't have a file called
 "Hello.doc" and one called "hello.doc".
 
-Box file names can't have the `\` character in.  rclone maps this to
+Box file names can't have the `\` character in.  zclone maps this to
 and from an identical looking unicode equivalent `＼` (U+FF3C Fullwidth
 Reverse Solidus).
 
 Box only supports filenames up to 255 characters in length.
 
 Box has [API rate limits](https://developer.box.com/guides/api-calls/permissions-and-errors/rate-limits/)
-that sometimes reduce the speed of rclone.
+that sometimes reduce the speed of zclone.
 
-`rclone about` is not supported by the Box backend. Backends without
-this capability cannot determine free space for an rclone mount or
-use policy `mfs` (most free space) as a member of an rclone union
+`zclone about` is not supported by the Box backend. Backends without
+this capability cannot determine free space for an zclone mount or
+use policy `mfs` (most free space) as a member of an zclone union
 remote.
 
-See [List of backends that do not support rclone about](https://rclone.org/overview/#optional-features)
-and [rclone about](https://rclone.org/commands/rclone_about/).
+See [List of backends that do not support zclone about](//overview/#optional-features)
+and [zclone about](//commands/zclone_about/).
 
 ## Get your own Box App ID
 
-Here is how to create your own Box App ID for rclone:
+Here is how to create your own Box App ID for zclone:
 
 1. Go to the [Box Developer Console](https://app.box.com/developers/console)
 and login, then click `My Apps` on the sidebar. Click `Create New App`
@@ -550,7 +550,7 @@ automation to avoid having to fill out anything else. Click `Next`.
 
 4. You should now be on the `Configuration` tab of your new app. If not,
 click on it at the top of the webpage. Copy down `Client ID`
-and `Client Secret`, you'll need those for rclone.
+and `Client Secret`, you'll need those for zclone.
 
 5. Under "OAuth 2.0 Redirect URI", add `http://127.0.0.1:53682/`
 

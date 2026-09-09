@@ -30,7 +30,7 @@ func TestGetConfig(t *testing.T) {
 	assert.Equal(t, config2, config2ctx)
 }
 
-// The rc request marker must survive CopyConfig, which is how rclone
+// The rc request marker must survive CopyConfig, which is how zclone
 // does detach context but keep config.
 func TestRCRequestContext(t *testing.T) {
 	ctx := context.Background()

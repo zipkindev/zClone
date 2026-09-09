@@ -3,7 +3,7 @@ test extended-filenames
 # that contain UTF-8 code points or whitespace.
 #
 # Notes:
-# - All rclone backends including local return "\n" aka {eol} in file names
+# - All zclone backends including local return "\n" aka {eol} in file names
 #   as a pseudographic unicode glyph, thus we don't see `\n` in golden logs.
 # - File names with "\t" aka {tab} pass with local, dropbox, and drive
 #   backends, but fail with FTP. As a workaround, the test currently uses

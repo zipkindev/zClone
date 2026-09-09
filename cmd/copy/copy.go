@@ -5,12 +5,12 @@ import (
 	"context"
 	"strings"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/operations/operationsflags"
-	"github.com/rclone/rclone/fs/sync"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs/config/flags"
+	"zclone/fs/operations"
+	"zclone/fs/operations/operationsflags"
+	"zclone/fs/sync"
 )
 
 var (
@@ -35,14 +35,14 @@ var commandDefinition = &cobra.Command{
 identical on source and destination, testing by size and modification
 time or MD5SUM.  Doesn't delete files from the destination. If you
 want to also delete files from destination, to make it match source,
-use the [sync](/commands/rclone_sync/) command instead.
+use the [sync](/commands/zclone_sync/) command instead.
 
 Note that it is always the contents of the directory that is synced,
 not the directory itself. So when source:path is a directory, it's the
 contents of source:path that are copied, not the directory name and
 contents.
 
-To copy single files, use the [copyto](/commands/rclone_copyto/)
+To copy single files, use the [copyto](/commands/zclone_copyto/)
 command instead.
 
 If dest:path doesn't exist, it is created and the source:path contents
@@ -51,7 +51,7 @@ go there.
 For example
 
 |||sh
-rclone copy source:sourcepath dest:destpath
+zclone copy source:sourcepath dest:destpath
 |||
 
 Let's say there are two files in sourcepath
@@ -75,13 +75,13 @@ destpath/sourcepath/one.txt
 destpath/sourcepath/two.txt
 |||
 
-If you are familiar with |rsync|, rclone always works as if you had
+If you are familiar with |rsync|, zclone always works as if you had
 written a trailing |/| - meaning "copy the contents of this directory".
 This applies to all commands and whether you are talking about the
 source or destination.
 
 See the [--no-traverse](/docs/#no-traverse) option for controlling
-whether rclone lists the destination directory or not.  Supplying this
+whether zclone lists the destination directory or not.  Supplying this
 option when copying a small number of files into a large destination
 can speed transfers up greatly.
 
@@ -90,15 +90,15 @@ them change every day, you can copy all the files which have changed
 recently very efficiently like this:
 
 |||sh
-rclone copy --max-age 24h --no-traverse /path/to/src remote:
+zclone copy --max-age 24h --no-traverse /path/to/src remote:
 |||
 
-Rclone will sync the modification times of files and directories if
+Zclone will sync the modification times of files and directories if
 the backend supports it. If metadata syncing is required then use the
 |--metadata| flag.
 
 Note that the modification time and metadata for the root directory
-will **not** be synced. See [issue #7652](https://github.com/rclone/rclone/issues/7652)
+will **not** be synced. See [issue #7652](/)
 for more info.
 
 **Note**: Use the |-P|/|--progress| flag to view real-time transfer statistics.

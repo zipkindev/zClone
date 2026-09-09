@@ -9,8 +9,8 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/fs"
+	"zclone/lib/rest"
 )
 
 // Uploader holds all information about a currently running upload

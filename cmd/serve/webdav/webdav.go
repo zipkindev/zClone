@@ -1,4 +1,4 @@
-// Package webdav implements a WebDAV server backed by rclone VFS
+// Package webdav implements a WebDAV server backed by zclone VFS
 package webdav
 
 import (
@@ -16,22 +16,22 @@ import (
 
 	chi "github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/rclone/rclone/cmd"
-	cmdserve "github.com/rclone/rclone/cmd/serve"
-	"github.com/rclone/rclone/cmd/serve/proxy"
-	"github.com/rclone/rclone/cmd/serve/proxy/proxyflags"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/rc"
-	libhttp "github.com/rclone/rclone/lib/http"
-	"github.com/rclone/rclone/lib/http/serve"
-	"github.com/rclone/rclone/lib/systemd"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
-	"github.com/rclone/rclone/vfs/vfsflags"
 	"github.com/spf13/cobra"
 	"golang.org/x/net/webdav"
+	"zclone/cmd"
+	cmdserve "zclone/cmd/serve"
+	"zclone/cmd/serve/proxy"
+	"zclone/cmd/serve/proxy/proxyflags"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/hash"
+	"zclone/fs/rc"
+	libhttp "zclone/lib/http"
+	"zclone/lib/http/serve"
+	"zclone/lib/systemd"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
+	"zclone/vfs/vfsflags"
 )
 
 // OptionsInfo describes the Options in use
@@ -115,9 +115,9 @@ browser, or you can make a remote of type WebDAV to read and write it.
 This controls the ETag header.  Without this flag the ETag will be
 based on the ModTime and Size of the object.
 
-If this flag is set to "auto" then rclone will choose the first
+If this flag is set to "auto" then zclone will choose the first
 supported hash on the backend or you can use a named hash such as
-"MD5" or "SHA-1". Use the [hashsum](/commands/rclone_hashsum/) command
+"MD5" or "SHA-1". Use the [hashsum](/commands/zclone_hashsum/) command
 to see the full list.
 
 ### Gzip compression
@@ -168,13 +168,13 @@ Create a new DWORD BasicAuthLevel with value 2.
 You can serve the webdav on a unix socket like this:
 
 ` + "```console" + `
-rclone serve webdav --addr unix:///tmp/my.socket remote:path
+zclone serve webdav --addr unix:///tmp/my.socket remote:path
 ` + "```" + `
 
-and connect to it like this using rclone and the webdav backend:
+and connect to it like this using zclone and the webdav backend:
 
 ` + "```console" + `
-rclone --webdav-unix-socket /tmp/my.socket --webdav-url http://localhost lsf :webdav:
+zclone --webdav-unix-socket /tmp/my.socket --webdav-url http://localhost lsf :webdav:
 ` + "```" + `
 
 Note that there is no authentication on http protocol - this is expected to be
@@ -183,10 +183,10 @@ done by the permissions on the socket.
 ### Symlinks / Junction points
 
 The webdav protocol does not support symlinks or junction points and
-by default rclone will skip them completely.
+by default zclone will skip them completely.
 
-You can use ` + "`-L`" + ` to get rclone to follow symlinks or you can
-use ` + "`--local-links`" + ` to make rclone show ` + "`.rclonelink`" + `
+You can use ` + "`-L`" + ` to get zclone to follow symlinks or you can
+use ` + "`--local-links`" + ` to make zclone show ` + "`.zclonelink`" + `
 files in place of the symlinks.
 
 **NB** Do not use ` + "`--links`" + ` as since v1.69 this applies to
@@ -312,7 +312,7 @@ func newWebDAV(ctx context.Context, f fs.Fs, opt *Options, vfsOpt *vfscommon.Opt
 	router.Use(
 		webDAVCompressMiddleware(),
 		middleware.SetHeader("Accept-Ranges", "bytes"),
-		middleware.SetHeader("Server", "rclone/"+fs.Version),
+		middleware.SetHeader("Server", "zclone/"+fs.Version),
 	)
 
 	router.Handle("/*", w)

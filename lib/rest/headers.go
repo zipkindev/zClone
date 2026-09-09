@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 // ContentRange is a parsed Content-Range response header.

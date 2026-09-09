@@ -10,7 +10,7 @@ adoption: Some use
 docs: Full
 security: High
 virtual: false
-remote: TestSMB:rclone
+remote: TestSMB:zclone
 features:
 - About
 - BucketBased

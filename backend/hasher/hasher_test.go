@@ -5,12 +5,12 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/rclone/rclone/backend/hasher"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
-	"github.com/rclone/rclone/lib/kv"
+	"zclone/backend/hasher"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
+	"zclone/lib/kv"
 
-	_ "github.com/rclone/rclone/backend/all" // for integration tests
+	_ "zclone/backend/all" // for integration tests
 )
 
 // TestIntegration runs integration tests against the remote
@@ -28,7 +28,7 @@ func TestIntegration(t *testing.T) {
 		UnimplementableObjectMethods: []string{},
 	}
 	if *fstest.RemoteName == "" {
-		tempDir := filepath.Join(os.TempDir(), "rclone-hasher-test")
+		tempDir := filepath.Join(os.TempDir(), "zclone-hasher-test")
 		opt.ExtraConfig = []fstests.ExtraConfigItem{
 			{Name: "TestHasher", Key: "type", Value: "hasher"},
 			{Name: "TestHasher", Key: "remote", Value: tempDir},

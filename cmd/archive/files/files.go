@@ -13,9 +13,9 @@ import (
 	"time"
 
 	"github.com/mholt/archives"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/operations"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/operations"
 )
 
 // fill tar.Header with metadata if available (too bad username/groupname is not available)

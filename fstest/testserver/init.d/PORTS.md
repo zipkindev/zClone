@@ -13,11 +13,11 @@ They should be bound to localhost so they are not accessible externally.
 |  8087 | TestSeafile |
 |  8088 | TestSeafileEncrypted |
 |  9866 | TestHdfs |
-| 28620 | TestWebdavRclone |
-| 28621 | TestSFTPRclone |
-| 28622 | TestFTPRclone |
-| 28623 | TestSFTPRcloneSSH |
-| 28624 | TestS3Rclone |
+| 28620 | TestWebdavZclone |
+| 28621 | TestSFTPZclone |
+| 28622 | TestFTPZclone |
+| 28623 | TestSFTPZcloneSSH |
+| 28624 | TestS3Zclone |
 | 28625 | TestS3Minio |
 | 28626 | TestS3MinioEdge |
 | 28627 | TestSFTPOpenssh |

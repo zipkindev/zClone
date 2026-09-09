@@ -4,15 +4,15 @@ package ftp_test
 import (
 	"testing"
 
-	"github.com/rclone/rclone/backend/ftp"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
+	"zclone/backend/ftp"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
 )
 
-// TestIntegration runs integration tests against rclone FTP server
+// TestIntegration runs integration tests against zclone FTP server
 func TestIntegration(t *testing.T) {
 	fstests.Run(t, &fstests.Opt{
-		RemoteName: "TestFTPRclone:",
+		RemoteName: "TestFTPZclone:",
 		NilObject:  (*ftp.Object)(nil),
 	})
 }

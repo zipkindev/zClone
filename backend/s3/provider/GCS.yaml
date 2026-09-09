@@ -8,7 +8,7 @@ acl: {}
 bucket_acl: true
 quirks:
   # Google break request Signature by mutating accept-encoding HTTP header
-  # https://github.com/rclone/rclone/issues/6670
+  # /
   use_accept_encoding_gzip: false
   sign_accept_encoding: false
   use_already_exists: true # returns BucketNameUnavailable instead of BucketAlreadyExists but good enough!

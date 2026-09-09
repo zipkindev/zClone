@@ -17,21 +17,21 @@ import (
 
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
-	_ "github.com/rclone/rclone/backend/local"
-	_ "github.com/rclone/rclone/backend/s3" // for TestS3Minio backing remote
-	"github.com/rclone/rclone/cmd/serve/proxy"
-	"github.com/rclone/rclone/cmd/serve/servetest"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/testy"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/vfs/vfscommon"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	_ "zclone/backend/s3" // for TestS3Minio backing remote
+	"zclone/cmd/serve/proxy"
+	"zclone/cmd/serve/servetest"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/hash"
+	"zclone/fs/object"
+	"zclone/fs/rc"
+	"zclone/fstest"
+	"zclone/fstest/testy"
+	"zclone/lib/random"
+	"zclone/vfs/vfscommon"
 )
 
 const (
@@ -62,7 +62,7 @@ func startS3(t *testing.T) servetest.StartFn {
 		// Config for the backend we'll use to connect to the server
 		config := configmap.Simple{
 			"type":              "s3",
-			"provider":          "Rclone",
+			"provider":          "Zclone",
 			"endpoint":          testURL,
 			"access_key_id":     keyid,
 			"secret_access_key": keysec,

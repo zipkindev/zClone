@@ -10,12 +10,12 @@ import (
 	"testing"
 	"unicode/utf8"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/asyncreader"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/lib/readers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/asyncreader"
+	"zclone/fs/fserrors"
+	"zclone/lib/readers"
 )
 
 // Check it satisfies the interfaces

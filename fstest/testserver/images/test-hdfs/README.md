@@ -1,13 +1,13 @@
 # Test HDFS
 
-This is a docker image for rclone's integration tests which runs an
+This is a docker image for zclone's integration tests which runs an
 hdfs filesystem in a docker image.
 
 ## Build
 
 ```
-docker build --rm -t rclone/test-hdfs .
-docker push rclone/test-hdfs
+docker build --rm -t zclone/test-hdfs .
+docker push zclone/test-hdfs
 ```
 
 # Test
@@ -35,9 +35,9 @@ test can be run against kerberos-enabled hdfs
 1. configure local krb5.conf
     ```
     [libdefaults]
-        default_realm = KERBEROS.RCLONE
+        default_realm = KERBEROS.ZCLONE
     [realms]
-        KERBEROS.RCLONE = {
+        KERBEROS.ZCLONE = {
             kdc = localhost
         }
     ```

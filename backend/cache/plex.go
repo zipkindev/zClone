@@ -15,8 +15,8 @@ import (
 	"time"
 
 	cache "github.com/patrickmn/go-cache"
-	"github.com/rclone/rclone/fs"
 	"golang.org/x/net/websocket"
+	"zclone/fs"
 )
 
 const (
@@ -183,8 +183,8 @@ func (p *plexConnector) listenWebsocket() {
 
 // fillDefaultHeaders will add common headers to requests
 func (p *plexConnector) fillDefaultHeaders(req *http.Request) {
-	req.Header.Add("X-Plex-Client-Identifier", fmt.Sprintf("rclone (%v)", p.f.String()))
-	req.Header.Add("X-Plex-Product", fmt.Sprintf("rclone (%v)", p.f.Name()))
+	req.Header.Add("X-Plex-Client-Identifier", fmt.Sprintf("zclone (%v)", p.f.String()))
+	req.Header.Add("X-Plex-Product", fmt.Sprintf("zclone (%v)", p.f.Name()))
 	req.Header.Add("X-Plex-Version", fs.Version)
 	req.Header.Add("Accept", "application/json")
 	if p.token != "" {
@@ -234,14 +234,14 @@ func (p *plexConnector) authenticate() error {
 	return nil
 }
 
-// isConnected checks if this rclone is authenticated to Plex
+// isConnected checks if this zclone is authenticated to Plex
 func (p *plexConnector) isConnected() bool {
 	p.runningMu.Lock()
 	defer p.runningMu.Unlock()
 	return p.running
 }
 
-// isConfigured checks if this rclone is configured to use a Plex server
+// isConfigured checks if this zclone is configured to use a Plex server
 func (p *plexConnector) isConfigured() bool {
 	return p.url != nil
 }

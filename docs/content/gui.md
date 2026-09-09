@@ -4,28 +4,27 @@ description: "Web based Graphical User Interface"
 versionIntroduced: "v1.49"
 ---
 
-# rclone gui
+# zclone gui
 
-The `rclone gui` command starts the official Web GUI that comes
-bundled with rclone.
+The `zclone gui` command starts the official Web GUI that comes
+bundled with zclone.
 
-With this command, rclone can serve a web-based GUI (graphical user
+With this command, zclone can serve a web-based GUI (graphical user
 interface) that is accessible from a normal web browser.
 
-Run it in a terminal and rclone will initialize and then start the
+Run it in a terminal and zclone will initialize and then start the
 GUI.
 
 ```console
-rclone gui
+zclone gui
 ```
 
-This will produce logs like this. The terminal window needs to stay
-open to continue to run the GUI:
+The terminal window needs to stay open to continue to run the GUI. It will log
+separate loopback URLs for the RC API and local control page:
 
 ```console
 2026/04/14 11:36:04 NOTICE: Serving remote control on http://127.0.0.1:50803/
 2026/04/14 11:36:04 NOTICE: Serving GUI on http://127.0.0.1:50802/
-2026/04/14 11:36:04 NOTICE: GUI available at http://127.0.0.1:50802/login?pass=XXX&url=http%3A%2F%2F127.0.0.1%3A50803%2F&user=gui
 ```
 
 You can also add debugging flags when running the GUI, such as `-v`,
@@ -33,76 +32,41 @@ which will show more logging output from the rc server.
 
 ## Using the GUI
 
-Once the browser opens, you will be presented with the Dashboard, the
-main screen where you can see the status of your remotes and system.
+The bundled local control page submits RC API commands. Enter the RC username
+and password locally in the page, choose an RC command such as `core/version`,
+and run it. Credentials are used only for that browser request: they are not
+written to the URL, persistent browser storage, or Zclone logs.
 
-At the top, starting from the left, you will see a series of tabs you
-can click on. On the right side you will have the logout button and
-potentially an "Update available" message if a new rclone version has
-been released.
-
-### Dashboard
-
-See live metrics, learn if your remotes are near capacity, and read
-the changelog for the current version.
-
-### Explorer
-
-Explore and manage both local disks and remotes, download files and
-directories and start transfers.
-
-### Remotes
-
-Scroll the list of remotes and tap on it to navigate to the explorer.
-There you can navigate the contents of your remotes, transfer,
-download, and even upload files.
-
-### Mounts
-
-Mount remotes as local drives on your computer and check on your
-existing mounts.
-
-### Serves
-
-Get quick info about your active serve instances, and start new ones.
-
-### Settings
-
-Edit your `rclone.conf` file directly, set logging flags, and
-performance parameters.
+The bundled page is intentionally local and minimal. It does not check for
+updates, collect telemetry, fetch external assets, or contact a central web
+service.
 
 ## How it works
 
-When you run `rclone gui` this is what happens
+When you run `zclone gui` this is what happens
 
-- Rclone starts the remote control API ("rc").
-- Rclone starts a second server to serve the Web GUI.
-- If a port, username or password is not specified, then missing
-  values will be auto-generated.
+- Zclone starts the remote control API ("rc").
+- Zclone starts a second server to serve the Web GUI.
+- Authentication requires `--pass` unless `--no-auth` is explicitly set.
+- If a username is not specified, Zclone uses `gui`.
 - Unless `--no-open-browser` is passed, a browser window will open.
-- The URL already contains the username & password, in which case the
-  GUI will use those values and log you in automatically.
+- The URL contains no credentials.
 
 ## Security
 
-It's important to think first about what rclone has access to and what
+It's important to think first about what zclone has access to and what
 you might be sharing.
 
 A few good measures:
 
-- Don't use `--no-auth` (this is for testing only).
+- Don't use `--no-auth` except on a trusted local network.
 - Do not expose to the local network (eg with `--api-addr :5572 --addr
   :8080`) unless you trust all devices on your local network. Prefer
   `127.0.0.1` or `localhost` (the default).
 - Use a strong password and non-obvious usernames like "admin" or
-  "rclone" if you are using `--user` and `--pass`.
-- If you want to host it on a server and access it remotely, make sure
-  you're only exposing the GUI and not the RC API. They listen on
-  different ports.
-
-If you want to access it remotely but want to avoid running a proxy
-and exposing ports, you can use Cloudflare Tunnels or localhost.run or
-Tailscale (all free).
+  "zclone" if you are using `--user` and `--pass`.
+- If you expose the GUI beyond loopback, configure a trusted reverse proxy,
+  TLS, and an explicit `--rc-allow-origin`. Do not expose the RC API directly.
 
 ## Options
 
@@ -117,8 +81,5 @@ Tailscale (all free).
       --user string            User name for RC authentication
 ```
 
-## History
-
-In v1.74 the GUI was redone and embedded within rclone for ease of
-use. The GUI bundle ships as a compressed zip embedded in the rclone
-binary and is served from the zip at runtime.
+The GUI bundle ships as a compressed zip embedded in the Zclone binary and is
+served from the zip at runtime.

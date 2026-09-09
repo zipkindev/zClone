@@ -1,4 +1,4 @@
-// Package operationsflags defines the flags used by rclone operations.
+// Package operationsflags defines the flags used by zclone operations.
 // It is decoupled into a separate package so it can be replaced.
 package operationsflags
 
@@ -9,12 +9,12 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
 )
 
 //go:embed operationsflags.md

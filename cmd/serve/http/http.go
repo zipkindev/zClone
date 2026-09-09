@@ -15,21 +15,21 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/rclone/rclone/cmd"
-	cmdserve "github.com/rclone/rclone/cmd/serve"
-	"github.com/rclone/rclone/cmd/serve/proxy"
-	"github.com/rclone/rclone/cmd/serve/proxy/proxyflags"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/rc"
-	libhttp "github.com/rclone/rclone/lib/http"
-	"github.com/rclone/rclone/lib/http/serve"
-	"github.com/rclone/rclone/lib/systemd"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
-	"github.com/rclone/rclone/vfs/vfsflags"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	cmdserve "zclone/cmd/serve"
+	"zclone/cmd/serve/proxy"
+	"zclone/cmd/serve/proxy/proxyflags"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/config/flags"
+	"zclone/fs/rc"
+	libhttp "zclone/lib/http"
+	"zclone/lib/http/serve"
+	"zclone/lib/systemd"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
+	"zclone/vfs/vfsflags"
 )
 
 // OptionsInfo describes the Options in use
@@ -200,7 +200,7 @@ func newServer(ctx context.Context, f fs.Fs, opt *Options, vfsOpt *vfscommon.Opt
 	router.Use(
 		middleware.Compress(5),
 		middleware.SetHeader("Accept-Ranges", "bytes"),
-		middleware.SetHeader("Server", "rclone/"+fs.Version),
+		middleware.SetHeader("Server", "zclone/"+fs.Version),
 	)
 	router.Get("/favicon.ico", s.serveFavicon)
 	router.Get("/*", s.handler)
@@ -230,7 +230,7 @@ func (s *HTTP) Shutdown() error {
 }
 
 // serveFavicon serves the remote's favicon.ico if it exists, otherwise
-// the rclone favicon
+// the zclone favicon
 func (s *HTTP) serveFavicon(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	VFS, err := s.getVFS(ctx)
@@ -242,7 +242,7 @@ func (s *HTTP) serveFavicon(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	// Serve the embedded rclone favicon
+	// Serve the embedded zclone favicon
 	w.Header().Set("Content-Type", "image/png")
 	w.Header().Set("Cache-Control", "max-age=86400")
 	if _, err := w.Write(faviconData); err != nil {

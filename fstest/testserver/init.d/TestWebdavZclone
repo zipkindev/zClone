@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -e
+
+NAME=zclone-serve-webdav
+USER=zclone
+PASS=PagansSwimExpiry9
+IP=127.0.0.1
+PORT=28620
+
+start() {
+    run zclone serve webdav --user $USER --pass $PASS --addr ${IP}:${PORT} ${DATADIR}
+    
+    echo type=webdav
+    echo vendor=zclone
+    echo url=http://${IP}:${PORT}/
+    echo user=$USER
+    echo pass=$(zclone obscure $PASS)
+    echo _connect=${IP}:$PORT
+}
+
+. $(dirname "$0")/zclone-serve.bash

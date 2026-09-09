@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/lib/pacer"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/lib/pacer"
 )
 
 // newTestFs returns a bare *Fs carrying just the throttle state shouldRetry

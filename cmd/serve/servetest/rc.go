@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/vfs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs/rc"
+	"zclone/vfs"
 )
 
 // GetEphemeralPort opens a listening port on localhost:0, closes it,

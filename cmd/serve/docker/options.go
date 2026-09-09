@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rclone/rclone/cmd/mountlib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/vfs/vfscommon"
+	"zclone/cmd/mountlib"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fspath"
+	"zclone/fs/rc"
+	"zclone/vfs/vfscommon"
 )
 
 // applyOptions configures volume from request options.
@@ -25,12 +25,12 @@ import (
 //   - "mount-type" can be "mount", "cmount" or "mount2", defaults to
 //     first found (optional).
 //   - "persist" is reserved for future to create remotes persisted
-//     in rclone.conf similar to rcd (optional).
+//     in zclone.conf similar to rcd (optional).
 //
 // Unlike rcd we use the flat naming scheme for mount, vfs and backend
 // options without substructures. Dashes, underscores and mixed case
 // in option names can be used interchangeably. Option name conflicts
-// can be resolved in a manner similar to rclone CLI by adding prefixes:
+// can be resolved in a manner similar to zclone CLI by adding prefixes:
 // "vfs-", primary mount backend type like "sftp-", and so on.
 //
 // After triaging the options are put in MountOpt, VFSOpt or connect

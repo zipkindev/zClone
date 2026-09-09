@@ -9,7 +9,7 @@ TEST_LIBRARY_PASSWORD=SecretKey
 # environment variables passed on docker-compose
 export NAME=seafile7encrypted
 export MYSQL_ROOT_PASSWORD=pixenij4zacoguq0kopamid6
-export SEAFILE_ADMIN_EMAIL=seafile@rclone.org
+export SEAFILE_ADMIN_EMAIL=seafile@zclone.org
 export SEAFILE_ADMIN_PASSWORD=pixenij4zacoguq0kopamid6
 export SEAFILE_IP=127.0.0.1
 export SEAFILE_PORT=8088
@@ -41,9 +41,9 @@ start() {
     echo type=seafile
     echo url=http://${SEAFILE_IP}:${SEAFILE_PORT}/
     echo user=${SEAFILE_ADMIN_EMAIL}
-    echo pass=$(rclone obscure ${SEAFILE_ADMIN_PASSWORD})
+    echo pass=$(zclone obscure ${SEAFILE_ADMIN_PASSWORD})
     echo library=${TEST_LIBRARY}
-    echo library_key=$(rclone obscure ${TEST_LIBRARY_PASSWORD})
+    echo library_key=$(zclone obscure ${TEST_LIBRARY_PASSWORD})
 }
 
 stop() {

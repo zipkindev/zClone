@@ -1,7 +1,7 @@
 test filtersfile-checks
 # Tests bisync's --filters-file MD5 hash checks logic
 # Note that this test checks for bisync's handling of the filters files,
-# not an extensive test of rclone's filter capability.
+# not an extensive test of zclone's filter capability.
 # The effectiveness of the filters is not tested.
 # Sequence:
 #  1. Run with --filters-file but with no MD5. Should critical abort.

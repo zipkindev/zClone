@@ -9,9 +9,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs/config/configfile"
 	"github.com/stretchr/testify/require"
+	"zclone/cmd"
+	"zclone/fs/config/configfile"
 )
 
 // createOverwriteDeleteSeq returns a sequence which will create a new file at
@@ -108,7 +108,7 @@ func TestResticHandler(t *testing.T) {
 		},
 	}
 
-	// setup rclone with a local backend in a temporary directory
+	// setup zclone with a local backend in a temporary directory
 	tempdir := t.TempDir()
 
 	// set append-only mode

@@ -12,18 +12,18 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/cmd/bisync/bilib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/mockfs"
-	"github.com/rclone/rclone/fstest/mockobject"
-	"github.com/rclone/rclone/lib/readers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/text/unicode/norm"
+	"zclone/cmd/bisync/bilib"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
+	"zclone/fstest"
+	"zclone/fstest/mockfs"
+	"zclone/fstest/mockobject"
+	"zclone/lib/readers"
 )
 
 func testCheck(t *testing.T, checkFunction func(ctx context.Context, opt *operations.CheckOpt) error) {

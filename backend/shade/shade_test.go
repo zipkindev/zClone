@@ -3,8 +3,8 @@ package shade_test
 import (
 	"testing"
 
-	"github.com/rclone/rclone/backend/shade"
-	"github.com/rclone/rclone/fstest/fstests"
+	"zclone/backend/shade"
+	"zclone/fstest/fstests"
 )
 
 // TestIntegration runs integration tests against the remote

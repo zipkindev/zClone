@@ -5,14 +5,14 @@ import (
 	"context"
 	"strings"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/fs/rc/rcflags"
-	"github.com/rclone/rclone/fs/rc/rcserver"
-	libhttp "github.com/rclone/rclone/lib/http"
-	"github.com/rclone/rclone/lib/systemd"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/rc"
+	"zclone/fs/rc/rcflags"
+	"zclone/fs/rc/rcserver"
+	libhttp "zclone/lib/http"
+	"zclone/lib/systemd"
 )
 
 func init() {
@@ -21,14 +21,15 @@ func init() {
 
 var commandDefinition = &cobra.Command{
 	Use:   "rcd <path to files to serve>*",
-	Short: `Run rclone listening to remote control commands only.`,
-	Long: `This runs rclone so that it only listens to remote control commands.
+	Short: `Run zclone listening to remote control commands only.`,
+	Long: `This runs zclone so that it only listens to remote control commands.
 
-This is useful if you are controlling rclone via the rc API.
+This is useful if you are controlling zclone via the rc API.
 
-If you pass in a path to a directory, rclone will serve that directory
+If you pass in a path to a directory, zclone will serve that directory
 for GET requests on the URL passed in.  It will also open the URL in
-the browser when rclone is run.
+the browser when zclone is run. If authentication is configured, the URL
+does not contain credentials.
 
 See the [rc documentation](/rc/) for more info on the rc flags.
 

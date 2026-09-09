@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/filter"
+	"zclone/fs"
+	"zclone/fs/filter"
 )
 
 func init() {
@@ -51,7 +51,7 @@ Note that these are the global options which are unaffected by use of
 the _config and _filter parameters. If you wish to read the parameters
 set in _config or _filter use options/local.
 
-This shows the internal names of the option within rclone which should
+This shows the internal names of the option within zclone which should
 map to the external options very easily with a few exceptions.
 `,
 	})
@@ -130,7 +130,7 @@ Likewise with "_filter".
 This call is mostly useful for seeing if _config and _filter passing
 is working.
 
-This shows the internal names of the option within rclone which should
+This shows the internal names of the option within zclone which should
 map to the external options very easily with a few exceptions.
 `,
 	})
@@ -164,16 +164,16 @@ For example:
 
 This sets DEBUG level logs (-vv) (these can be set by number or string)
 
-    rclone rc options/set --json '{"main": {"LogLevel": "DEBUG"}}'
-    rclone rc options/set --json '{"main": {"LogLevel": 8}}'
+    zclone rc options/set --json '{"main": {"LogLevel": "DEBUG"}}'
+    zclone rc options/set --json '{"main": {"LogLevel": 8}}'
 
 And this sets INFO level logs (-v)
 
-    rclone rc options/set --json '{"main": {"LogLevel": "INFO"}}'
+    zclone rc options/set --json '{"main": {"LogLevel": "INFO"}}'
 
 And this sets NOTICE level logs (normal without -v)
 
-    rclone rc options/set --json '{"main": {"LogLevel": "NOTICE"}}'
+    zclone rc options/set --json '{"main": {"LogLevel": "NOTICE"}}'
 `,
 	})
 }

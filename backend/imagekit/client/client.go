@@ -5,9 +5,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/fs"
+	"zclone/fs/fshttp"
+	"zclone/lib/rest"
 )
 
 // ImageKit main struct
@@ -47,7 +47,7 @@ func New(ctx context.Context, params NewParams) (*ImageKit, error) {
 
 	cliCtx, cliCfg := fs.AddConfig(ctx)
 
-	cliCfg.UserAgent = "rclone/imagekit"
+	cliCfg.UserAgent = "zclone/imagekit"
 	client := rest.NewClient(fshttp.NewClient(cliCtx))
 
 	client.SetUserPass(privateKey, "")

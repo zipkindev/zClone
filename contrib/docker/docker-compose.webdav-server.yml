@@ -1,11 +1,11 @@
-rclone-webdav-server:
-  container_name: rclone-webdav-server
+zclone-webdav-server:
+  container_name: zclone-webdav-server
 
-  image: rclone/rclone
+  image: zclone/zclone
   command:
-# Tweak here rclone's command line switches:
+# Tweak here zclone's command line switches:
 #    - "--config"
-#    - "/path/to/mounted/rclone.conf"
+#    - "/path/to/mounted/zclone.conf"
     - "--verbose"
     - "serve"
     - "webdav"
@@ -23,13 +23,13 @@ rclone-webdav-server:
   net: host
 
   # If you want to use port mapping instead of host networking,
-  # make sure to make rclone listen on 0.0.0.0.
+  # make sure to make zclone listen on 0.0.0.0.
   #ports:
   #  - "127.0.0.1:8080:8080"
 
-  # Here you have to map your host's rclone.conf directory to
-  # container's /root/.config/rclone/ dir (R/O).
+  # Here you have to map your host's zclone.conf directory to
+  # container's /root/.config/zclone/ dir (R/O).
   # If you have any remote referencing local files, you have to
   # map them here, too.
   volumes:
-    - ~/.config/rclone/:/root/.config/rclone/:ro
+    - ~/.config/zclone/:/root/.config/zclone/:ro

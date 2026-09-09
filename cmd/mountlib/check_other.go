@@ -8,7 +8,7 @@ func CheckMountEmpty(mountpoint string) error {
 	return checkMountEmpty(mountpoint)
 }
 
-// CheckMountReady should check if mountpoint is mounted by rclone.
+// CheckMountReady should check if mountpoint is mounted by zclone.
 // The check is implemented only for Linux so this does nothing.
 func CheckMountReady(mountpoint string) error {
 	return nil

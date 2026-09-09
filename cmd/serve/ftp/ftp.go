@@ -1,6 +1,6 @@
 //go:build !plan9
 
-// Package ftp implements an FTP server for rclone
+// Package ftp implements an FTP server for zclone
 package ftp
 
 import (
@@ -19,22 +19,22 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/serve"
-	"github.com/rclone/rclone/cmd/serve/proxy"
-	"github.com/rclone/rclone/cmd/serve/proxy/proxyflags"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
-	"github.com/rclone/rclone/vfs/vfsflags"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	ftp "goftp.io/server/v2"
+	"zclone/cmd"
+	"zclone/cmd/serve"
+	"zclone/cmd/serve/proxy"
+	"zclone/cmd/serve/proxy/proxyflags"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/config/flags"
+	"zclone/fs/config/obscure"
+	"zclone/fs/log"
+	"zclone/fs/rc"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
+	"zclone/vfs/vfsflags"
 )
 
 // OptionsInfo descripts the Options in use
@@ -216,8 +216,8 @@ func newServer(ctx context.Context, f fs.Fs, opt *Options, vfsOpt *vfscommon.Opt
 	}
 
 	ftpopt := &ftp.Options{
-		Name:           "Rclone FTP Server",
-		WelcomeMessage: "Welcome to Rclone " + fs.Version + " FTP Server",
+		Name:           "Zclone FTP Server",
+		WelcomeMessage: "Welcome to Zclone " + fs.Version + " FTP Server",
 		Driver:         d,
 		Hostname:       host,
 		Port:           portNum,

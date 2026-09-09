@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/rclone/rclone/backend/mailru/mrhash"
 	"github.com/stretchr/testify/assert"
+	"zclone/backend/mailru/mrhash"
 )
 
 func testChunk(t *testing.T, chunk int) {

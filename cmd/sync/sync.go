@@ -5,12 +5,12 @@ import (
 	"context"
 	"strings"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/operations/operationsflags"
-	"github.com/rclone/rclone/fs/sync"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs/config/flags"
+	"zclone/fs/operations"
+	"zclone/fs/operations/operationsflags"
+	"zclone/fs/sync"
 )
 
 var (
@@ -37,13 +37,13 @@ destination, testing by size and modification time or MD5SUM.
 Destination is updated to match source, including deleting files
 if necessary (except duplicate objects, see below). If you don't
 want to delete files from destination, use the
-[copy](/commands/rclone_copy/) command instead.
+[copy](/commands/zclone_copy/) command instead.
 
 **Important**: Since this can cause data loss, test first with the
 |--dry-run| or the |--interactive|/|i| flag.
 
 |||sh
-rclone sync --interactive SOURCE remote:DESTINATION
+zclone sync --interactive SOURCE remote:DESTINATION
 |||
 
 Files in the destination won't be deleted if there were any errors at any
@@ -55,7 +55,7 @@ deleted from local file systems unless |--links| is used.
 It is always the contents of the directory that is synced, not the
 directory itself. So when source:path is a directory, it's the contents of
 source:path that are copied, not the directory name and contents.  See
-extended explanation in the [copy](/commands/rclone_copy/) command if unsure.
+extended explanation in the [copy](/commands/zclone_copy/) command if unsure.
 
 If dest:path doesn't exist, it is created and the source:path contents
 go there.
@@ -65,19 +65,19 @@ the destination from the sync with a filter rule or by putting an
 exclude-if-present file inside the destination directory and sync to a
 destination that is inside the source directory.
 
-Rclone will sync the modification times of files and directories if
+Zclone will sync the modification times of files and directories if
 the backend supports it. If metadata syncing is required then use the
 |--metadata| flag.
 
 Note that the modification time and metadata for the root directory
-will **not** be synced. See <https://github.com/rclone/rclone/issues/7652>
+will **not** be synced. See </>
 for more info.
 
 **Note**: Use the |-P|/|--progress| flag to view real-time transfer statistics
 
-**Note**: Use the |rclone dedupe| command to deal with "Duplicate
+**Note**: Use the |zclone dedupe| command to deal with "Duplicate
 object/directory found in source/destination - ignoring" errors.
-See [this forum post](https://forum.rclone.org/t/sync-not-clearing-duplicates/14372)
+See [this forum post](/)
 for more info.
 
 `, "|", "`") + operationsflags.Help(),

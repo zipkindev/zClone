@@ -8,13 +8,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/fspath"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/fspath"
+	"zclone/fs/object"
+	"zclone/fs/operations"
 )
 
 var (
@@ -65,7 +65,7 @@ then add the ` + "`--localtime`" + ` flag.
 
 Metadata can be added when creating a new file with ` + "`--metadata-set`" + `.
 For example:
-  rclone touch remote:path -M --metadata-set key=value`,
+  zclone touch remote:path -M --metadata-set key=value`,
 	Annotations: map[string]string{
 		"versionIntroduced": "v1.39",
 		"groups":            "Filter,Listing,Important",

@@ -7,15 +7,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/readers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/object"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
+	"zclone/lib/encoder"
+	"zclone/lib/readers"
 )
 
 // A filename containing raw CR/LF must never survive encoding into an FTP
@@ -121,7 +121,7 @@ func (f *Fs) testUploadTimeout(t *testing.T) {
 	}
 }
 
-// rclone must support precise time with ProFtpd and PureFtpd out of the box.
+// zclone must support precise time with ProFtpd and PureFtpd out of the box.
 // The VsFtpd server does not support the MFMT command to set file time like
 // other servers but by default supports the MDTM command in the non-standard
 // two-argument form for the same purpose.

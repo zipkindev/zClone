@@ -17,27 +17,27 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/random"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
+	"zclone/lib/random"
 
-	"github.com/rclone/rclone/backend/zoho/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/oauthutil"
-	"github.com/rclone/rclone/lib/rest"
 	"golang.org/x/oauth2"
+	"zclone/backend/zoho/api"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/lib/dircache"
+	"zclone/lib/oauthutil"
+	"zclone/lib/rest"
 )
 
 const (
-	rcloneClientID              = "1000.46MXF275FM2XV7QCHX5A7K3LGME66B"
-	rcloneEncryptedClientSecret = "U-2gxclZQBcOG9NPhjiXAhj-f0uQ137D0zar8YyNHXHkQZlTeSpIOQfmCb4oSpvosJp_SJLXmLLeUA"
+	zcloneClientID              = "1000.46MXF275FM2XV7QCHX5A7K3LGME66B"
+	zcloneEncryptedClientSecret = "U-2gxclZQBcOG9NPhjiXAhj-f0uQ137D0zar8YyNHXHkQZlTeSpIOQfmCb4oSpvosJp_SJLXmLLeUA"
 	configRootID                = "root_folder_id"
 	// minSleep is the pacer's minimum delay between calls when --zoho-tpslimit
 	// is 0 (cap disabled); a small floor always remains because backoff and
@@ -97,8 +97,8 @@ var (
 		AuthURL:      "https://accounts.zoho.eu/oauth/v2/auth",
 		TokenURL:     "https://accounts.zoho.eu/oauth/v2/token",
 		AuthStyle:    oauth2.AuthStyleInParams,
-		ClientID:     rcloneClientID,
-		ClientSecret: obscure.MustReveal(rcloneEncryptedClientSecret),
+		ClientID:     zcloneClientID,
+		ClientSecret: obscure.MustReveal(zcloneEncryptedClientSecret),
 		RedirectURL:  oauthutil.RedirectLocalhostURL,
 	}
 	rootURL     = "https://workdrive.zoho.eu/api/v1"
@@ -268,7 +268,7 @@ browser.`,
 			}},
 		}, {
 			Name:      "root_folder_id",
-			Help:      "ID of the root folder.\n\nLeave blank normally.\n\nFill in to make rclone use a non root folder as its starting point.",
+			Help:      "ID of the root folder.\n\nLeave blank normally.\n\nFill in to make zclone use a non root folder as its starting point.",
 			Advanced:  true,
 			Sensitive: true,
 		}, {
@@ -713,7 +713,7 @@ func (f *Fs) shouldRetry(ctx context.Context, resp *http.Response, err error) (b
 
 	// Bail out early if we are missing OAuth Scopes.
 	if resp != nil && resp.StatusCode == 401 && strings.Contains(resp.Status, "INVALID_OAUTHSCOPE") {
-		fs.Errorf(nil, "zoho: missing OAuth Scope. Run rclone config reconnect to fix this issue.")
+		fs.Errorf(nil, "zoho: missing OAuth Scope. Run zclone config reconnect to fix this issue.")
 		return false, err
 	}
 
@@ -1612,7 +1612,7 @@ func (f *Fs) Move(ctx context.Context, src fs.Object, remote string) (fs.Object,
 	// another directory to make sure we don't overwrite something
 	// in the source directory by accident
 	if needRename && needMove {
-		tmpLeaf := "rcloneTemp" + random.String(8)
+		tmpLeaf := "zcloneTemp" + random.String(8)
 		if err = srcObj.rename(ctx, tmpLeaf); err != nil {
 			return nil, fmt.Errorf("move: pre move rename failed: %w", err)
 		}

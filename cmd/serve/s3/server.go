@@ -1,4 +1,4 @@
-// Package s3 implements a fake s3 server for rclone
+// Package s3 implements a fake s3 server for zclone
 package s3
 
 import (
@@ -14,14 +14,14 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/rclone/gofakes3"
-	"github.com/rclone/gofakes3/signature"
-	"github.com/rclone/rclone/cmd/serve/proxy"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
-	httplib "github.com/rclone/rclone/lib/http"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
+	"zclone/lib/gofakes3"
+	"zclone/lib/gofakes3/signature"
+	"zclone/cmd/serve/proxy"
+	"zclone/fs"
+	"zclone/fs/hash"
+	httplib "zclone/lib/http"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
 )
 
 type ctxKey int

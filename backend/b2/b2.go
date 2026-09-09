@@ -1,7 +1,7 @@
 // Package b2 provides an interface to the Backblaze B2 object storage system.
 package b2
 
-// FIXME should we remove sha1 checks from here as rclone now supports
+// FIXME should we remove sha1 checks from here as zclone now supports
 // checking SHA1s?
 
 import (
@@ -24,23 +24,23 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/backend/b2/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/bucket"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/multipart"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/pool"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/b2/api"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/fs/operations"
+	"zclone/lib/bucket"
+	"zclone/lib/encoder"
+	"zclone/lib/multipart"
+	"zclone/lib/pacer"
+	"zclone/lib/pool"
+	"zclone/lib/rest"
 )
 
 const (
@@ -174,7 +174,7 @@ in memory.`,
 			Name: "disable_checksum",
 			Help: `Disable checksums for large (> upload cutoff) files.
 
-Normally rclone will calculate the SHA1 checksum of the input before
+Normally zclone will calculate the SHA1 checksum of the input before
 uploading it so it can add it to metadata on the object. This is great
 for data integrity checking but can cause long delays for large files
 to start uploading.`,
@@ -186,13 +186,13 @@ to start uploading.`,
 
 This is usually set to a Cloudflare CDN URL as Backblaze offers
 free egress for data downloaded through the Cloudflare network.
-Rclone works with private buckets by sending an "Authorization" header.
+Zclone works with private buckets by sending an "Authorization" header.
 If the custom endpoint rewrites the requests for authentication,
 e.g., in Cloudflare Workers, this header needs to be handled properly.
 Leave blank if you want to use the endpoint provided by Backblaze.
 
 The URL provided here SHOULD have the protocol and SHOULD NOT have
-a trailing slash or specify the /file/bucket subpath as rclone will
+a trailing slash or specify the /file/bucket subpath as zclone will
 request files with "{download_url}/file/{bucket_name}/{path}".
 
 Example:
@@ -203,7 +203,7 @@ Example:
 			Name: "download_auth_duration",
 			Help: `Time before the public link authorization token will expire in s or suffix ms|s|m|h|d.
 
-This is used in combination with "rclone link" for making files
+This is used in combination with "zclone link" for making files
 accessible to the public and sets the duration before the download
 authorization token will expire.
 
@@ -243,7 +243,7 @@ You can also enable hard_delete in the config also which will mean
 deletions won't cause versions but overwrites will still cause
 versions to be made.
 
-See: [rclone backend lifecycle](#lifecycle) for setting lifecycles after bucket creation.
+See: [zclone backend lifecycle](#lifecycle) for setting lifecycles after bucket creation.
 `,
 			Default:  0,
 			Advanced: true,
@@ -2417,7 +2417,7 @@ var lifecycleHelp = fs.CommandHelp{
 To show the current lifecycle rules:
 
 ` + "```console" + `
-rclone backend lifecycle b2:bucket
+zclone backend lifecycle b2:bucket
 ` + "```" + `
 
 This will dump something like this showing the lifecycle rules.
@@ -2438,13 +2438,13 @@ If there are no lifecycle rules (the default) then it will just return ` + "`[]`
 To reset the current lifecycle rules:
 
 ` + "```console" + `
-rclone backend lifecycle b2:bucket -o daysFromHidingToDeleting=30
-rclone backend lifecycle b2:bucket -o daysFromUploadingToHiding=5 -o daysFromHidingToDeleting=1
+zclone backend lifecycle b2:bucket -o daysFromHidingToDeleting=30
+zclone backend lifecycle b2:bucket -o daysFromUploadingToHiding=5 -o daysFromHidingToDeleting=1
 ` + "```" + `
 
 This will run and then print the new lifecycle rules as above.
 
-Rclone only lets you set lifecycles for the whole bucket with the
+Zclone only lets you set lifecycles for the whole bucket with the
 fileNamePrefix = "".
 
 You can't disable versioning with B2. The best you can do is to set
@@ -2453,7 +2453,7 @@ the config also which will mean deletions won't cause versions but
 overwrites will still cause versions to be made.
 
 ` + "```console" + `
-rclone backend lifecycle b2:bucket -o daysFromHidingToDeleting=1
+zclone backend lifecycle b2:bucket -o daysFromHidingToDeleting=1
 ` + "```" + `
 
 See: <https://www.backblaze.com/docs/cloud-storage-lifecycle-rules>`,
@@ -2546,11 +2546,11 @@ Note that you can use --interactive/-i or --dry-run with this command to see wha
 it would do.
 
 ` + "```console" + `
-rclone backend cleanup b2:bucket/path/to/object
-rclone backend cleanup -o max-age=7w b2:bucket/path/to/object
+zclone backend cleanup b2:bucket/path/to/object
+zclone backend cleanup -o max-age=7w b2:bucket/path/to/object
 ` + "```" + `
 
-Durations are parsed as per the rest of rclone, 2h, 7d, 7w etc.`,
+Durations are parsed as per the rest of zclone, 2h, 7d, 7w etc.`,
 	Opts: map[string]string{
 		"max-age": "Max age of upload to delete.",
 	},
@@ -2576,7 +2576,7 @@ Note that you can use --interactive/-i or --dry-run with this command to see wha
 it would do.
 
 ` + "```console" + `
-rclone backend cleanup-hidden b2:bucket/path/to/dir
+zclone backend cleanup-hidden b2:bucket/path/to/dir
 ` + "```",
 }
 

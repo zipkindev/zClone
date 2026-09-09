@@ -4,8 +4,8 @@ package pikpak
 import (
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fstest/fstests"
+	"zclone/fs"
+	"zclone/fstest/fstests"
 )
 
 // TestIntegration runs integration tests against the remote

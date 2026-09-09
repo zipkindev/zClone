@@ -1,4 +1,4 @@
-// Package fs is a generic file system interface for rclone object storage systems
+// Package fs is a generic file system interface for zclone object storage systems
 package fs
 
 import (
@@ -18,7 +18,7 @@ const (
 	// MaxLevel is a sentinel representing an infinite depth for listings
 	MaxLevel = math.MaxInt32
 	// The suffix added to a translated symbolic link
-	LinkSuffix = ".rclonelink"
+	LinkSuffix = ".zclonelink"
 )
 
 // Globals

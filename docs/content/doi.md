@@ -1,6 +1,6 @@
 ---
 title: "DOI"
-description: "Rclone docs for DOI"
+description: "Zclone docs for DOI"
 versionIntroduced: "v1.70"
 ---
 
@@ -28,7 +28,7 @@ Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -79,7 +79,7 @@ The DOI or the doi.org URL.
 Properties:
 
 - Config:      doi
-- Env Var:     RCLONE_DOI_DOI
+- Env Var:     ZCLONE_DOI_DOI
 - Type:        string
 - Required:    true
 
@@ -91,12 +91,12 @@ Here are the Advanced options specific to doi (DOI datasets).
 
 DOI provider.
 
-The DOI provider can be set when rclone does not automatically recognize a supported DOI provider.
+The DOI provider can be set when zclone does not automatically recognize a supported DOI provider.
 
 Properties:
 
 - Config:      provider
-- Env Var:     RCLONE_DOI_PROVIDER
+- Env Var:     ZCLONE_DOI_PROVIDER
 - Type:        string
 - Required:    false
 - Examples:
@@ -120,7 +120,7 @@ Defaults to "https://doi.org/api".
 Properties:
 
 - Config:      doi_resolver_api_url
-- Env Var:     RCLONE_DOI_DOI_RESOLVER_API_URL
+- Env Var:     ZCLONE_DOI_DOI_RESOLVER_API_URL
 - Type:        string
 - Required:    false
 
@@ -131,7 +131,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_DOI_DESCRIPTION
+- Env Var:     ZCLONE_DOI_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -142,12 +142,12 @@ Here are the commands specific to the doi backend.
 Run them with:
 
 ```console
-rclone backend COMMAND remote:
+zclone backend COMMAND remote:
 ```
 
 The help below will explain what arguments each command takes.
 
-See the [backend](/commands/rclone_backend/) command for more
+See the [backend](/commands/zclone_backend/) command for more
 info on how to pass options and arguments.
 
 These can be run on a running backend using the rc command
@@ -158,7 +158,7 @@ These can be run on a running backend using the rc command
 Show metadata about the DOI.
 
 ```console
-rclone backend metadata remote: [options] [<arguments>+]
+zclone backend metadata remote: [options] [<arguments>+]
 ```
 
 This command returns a JSON object with some information about the DOI.
@@ -166,7 +166,7 @@ This command returns a JSON object with some information about the DOI.
 Usage example:
 
 ```console
-rclone backend metadata doi:
+zclone backend metadata doi:
 ```
 
 It returns a JSON object representing metadata about the DOI.
@@ -176,7 +176,7 @@ It returns a JSON object representing metadata about the DOI.
 Set command for updating the config parameters.
 
 ```console
-rclone backend set remote: [options] [<arguments>+]
+zclone backend set remote: [options] [<arguments>+]
 ```
 
 This set command can be used to update the config parameters
@@ -185,9 +185,9 @@ for a running doi backend.
 Usage examples:
 
 ```console
-rclone backend set doi: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
-rclone rc backend/command command=set fs=doi: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
-rclone rc backend/command command=set fs=doi: -o doi=NEW_DOI
+zclone backend set doi: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
+zclone rc backend/command command=set fs=doi: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
+zclone rc backend/command command=set fs=doi: -o doi=NEW_DOI
 ```
 
 The option keys are named as they are in the config file.

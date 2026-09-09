@@ -25,24 +25,24 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fs/walk"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/errcount"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/lib/readers"
-	"github.com/rclone/rclone/lib/transform"
 	"golang.org/x/sync/errgroup"
 	"golang.org/x/text/unicode/norm"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/cache"
+	"zclone/fs/config"
+	"zclone/fs/filter"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/fs/object"
+	"zclone/fs/walk"
+	"zclone/lib/atexit"
+	"zclone/lib/errcount"
+	"zclone/lib/pacer"
+	"zclone/lib/random"
+	"zclone/lib/readers"
+	"zclone/lib/transform"
 )
 
 // CheckHashes checks the two files to see if they have common
@@ -1433,7 +1433,7 @@ func rcatSrc(ctx context.Context, fdst fs.Fs, dstFileName string, in io.ReadClos
 			rs = bytes.NewReader(buf)
 		} else {
 			fs.Debugf(fdst, "Target remote doesn't support streaming uploads, creating temporary local FS to spool file")
-			spool, err := os.CreateTemp("", "rclone-spool")
+			spool, err := os.CreateTemp("", "zclone-spool")
 			if err != nil {
 				return nil, fmt.Errorf("failed to create temporary spool file: %v", err)
 			}
@@ -2028,7 +2028,7 @@ func MoveCaseInsensitive(ctx context.Context, fdst fs.Fs, fsrc fs.Fs, dstFileNam
 		return nil, nil
 	}
 	// Create random name to temporarily move file to
-	tmpObjName := dstFileName + "-rclone-move-" + random.String(8)
+	tmpObjName := dstFileName + "-zclone-move-" + random.String(8)
 	tmpObjFail, err := fdst.NewObject(ctx, tmpObjName)
 	if err != fs.ErrorObjectNotFound {
 		if err == nil {
@@ -2524,7 +2524,7 @@ func DirMove(ctx context.Context, f fs.Fs, srcRemote, dstRemote string) (err err
 // DirMoveCaseInsensitive does DirMove in two steps (to temp name, then real name)
 // which is necessary for some case-insensitive backends
 func DirMoveCaseInsensitive(ctx context.Context, f fs.Fs, srcRemote, dstRemote string) (err error) {
-	tmpDstRemote := dstRemote + "-rclone-move-" + random.String(8)
+	tmpDstRemote := dstRemote + "-zclone-move-" + random.String(8)
 	err = DirMove(ctx, f, srcRemote, tmpDstRemote)
 	if err != nil {
 		return err
@@ -2591,13 +2591,13 @@ func skipDestructiveChoose(ctx context.Context, subject any, action string) (ski
 	// otherwise it will deadlock with --interactive --progress
 	StdoutMutex.Lock()
 
-	fmt.Printf("\nrclone: %s \"%v\"?\n", action, subject)
+	fmt.Printf("\nzclone: %s \"%v\"?\n", action, subject)
 	i := config.CommandDefault([]string{
 		"yYes, this is OK",
 		"nNo, skip this",
 		fmt.Sprintf("sSkip all %s operations with no more questions", action),
 		fmt.Sprintf("!Do all %s operations with no more questions", action),
-		"qExit rclone now.",
+		"qExit zclone now.",
 	}, 0)
 
 	StdoutMutex.Unlock()
@@ -2616,7 +2616,7 @@ func skipDestructiveChoose(ctx context.Context, subject any, action string) (ski
 		skipped[action] = false
 		fs.Logf(nil, "Doing all %s operations from now on without asking", action)
 	case 'q':
-		fs.Logf(nil, "Quitting rclone now")
+		fs.Logf(nil, "Quitting zclone now")
 		atexit.Run()
 		os.Exit(0)
 	default:
@@ -2626,7 +2626,7 @@ func skipDestructiveChoose(ctx context.Context, subject any, action string) (ski
 	return skip
 }
 
-// SkipDestructive should be called whenever rclone is about to do an destructive operation.
+// SkipDestructive should be called whenever zclone is about to do an destructive operation.
 //
 // It will check the --dry-run flag and it will ask the user if the --interactive flag is set.
 //
@@ -2634,7 +2634,7 @@ func skipDestructiveChoose(ctx context.Context, subject any, action string) (ski
 //
 // action should be a descriptive word or short phrase
 //
-// Together they should make sense in this sentence: "Rclone is about
+// Together they should make sense in this sentence: "Zclone is about
 // to action subject".
 func SkipDestructive(ctx context.Context, subject any, action string) (skip bool) {
 	var flag string

@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/vfs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/vfs"
 )
 
 // TestFileModTime tests mod times on files
@@ -166,7 +166,7 @@ func TestSymlinks(t *testing.T) {
 		checkBaseState()
 	})
 
-	// Corner case #1 - We do not allow creating regular and symlink files having the same name (ie, test.txt and test.txt.rclonelink)
+	// Corner case #1 - We do not allow creating regular and symlink files having the same name (ie, test.txt and test.txt.zclonelink)
 
 	// Symlink first, then regular
 	t.Run("OverwriteSymlinkWithRegular", func(t *testing.T) {
@@ -200,7 +200,7 @@ func TestSymlinks(t *testing.T) {
 		checkBaseState()
 	})
 
-	// Corner case #2 - We do not allow creating directory and symlink file having the same name (ie, test and test.rclonelink)
+	// Corner case #2 - We do not allow creating directory and symlink file having the same name (ie, test and test.zclonelink)
 
 	// Symlink first, then directory
 	t.Run("OverwriteSymlinkWithDirectory", func(t *testing.T) {
@@ -230,7 +230,7 @@ func TestSymlinks(t *testing.T) {
 		checkBaseState()
 	})
 
-	// Corner case #3 - We do not allow moving directory or file having the same name in a target (ie, test and test.rclonelink)
+	// Corner case #3 - We do not allow moving directory or file having the same name in a target (ie, test and test.zclonelink)
 
 	// Move symlink -> regular file
 	t.Run("MoveSymlinkToFile", func(t *testing.T) {

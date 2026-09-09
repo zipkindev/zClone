@@ -7,13 +7,13 @@ import (
 	"io"
 	"sync"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/asyncreader"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/lib/multipart"
-	"github.com/rclone/rclone/lib/pool"
+	"zclone/fs"
+	"zclone/fs/asyncreader"
+	"zclone/fs/hash"
+	"zclone/fs/log"
+	"zclone/fs/operations"
+	"zclone/lib/multipart"
+	"zclone/lib/pool"
 )
 
 // parallel reads Object in chunks of a given size in parallel.

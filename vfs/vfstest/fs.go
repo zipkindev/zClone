@@ -1,4 +1,4 @@
-// Test suite for rclonefs
+// Test suite for zclonefs
 
 package vfstest
 
@@ -19,14 +19,14 @@ import (
 	"testing"
 	"time"
 
-	_ "github.com/rclone/rclone/backend/all" // import all the backends
-	"github.com/rclone/rclone/cmd/mountlib"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/walk"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/vfs/vfscommon"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/all" // import all the backends
+	"zclone/cmd/mountlib"
+	"zclone/fs"
+	"zclone/fs/walk"
+	"zclone/fstest"
+	"zclone/vfs/vfscommon"
 )
 
 const (

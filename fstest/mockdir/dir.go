@@ -4,7 +4,7 @@ package mockdir
 import (
 	"time"
 
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 // New makes a mock directory object with the name given

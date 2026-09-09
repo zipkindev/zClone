@@ -11,9 +11,9 @@ import (
 	"time"
 
 	"github.com/lanrat/extsort"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/errcount"
 	"golang.org/x/sync/errgroup"
+	"zclone/fs"
+	"zclone/lib/errcount"
 )
 
 // NewObjecter is the minimum facilities we need from the fs.Fs passed into NewSorter.

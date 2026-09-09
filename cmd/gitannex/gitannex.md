@@ -1,5 +1,5 @@
-Rclone's `gitannex` subcommand enables [git-annex] to store and retrieve content
-from an rclone remote. It is meant to be run by git-annex, not directly by
+Zclone's `gitannex` subcommand enables [git-annex] to store and retrieve content
+from an zclone remote. It is meant to be run by git-annex, not directly by
 users.
 
 [git-annex]: https://git-annex.branchable.com/
@@ -8,24 +8,24 @@ users.
 
 1. Skip this step if your version of git-annex is [10.20240430] or newer.
    Otherwise, you must create a symlink somewhere on your PATH with a particular
-   name. This symlink helps git-annex tell rclone it wants to run the "gitannex"
+   name. This symlink helps git-annex tell zclone it wants to run the "gitannex"
    subcommand.
 
    Create the helper symlink in "$HOME/bin":
 
    ```console
-   ln -s "$(realpath rclone)" "$HOME/bin/git-annex-remote-rclone-builtin"
+   ln -s "$(realpath zclone)" "$HOME/bin/git-annex-remote-zclone-builtin"
 
    Verify the new symlink is on your PATH:
 
    ```console
-   which git-annex-remote-rclone-builtin
+   which git-annex-remote-zclone-builtin
    ```
 
    [10.20240430]: https://git-annex.branchable.com/news/version_10.20240430/
 
 2. Add a new remote to your git-annex repo. This new remote will connect
-   git-annex with the `rclone gitannex` subcommand.
+   git-annex with the `zclone gitannex` subcommand.
 
    Start by asking git-annex to describe the remote's available configuration
    parameters.
@@ -33,39 +33,39 @@ users.
    If you skipped step 1:
 
    ```console
-   git annex initremote MyRemote type=rclone --whatelse
+   git annex initremote MyRemote type=zclone --whatelse
    ```
 
    If you created a symlink in step 1:
 
    ```console
-   git annex initremote MyRemote type=external externaltype=rclone-builtin --whatelse
+   git annex initremote MyRemote type=external externaltype=zclone-builtin --whatelse
     ```
 
-   > **NOTE**: If you're porting an existing [git-annex-remote-rclone] remote to
-   > use `rclone gitannex`, you can probably reuse the configuration parameters
+   > **NOTE**: If you're porting an existing [git-annex-remote-zclone] remote to
+   > use `zclone gitannex`, you can probably reuse the configuration parameters
    > verbatim without renaming them. Check parameter synonyms with `--whatelse`
    > as shown above.
    >
-   > [git-annex-remote-rclone]: https://github.com/git-annex-remote-rclone/git-annex-remote-rclone
+   > [git-annex-remote-zclone]: https://github.com/git-annex-remote-zclone/git-annex-remote-zclone
 
    The following example creates a new git-annex remote named "MyRemote" that
-   will use the rclone remote named "SomeRcloneRemote". That rclone remote must
-   be one configured in your rclone.conf file, which can be located with `rclone
+   will use the zclone remote named "SomeZcloneRemote". That zclone remote must
+   be one configured in your zclone.conf file, which can be located with `zclone
    config file`.
 
    ```console
    git annex initremote MyRemote         \
        type=external                     \
-       externaltype=rclone-builtin       \
+       externaltype=zclone-builtin       \
        encryption=none                   \
-       rcloneremotename=SomeRcloneRemote \
-       rcloneprefix=git-annex-content    \
-       rclonelayout=nodir
+       zcloneremotename=SomeZcloneRemote \
+       zcloneprefix=git-annex-content    \
+       zclonelayout=nodir
    ```
 
 3. Before you trust this command with your precious data, be sure to **test the
-   remote**. This command is very new and has not been tested on many rclone
+   remote**. This command is very new and has not been tested on many zclone
    backends. Caveat emptor!
 
    ```console

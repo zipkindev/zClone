@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/object"
 	"github.com/stretchr/testify/assert"
+	"zclone/fs"
+	"zclone/fs/hash"
+	"zclone/fs/object"
 )
 
 func TestStaticObject(t *testing.T) {

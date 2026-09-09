@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/check" // for common flags
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/cmd/check" // for common flags
+	"zclone/fs/config/flags"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
 )
 
 var download = false

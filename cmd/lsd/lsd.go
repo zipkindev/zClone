@@ -5,12 +5,12 @@ import (
 	"context"
 	"os"
 
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/ls/lshelp"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/cmd/ls/lshelp"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/operations"
 )
 
 var (
@@ -35,7 +35,7 @@ number of objects in the directory (if known, -1 if not) and the name
 of the directory, E.g.
 
 ` + "```console" + `
-$ rclone lsd swift:
+$ zclone lsd swift:
       494000 2018-04-26 08:43:20     10000 10000files
           65 2018-04-26 08:43:20         1 1File
 ` + "```" + `
@@ -43,13 +43,13 @@ $ rclone lsd swift:
 Or
 
 ` + "```console" + `
-$ rclone lsd drive:test
+$ zclone lsd drive:test
           -1 2016-10-17 17:41:53        -1 1000files
           -1 2017-01-03 14:40:54        -1 2500files
           -1 2017-07-08 14:39:28        -1 4000files
 ` + "```" + `
 
-If you just want the directory names use ` + "`rclone lsf --dirs-only`" + `.
+If you just want the directory names use ` + "`zclone lsf --dirs-only`" + `.
 
 ` + lshelp.Help,
 	Annotations: map[string]string{

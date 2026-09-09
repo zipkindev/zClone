@@ -7,10 +7,10 @@ import (
 	"path/filepath"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/all" // for integration tests
-	"github.com/rclone/rclone/backend/chunker"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
+	_ "zclone/backend/all" // for integration tests
+	"zclone/backend/chunker"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
 )
 
 // Command line flags
@@ -52,7 +52,7 @@ func TestIntegration(t *testing.T) {
 	if *fstest.RemoteName == "" {
 		name := "TestChunker"
 		opt.RemoteName = name + ":"
-		tempDir := filepath.Join(os.TempDir(), "rclone-chunker-test-standard")
+		tempDir := filepath.Join(os.TempDir(), "zclone-chunker-test-standard")
 		opt.ExtraConfig = []fstests.ExtraConfigItem{
 			{Name: name, Key: "type", Value: "chunker"},
 			{Name: name, Key: "remote", Value: tempDir},

@@ -1,6 +1,6 @@
 // This file implements operations.Copy
 //
-// This is probably the most important operation in rclone.
+// This is probably the most important operation in zclone.
 
 package operations
 
@@ -15,13 +15,13 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/transform"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/lib/atexit"
+	"zclone/lib/pacer"
+	"zclone/lib/transform"
 )
 
 // State of the copy
@@ -90,7 +90,7 @@ func TruncateString(s string, n int) string {
 // Check to see if we should be using a partial name and return the name for the copy and the inplace flag
 func (c *copy) checkPartial(ctx context.Context) (remoteForCopy string, inplace bool, err error) {
 	remoteForCopy = c.remote
-	if c.ci.Inplace || c.dstFeatures.Move == nil || !c.dstFeatures.PartialUploads || strings.HasSuffix(c.remote, ".rclonelink") {
+	if c.ci.Inplace || c.dstFeatures.Move == nil || !c.dstFeatures.PartialUploads || strings.HasSuffix(c.remote, ".zclonelink") {
 		return remoteForCopy, true, nil
 	}
 	if len(c.ci.PartialSuffix) > 16 {

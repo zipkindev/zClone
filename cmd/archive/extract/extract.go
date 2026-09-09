@@ -1,6 +1,6 @@
 //go:build !plan9
 
-// Package extract implements 'rclone archive extract'
+// Package extract implements 'zclone archive extract'
 package extract
 
 import (
@@ -12,13 +12,13 @@ import (
 	"strings"
 
 	"github.com/mholt/archives"
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/archive"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/operations"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/cmd/archive"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/filter"
+	"zclone/fs/operations"
 )
 
 func init() {
@@ -32,13 +32,13 @@ var Command = &cobra.Command{
 	Long: strings.ReplaceAll(`
 
 Extract the archive contents to a destination directory auto detecting
-the format. See [rclone archive create](/commands/rclone_archive_create/)
+the format. See [zclone archive create](/commands/zclone_archive_create/)
 for the archive formats supported.
 
 For example on this archive:
 
 |||
-$ rclone archive list --long remote:archive.zip
+$ zclone archive list --long remote:archive.zip
         6 2025-10-30 09:46:23.000000000 file.txt
         0 2025-10-30 09:46:57.000000000 dir/
         4 2025-10-30 09:46:57.000000000 dir/bye.txt
@@ -47,13 +47,13 @@ $ rclone archive list --long remote:archive.zip
 You can run extract like this
 
 |||
-$ rclone archive extract remote:archive.zip remote:extracted
+$ zclone archive extract remote:archive.zip remote:extracted
 |||
 
 Which gives this result
 
 |||
-$ rclone tree remote:extracted
+$ zclone tree remote:extracted
 /
 ├── dir
 │   └── bye.txt
@@ -65,8 +65,8 @@ The source or destination or both can be local or remote.
 Filters can be used to only extract certain files:
 
 |||
-$ rclone archive extract archive.zip partial --include "bye.*"
-$ rclone tree partial
+$ zclone archive extract archive.zip partial --include "bye.*"
+$ zclone tree partial
 /
 └── dir
     └── bye.txt
@@ -204,7 +204,7 @@ func ArchiveExtract(ctx context.Context, dst fs.Fs, dstDir string, src fs.Fs, sr
 //
 // Archive entry names are attacker controlled. A leading "./" is stripped:
 // tar archives created with relative paths (e.g. "tar -czf archive.tar.gz .")
-// use "./" prefixed entries and, without stripping, rclone would encode the
+// use "./" prefixed entries and, without stripping, zclone would encode the
 // "." as a full-width dot character creating a spurious directory.
 //
 // Any entry with a ".." path component is then rejected to prevent a path

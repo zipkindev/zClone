@@ -1,12 +1,12 @@
 *~
 _junk/
-rclone
-rclone.exe
+zclone
+zclone.exe
 build
 /docs/public/
 /docs/.hugo_build.lock
 /docs/static/img/logos/
-rclone.iml
+zclone.iml
 .idea
 .history
 .vscode
@@ -20,3 +20,6 @@ __pycache__
 .DS_Store
 resource_windows_*.syso
 .devcontainer
+.env
+.env.*
+!.env.example

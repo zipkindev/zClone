@@ -9,10 +9,10 @@ import (
 	"path"
 	"strings"
 
-	"github.com/rclone/gofakes3"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/vfs"
+	"zclone/lib/gofakes3"
+	"zclone/fs"
+	"zclone/fs/hash"
+	"zclone/vfs"
 )
 
 func getDirEntries(prefix string, VFS *vfs.VFS) (vfs.Nodes, error) {
@@ -107,7 +107,7 @@ func errInvalidObjectName(key string) error {
 
 // bucketObjectPath joins the bucket name and object key into a backend path.
 //
-// S3 object keys are opaque, so rclone treats "dir/../file" and "file" as
+// S3 object keys are opaque, so zclone treats "dir/../file" and "file" as
 // distinct keys and refuses to normalise one into the other. Keys that are
 // not in canonical form (or that would escape the bucket) are rejected with
 // errInvalidObjectName rather than resolved.

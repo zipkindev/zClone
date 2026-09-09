@@ -3,17 +3,17 @@
 set -e
 
 # Set default location for Kerberos config and ccache. Can be overridden by the caller
-# using environment variables RCLONE_TEST_CUSTOM_CCACHE_LOCATION and KRB5_CONFIG.
-export TEMP_DIR=/tmp/rclone_krb5_ccache
+# using environment variables ZCLONE_TEST_CUSTOM_CCACHE_LOCATION and KRB5_CONFIG.
+export TEMP_DIR=/tmp/zclone_krb5_ccache
 mkdir -p "${TEMP_DIR}"
 export KRB5_CONFIG=${KRB5_CONFIG:-${TEMP_DIR}/krb5.conf}
-export RCLONE_TEST_CUSTOM_CCACHE_LOCATION=${RCLONE_TEST_CUSTOM_CCACHE_LOCATION:-${TEMP_DIR}/ccache}
+export ZCLONE_TEST_CUSTOM_CCACHE_LOCATION=${ZCLONE_TEST_CUSTOM_CCACHE_LOCATION:-${TEMP_DIR}/ccache}
 
-IMAGE=rclone/test-smb-kerberos-ccache
+IMAGE=zclone/test-smb-kerberos-ccache
 NAME=smb-kerberos-ccache
-USER=rclone
-DOMAIN=RCLONE
-REALM=RCLONE.LOCAL
+USER=zclone
+DOMAIN=ZCLONE
+REALM=ZCLONE.LOCAL
 SMB_PORT=28637
 KRB5_PORT=28638
 
@@ -35,7 +35,7 @@ RUN rm -rf /etc/samba/smb.conf /var/lib/samba \
     --host-name=localhost \
  && samba-tool user add --random-password $USER \
  && samba-tool user setexpiry $USER --noexpiry \
- && mkdir -m 777 /share /rclone \
+ && mkdir -m 777 /share /zclone \
  && cat <<EOS >> /etc/samba/smb.conf
 [global]
 server signing = auto
@@ -44,12 +44,12 @@ path = /share
 browseable = yes
 read only = yes
 guest ok = yes
-[rclone]
-path = /rclone
+[zclone]
+path = /zclone
 browseable = yes
 read only = no
 guest ok = no
-valid users = rclone
+valid users = zclone
 EOS
 CMD ["samba", "-i"]
 EOF
@@ -70,15 +70,15 @@ ${REALM} = {
 EOF
 
     docker cp "${KRB5_CONFIG}" ${NAME}:/etc/krb5.conf
-    docker exec ${NAME} samba-tool user get-kerberos-ticket rclone --output-krb5-ccache=/tmp/ccache
-    docker cp ${NAME}:/tmp/ccache "${RCLONE_TEST_CUSTOM_CCACHE_LOCATION}"
+    docker exec ${NAME} samba-tool user get-kerberos-ticket zclone --output-krb5-ccache=/tmp/ccache
+    docker cp ${NAME}:/tmp/ccache "${ZCLONE_TEST_CUSTOM_CCACHE_LOCATION}"
     sed -i -e "s/localhost/localhost:${KRB5_PORT}/" "${KRB5_CONFIG}"
 
     echo type=smb
     echo host=localhost
     echo port=$SMB_PORT
     echo use_kerberos=true
-    echo kerberos_ccache=${RCLONE_TEST_CUSTOM_CCACHE_LOCATION}
+    echo kerberos_ccache=${ZCLONE_TEST_CUSTOM_CCACHE_LOCATION}
     echo _connect=127.0.0.1:${SMB_PORT}
 }
 

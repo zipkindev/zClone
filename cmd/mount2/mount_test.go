@@ -5,8 +5,8 @@ package mount2
 import (
 	"testing"
 
-	"github.com/rclone/rclone/vfs/vfscommon"
-	"github.com/rclone/rclone/vfs/vfstest"
+	"zclone/vfs/vfscommon"
+	"zclone/vfs/vfstest"
 )
 
 func TestMount(t *testing.T) {

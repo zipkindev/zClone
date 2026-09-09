@@ -3,10 +3,7 @@
 package main
 
 import (
-	"bytes"
 	"cmp"
-	"context"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -14,22 +11,19 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fstest/runs"
 	"github.com/stretchr/testify/assert/yaml"
+	"zclone/fs"
+	"zclone/fstest/runs"
 )
 
 var path = flag.String("path", "./docs/content/", "root path")
 
 const (
-	configFile              = "fstest/test_all/config.yaml"
-	startListIgnores        = "<!--- start list_ignores - DO NOT EDIT THIS SECTION - use make commanddocs --->"
-	endListIgnores          = "<!--- end list_ignores - DO NOT EDIT THIS SECTION - use make commanddocs --->"
-	startListFailures       = "<!--- start list_failures - DO NOT EDIT THIS SECTION - use make commanddocs --->"
-	endListFailures         = "<!--- end list_failures - DO NOT EDIT THIS SECTION - use make commanddocs --->"
-	integrationTestsJSONURL = "https://pub.rclone.org/integration-tests/current/index.json"
-	integrationTestsHTMLURL = "https://pub.rclone.org/integration-tests/current/"
+	configFile        = "fstest/test_all/config.yaml"
+	startListIgnores  = "<!--- start list_ignores - DO NOT EDIT THIS SECTION - use make commanddocs --->"
+	endListIgnores    = "<!--- end list_ignores - DO NOT EDIT THIS SECTION - use make commanddocs --->"
+	startListFailures = "<!--- start list_failures - DO NOT EDIT THIS SECTION - use make commanddocs --->"
+	endListFailures   = "<!--- end list_failures - DO NOT EDIT THIS SECTION - use make commanddocs --->"
 )
 
 func main() {
@@ -106,42 +100,9 @@ func getIgnores() (string, error) {
 	return s, nil
 }
 
-// getFailures updates the list of currently failing tests from the integration tests server
+// getFailures reports that the local distribution does not publish integration test results.
 func getFailures() (string, error) {
-	var buf bytes.Buffer
-	err := operations.CopyURLToWriter(context.Background(), integrationTestsJSONURL, &buf)
-	if err != nil {
-		return "", err
-	}
-
-	r := runs.Report{}
-	err = json.Unmarshal(buf.Bytes(), &r)
-	if err != nil {
-		return "", fmt.Errorf("failed to unmarshal json: %v", err)
-	}
-
-	s := ""
-	for _, run := range r.Failed {
-		for i, t := range run.FailedTests {
-			if strings.Contains(strings.ToLower(t), "bisync") {
-
-				if i == 0 { // don't have header row yet
-					s += fmt.Sprintf("- `%s` (`%s`)\n", strings.TrimSuffix(run.Remote, ":"), run.Backend)
-				}
-
-				url := integrationTestsHTMLURL + run.TrialName
-				url = url[:len(url)-5] + "1.txt" // numbers higher than 1 could change from night to night
-				s += fmt.Sprintf("  - [`%s`](%v)\n", t, url)
-
-				if i == 4 && len(run.FailedTests) > 5 { // stop after 5
-					s += fmt.Sprintf("  - [%v more](%v)\n", len(run.FailedTests)-5, integrationTestsHTMLURL)
-					break
-				}
-			}
-		}
-	}
-	s += fmt.Sprintf("- Updated: %v", r.DateTime)
-	return s, nil
+	return "Integration test reports are not published by this local distribution.", nil
 }
 
 // parseConfig reads and parses the config.yaml file

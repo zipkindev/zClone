@@ -9,7 +9,7 @@ import (
 	"time"
 
 	cache "github.com/patrickmn/go-cache"
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 // Memory is a wrapper of transient storage for a go-cache store

@@ -10,10 +10,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/rclone/rclone/cmd/bisync/bilib"
-	"github.com/rclone/rclone/fs"
-	fslog "github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/fs/rc"
+	"zclone/cmd/bisync/bilib"
+	"zclone/fs"
+	fslog "zclone/fs/log"
+	"zclone/fs/rc"
 )
 
 func addRC() {
@@ -32,8 +32,8 @@ var shortHelp = `Perform bidirectional synchronization between two paths.`
 
 var longHelp = shortHelp + MakeHelp(`
 
-[Bisync](https://rclone.org/bisync/) provides a
-bidirectional cloud sync solution in rclone.
+[Bisync](//bisync/) provides a
+bidirectional cloud sync solution in zclone.
 It retains the Path1 and Path2 filesystem listings from the prior run.
 On each successive run it will:
 
@@ -42,12 +42,12 @@ On each successive run it will:
 - Propagate changes on Path1 to Path2, and vice-versa.
 
 Bisync is considered an **advanced command**, so use with care.
-Make sure you have read and understood the entire [manual](https://rclone.org/bisync)
-(especially the [Limitations](https://rclone.org/bisync/#limitations) section)
+Make sure you have read and understood the entire [manual](//bisync)
+(especially the [Limitations](//bisync/#limitations) section)
 before using, or data loss can result. Questions can be asked in the
-[Rclone Forum](https://forum.rclone.org/).
+[Zclone Forum](/).
 
-See [full bisync description](https://rclone.org/bisync/) for details.
+See [full bisync description](//bisync/) for details.
 `)
 
 // MakeHelp replaces some dynamic variables for the help docs

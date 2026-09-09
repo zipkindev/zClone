@@ -1,6 +1,6 @@
 ---
 title: "Authors"
-description: "Rclone Authors and Contributors"
+description: "Zclone Authors and Contributors"
 ---
 <!-- markdownlint-disable no-bare-urls -->
 
@@ -47,7 +47,7 @@ put them back in again. -->
 - Tomasz Mazur <tmazur90@gmail.com>
 - Marco Paganini <paganini@paganini.net>
 - Felix Bünemann <buenemann@louis.info>
-- Durval Menezes <jmrclone@durval.com>
+- Durval Menezes <jmzclone@durval.com>
 - Luiz Carlos Rumbelsperger Viana <maxd13_luiz_carlos@hotmail.com>
 - Stefan Breunig <stefan-github@yrden.de>
 - Alishan Ladhani <ali-l@users.noreply.github.com>
@@ -136,7 +136,7 @@ put them back in again. -->
 - Jody Frankowski <jody.frankowski@gmail.com>
 - Andreas Roussos <arouss1980@gmail.com>
 - nbuchanan <nbuchanan@utah.gov>
-- Durval Menezes <rclone@durval.com>
+- Durval Menezes <zclone@durval.com>
 - Victor <vb-github@viblo.se>
 - Mateusz <pabian.mateusz@gmail.com>
 - Daniel Loader <spicypixel@gmail.com>
@@ -1159,7 +1159,7 @@ put them back in again. -->
 - max <max@example.com>
 - Bryan Stenson <bryan.stenson@gmail.com>
 - happysnaker <73147033+happysnaker@users.noreply.github.com>
-- Jan Schlien <rclone-github@jan-o-sch.net>
+- Jan Schlien <zclone-github@jan-o-sch.net>
 - user77 <abubakarm@gmail.com>
 - maximilize <3752128+maximilize@users.noreply.github.com>
 - dithwick <46924962+dithwick@users.noreply.github.com>

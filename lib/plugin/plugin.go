@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	dir := os.Getenv("RCLONE_PLUGIN_PATH")
+	dir := os.Getenv("ZCLONE_PLUGIN_PATH")
 	if dir == "" {
 		return
 	}
@@ -24,7 +24,7 @@ func init() {
 	for _, file := range listing {
 		// Match name
 		fileName := file.Name()
-		if !strings.HasPrefix(fileName, "librcloneplugin_") {
+		if !strings.HasPrefix(fileName, "libzcloneplugin_") {
 			continue
 		}
 		if !strings.HasSuffix(fileName, ".so") {

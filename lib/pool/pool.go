@@ -9,9 +9,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/mmap"
 	"golang.org/x/sync/semaphore"
+	"zclone/fs"
+	"zclone/lib/mmap"
 )
 
 const (

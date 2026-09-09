@@ -11,9 +11,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/backend/doi/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/doi/api"
+	"zclone/fs"
+	"zclone/lib/rest"
 )
 
 var invenioRecordRegex = regexp.MustCompile(`\/records?\/(.+)`)

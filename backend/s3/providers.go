@@ -7,9 +7,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/rclone/rclone/fs"
 	orderedmap "github.com/wk8/go-ordered-map/v2"
 	"gopkg.in/yaml.v3"
+	"zclone/fs"
 )
 
 // YamlMap is converted to YAML in the correct order

@@ -5,7 +5,7 @@ package fserrors
 import (
 	"syscall"
 
-	liberrors "github.com/rclone/rclone/lib/errors"
+	liberrors "zclone/lib/errors"
 )
 
 // IsErrNoSpace checks a possibly wrapped error to

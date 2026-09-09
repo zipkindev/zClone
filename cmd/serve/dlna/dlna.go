@@ -20,17 +20,17 @@ import (
 	"github.com/anacrolix/dms/ssdp"
 	"github.com/anacrolix/dms/upnp"
 	"github.com/anacrolix/log"
-	"github.com/rclone/rclone/cmd"
-	"github.com/rclone/rclone/cmd/serve"
-	"github.com/rclone/rclone/cmd/serve/dlna/data"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/flags"
-	"github.com/rclone/rclone/fs/rc"
-	"github.com/rclone/rclone/lib/systemd"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
-	"github.com/rclone/rclone/vfs/vfsflags"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
+	"zclone/cmd/serve"
+	"zclone/cmd/serve/dlna/data"
+	"zclone/fs"
+	"zclone/fs/config/flags"
+	"zclone/fs/rc"
+	"zclone/lib/systemd"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
+	"zclone/vfs/vfsflags"
 )
 
 // OptionsInfo descripts the Options in use
@@ -96,18 +96,18 @@ func init() {
 var Command = &cobra.Command{
 	Use:   "dlna remote:path",
 	Short: `Serve remote:path over DLNA`,
-	Long: `Run a DLNA media server for media stored in an rclone remote. Many
+	Long: `Run a DLNA media server for media stored in an zclone remote. Many
 devices, such as the Xbox and PlayStation, can automatically discover
 this server in the LAN and play audio/video from it. VLC is also
 supported. Service discovery uses UDP multicast packets (SSDP) and
 will thus only work on LANs.
 
-Rclone will list all files present in the remote, without filtering
+Zclone will list all files present in the remote, without filtering
 based on media formats or file extensions. Additionally, there is no
 media transcoding support. This means that some players might show
 files that they are not able to play back correctly.
 
-Rclone will add external subtitle files (.srt) to videos if they have the same
+Zclone will add external subtitle files (.srt) to videos if they have the same
 filename as the video file itself (except the extension), either in the same
 directory as the video, or in a "Subs" subdirectory.
 
@@ -118,7 +118,7 @@ listen on, e.g. ` + "`--addr 1.2.3.4:8000` or `--addr :8080`" + ` to listen to a
 IPs.
 
 Use ` + "`--name`" + ` to choose the friendly server name, which is by
-default "rclone (hostname)".
+default "zclone (hostname)".
 
 Use ` + "`--log-trace` in conjunction with `-vv`" + ` to enable additional debug
 logging of all UPNP traffic.
@@ -264,7 +264,7 @@ func (s *server) String() string {
 	return fmt.Sprintf("DLNA server on %v", s.httpListenAddr)
 }
 
-// Returns rclone version number as the model number.
+// Returns zclone version number as the model number.
 func (s *server) ModelNumber() string {
 	return fs.Version
 }

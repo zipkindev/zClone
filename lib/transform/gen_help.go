@@ -12,9 +12,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/transform"
+	"zclone/fs"
+	"zclone/lib/encoder"
+	"zclone/lib/transform"
 )
 
 type commands struct {
@@ -77,7 +77,7 @@ var examples = []example{
 }
 
 func (e example) command() string {
-	s := fmt.Sprintf(`rclone convmv %q`, e.path)
+	s := fmt.Sprintf(`zclone convmv %q`, e.path)
 	for _, f := range e.flags {
 		s += fmt.Sprintf(" --name-transform %q", f)
 	}

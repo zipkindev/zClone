@@ -7,7 +7,7 @@ versionIntroduced: "v1.37"
 # HTTP
 
 The HTTP remote is a read only remote for reading files of a
-webserver.  The webserver should provide file listings which rclone
+webserver.  The webserver should provide file listings which zclone
 will read and turn into a remote.  This has been tested with common
 webservers such as Apache/Nginx/Caddy and will likely work with file
 listings from most web servers.  (If it doesn't then please file an
@@ -17,22 +17,22 @@ Paths are specified as `remote:` or `remote:path`.
 
 The `remote:` represents the configured [url](#http-url), and any path following
 it will be resolved relative to this url, according to the URL standard. This
-means with remote url `https://beta.rclone.org/branch` and path `fix`, the
-resolved URL will be `https://beta.rclone.org/branch/fix`, while with path
-`/fix` the resolved URL will be `https://beta.rclone.org/fix` as the absolute
+means with remote url `/ and path `fix`, the
+resolved URL will be `/ while with path
+`/fix` the resolved URL will be `/ as the absolute
 path is resolved from the root of the domain.
 
 If the path following the `remote:` ends with `/` it will be assumed to point
 to a directory. If the path does not end with `/`, then a HEAD request is sent
 and the response used to decide if it is treated as a file or a directory
 (run with `-vv` to see details). When [--http-no-head](#http-no-head) is
-specified, a path without ending `/` is always assumed to be a file. If rclone
+specified, a path without ending `/` is always assumed to be a file. If zclone
 incorrectly assumes the path is a file, the solution is to specify the path with
 ending `/`. When you know the path is a directory, ending it with `/` is always
 better as it avoids the initial HEAD request.
 
 To just download a single file it is easier to use
-[copyurl](/commands/rclone_copyurl/).
+[copyurl](/commands/zclone_copyurl/).
 
 ## Configuration
 
@@ -40,7 +40,7 @@ Here is an example of how to make a remote called `remote`.  First
 run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -63,12 +63,12 @@ URL of http host to connect to
 Choose a number from below, or type in your own value
  1 / Connect to example.com
    \ "https://example.com"
-url> https://beta.rclone.org
+url> /
 Remote config
 Configuration complete.
 Options:
 - type: http
-- url: https://beta.rclone.org
+- url: /
 Keep this "remote" remote?
 y) Yes this is OK
 e) Edit this remote
@@ -95,19 +95,19 @@ This remote is called `remote` and can now be used like this
 See all the top level directories
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List the contents of a directory
 
 ```console
-rclone ls remote:directory
+zclone ls remote:directory
 ```
 
 Sync the remote `directory` to `/home/local/directory`, deleting any excess files.
 
 ```console
-rclone sync --interactive remote:directory /home/local/directory
+zclone sync --interactive remote:directory /home/local/directory
 ```
 
 ### Read only
@@ -116,30 +116,30 @@ This remote is read only - you can't upload files to an HTTP server.
 
 ### Servers without directory listings
 
-Rclone normally needs the HTTP server to return a parseable directory
+Zclone normally needs the HTTP server to return a parseable directory
 listing in order to discover files. However if the path points
 directly at a single file (i.e. it does not end with `/` and the
-initial HEAD request reports it as a file), rclone will skip the
+initial HEAD request reports it as a file), zclone will skip the
 parent directory listing entirely and access the file directly.
 
-This means rclone can be used to download individual files on HTTP
+This means zclone can be used to download individual files on HTTP
 servers that have directory listings disabled, as long as you know the
 exact URL of each file. For example, given a server that serves
 `https://example.com/path/file.txt` but returns an error or an
 unparseable response for `https://example.com/path/`:
 
 ```console
-rclone copy --http-url https://example.com :http:path/file.txt /tmp/
+zclone copy --http-url https://example.com :http:path/file.txt /tmp/
 ```
 
-You can use this as a remote in other rclone commands too:
+You can use this as a remote in other zclone commands too:
 
 ```console
-rclone hashsum crc32 --http-url "https://getsamplefiles.com" :archive::http:download/zip/sample-1.zip
+zclone hashsum crc32 --http-url "https://getsamplefiles.com" :archive::http:download/zip/sample-1.zip
 ```
 
 If you just want to download a file or multiple files by URL then
-using [copyurl](/commands/rclone_copyurl/) is more efficient.
+using [copyurl](/commands/zclone_copyurl/) is more efficient.
 
 ### Modification times
 
@@ -155,13 +155,13 @@ Since the http remote only has one config parameter it is easy to use
 without a config file:
 
 ```console
-rclone lsd --http-url https://beta.rclone.org :http:
+zclone lsd --http-url / :http:
 ```
 
 or:
 
 ```console
-rclone lsd :http,url='https://beta.rclone.org':
+zclone lsd :http,url='/':
 ```
 
 <!-- autogenerated options start - DO NOT EDIT - instead edit fs.RegInfo in backend/http/http.go and run make backenddocs to verify --> <!-- markdownlint-disable-line line-length -->
@@ -178,7 +178,7 @@ E.g. "https://example.com", or "https://user:pass@example.com" to use a username
 Properties:
 
 - Config:      url
-- Env Var:     RCLONE_HTTP_URL
+- Env Var:     ZCLONE_HTTP_URL
 - Type:        string
 - Required:    true
 
@@ -189,7 +189,7 @@ Do not escape URL metacharacters in path names.
 Properties:
 
 - Config:      no_escape
-- Env Var:     RCLONE_HTTP_NO_ESCAPE
+- Env Var:     ZCLONE_HTTP_NO_ESCAPE
 - Type:        bool
 - Default:     false
 
@@ -213,7 +213,7 @@ You can set multiple headers, e.g. '"Cookie","name=value","Authorization","xxx"'
 Properties:
 
 - Config:      headers
-- Env Var:     RCLONE_HTTP_HEADERS
+- Env Var:     ZCLONE_HTTP_HEADERS
 - Type:        CommaSepList
 - Default:     
 
@@ -224,18 +224,18 @@ Set this if the site doesn't end directories with /.
 Use this if your target website does not use / on the end of
 directories.
 
-A / on the end of a path is how rclone normally tells the difference
-between files and directories.  If this flag is set, then rclone will
+A / on the end of a path is how zclone normally tells the difference
+between files and directories.  If this flag is set, then zclone will
 treat all files with Content-Type: text/html as directories and read
 URLs from them rather than downloading them.
 
-Note that this may cause rclone to confuse genuine HTML files with
+Note that this may cause zclone to confuse genuine HTML files with
 directories.
 
 Properties:
 
 - Config:      no_slash
-- Env Var:     RCLONE_HTTP_NO_SLASH
+- Env Var:     ZCLONE_HTTP_NO_SLASH
 - Type:        bool
 - Default:     false
 
@@ -245,21 +245,21 @@ Don't use HEAD requests.
 
 HEAD requests are mainly used to find file sizes in dir listing.
 If your site is being very slow to load then you can try this option.
-Normally rclone does a HEAD request for each potential file in a
+Normally zclone does a HEAD request for each potential file in a
 directory listing to:
 
 - find its size
 - check it really exists
 - check to see if it is a directory
 
-If you set this option, rclone will not do the HEAD request. This will mean
-that directory listings are much quicker, but rclone won't have the times or
+If you set this option, zclone will not do the HEAD request. This will mean
+that directory listings are much quicker, but zclone won't have the times or
 sizes of any files, and some files that don't exist may be in the listing.
 
 Properties:
 
 - Config:      no_head
-- Env Var:     RCLONE_HTTP_NO_HEAD
+- Env Var:     ZCLONE_HTTP_NO_HEAD
 - Type:        bool
 - Default:     false
 
@@ -270,7 +270,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_HTTP_DESCRIPTION
+- Env Var:     ZCLONE_HTTP_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -298,12 +298,12 @@ Here are the commands specific to the http backend.
 Run them with:
 
 ```console
-rclone backend COMMAND remote:
+zclone backend COMMAND remote:
 ```
 
 The help below will explain what arguments each command takes.
 
-See the [backend](/commands/rclone_backend/) command for more
+See the [backend](/commands/zclone_backend/) command for more
 info on how to pass options and arguments.
 
 These can be run on a running backend using the rc command
@@ -314,7 +314,7 @@ These can be run on a running backend using the rc command
 Set command for updating the config parameters.
 
 ```console
-rclone backend set remote: [options] [<arguments>+]
+zclone backend set remote: [options] [<arguments>+]
 ```
 
 This set command can be used to update the config parameters
@@ -323,9 +323,9 @@ for a running http backend.
 Usage examples:
 
 ```console
-rclone backend set remote: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
-rclone rc backend/command command=set fs=remote: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
-rclone rc backend/command command=set fs=remote: -o url=https://example.com
+zclone backend set remote: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
+zclone rc backend/command command=set fs=remote: [-o opt_name=opt_value] [-o opt_name2=opt_value2]
+zclone rc backend/command command=set fs=remote: -o url=https://example.com
 ```
 
 The option keys are named as they are in the config file.
@@ -340,10 +340,10 @@ It doesn't return anything.
 
 ## Limitations
 
-`rclone about` is not supported by the HTTP backend. Backends without
-this capability cannot determine free space for an rclone mount or
-use policy `mfs` (most free space) as a member of an rclone union
+`zclone about` is not supported by the HTTP backend. Backends without
+this capability cannot determine free space for an zclone mount or
+use policy `mfs` (most free space) as a member of an zclone union
 remote.
 
-See [List of backends that do not support rclone about](https://rclone.org/overview/#optional-features)
-and [rclone about](https://rclone.org/commands/rclone_about/).
+See [List of backends that do not support zclone about](//overview/#optional-features)
+and [zclone about](//commands/zclone_about/).

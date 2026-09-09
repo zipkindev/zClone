@@ -18,8 +18,8 @@ import (
 	"net/url"
 	"sync"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/lib/readers"
+	"zclone/fs"
+	"zclone/lib/readers"
 )
 
 // Client contains the info to sustain the API
@@ -217,7 +217,7 @@ func ClientWithNoRedirects(c *http.Client) *http.Client {
 
 // ErrHTTPSDowngrade is returned by the redirect handlers when a server tries to
 // redirect an HTTPS request to a plaintext HTTP URL. Following such a redirect
-// would replay any credentials over the network in cleartext, so rclone refuses.
+// would replay any credentials over the network in cleartext, so zclone refuses.
 var ErrHTTPSDowngrade = errors.New("refusing to follow HTTPS to HTTP redirect: would send credentials in cleartext")
 
 // isHTTPSDowngrade reports whether following the redirect to req would

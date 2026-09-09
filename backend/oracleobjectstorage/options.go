@@ -5,9 +5,9 @@ package oracleobjectstorage
 import (
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/lib/encoder"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/lib/encoder"
 )
 
 const (
@@ -33,8 +33,8 @@ const (
 you’ll need to put in a config file your tenancy OCID, user OCID, region, the path, fingerprint to an API key.
 https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm`
 
-	instancePrincipalHelpText = `use instance principals to authorize an instance to make API calls. 
-each instance has its own identity, and authenticates using the certificates that are read from instance metadata. 
+	instancePrincipalHelpText = `use instance principals to authorize an instance to make API calls.
+each instance has its own identity, and authenticates using the certificates that are read from instance metadata.
 https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/callingservicesfrominstances.htm`
 
 	workloadIdentityHelpText = `use workload identity to grant OCI Container Engine for Kubernetes workloads policy-driven access to OCI resources using OCI Identity and Access Management (IAM).
@@ -166,7 +166,7 @@ The minimum is 0 and the maximum is 5 GiB.`,
 		Help: `Chunk size to use for uploading.
 
 When uploading files larger than upload_cutoff or files with unknown
-size (e.g. from "rclone rcat" or uploaded with "rclone mount" they will be uploaded 
+size (e.g. from "zclone rcat" or uploaded with "zclone mount" they will be uploaded
 as multipart uploads using this chunk size.
 
 Note that "upload_concurrency" chunks of this size are buffered
@@ -175,7 +175,7 @@ in memory per transfer.
 If you are transferring large files over high-speed links and you have
 enough memory, then increasing this will speed up the transfers.
 
-Rclone will automatically increase the chunk size when uploading a
+Zclone will automatically increase the chunk size when uploading a
 large file of known size to stay below the 10,000 chunks limit.
 
 Files of unknown size are uploaded with the configured
@@ -198,7 +198,7 @@ when doing a multipart upload.
 
 OCI has max parts limit of 10,000 chunks.
 
-Rclone will automatically increase the chunk size when uploading a
+Zclone will automatically increase the chunk size when uploading a
 large file of a known size to stay below this number of chunks limit.
 `,
 		Default:  maxUploadParts,
@@ -237,7 +237,7 @@ Copy is an asynchronous operation, specify timeout to wait for copy to succeed
 		Name: "disable_checksum",
 		Help: `Don't store MD5 checksum with object metadata.
 
-Normally rclone will calculate the MD5 checksum of the input before
+Normally zclone will calculate the MD5 checksum of the input before
 uploading it so it can add it to metadata on the object. This is great
 for data integrity checking but can cause long delays for large files
 to start uploading.`,
@@ -274,7 +274,7 @@ additional costs if not cleaned up.
 		Help: `If true attempt to resume previously started multipart upload for the object.
 This will be helpful to speed up multipart transfers by resuming uploads from past session.
 
-WARNING: If chunk size differs in resumed session from past incomplete session, then the resumed multipart upload is 
+WARNING: If chunk size differs in resumed session from past incomplete session, then the resumed multipart upload is
 aborted and a new multipart upload is started with the new chunk size.
 
 The flag leave_parts_on_error must be true to resume and optimize to skip parts that were already uploaded successfully.
@@ -286,7 +286,7 @@ The flag leave_parts_on_error must be true to resume and optimize to skip parts 
 		Help: `If set, don't attempt to check the bucket exists or create it.
 
 This can be useful when trying to minimise the number of transactions
-rclone does if you know the bucket exists already.
+zclone does if you know the bucket exists already.
 
 It can also be needed if the user you are using does not have bucket
 creation permissions.
@@ -306,7 +306,7 @@ with the object. Please note only one of sse_customer_key_file|sse_customer_key|
 		Name: "sse_customer_key",
 		Help: `To use SSE-C, the optional header that specifies the base64-encoded 256-bit encryption key to use to
 encrypt or  decrypt the data. Please note only one of sse_customer_key_file|sse_customer_key|sse_kms_key_id is
-needed. For more information, see Using Your Own Keys for Server-Side Encryption 
+needed. For more information, see Using Your Own Keys for Server-Side Encryption
 (https://docs.cloud.oracle.com/Content/Object/Tasks/usingyourencryptionkeys.htm)`,
 		Advanced: true,
 		Examples: []fs.OptionExample{{
@@ -316,7 +316,7 @@ needed. For more information, see Using Your Own Keys for Server-Side Encryption
 	}, {
 		Name: "sse_customer_key_sha256",
 		Help: `If using SSE-C, The optional header that specifies the base64-encoded SHA256 hash of the encryption
-key. This value is used to check the integrity of the encryption key. see Using Your Own Keys for 
+key. This value is used to check the integrity of the encryption key. see Using Your Own Keys for
 Server-Side Encryption (https://docs.cloud.oracle.com/Content/Object/Tasks/usingyourencryptionkeys.htm).`,
 		Advanced: true,
 		Examples: []fs.OptionExample{{
@@ -352,11 +352,11 @@ Using Your Own Keys for Server-Side Encryption (https://docs.cloud.oracle.com/Co
 		Help: `If set this will decompress gzip encoded objects.
 
 It is possible to upload objects to object storage with
-"Content-Encoding: gzip" set. Normally rclone will download these
+"Content-Encoding: gzip" set. Normally zclone will download these
 files as compressed objects.
 
-If this flag is set then rclone will decompress these files with
-"Content-Encoding: gzip" as they are received. This means that rclone
+If this flag is set then zclone will decompress these files with
+"Content-Encoding: gzip" as they are received. This means that zclone
 can't check the size and hash but the file contents will be
 decompressed.
 `,

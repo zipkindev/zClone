@@ -13,7 +13,7 @@ versionIntroduced: "v1.26"
 Here is an example of making a yandex configuration.  First run
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -36,15 +36,15 @@ client_id>
 Yandex Client Secret - leave blank normally.
 client_secret>
 Remote config
-Use web browser to automatically authenticate rclone with remote?
- * Say Y if the machine running rclone has a web browser you can use
- * Say N if running rclone on a (remote) machine without web browser access
+Use web browser to automatically authenticate zclone with remote?
+ * Say Y if the machine running zclone has a web browser you can use
+ * Say N if running zclone on a (remote) machine without web browser access
 If not sure try Y. If Y failed, try N.
 y) Yes
 n) No
 y/n> y
 If your browser doesn't open automatically go to the following link: http://127.0.0.1:53682/auth
-Log in and authorize rclone for access
+Log in and authorize zclone for access
 Waiting for code...
 Got code
 Configuration complete.
@@ -63,38 +63,38 @@ y/e/d> y
 See the [remote setup docs](/remote_setup/) for how to set it up on a
 machine without an internet-connected web browser available.
 
-Note that rclone runs a webserver on your local machine to collect the
+Note that zclone runs a webserver on your local machine to collect the
 token as returned from Yandex Disk. This only runs from the moment it
 opens your browser to the moment you get back the verification code.
 This is on `http://127.0.0.1:53682/` and this it may require you to
 unblock it temporarily if you are running a host firewall.
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 See top level directories
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 Make a new directory
 
 ```console
-rclone mkdir remote:directory
+zclone mkdir remote:directory
 ```
 
 List the contents of a directory
 
 ```console
-rclone ls remote:directory
+zclone ls remote:directory
 ```
 
 Sync `/home/local/directory` to the remote path, deleting any
 excess files in the path.
 
 ```console
-rclone sync --interactive /home/local/directory remote:directory
+zclone sync --interactive /home/local/directory remote:directory
 ```
 
 Yandex paths may be as deep as required, e.g. `remote:directory/subdirectory`.
@@ -102,19 +102,19 @@ Yandex paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 ### Modification times and hashes
 
 Modified times are supported and are stored accurate to 1 ns in custom
-metadata called `rclone_modified` in RFC3339 with nanoseconds format.
+metadata called `zclone_modified` in RFC3339 with nanoseconds format.
 
 The MD5 hash algorithm is natively supported by Yandex Disk.
 
 ### Emptying Trash
 
-If you wish to empty your trash you can use the `rclone cleanup remote:`
+If you wish to empty your trash you can use the `zclone cleanup remote:`
 command which will permanently delete all your trashed files. This command
 does not take any path arguments.
 
 ### Quota information
 
-To view your current quota you can use the `rclone about remote:`
+To view your current quota you can use the `zclone about remote:`
 command which will display your usage limit (quota) and the current usage.
 
 ### Restricted filename characters
@@ -139,7 +139,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_id
-- Env Var:     RCLONE_YANDEX_CLIENT_ID
+- Env Var:     ZCLONE_YANDEX_CLIENT_ID
 - Type:        string
 - Required:    false
 
@@ -152,7 +152,7 @@ Leave blank normally.
 Properties:
 
 - Config:      client_secret
-- Env Var:     RCLONE_YANDEX_CLIENT_SECRET
+- Env Var:     ZCLONE_YANDEX_CLIENT_SECRET
 - Type:        string
 - Required:    false
 
@@ -167,7 +167,7 @@ OAuth Access Token as a JSON blob.
 Properties:
 
 - Config:      token
-- Env Var:     RCLONE_YANDEX_TOKEN
+- Env Var:     ZCLONE_YANDEX_TOKEN
 - Type:        string
 - Required:    false
 
@@ -180,7 +180,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      auth_url
-- Env Var:     RCLONE_YANDEX_AUTH_URL
+- Env Var:     ZCLONE_YANDEX_AUTH_URL
 - Type:        string
 - Required:    false
 
@@ -193,7 +193,7 @@ Leave blank to use the provider defaults.
 Properties:
 
 - Config:      token_url
-- Env Var:     RCLONE_YANDEX_TOKEN_URL
+- Env Var:     ZCLONE_YANDEX_TOKEN_URL
 - Type:        string
 - Required:    false
 
@@ -208,7 +208,7 @@ Note that this option is NOT supported by all backends.
 Properties:
 
 - Config:      client_credentials
-- Env Var:     RCLONE_YANDEX_CLIENT_CREDENTIALS
+- Env Var:     ZCLONE_YANDEX_CLIENT_CREDENTIALS
 - Type:        bool
 - Default:     false
 
@@ -219,7 +219,7 @@ Delete files permanently rather than putting them into the trash.
 Properties:
 
 - Config:      hard_delete
-- Env Var:     RCLONE_YANDEX_HARD_DELETE
+- Env Var:     ZCLONE_YANDEX_HARD_DELETE
 - Type:        bool
 - Default:     false
 
@@ -232,7 +232,7 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_YANDEX_ENCODING
+- Env Var:     ZCLONE_YANDEX_ENCODING
 - Type:        Encoding
 - Default:     Slash,Del,Ctl,InvalidUtf8,Dot
 
@@ -243,7 +243,7 @@ Set the user agent to match an official version of the yandex disk client. May h
 Properties:
 
 - Config:      spoof_ua
-- Env Var:     RCLONE_YANDEX_SPOOF_UA
+- Env Var:     ZCLONE_YANDEX_SPOOF_UA
 - Type:        bool
 - Default:     true
 
@@ -264,7 +264,7 @@ Yandex support recommend a value of 1.5s - 3s.
 Properties:
 
 - Config:      upload_wait
-- Env Var:     RCLONE_YANDEX_UPLOAD_WAIT
+- Env Var:     ZCLONE_YANDEX_UPLOAD_WAIT
 - Type:        Duration
 - Default:     0s
 
@@ -275,7 +275,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_YANDEX_DESCRIPTION
+- Env Var:     ZCLONE_YANDEX_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -287,7 +287,7 @@ When uploading very large files (bigger than about 5 GiB) you will need
 to increase the `--timeout` parameter.  This is because Yandex pauses
 (perhaps to calculate the MD5SUM for the entire file) before returning
 confirmation that the file has been uploaded.  The default handling of
-timeouts in rclone is to assume a 5 minute pause is an error and close
+timeouts in zclone is to assume a 5 minute pause is an error and close
 the connection - you'll see `net/http: timeout awaiting response
 headers` errors in the logs if this is happening.  Setting the timeout
 to twice the max size of file in GiB should be enough, so if you want
@@ -303,7 +303,7 @@ too soon causes these errors. Yandex support recommend waiting
 1.5s - 3s after each upload.
 
 Having a Yandex Mail account is mandatory to use the Yandex.Disk subscription.
-Token generation will work without a mail account, but Rclone won't be able to
+Token generation will work without a mail account, but Zclone won't be able to
 complete any actions.
 
 ```text

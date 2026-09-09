@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/rclone/rclone/fs"
 	"golang.org/x/sys/windows"
+	"zclone/fs"
 )
 
 // Removes name, retrying on a sharing violation

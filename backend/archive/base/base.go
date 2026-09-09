@@ -9,9 +9,9 @@ import (
 	"path"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/vfs"
+	"zclone/fs"
+	"zclone/fs/hash"
+	"zclone/vfs"
 )
 
 // Fs represents a wrapped fs.Fs

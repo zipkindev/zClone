@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Create test TLS certificates for use with rclone.
+# Create test TLS certificates for use with zclone.
 
 OUT_DIR="${OUT_DIR:-./tls-test}"
 CA_SUBJ="${CA_SUBJ:-/C=US/ST=Test/L=Test/O=Test Org/OU=Test Unit/CN=Test Root CA}"
@@ -108,12 +108,12 @@ printf "%-22s %s\n" \
   "Client key password:" "$CLIENT_KEY_PASS"
 
 echo
-echo "Test rclone server"
+echo "Test zclone server"
 echo
-echo "rclone serve http -vv --addr :8080 --cert ${OUT_DIR}/server.cert.pem --key ${OUT_DIR}/server.key.pem --client-ca ${OUT_DIR}/ca.cert.pem ."
+echo "zclone serve http -vv --addr :8080 --cert ${OUT_DIR}/server.cert.pem --key ${OUT_DIR}/server.key.pem --client-ca ${OUT_DIR}/ca.cert.pem ."
 
 echo
-echo "Test rclone client"
+echo "Test zclone client"
 echo
-echo "rclone lsf :http: --http-url 'https://localhost:8080' --ca-cert ${OUT_DIR}/ca.cert.pem --client-cert ${OUT_DIR}/client.cert.pem --client-key ${OUT_DIR}/client.key.pem --client-pass \$(rclone obscure $CLIENT_KEY_PASS)"
+echo "zclone lsf :http: --http-url 'https://localhost:8080' --ca-cert ${OUT_DIR}/ca.cert.pem --client-cert ${OUT_DIR}/client.cert.pem --client-key ${OUT_DIR}/client.key.pem --client-pass \$(zclone obscure $CLIENT_KEY_PASS)"
 echo

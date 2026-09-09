@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fstest/mockfs"
-	"github.com/rclone/rclone/fstest/mockobject"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/hash"
+	"zclone/fstest/mockfs"
+	"zclone/fstest/mockobject"
 )
 
 func TestFingerprint(t *testing.T) {

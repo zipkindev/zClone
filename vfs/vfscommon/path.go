@@ -16,7 +16,7 @@ func OSFindParent(name string) string {
 }
 
 // FindParent returns the parent directory of name, or "" for the root
-// for rclone paths.
+// for zclone paths.
 func FindParent(name string) string {
 	parent := path.Dir(name)
 	if parent == "." || parent == "/" {

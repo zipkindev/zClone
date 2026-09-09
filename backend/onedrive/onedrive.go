@@ -20,32 +20,32 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/backend/onedrive/api"
-	"github.com/rclone/rclone/backend/onedrive/quickxorhash"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fs/walk"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/oauthutil"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/readers"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/onedrive/api"
+	"zclone/backend/onedrive/quickxorhash"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/fs/log"
+	"zclone/fs/operations"
+	"zclone/fs/walk"
+	"zclone/lib/atexit"
+	"zclone/lib/dircache"
+	"zclone/lib/encoder"
+	"zclone/lib/oauthutil"
+	"zclone/lib/pacer"
+	"zclone/lib/readers"
+	"zclone/lib/rest"
 )
 
 const (
-	rcloneClientID              = "b15665d9-eda6-4092-8539-0eec376afd59"
-	rcloneEncryptedClientSecret = "_JUdzh3LnKNqSPcf4Wu5fgMFIQOI8glZu_akYgR8yf6egowNBg-R"
+	zcloneClientID              = "b15665d9-eda6-4092-8539-0eec376afd59"
+	zcloneEncryptedClientSecret = "_JUdzh3LnKNqSPcf4Wu5fgMFIQOI8glZu_akYgR8yf6egowNBg-R"
 	minSleep                    = 10 * time.Millisecond
 	maxSleep                    = 2 * time.Second
 	decayConstant               = 2 // bigger for slower decay, exponential
@@ -82,8 +82,8 @@ var (
 	// Base config for how to auth
 	oauthConfig = &oauthutil.Config{
 		Scopes:       scopeAccess,
-		ClientID:     rcloneClientID,
-		ClientSecret: obscure.MustReveal(rcloneEncryptedClientSecret),
+		ClientID:     zcloneClientID,
+		ClientSecret: obscure.MustReveal(zcloneEncryptedClientSecret),
 		RedirectURL:  oauthutil.RedirectLocalhostURL,
 	}
 
@@ -146,11 +146,11 @@ func init() {
 Any files larger than this will be uploaded in chunks of chunk_size.
 
 This is disabled by default as uploading using single part uploads
-causes rclone to use twice the storage on Onedrive business as when
-rclone sets the modification time after the upload Onedrive creates a
+causes zclone to use twice the storage on Onedrive business as when
+zclone sets the modification time after the upload Onedrive creates a
 new version.
 
-See: https://github.com/rclone/rclone/issues/1716
+See: /
 `,
 			Default:  fs.SizeSuffix(-1),
 			Advanced: true,
@@ -201,9 +201,9 @@ there through a path traversal.
 			Sensitive: true,
 		}, {
 			Name: "access_scopes",
-			Help: `Set scopes to be requested by rclone.
+			Help: `Set scopes to be requested by zclone.
 
-Choose or manually enter a custom space separated list with all scopes, that rclone should request.
+Choose or manually enter a custom space separated list with all scopes, that zclone should request.
 `,
 			Default:  scopeAccess,
 			Advanced: true,
@@ -234,7 +234,7 @@ Set this if using
 			Help: `Disable the request for Sites.Read.All permission.
 
 If set to true, you will no longer be able to search for a SharePoint site when
-configuring drive ID, because rclone will not request Sites.Read.All permission.
+configuring drive ID, because zclone will not request Sites.Read.All permission.
 Set it to true if your organization didn't assign Sites.Read.All permission to the
 application, and your organization disallows users to consent app permission
 request on their own.`,
@@ -245,7 +245,7 @@ request on their own.`,
 			Name: "expose_onenote_files",
 			Help: `Set to make OneNote files show up in directory listings.
 
-By default, rclone will hide OneNote files in directory listings because
+By default, zclone will hide OneNote files in directory listings because
 operations like "Open" and "Update" won't work on them.  But this
 behaviour may also prevent you from deleting them.  If you want to
 delete OneNote files or otherwise want them to show up in directory
@@ -263,7 +263,7 @@ This will work if you are copying between two OneDrive *Personal* drives AND the
 copy are already shared between them. Additionally, it should also function for a user who
 has access permissions both between Onedrive for *business* and *SharePoint* under the *same
 tenant*, and between *SharePoint* and another *SharePoint* under the *same tenant*. In other
-cases, rclone will fall back to normal copy (which will be slightly slower).`,
+cases, zclone will fall back to normal copy (which will be slightly slower).`,
 			Advanced: true,
 		}, {
 			Name:     "list_chunk",
@@ -275,7 +275,7 @@ cases, rclone will fall back to normal copy (which will be slightly slower).`,
 			Default: false,
 			Help: `Remove all versions on modifying operations.
 
-Onedrive for business creates versions when rclone uploads new files
+Onedrive for business creates versions when zclone uploads new files
 overwriting an existing one and when it sets the modification time.
 
 These versions take up space out of the quota.
@@ -343,7 +343,7 @@ At the time of writing this only works with OneDrive personal paid accounts.
 This specifies the hash type in use. If set to "auto" it will use the
 default hash which is QuickXorHash.
 
-Before rclone 1.62 an SHA1 hash was used by default for Onedrive
+Before zclone 1.62 an SHA1 hash was used by default for Onedrive
 Personal. For 1.62 and later the default is to use a QuickXorHash for
 all onedrive types. If an SHA1 hash is desired then set this option
 accordingly.
@@ -355,11 +355,11 @@ This can be set to "none" to not use any hashes.
 
 If the hash requested does not exist on the object, it will be
 returned as an empty string which is treated as a missing hash by
-rclone.
+zclone.
 `,
 			Examples: []fs.OptionExample{{
 				Value: "auto",
-				Help:  "Rclone chooses the best hash",
+				Help:  "Zclone chooses the best hash",
 			}, {
 				Value: "quickxor",
 				Help:  "QuickXor",
@@ -408,16 +408,16 @@ parameter.
 		}, {
 			Name:    "delta",
 			Default: false,
-			Help: strings.ReplaceAll(`If set rclone will use delta listing to implement recursive listings.
+			Help: strings.ReplaceAll(`If set zclone will use delta listing to implement recursive listings.
 
 If this flag is set the onedrive backend will advertise |ListR|
 support for recursive listings.
 
 Setting this flag speeds up these things greatly:
 
-    rclone lsf -R onedrive:
-    rclone size onedrive:
-    rclone rc vfs/refresh recursive=true
+    zclone lsf -R onedrive:
+    zclone size onedrive:
+    zclone rc vfs/refresh recursive=true
 
 **However** the delta listing API **only** works at the root of the
 drive. If you use it not at the root then it recurses from the root
@@ -426,14 +426,14 @@ for. So it will be correct but may not be very efficient.
 
 This is why this flag is not set as the default.
 
-As a rule of thumb if nearly all of your data is under rclone's root
+As a rule of thumb if nearly all of your data is under zclone's root
 directory (the |root/directory| in |onedrive:root/directory|) then
 using this flag will be a big performance win. If your data is
 mostly not under the root then using this flag will be a big
 performance loss.
 
 It is recommended if you are mounting your onedrive at the root
-(or near the root when using crypt) and using rclone |rc vfs/refresh|.
+(or near the root when using crypt) and using zclone |rc vfs/refresh|.
 `, "|", "`"),
 			Advanced: true,
 		}, {
@@ -1102,7 +1102,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 	}
 
 	if opt.DriveID == "" || opt.DriveType == "" {
-		return nil, errors.New("unable to get drive_id and drive_type - if you are upgrading from older versions of rclone, please run `rclone config` and re-configure this backend")
+		return nil, errors.New("unable to get drive_id and drive_type - if you are upgrading from older versions of zclone, please run `zclone config` and re-configure this backend")
 	}
 
 	rootURL := graphAPIEndpoint[opt.Region] + "/v1.0" + "/drives/" + opt.DriveID
@@ -1163,7 +1163,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 	}
 
 	// Disable change polling in China region
-	// See: https://github.com/rclone/rclone/issues/6444
+	// See: /
 	if f.opt.Region == regionCN {
 		f.features.ChangeNotify = nil
 	}
@@ -1218,7 +1218,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 		}
 		// XXX: update the old f here instead of returning tempF, since
 		// `features` were already filled with functions having *f as a receiver.
-		// See https://github.com/rclone/rclone/issues/2182
+		// See /
 		f.dirCache = tempF.dirCache
 		f.root = tempF.root
 		// return an error with an fs which points to the parent

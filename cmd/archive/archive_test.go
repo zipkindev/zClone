@@ -8,17 +8,17 @@ import (
 	"testing"
 
 	"github.com/mholt/archives"
-	_ "github.com/rclone/rclone/backend/local"
-	_ "github.com/rclone/rclone/backend/memory"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fstest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	_ "zclone/backend/memory"
+	"zclone/fs"
+	"zclone/fs/operations"
+	"zclone/fstest"
 
-	"github.com/rclone/rclone/cmd/archive/create"
-	"github.com/rclone/rclone/cmd/archive/extract"
-	"github.com/rclone/rclone/cmd/archive/list"
+	"zclone/cmd/archive/create"
+	"zclone/cmd/archive/extract"
+	"zclone/cmd/archive/list"
 )
 
 var (

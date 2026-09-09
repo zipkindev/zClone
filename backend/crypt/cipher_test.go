@@ -13,10 +13,10 @@ import (
 	"testing"
 
 	"github.com/Max-Sum/base32768"
-	"github.com/rclone/rclone/backend/crypt/pkcs7"
-	"github.com/rclone/rclone/lib/readers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/backend/crypt/pkcs7"
+	"zclone/lib/readers"
 )
 
 func TestNewNameEncryptionMode(t *testing.T) {

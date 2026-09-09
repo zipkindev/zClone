@@ -16,17 +16,17 @@ import (
 	"github.com/FilenCloudDienste/filen-sdk-go/filen/types"
 
 	"github.com/google/uuid"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
 	"golang.org/x/sync/errgroup"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
 )
 
 func init() {
@@ -315,7 +315,7 @@ func (f *Fs) NewObject(ctx context.Context, remote string) (fs.Object, error) {
 
 // Put in to the remote path with the modTime given of the given size
 //
-// When called from outside an Fs by rclone, src.Size() will always be >= 0.
+// When called from outside an Fs by zclone, src.Size() will always be >= 0.
 // But for unknown-sized objects (indicated by src.Size() == -1), Put should either
 // return an error or upload it properly (rather than e.g. calling panic).
 //
@@ -746,7 +746,7 @@ func (o *Object) Open(ctx context.Context, options ...fs.OpenOption) (io.ReadClo
 
 // Update in to the object with the modTime given of the given size
 //
-// When called from outside an Fs by rclone, src.Size() will always be >= 0.
+// When called from outside an Fs by zclone, src.Size() will always be >= 0.
 // But for unknown-sized objects (indicated by src.Size() == -1), Upload should either
 // return an error or update the object properly (rather than e.g. calling panic).
 func (o *Object) Update(ctx context.Context, in io.Reader, src fs.ObjectInfo, options ...fs.OpenOption) error {
@@ -960,7 +960,7 @@ func (f *Fs) rename(ctx context.Context, item types.NonRootFileSystemObject, new
 // invalidating the previous object
 // and making a copy with the passed path
 //
-// this is to work around the fact that rclone expects to have to delete a file after moving
+// this is to work around the fact that zclone expects to have to delete a file after moving
 func moveFileObjIntoNewPath(o *Object, newPath string) *Object {
 	newFile := &Object{
 		fs:   o.fs,
@@ -1209,4 +1209,4 @@ var (
 // 1) the current implementation on Filen's side isn't great, it's worth waiting until SSE
 // 2) I'm not really clear that the benefits are so great
 // a bunch of the information would get wasted, since the Filen does actually specify exact updates,
-// whereas rclone seems to only accept a path and object type
+// whereas zclone seems to only accept a path and object type

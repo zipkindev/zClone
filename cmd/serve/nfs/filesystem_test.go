@@ -5,11 +5,11 @@ package nfs
 import (
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
 )
 
 // Chmod/Chown arrive as plain SETATTR calls on the link path after a

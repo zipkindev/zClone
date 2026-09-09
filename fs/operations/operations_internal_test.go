@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/object"
 	"github.com/stretchr/testify/assert"
+	"zclone/fs"
+	"zclone/fs/object"
 )
 
 func TestSizeDiffers(t *testing.T) {

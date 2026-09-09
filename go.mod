@@ -1,4 +1,4 @@
-module github.com/rclone/rclone
+module zclone
 
 go 1.26.0
 
@@ -47,7 +47,6 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/google/uuid v1.6.0
 	github.com/hanwen/go-fuse/v2 v2.10.1
-	github.com/internxt/rclone-adapter v0.0.0-20260708165336-dd6561bacfa2
 	github.com/jcmturner/gokrb5/v8 v8.4.4
 	github.com/jlaffaye/ftp v0.2.1-0.20251026020404-6602e981a1bb
 	github.com/josephspurrier/goversioninfo v1.7.0
@@ -72,9 +71,6 @@ require (
 	github.com/prometheus/client_golang v1.23.2
 	github.com/putdotio/go-putio/putio v0.0.0-20200123120452-16d982cac2b8
 	github.com/quasilyte/go-ruleguard/dsl v0.3.23
-	github.com/rclone/Proton-API-Bridge v1.0.5
-	github.com/rclone/go-proton-api v1.0.4
-	github.com/rclone/gofakes3 v0.0.8
 	github.com/rfjakob/eme v1.2.0
 	github.com/rivo/uniseg v0.4.7
 	github.com/rogpeppe/go-internal v1.15.0
@@ -109,6 +105,8 @@ require (
 	moul.io/http2curl/v2 v2.3.0
 	storj.io/uplink v1.14.3
 )
+
+replace github.com/FilenCloudDienste/filen-sdk-go => ./third_party/filen-sdk-go
 
 require (
 	cloud.google.com/go/auth v0.20.0 // indirect

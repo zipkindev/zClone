@@ -14,9 +14,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rclone/rclone/fs"
 	"golang.org/x/sync/errgroup"
 	"golang.org/x/text/unicode/norm"
+	"zclone/fs"
 )
 
 // This is the globally active filter

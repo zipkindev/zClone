@@ -1,10 +1,10 @@
-// Package s3 implements a fake s3 server for rclone
+// Package s3 implements a fake s3 server for zclone
 package s3
 
 import (
 	"sort"
 
-	"github.com/rclone/gofakes3"
+	"zclone/lib/gofakes3"
 )
 
 // pager splits the object list into smulitply pages.

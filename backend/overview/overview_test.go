@@ -4,9 +4,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/rclone/rclone/docs/data/backends"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/docs/data/backends"
 )
 
 func TestGetBackendConfig(t *testing.T) {

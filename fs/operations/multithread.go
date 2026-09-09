@@ -8,12 +8,12 @@ import (
 	"io"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/multipart"
-	"github.com/rclone/rclone/lib/pool"
 	"golang.org/x/sync/errgroup"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/lib/atexit"
+	"zclone/lib/multipart"
+	"zclone/lib/pool"
 )
 
 const (

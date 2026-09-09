@@ -9,15 +9,15 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/rclone/rclone/fs"
-	_ "github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/filter"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fstest/mockdir"
-	"github.com/rclone/rclone/fstest/mockfs"
-	"github.com/rclone/rclone/fstest/mockobject"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	_ "zclone/fs/accounting"
+	"zclone/fs/filter"
+	"zclone/fs/fserrors"
+	"zclone/fstest/mockdir"
+	"zclone/fstest/mockfs"
+	"zclone/fstest/mockobject"
 )
 
 var errDirNotFound, errorBoom error

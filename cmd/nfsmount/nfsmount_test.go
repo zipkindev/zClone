@@ -11,16 +11,16 @@ import (
 	"runtime"
 	"testing"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/cmd/mountlib"
-	"github.com/rclone/rclone/cmd/serve/nfs"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/vfs"
-	"github.com/rclone/rclone/vfs/vfscommon"
-	"github.com/rclone/rclone/vfs/vfstest"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	"zclone/cmd/mountlib"
+	"zclone/cmd/serve/nfs"
+	"zclone/fs"
+	"zclone/fs/object"
+	"zclone/vfs"
+	"zclone/vfs/vfscommon"
+	"zclone/vfs/vfstest"
 )
 
 // Return true if the command ran without error
@@ -50,12 +50,12 @@ func TestMount(t *testing.T) {
 				t.Skip(err.Error() + ": run with: go test -c && sudo setcap cap_dac_read_search+ep ./nfsmount.test && ./nfsmount.test -test.v")
 			}
 			require.NoError(t, err)
-			// Configure rclone via environment var since the mount gets run in a subprocess
-			_ = os.Setenv("RCLONE_NFS_CACHE_DIR", nfs.Opt.HandleCacheDir)
-			_ = os.Setenv("RCLONE_NFS_CACHE_TYPE", cacheType)
+			// Configure zclone via environment var since the mount gets run in a subprocess
+			_ = os.Setenv("ZCLONE_NFS_CACHE_DIR", nfs.Opt.HandleCacheDir)
+			_ = os.Setenv("ZCLONE_NFS_CACHE_TYPE", cacheType)
 			t.Cleanup(func() {
-				_ = os.Unsetenv("RCLONE_NFS_CACHE_DIR")
-				_ = os.Unsetenv("RCLONE_NFS_CACHE_TYPE")
+				_ = os.Unsetenv("ZCLONE_NFS_CACHE_DIR")
+				_ = os.Unsetenv("ZCLONE_NFS_CACHE_TYPE")
 			})
 			vfstest.RunTests(t, false, vfscommon.CacheModeWrites, false, mount)
 		})

@@ -1,13 +1,13 @@
 //go:build !plan9
 
-// Package archive implements 'rclone archive'.
+// Package archive implements 'zclone archive'.
 package archive
 
 import (
 	"errors"
 
-	"github.com/rclone/rclone/cmd"
 	"github.com/spf13/cobra"
+	"zclone/cmd"
 )
 
 func init() {
@@ -21,11 +21,11 @@ var Command = &cobra.Command{
 	Long: `Perform an action on an archive. Requires the use of a
 subcommand to specify the protocol, e.g.
 
-    rclone archive list remote:file.zip
+    zclone archive list remote:file.zip
 
 Each subcommand has its own options which you can see in their help.
 
-See [rclone archive create](/commands/rclone_archive_create/) for the
+See [zclone archive create](/commands/zclone_archive_create/) for the
 archive formats supported.
 `,
 	Annotations: map[string]string{
@@ -33,7 +33,7 @@ archive formats supported.
 	},
 	RunE: func(command *cobra.Command, args []string) error {
 		if len(args) == 0 {
-			return errors.New("archive requires an action, e.g. 'rclone archive list remote:'")
+			return errors.New("archive requires an action, e.g. 'zclone archive list remote:'")
 		}
 		return errors.New("unknown action")
 	},

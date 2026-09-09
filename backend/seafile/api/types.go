@@ -42,7 +42,7 @@ type CreateLibraryRequest struct {
 	Password    string `json:"passwd"`
 }
 
-// Library properties. Please note not all properties are going to be useful for rclone
+// Library properties. Please note not all properties are going to be useful for zclone
 type Library struct {
 	Encrypted bool   `json:"encrypted"`
 	Owner     string `json:"owner"`

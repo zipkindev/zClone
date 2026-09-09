@@ -14,10 +14,10 @@ import (
 
 	"slices"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/vfs/vfscommon"
+	"zclone/fs"
+	"zclone/fs/log"
+	"zclone/fs/operations"
+	"zclone/vfs/vfscommon"
 )
 
 // The File object is tightly coupled to the Dir object. Since they
@@ -774,7 +774,7 @@ func (f *File) resolveNode() (target Node, err error) {
 			targetPath = path.Join(basePath, targetPath)
 		}
 
-		// Clean the path, rclone style
+		// Clean the path, zclone style
 		targetPath = path.Clean(targetPath)
 		if targetPath == "." {
 			targetPath = ""

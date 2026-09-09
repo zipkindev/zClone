@@ -3,7 +3,7 @@
 set -e
 
 NAME=smb
-USER=rclone
+USER=zclone
 PASS=GNF3Cqeu
 WORKGROUP=thepub
 PORT=28630
@@ -16,16 +16,16 @@ start() {
            -p 127.0.0.1:${PORT}:445/udp \
            dperson/samba \
            -p \
-           -u "rclone;${PASS}" \
+           -u "zclone;${PASS}" \
            -w "${WORKGROUP}" \
            -s "public;/share" \
-           -s "rclone;/rclone;yes;no;no;rclone"
+           -s "zclone;/zclone;yes;no;no;zclone"
     
     echo type=smb
     echo host=127.0.0.1
     echo user=$USER
     echo port=$PORT
-    echo pass=$(rclone obscure $PASS)
+    echo pass=$(zclone obscure $PASS)
     echo domain=$WORKGROUP
     echo _connect=127.0.0.1:${PORT}
 }

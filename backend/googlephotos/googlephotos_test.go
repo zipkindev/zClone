@@ -10,21 +10,21 @@ import (
 	"testing"
 	"time"
 
-	_ "github.com/rclone/rclone/backend/local"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/lib/random"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	_ "zclone/backend/local"
+	"zclone/fs"
+	"zclone/fs/hash"
+	"zclone/fstest"
+	"zclone/lib/random"
 )
 
 const (
 	// We have two different files here as Google Photos will uniq
 	// them otherwise which confuses the tests as the filename is
 	// unexpected.
-	fileNameAlbum  = "rclone-test-image1.jpg"
-	fileNameUpload = "rclone-test-image2.jpg"
+	fileNameAlbum  = "zclone-test-image1.jpg"
+	fileNameUpload = "zclone-test-image2.jpg"
 )
 
 func TestIntegration(t *testing.T) {
@@ -46,7 +46,7 @@ func TestIntegration(t *testing.T) {
 	require.NoError(t, err)
 
 	t.Run("CreateAlbum", func(t *testing.T) {
-		albumName := "album/rclone-test-" + random.String(24)
+		albumName := "album/zclone-test-" + random.String(24)
 		err = f.Mkdir(ctx, albumName)
 		require.NoError(t, err)
 		remote := albumName + "/" + fileNameAlbum

@@ -66,7 +66,7 @@ func testReadTestdataFile(t *testing.T, path string) []byte {
 
 func TestNewServerUnix(t *testing.T) {
 	tempDir := t.TempDir()
-	path := filepath.Join(tempDir, "rclone.sock")
+	path := filepath.Join(tempDir, "zclone.sock")
 
 	servers := []struct {
 		name   string
@@ -158,6 +158,10 @@ func TestNewServerUnix(t *testing.T) {
 	}
 }
 
+func TestDefaultCfg(t *testing.T) {
+	require.Equal(t, "tls1.2", DefaultCfg().MinTLSVersion)
+}
+
 func TestNewServerHTTP(t *testing.T) {
 	ctx := context.Background()
 
@@ -232,33 +236,33 @@ func TestNewServerBaseURL(t *testing.T) {
 			name: "Single/NoTrailingSlash",
 			cfg: Config{
 				ListenAddr: []string{"127.0.0.1:0"},
-				BaseURL:    "/rclone",
+				BaseURL:    "/zclone",
 			},
-			suffix: "/rclone/",
+			suffix: "/zclone/",
 		},
 		{
 			name: "Single/TrailingSlash",
 			cfg: Config{
 				ListenAddr: []string{"127.0.0.1:0"},
-				BaseURL:    "/rclone/",
+				BaseURL:    "/zclone/",
 			},
-			suffix: "/rclone/",
+			suffix: "/zclone/",
 		},
 		{
 			name: "Multi/NoTrailingSlash",
 			cfg: Config{
 				ListenAddr: []string{"127.0.0.1:0"},
-				BaseURL:    "/rclone/test/base/url",
+				BaseURL:    "/zclone/test/base/url",
 			},
-			suffix: "/rclone/test/base/url/",
+			suffix: "/zclone/test/base/url/",
 		},
 		{
 			name: "Multi/TrailingSlash",
 			cfg: Config{
 				ListenAddr: []string{"127.0.0.1:0"},
-				BaseURL:    "/rclone/test/base/url/",
+				BaseURL:    "/zclone/test/base/url/",
 			},
-			suffix: "/rclone/test/base/url/",
+			suffix: "/zclone/test/base/url/",
 		},
 	}
 
@@ -529,7 +533,7 @@ func TestNewServerTLS(t *testing.T) {
 					},
 				},
 			}
-			req, err := http.NewRequest("GET", "https://dev.rclone.org", nil)
+			req, err := http.NewRequest("GET", "https://dev.zclone.org", nil)
 			require.NoError(t, err)
 
 			resp, err := client.Do(req)
@@ -611,7 +615,7 @@ func TestNewServerTLSMultipleListeners(t *testing.T) {
 						},
 						TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 					}
-					reqURL = "https://dev.rclone.org"
+					reqURL = "https://dev.zclone.org"
 				}
 				req, err := http.NewRequest("GET", reqURL, nil)
 				require.NoError(t, err)

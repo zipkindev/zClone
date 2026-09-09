@@ -28,31 +28,31 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/rclone/rclone/backend/box/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/env"
-	"github.com/rclone/rclone/lib/jwtutil"
-	"github.com/rclone/rclone/lib/oauthutil"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/lib/readers"
-	"github.com/rclone/rclone/lib/rest"
 	"github.com/youmark/pkcs8"
+	"zclone/backend/box/api"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/lib/dircache"
+	"zclone/lib/encoder"
+	"zclone/lib/env"
+	"zclone/lib/jwtutil"
+	"zclone/lib/oauthutil"
+	"zclone/lib/pacer"
+	"zclone/lib/random"
+	"zclone/lib/readers"
+	"zclone/lib/rest"
 )
 
 const (
-	rcloneClientID              = "d0374ba6pgmaguie02ge15sv1mllndho"
-	rcloneEncryptedClientSecret = "sYbJYm99WB8jzeaLPU0OPDMJKIkZvD2qOn3SyEMfiJr03RdtDt3xcZEIudRhbIDL"
+	zcloneClientID              = "d0374ba6pgmaguie02ge15sv1mllndho"
+	zcloneEncryptedClientSecret = "sYbJYm99WB8jzeaLPU0OPDMJKIkZvD2qOn3SyEMfiJr03RdtDt3xcZEIudRhbIDL"
 	minSleep                    = 10 * time.Millisecond
 	maxSleep                    = 2 * time.Second
 	decayConstant               = 2 // bigger for slower decay, exponential
@@ -70,8 +70,8 @@ var (
 		Scopes:       nil,
 		AuthURL:      "https://app.box.com/api/oauth2/authorize",
 		TokenURL:     "https://app.box.com/api/oauth2/token",
-		ClientID:     rcloneClientID,
-		ClientSecret: obscure.MustReveal(rcloneEncryptedClientSecret),
+		ClientID:     zcloneClientID,
+		ClientSecret: obscure.MustReveal(zcloneEncryptedClientSecret),
 		RedirectURL:  oauthutil.RedirectURL,
 	}
 )
@@ -106,7 +106,7 @@ func init() {
 		},
 		Options: append(oauthutil.SharedOptions, []fs.Option{{
 			Name:      "root_folder_id",
-			Help:      "Fill in for rclone to use a non root folder as its starting point.",
+			Help:      "Fill in for zclone to use a non root folder as its starting point.",
 			Default:   "0",
 			Advanced:  true,
 			Sensitive: true,
@@ -127,10 +127,10 @@ func init() {
 			Default: "user",
 			Examples: []fs.OptionExample{{
 				Value: "user",
-				Help:  "Rclone should act on behalf of a user.",
+				Help:  "Zclone should act on behalf of a user.",
 			}, {
 				Value: "enterprise",
-				Help:  "Rclone should act on behalf of a service account.",
+				Help:  "Zclone should act on behalf of a service account.",
 			}},
 		}, {
 			Name:     "upload_cutoff",
@@ -157,7 +157,7 @@ func init() {
 			Default: "",
 			Help: `Impersonate this user ID when using a service account.
 
-Setting this flag allows rclone, when using a JWT service account, to
+Setting this flag allows zclone, when using a JWT service account, to
 act on behalf of another user by setting the as-user header.
 
 The user ID is the Box identifier for a user. User IDs can found for
@@ -551,7 +551,7 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (fs.Fs, e
 		f.features.Fill(ctx, &tempF)
 		// XXX: update the old f here instead of returning tempF, since
 		// `features` were already filled with functions having *f as a receiver.
-		// See https://github.com/rclone/rclone/issues/2182
+		// See /
 		f.dirCache = tempF.dirCache
 		f.root = tempF.root
 		// return an error with an fs which points to the parent
@@ -1015,7 +1015,7 @@ func (f *Fs) Copy(ctx context.Context, src fs.Object, remote string) (fs.Object,
 		return nil, err
 	}
 	if item != nil { // dest already exists, need to copy to temp name and then move
-		tempSuffix := "-rclone-copy-" + random.String(8)
+		tempSuffix := "-zclone-copy-" + random.String(8)
 		fs.Debugf(remote, "dst already exists, copying to temp name %v", remote+tempSuffix)
 		tempObj, err := f.Copy(ctx, src, remote+tempSuffix)
 		if err != nil {

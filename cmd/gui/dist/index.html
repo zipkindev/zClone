@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zclone Control</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #101827; color: #e5edf8; }
+    body { margin: 0; display: grid; min-height: 100vh; place-items: center; }
+    main { width: min(42rem, calc(100vw - 3rem)); padding: 2.5rem; border: 1px solid #334155; border-radius: 1rem; background: #172033; }
+    h1 { margin-top: 0; color: #7dd3fc; } p, label { line-height: 1.55; }
+    form { display: grid; gap: .8rem; margin-top: 1.5rem; }
+    input { border: 1px solid #475569; border-radius: .4rem; background: #0f172a; color: inherit; padding: .65rem; font: inherit; }
+    button { justify-self: start; border: 0; border-radius: .4rem; background: #0284c7; color: white; padding: .65rem 1rem; font: inherit; cursor: pointer; }
+    pre { min-height: 2rem; overflow: auto; padding: 1rem; border-radius: .4rem; background: #0f172a; white-space: pre-wrap; }
+    .note { color: #cbd5e1; font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Zclone Control</h1>
+    <p>Run a read-only RC call against the local Zclone API. Credentials are entered only for this request and are never placed in the URL or stored by this page.</p>
+    <form id="control-form">
+      <label>RC endpoint<input id="endpoint" type="url" required></label>
+      <label>Username<input id="username" autocomplete="username"></label>
+      <label>Password<input id="password" type="password" autocomplete="current-password"></label>
+      <label>RC command<input id="command" value="core/version" pattern="[A-Za-z0-9_/-]+" required></label>
+      <button type="submit">Run command</button>
+    </form>
+    <pre id="result" aria-live="polite">Loading local RC endpoint…</pre>
+    <p class="note">For automation, use <code>zclone rc</code> or <code>zclone rcd</code>. This interface uses no update, telemetry, forum, or external web service.</p>
+  </main>
+  <script>
+    const endpoint = document.getElementById("endpoint");
+    const result = document.getElementById("result");
+    fetch("/_zclone/gui-config").then(response => response.json()).then(config => {
+      endpoint.value = config.rcURL;
+      result.textContent = "Ready.";
+    }).catch(error => { result.textContent = "Could not load local RC configuration: " + error; });
+    document.getElementById("control-form").addEventListener("submit", async event => {
+      event.preventDefault();
+      const command = document.getElementById("command").value.replace(/^\/+/, "");
+      const url = endpoint.value.replace(/\/+$/, "") + "/rc/" + command;
+      const headers = { "Content-Type": "application/json" };
+      const user = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      if (user || password) headers.Authorization = "Basic " + btoa(user + ":" + password);
+      result.textContent = "Running…";
+      try {
+        const response = await fetch(url, { method: "POST", headers, body: "{}", credentials: "omit" });
+        const text = await response.text();
+        result.textContent = response.ok ? text || "OK" : "HTTP " + response.status + "\n" + text;
+      } catch (error) {
+        result.textContent = "Request failed: " + error;
+      }
+    });
+  </script>
+</body>
+</html>

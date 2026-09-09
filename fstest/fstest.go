@@ -21,18 +21,18 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/accounting"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configfile"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/fs/walk"
-	"github.com/rclone/rclone/fstest/testy"
-	"github.com/rclone/rclone/lib/random"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/text/unicode/norm"
+	"zclone/fs"
+	"zclone/fs/accounting"
+	"zclone/fs/config"
+	"zclone/fs/config/configfile"
+	"zclone/fs/hash"
+	"zclone/fs/log"
+	"zclone/fs/walk"
+	"zclone/fstest/testy"
+	"zclone/lib/random"
 )
 
 // Globals
@@ -49,21 +49,21 @@ var (
 	// ListRetries is the number of times to retry a listing to overcome eventual consistency
 	ListRetries = flag.Int("list-retries", 3, "Number or times to retry listing")
 	// MatchTestRemote matches the remote names used for testing
-	MatchTestRemote = regexp.MustCompile(`^rclone-test-[abcdefghijklmnopqrstuvwxyz0123456789]{12}$`)
+	MatchTestRemote = regexp.MustCompile(`^zclone-test-[abcdefghijklmnopqrstuvwxyz0123456789]{12}$`)
 )
 
-// Initialise rclone for testing
+// Initialise zclone for testing
 func Initialise() {
 	ctx := context.Background()
 	ci := fs.GetConfig(ctx)
 	// Never ask for passwords, fail instead.
 	// If your local config is encrypted set environment variable
-	// "RCLONE_CONFIG_PASS=hunter2" (or your password)
+	// "ZCLONE_CONFIG_PASS=hunter2" (or your password)
 	ci.AskPassword = false
 	// Override the config file from the environment - we don't
 	// parse the flags any more so this doesn't happen
 	// automatically
-	if envConfig := os.Getenv("RCLONE_CONFIG"); envConfig != "" {
+	if envConfig := os.Getenv("ZCLONE_CONFIG"); envConfig != "" {
 		_ = config.SetConfigPath(envConfig)
 	}
 	if *RemoteName == "local" {
@@ -411,7 +411,7 @@ func Time(timeString string) time.Time {
 
 // LocalRemote creates a temporary directory name for local remotes
 func LocalRemote() (path string, err error) {
-	path, err = os.MkdirTemp("", "rclone")
+	path, err = os.MkdirTemp("", "zclone")
 	if err == nil {
 		// Now remove the directory
 		err = os.Remove(path)
@@ -437,7 +437,7 @@ func RandomRemoteName(remoteName string) (string, string, error) {
 		if !strings.HasSuffix(remoteName, ":") {
 			remoteName += "/"
 		}
-		leafName = "rclone-test-" + random.String(12)
+		leafName = "zclone-test-" + random.String(12)
 		if !MatchTestRemote.MatchString(leafName) {
 			fs.Fatalf(nil, "%q didn't match the test remote name regexp", leafName)
 		}
@@ -551,7 +551,7 @@ func NewObject(ctx context.Context, t *testing.T, f fs.Fs, remote string) fs.Obj
 //
 // If directory can't be found it returns an error wrapping fs.ErrorDirNotFound
 //
-// One day this will be an rclone primitive
+// One day this will be an zclone primitive
 func NewDirectoryRetries(ctx context.Context, t *testing.T, f fs.Fs, remote string, retries int) (fs.Directory, error) {
 	var err error
 	var dir fs.Directory
@@ -585,7 +585,7 @@ func NewDirectoryRetries(ctx context.Context, t *testing.T, f fs.Fs, remote stri
 
 // NewDirectory finds the directory with remote in f
 //
-// One day this will be an rclone primitive
+// One day this will be an zclone primitive
 func NewDirectory(ctx context.Context, t *testing.T, f fs.Fs, remote string) fs.Directory {
 	dir, err := NewDirectoryRetries(ctx, t, f, remote, *ListRetries)
 	require.NoError(t, err)

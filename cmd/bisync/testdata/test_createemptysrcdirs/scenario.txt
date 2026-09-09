@@ -1,6 +1,6 @@
 test createemptysrcdirs
 # Test the --create-empty-src-dirs logic.
-# Should behave the same way as rclone sync.
+# Should behave the same way as zclone sync.
 # Without this flag, empty directories created/deleted on one side are NOT created/deleted on the other side
 # With this flag, empty directories created/deleted on one side are created/deleted on the other side; the result should be an exact mirror.
 #

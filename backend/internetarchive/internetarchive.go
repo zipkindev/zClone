@@ -19,19 +19,19 @@ import (
 	"time"
 
 	"github.com/ncw/swift/v2"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/lib/bucket"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/random"
-	"github.com/rclone/rclone/lib/readers"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/lib/bucket"
+	"zclone/lib/encoder"
+	"zclone/lib/pacer"
+	"zclone/lib/random"
+	"zclone/lib/readers"
+	"zclone/lib/rest"
 )
 
 // Register with Fs
@@ -56,7 +56,7 @@ func init() {
 					ReadOnly: true,
 				},
 				"mtime": {
-					Help:     "Time of last modification, managed by Rclone",
+					Help:     "Time of last modification, managed by Zclone",
 					Type:     "RFC 3339",
 					Example:  "2006-01-02T15:04:05.999999999Z",
 					ReadOnly: true,
@@ -104,31 +104,31 @@ func init() {
 					ReadOnly: true,
 				},
 				"summation": {
-					Help:     "Check https://forum.rclone.org/t/31922 for how it is used",
+					Help:     "Check / for how it is used",
 					Type:     "string",
 					Example:  "md5",
 					ReadOnly: true,
 				},
 
-				"rclone-ia-mtime": {
+				"zclone-ia-mtime": {
 					Help:    "Time of last modification, managed by Internet Archive",
 					Type:    "RFC 3339",
 					Example: "2006-01-02T15:04:05.999999999Z",
 				},
-				"rclone-mtime": {
-					Help:    "Time of last modification, managed by Rclone",
+				"zclone-mtime": {
+					Help:    "Time of last modification, managed by Zclone",
 					Type:    "RFC 3339",
 					Example: "2006-01-02T15:04:05.999999999Z",
 				},
-				"rclone-update-track": {
-					Help:    "Random value used by Rclone for tracking changes inside Internet Archive",
+				"zclone-update-track": {
+					Help:    "Random value used by Zclone for tracking changes inside Internet Archive",
 					Type:    "string",
 					Example: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
 				},
 			},
 			Help: `Metadata fields provided by Internet Archive.
 If there are multiple values for a key, only the first one is returned.
-This is a limitation of Rclone, that supports one value per one key.
+This is a limitation of Zclone, that supports one value per one key.
 
 Owner is able to add custom keys. Metadata feature grabs all the keys including them.
 `,
@@ -168,8 +168,8 @@ Setting this to false is useful for uploading files that are already in a format
 			Default: true,
 		}, {
 			Name: "disable_checksum",
-			Help: `Don't ask the server to test against MD5 checksum calculated by rclone.
-Normally rclone will calculate the MD5 checksum of the input before
+			Help: `Don't ask the server to test against MD5 checksum calculated by zclone.
+Normally zclone will calculate the MD5 checksum of the input before
 uploading it so it can ask the server to check the object against checksum.
 This is great for data integrity checking but can cause long delays for
 large files to start uploading.`,
@@ -251,8 +251,8 @@ type IAFile struct {
 	Name string `json:"name"`
 	// Source     string `json:"source"`
 	Mtime       string          `json:"mtime"`
-	RcloneMtime json.RawMessage `json:"rclone-mtime"`
-	UpdateTrack json.RawMessage `json:"rclone-update-track"`
+	ZcloneMtime json.RawMessage `json:"zclone-mtime"`
+	UpdateTrack json.RawMessage `json:"zclone-update-track"`
 	Size        string          `json:"size"`
 	Md5         string          `json:"md5"`
 	Crc32       string          `json:"crc32"`
@@ -443,13 +443,13 @@ func (o *Object) SetModTime(ctx context.Context, t time.Time) (err error) {
 	// https://archive.org/services/docs/api/md-write.html
 	// the following code might be useful for modifying metadata of an uploaded file
 	patch := []map[string]string{
-		// we should drop it first to clear all rclone-provided mtimes
+		// we should drop it first to clear all zclone-provided mtimes
 		{
 			"op":   "remove",
-			"path": "/rclone-mtime",
+			"path": "/zclone-mtime",
 		}, {
 			"op":    "add",
-			"path":  "/rclone-mtime",
+			"path":  "/zclone-mtime",
 			"value": t.Format(time.RFC3339Nano),
 		}}
 	res, err := json.Marshal(patch)
@@ -630,8 +630,8 @@ func (f *Fs) Copy(ctx context.Context, src fs.Object, remote string) (_ fs.Objec
 		"x-archive-filemeta-crc32":   srcObj.crc32,
 		"x-archive-filemeta-size":    fmt.Sprint(srcObj.size),
 		// add this too for sure
-		"x-archive-filemeta-rclone-mtime":        srcObj.modTime.Format(time.RFC3339Nano),
-		"x-archive-filemeta-rclone-update-track": updateTracker,
+		"x-archive-filemeta-zclone-mtime":        srcObj.modTime.Format(time.RFC3339Nano),
+		"x-archive-filemeta-zclone-update-track": updateTracker,
 	}
 
 	// make a PUT request at (IAS3)/:item/:path without body
@@ -722,7 +722,7 @@ func (f *Fs) CleanUp(ctx context.Context) (err error) {
 			}
 		}
 		// we can fully ignore directories, as they're just virtual entries to
-		// comply with rclone's requirement
+		// comply with zclone's requirement
 	}
 
 	return nil
@@ -803,8 +803,8 @@ func (o *Object) Update(ctx context.Context, in io.Reader, src fs.ObjectInfo, op
 	// internetarchive backend builds at header level as IAS3 has extension outside X-Amz-
 	headers := map[string]string{
 		// https://github.com/jjjake/internetarchive/blob/2456376533251df9d05e0a14d796ec1ced4959f5/internetarchive/iarequest.py#L158
-		"x-amz-filemeta-rclone-mtime":        modTime.Format(time.RFC3339Nano),
-		"x-amz-filemeta-rclone-update-track": updateTracker,
+		"x-amz-filemeta-zclone-mtime":        modTime.Format(time.RFC3339Nano),
+		"x-amz-filemeta-zclone-update-track": updateTracker,
 
 		// we add some more headers for intuitive actions
 		"x-amz-auto-make-bucket":     "1", // create an item if does not exist, do nothing if already
@@ -829,14 +829,14 @@ func (o *Object) Update(ctx context.Context, in io.Reader, src fs.ObjectInfo, op
 	if err == nil && mdata != nil {
 		for mk, mv := range mdata {
 			mk = strings.ToLower(mk)
-			if strings.HasPrefix(mk, "rclone-") {
+			if strings.HasPrefix(mk, "zclone-") {
 				fs.LogPrintf(fs.LogLevelWarning, o, "reserved metadata key %s is about to set", mk)
 			} else if _, ok := roMetadataKey[mk]; ok {
 				fs.LogPrintf(fs.LogLevelWarning, o, "setting or modifying read-only key %s is requested, skipping", mk)
 				continue
 			} else if mk == "mtime" {
 				// redirect to make it work
-				mk = "rclone-mtime"
+				mk = "zclone-mtime"
 			}
 			headers[fmt.Sprintf("x-amz-filemeta-%s", mk)] = mv
 		}
@@ -991,7 +991,7 @@ func (o *Object) Metadata(ctx context.Context) (m fs.Metadata, err error) {
 	}
 	// move the old mtime to an another key
 	if v, ok := m["mtime"]; ok {
-		m["rclone-ia-mtime"] = v
+		m["zclone-ia-mtime"] = v
 	}
 	// overwrite with a correct mtime
 	m["mtime"] = o.modTime.Format(time.RFC3339Nano)
@@ -1229,7 +1229,7 @@ func makeValidObject(f *Fs, remote string, file IAFile, mtime time.Time, size in
 		rawData: file.rawData,
 	}
 	// hashes from _files.xml (where summation != "") is different from one in other files
-	// https://forum.rclone.org/t/internet-archive-md5-tag-in-id-files-xml-interpreted-incorrectly/31922
+	// /
 	if file.Summation == "" {
 		ret.md5 = file.Md5
 		ret.crc32 = file.Crc32
@@ -1247,7 +1247,7 @@ func makeValidObject2(f *Fs, file IAFile, bucket string) *Object {
 }
 
 func listOrString(jm json.RawMessage) (rmArray []string, err error) {
-	// rclone-metadata can be an array or string
+	// zclone-metadata can be an array or string
 	// try to deserialize it as array first
 	err = json.Unmarshal(jm, &rmArray)
 	if err != nil {
@@ -1262,8 +1262,8 @@ func listOrString(jm json.RawMessage) (rmArray []string, err error) {
 }
 
 func (file IAFile) parseMtime() (mtime time.Time) {
-	// method 1: use metadata added by rclone
-	rmArray, err := listOrString(file.RcloneMtime)
+	// method 1: use metadata added by zclone
+	rmArray, err := listOrString(file.ZcloneMtime)
 	// let's take the first value we can deserialize
 	for _, value := range rmArray {
 		mtime, err = time.Parse(time.RFC3339Nano, value)

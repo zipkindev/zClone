@@ -10,13 +10,13 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/rclone/rclone/backend/azureblob/arrowlist"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fstest"
-	"github.com/rclone/rclone/fstest/fstests"
-	"github.com/rclone/rclone/lib/random"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/backend/azureblob/arrowlist"
+	"zclone/fs"
+	"zclone/fstest"
+	"zclone/fstest/fstests"
+	"zclone/lib/random"
 )
 
 // testArrowList exercises the experimental Apache Arrow listing.

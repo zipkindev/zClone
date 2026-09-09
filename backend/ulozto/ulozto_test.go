@@ -6,14 +6,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/backend/ulozto/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/operations"
-	"github.com/rclone/rclone/fstest"
 	"github.com/stretchr/testify/require"
+	"zclone/backend/ulozto/api"
+	"zclone/fs"
+	"zclone/fs/hash"
+	"zclone/fs/operations"
+	"zclone/fstest"
 
-	"github.com/rclone/rclone/fstest/fstests"
+	"zclone/fstest/fstests"
 )
 
 // TestIntegration runs integration tests against the remote
@@ -25,7 +25,7 @@ func TestIntegration(t *testing.T) {
 }
 
 // TestListWithoutMetadata verifies that basic operations can be performed even if the remote file wasn't written by
-// rclone, or the serialized metadata can't be read.
+// zclone, or the serialized metadata can't be read.
 func TestListWithoutMetadata(t *testing.T) {
 	const (
 		remoteName = "TestUlozto:"

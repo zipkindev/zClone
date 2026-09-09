@@ -38,15 +38,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/cache"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/object"
-	"github.com/rclone/rclone/fs/walk"
-	"github.com/rclone/rclone/lib/file"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"zclone/fs"
+	"zclone/fs/cache"
+	"zclone/fs/fserrors"
+	"zclone/fs/hash"
+	"zclone/fs/object"
+	"zclone/fs/walk"
+	"zclone/lib/file"
 )
 
 // Run holds the remotes for a test run
@@ -104,7 +104,7 @@ func newRun() *Run {
 		r.Fatalf("Failed to open remote %q: %v", *RemoteName, err)
 	}
 
-	r.LocalName, err = os.MkdirTemp("", "rclone")
+	r.LocalName, err = os.MkdirTemp("", "zclone")
 	if err != nil {
 		r.Fatalf("Failed to create temp dir: %v", err)
 	}

@@ -13,7 +13,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
+	"zclone/fs"
 )
 
 // Implement the sshClient interface for external ssh programs

@@ -21,16 +21,16 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/config/obscure"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/list"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/fs"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/config/obscure"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/fs/list"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
 // Constants
@@ -100,7 +100,7 @@ Include the file extension for the object, if applicable.
 Usage example:
 
 ` + "```console" + `
-rclone backend symlink <src> <path>
+zclone backend symlink <src> <path>
 ` + "```",
 },
 }
@@ -436,8 +436,8 @@ func (f *Fs) getFileName(file *File) string {
 func (f *Fs) List(ctx context.Context, dir string) (entries fs.DirEntries, err error) {
 	if f.filetype == "" {
 		// This happens in two scenarios.
-		// 1. NewFs is done on a nonexistent object, then later rclone attempts to List/ListR this NewFs.
-		// 2. List/ListR is called from the context of test_all and not the regular rclone binary.
+		// 1. NewFs is done on a nonexistent object, then later zclone attempts to List/ListR this NewFs.
+		// 2. List/ListR is called from the context of test_all and not the regular zclone binary.
 		err := f.initFs(ctx, dir)
 		if err != nil {
 			if err == fs.ErrorObjectNotFound {
@@ -468,10 +468,10 @@ func (f *Fs) List(ctx context.Context, dir string) (entries fs.DirEntries, err e
 			}
 		case "symlink":
 			var entry fs.Object
-			// Add .rclonelink suffix to allow local backend code to convert to a symlink.
-			// In case both .rclonelink file AND symlink file exists, the first will be used.
-			if entry, _ = f.newObjectWithInfo(name+".rclonelink", &item); entry != nil {
-				fs.Infof(nil, "Converting a symlink to the rclonelink %s target %s", entry.Remote(), item.Target)
+			// Add .zclonelink suffix to allow local backend code to convert to a symlink.
+			// In case both .zclonelink file AND symlink file exists, the first will be used.
+			if entry, _ = f.newObjectWithInfo(name+".zclonelink", &item); entry != nil {
+				fs.Infof(nil, "Converting a symlink to the zclonelink %s target %s", entry.Remote(), item.Target)
 				entries = append(entries, entry)
 			}
 		default:
@@ -500,8 +500,8 @@ func (f *Fs) List(ctx context.Context, dir string) (entries fs.DirEntries, err e
 func (f *Fs) ListR(ctx context.Context, dir string, callback fs.ListRCallback) (err error) {
 	if f.filetype == "" {
 		// This happens in two scenarios.
-		// 1. NewFs is done on a nonexistent object, then later rclone attempts to List/ListR this NewFs.
-		// 2. List/ListR is called from the context of test_all and not the regular rclone binary.
+		// 1. NewFs is done on a nonexistent object, then later zclone attempts to List/ListR this NewFs.
+		// 2. List/ListR is called from the context of test_all and not the regular zclone binary.
 		err := f.initFs(ctx, dir)
 		if err != nil {
 			if err == fs.ErrorObjectNotFound {
@@ -553,10 +553,10 @@ func (f *Fs) ListR(ctx context.Context, dir string, callback fs.ListRCallback) (
 					}
 				}
 			case "symlink":
-				// Add .rclonelink suffix to allow local backend code to convert to a symlink.
-				// In case both .rclonelink file AND symlink file exists, the first will be used.
-				if entry, _ := f.newObjectWithInfo(dir+path+".rclonelink", &item); entry != nil {
-					fs.Infof(nil, "Converting a symlink to the rclonelink %s for target %s", entry.Remote(), item.Target)
+				// Add .zclonelink suffix to allow local backend code to convert to a symlink.
+				// In case both .zclonelink file AND symlink file exists, the first will be used.
+				if entry, _ := f.newObjectWithInfo(dir+path+".zclonelink", &item); entry != nil {
+					fs.Infof(nil, "Converting a symlink to the zclonelink %s for target %s", entry.Remote(), item.Target)
 					if err := list.Add(entry); err != nil {
 						return err
 					}
@@ -807,7 +807,7 @@ func (f *Fs) newObjectWithInfo(remote string, info *File) (fs.Object, error) {
 	URL := f.url(remote)
 	size := info.Size
 	if info.Type == "symlink" {
-		// File size for symlinks is absent but for .rclonelink to work
+		// File size for symlinks is absent but for .zclonelink to work
 		// the size should be the length of the target name
 		size = int64(len(info.Target))
 	}
@@ -901,9 +901,9 @@ func (f *Fs) callBackend(ctx context.Context, URL, method, actionHeader string, 
 
 // netStorageStatRequest performs a NetStorage stat request
 func (f *Fs) netStorageStatRequest(ctx context.Context, URL string, directory bool) ([]File, error) {
-	if strings.HasSuffix(URL, ".rclonelink") {
-		fs.Infof(nil, "Converting rclonelink to a symlink on the stat request %q", URL)
-		URL = strings.TrimSuffix(URL, ".rclonelink")
+	if strings.HasSuffix(URL, ".zclonelink") {
+		fs.Infof(nil, "Converting zclonelink to a symlink on the stat request %q", URL)
+		URL = strings.TrimSuffix(URL, ".zclonelink")
 	}
 	URL = strings.TrimSuffix(URL, "/")
 	files := f.getStatCache(URL)
@@ -921,9 +921,9 @@ func (f *Fs) netStorageStatRequest(ctx context.Context, URL string, directory bo
 	// when file/symlink/directory has the same name
 	for i := range files {
 		if files[i].Type == "symlink" {
-			// Add .rclonelink suffix to allow local backend code to convert to a symlink.
-			files[i].Name += ".rclonelink"
-			fs.Infof(nil, "Converting a symlink to the rclonelink on the stat request %s", files[i].Name)
+			// Add .zclonelink suffix to allow local backend code to convert to a symlink.
+			files[i].Name += ".zclonelink"
+			fs.Infof(nil, "Converting a symlink to the zclonelink on the stat request %s", files[i].Name)
 		}
 		entrywanted := (directory && files[i].Type == "dir") ||
 			(!directory && files[i].Type != "dir")
@@ -983,14 +983,14 @@ func (o *Object) netStorageUploadRequest(ctx context.Context, in io.Reader, src 
 	if URL == "" {
 		URL = o.fs.url(src.Remote())
 	}
-	if strings.HasSuffix(URL, ".rclonelink") {
+	if strings.HasSuffix(URL, ".zclonelink") {
 		bits, err := io.ReadAll(in)
 		if err != nil {
 			return err
 		}
 		targ := string(bits)
-		symlinkloc := strings.TrimSuffix(URL, ".rclonelink")
-		fs.Infof(nil, "Converting rclonelink to a symlink on upload %s target %s", symlinkloc, targ)
+		symlinkloc := strings.TrimSuffix(URL, ".zclonelink")
+		fs.Infof(nil, "Converting zclonelink to a symlink on upload %s target %s", symlinkloc, targ)
 		_, err = o.fs.netStorageSymlinkRequest(ctx, symlinkloc, targ, &o.modTime)
 		return err
 	}
@@ -1066,10 +1066,10 @@ func (o *Object) netStorageUploadRequest(ctx context.Context, in io.Reader, src 
 // netStorageDownloadRequest performs a NetStorage download request
 func (o *Object) netStorageDownloadRequest(ctx context.Context, options []fs.OpenOption) (in io.ReadCloser, err error) {
 	URL := o.fullURL
-	// If requested file ends with .rclonelink and target has value
+	// If requested file ends with .zclonelink and target has value
 	// then serve the content of target (the symlink target)
-	if strings.HasSuffix(URL, ".rclonelink") && o.target != "" {
-		fs.Infof(nil, "Converting a symlink to the rclonelink file on download %q", URL)
+	if strings.HasSuffix(URL, ".zclonelink") && o.target != "" {
+		fs.Infof(nil, "Converting a symlink to the zclonelink file on download %q", URL)
 		reader := strings.NewReader(o.target)
 		readcloser := io.NopCloser(reader)
 		return readcloser, nil
@@ -1097,7 +1097,7 @@ func (f *Fs) netStorageDuRequest(ctx context.Context) (any, error) {
 		fs.Debugf(nil, "NetStorage action du failed for %q: %v", URL, err)
 		return nil, err
 	}
-	//passing the output format expected from return of Command to be displayed by rclone code
+	//passing the output format expected from return of Command to be displayed by zclone code
 	out := map[string]int64{
 		"Number of files": duResp.Duinfo.Files,
 		"Total bytes":     duResp.Duinfo.Bytes,
@@ -1138,11 +1138,11 @@ func (f *Fs) netStorageMkdirRequest(ctx context.Context, URL string) error {
 // netStorageDeleteRequest performs a NetStorage delete request
 func (o *Object) netStorageDeleteRequest(ctx context.Context) error {
 	URL := o.fullURL
-	// We shouldn't be creating .rclonelink files on remote
+	// We shouldn't be creating .zclonelink files on remote
 	// but delete corresponding symlink if it exists
-	if strings.HasSuffix(URL, ".rclonelink") {
-		fs.Infof(nil, "Converting rclonelink to a symlink on delete %q", URL)
-		URL = strings.TrimSuffix(URL, ".rclonelink")
+	if strings.HasSuffix(URL, ".zclonelink") {
+		fs.Infof(nil, "Converting zclonelink to a symlink on delete %q", URL)
+		URL = strings.TrimSuffix(URL, ".zclonelink")
 	}
 
 	const actionHeader = "version=1&action=delete"

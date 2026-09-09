@@ -1,4 +1,4 @@
-# A very minimal hdfs server for integration testing rclone
+# A very minimal hdfs server for integration testing zclone
 FROM debian:stretch
 
 RUN apt-get update \
@@ -38,7 +38,7 @@ ADD yarn-site.xml    /etc/hadoop/yarn-site.xml
 
 ADD krb5.conf        /etc/
 ADD kdc.conf         /etc/krb5kdc/
-RUN echo '*/admin@KERBEROS.RCLONE *' > /etc/krb5kdc/kadm5.acl
+RUN echo '*/admin@KERBEROS.ZCLONE *' > /etc/krb5kdc/kadm5.acl
 
 ADD run.sh /run.sh
 RUN chmod a+x /run.sh

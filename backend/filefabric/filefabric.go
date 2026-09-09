@@ -28,22 +28,22 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/rclone/rclone/lib/atexit"
-	"github.com/rclone/rclone/lib/encoder"
-	"github.com/rclone/rclone/lib/random"
+	"zclone/lib/atexit"
+	"zclone/lib/encoder"
+	"zclone/lib/random"
 
-	"github.com/rclone/rclone/backend/filefabric/api"
-	"github.com/rclone/rclone/fs"
-	"github.com/rclone/rclone/fs/config"
-	"github.com/rclone/rclone/fs/config/configmap"
-	"github.com/rclone/rclone/fs/config/configstruct"
-	"github.com/rclone/rclone/fs/fserrors"
-	"github.com/rclone/rclone/fs/fshttp"
-	"github.com/rclone/rclone/fs/hash"
-	"github.com/rclone/rclone/fs/log"
-	"github.com/rclone/rclone/lib/dircache"
-	"github.com/rclone/rclone/lib/pacer"
-	"github.com/rclone/rclone/lib/rest"
+	"zclone/backend/filefabric/api"
+	"zclone/fs"
+	"zclone/fs/config"
+	"zclone/fs/config/configmap"
+	"zclone/fs/config/configstruct"
+	"zclone/fs/fserrors"
+	"zclone/fs/fshttp"
+	"zclone/fs/hash"
+	"zclone/fs/log"
+	"zclone/lib/dircache"
+	"zclone/lib/pacer"
+	"zclone/lib/rest"
 )
 
 const (
@@ -53,7 +53,7 @@ const (
 	listChunks    = 1000             // chunk size to read directory listings
 	tokenLifeTime = 55 * time.Minute // 1 hour minus a bit of leeway
 	defaultRootID = ""               // default root ID
-	emptyMimeType = "application/vnd.rclone.empty.file"
+	emptyMimeType = "application/vnd.zclone.empty.file"
 )
 
 // Register with Fs
@@ -82,7 +82,7 @@ func init() {
 
 Leave blank normally.
 
-Fill in to make rclone start with directory of a given ID.
+Fill in to make zclone start with directory of a given ID.
 `,
 			Sensitive: true,
 		}, {
@@ -103,10 +103,10 @@ For more info see: https://docs.storagemadeeasy.com/organisationcloud/api-tokens
 			Name: "token",
 			Help: `Session Token.
 
-This is a session token which rclone caches in the config file. It is
+This is a session token which zclone caches in the config file. It is
 usually valid for 1 hour.
 
-Don't set this value - rclone will set it automatically.
+Don't set this value - zclone will set it automatically.
 `,
 			Advanced:  true,
 			Sensitive: true,
@@ -114,14 +114,14 @@ Don't set this value - rclone will set it automatically.
 			Name: "token_expiry",
 			Help: `Token expiry time.
 
-Don't set this value - rclone will set it automatically.
+Don't set this value - zclone will set it automatically.
 `,
 			Advanced: true,
 		}, {
 			Name: "version",
 			Help: `Version read from the file fabric.
 
-Don't set this value - rclone will set it automatically.
+Don't set this value - zclone will set it automatically.
 `,
 			Advanced: true,
 		}, {

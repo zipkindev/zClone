@@ -1,6 +1,6 @@
 ---
 title: "Proton Drive"
-description: "Rclone docs for Proton Drive"
+description: "Zclone docs for Proton Drive"
 versionIntroduced: "v1.64.0"
 ---
 
@@ -9,7 +9,7 @@ versionIntroduced: "v1.64.0"
 [Proton Drive](https://proton.me/drive) is an end-to-end encrypted Swiss vault
  for your files that protects your data.
 
-This is an rclone backend for Proton Drive which supports the file transfer
+This is an zclone backend for Proton Drive which supports the file transfer
 features of Proton Drive using the same client-side encryption.
 
 Due to the fact that Proton Drive doesn't publish its API documentation, this
@@ -19,7 +19,7 @@ source code and observing the Proton Drive traffic in the browser.
 **NB** This backend is currently in Beta. It is believed to be correct
 and all the integration tests pass. However the Proton Drive protocol
 has evolved over time there may be accounts it is not compatible
-with. Please [post on the rclone forum](https://forum.rclone.org/) if
+with. Please [post on the zclone forum](/) if
 you find an incompatibility.
 
 Paths are specified as `remote:path`
@@ -31,7 +31,7 @@ Paths may be as deep as required, e.g. `remote:directory/subdirectory`.
 Here is an example of how to make a remote called `remote`.  First run:
 
 ```console
-rclone config
+zclone config
 ```
 
 This will guide you through an interactive setup process:
@@ -80,27 +80,27 @@ y/e/d> y
 
 **NOTE:** The Proton Drive encryption keys need to have been already generated
 after a regular login via the browser, otherwise attempting to use the
-credentials in `rclone` will fail.
+credentials in `zclone` will fail.
 
-Once configured you can then use `rclone` like this (replace `remote` with the
+Once configured you can then use `zclone` like this (replace `remote` with the
 name you gave your remote):
 
 List directories in top level of your Proton Drive
 
 ```console
-rclone lsd remote:
+zclone lsd remote:
 ```
 
 List all the files in your Proton Drive
 
 ```console
-rclone ls remote:
+zclone ls remote:
 ```
 
 To copy a local directory to an Proton Drive directory called backup
 
 ```console
-rclone copy /home/source remote:backup
+zclone copy /home/source remote:backup
 ```
 
 ### Modification times and hashes
@@ -126,7 +126,7 @@ Please set your mailbox password in the advanced config section.
 
 ### Caching
 
-The cache is currently built for the case when the rclone is the only instance
+The cache is currently built for the case when the zclone is the only instance
 performing operations to the mount point. The event system, which is the proton
 API system that provides visibility of what has changed on the drive, is yet
 to be implemented, so updates from other clients won’t be reflected in the
@@ -145,7 +145,7 @@ The username of your proton account
 Properties:
 
 - Config:      username
-- Env Var:     RCLONE_PROTONDRIVE_USERNAME
+- Env Var:     ZCLONE_PROTONDRIVE_USERNAME
 - Type:        string
 - Required:    true
 
@@ -153,12 +153,12 @@ Properties:
 
 The password of your proton account.
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      password
-- Env Var:     RCLONE_PROTONDRIVE_PASSWORD
+- Env Var:     ZCLONE_PROTONDRIVE_PASSWORD
 - Type:        string
 - Required:    true
 
@@ -168,13 +168,13 @@ The 2FA code
 
 The value can also be provided with --protondrive-2fa=000000
 
-The 2FA code of your proton drive account if the account is set up with 
+The 2FA code of your proton drive account if the account is set up with
 two-factor authentication
 
 Properties:
 
 - Config:      2fa
-- Env Var:     RCLONE_PROTONDRIVE_2FA
+- Env Var:     ZCLONE_PROTONDRIVE_2FA
 - Type:        string
 - Required:    false
 
@@ -184,15 +184,15 @@ The OTP secret key
 
 The value can also be provided with --protondrive-otp-secret-key=ABCDEFGHIJKLMNOPQRSTUVWXYZ234567
 
-The OTP secret key of your proton drive account if the account is set up with 
+The OTP secret key of your proton drive account if the account is set up with
 two-factor authentication
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      otp_secret_key
-- Env Var:     RCLONE_PROTONDRIVE_OTP_SECRET_KEY
+- Env Var:     ZCLONE_PROTONDRIVE_OTP_SECRET_KEY
 - Type:        string
 - Required:    false
 
@@ -204,17 +204,17 @@ Here are the Advanced options specific to protondrive (Proton Drive).
 
 The mailbox password of your two-password proton account.
 
-For more information regarding the mailbox password, please check the 
-following official knowledge base article: 
+For more information regarding the mailbox password, please check the
+following official knowledge base article:
 https://proton.me/support/the-difference-between-the-mailbox-password-and-login-password
 
 
-**NB** Input to this must be obscured - see [rclone obscure](/commands/rclone_obscure/).
+**NB** Input to this must be obscured - see [zclone obscure](/commands/zclone_obscure/).
 
 Properties:
 
 - Config:      mailbox_password
-- Env Var:     RCLONE_PROTONDRIVE_MAILBOX_PASSWORD
+- Env Var:     ZCLONE_PROTONDRIVE_MAILBOX_PASSWORD
 - Type:        string
 - Required:    false
 
@@ -227,41 +227,41 @@ See the [encoding section in the overview](/overview/#encoding) for more info.
 Properties:
 
 - Config:      encoding
-- Env Var:     RCLONE_PROTONDRIVE_ENCODING
+- Env Var:     ZCLONE_PROTONDRIVE_ENCODING
 - Type:        Encoding
 - Default:     Slash,LeftSpace,RightSpace,InvalidUtf8,Dot
 
 #### --protondrive-original-file-size
 
 Return the file size before encryption
-			
-The size of the encrypted file will be different from (bigger than) the 
-original file size. Unless there is a reason to return the file size 
-after encryption is performed, otherwise, set this option to true, as 
-features like Open() which will need to be supplied with original content 
+
+The size of the encrypted file will be different from (bigger than) the
+original file size. Unless there is a reason to return the file size
+after encryption is performed, otherwise, set this option to true, as
+features like Open() which will need to be supplied with original content
 size, will fail to operate properly
 
 Properties:
 
 - Config:      original_file_size
-- Env Var:     RCLONE_PROTONDRIVE_ORIGINAL_FILE_SIZE
+- Env Var:     ZCLONE_PROTONDRIVE_ORIGINAL_FILE_SIZE
 - Type:        bool
 - Default:     true
 
 #### --protondrive-app-version
 
-The app version string 
+The app version string
 
 			The app version string identifies the client that is currently performing
 			the API request. Third-party Proton Drive integrations should use the form
-			external-drive-<project>@<version>. If this option is left empty, rclone
+			external-drive-<project>@<version>. If this option is left empty, zclone
 			derives a compliant value from its own version. This value is sent with
 			every API request; the option itself is optional.
 
 Properties:
 
 - Config:      app_version
-- Env Var:     RCLONE_PROTONDRIVE_APP_VERSION
+- Env Var:     ZCLONE_PROTONDRIVE_APP_VERSION
 - Type:        string
 - Required:    false
 
@@ -269,24 +269,24 @@ Properties:
 
 Create a new revision when filename conflict is detected
 
-When a file upload is cancelled or failed before completion, a draft will be 
-created and the subsequent upload of the same file to the same location will be 
+When a file upload is cancelled or failed before completion, a draft will be
+created and the subsequent upload of the same file to the same location will be
 reported as a conflict.
 
 The value can also be set by --protondrive-replace-existing-draft=true
 
-If the option is set to true, the draft will be replaced and then the upload 
-operation will restart. If there are other clients also uploading at the same 
-file location at the same time, the behavior is currently unknown. Need to set 
+If the option is set to true, the draft will be replaced and then the upload
+operation will restart. If there are other clients also uploading at the same
+file location at the same time, the behavior is currently unknown. Need to set
 to true for integration tests.
-If the option is set to false, an error "a draft exist - usually this means a 
-file is being uploaded at another client, or, there was a failed upload attempt" 
+If the option is set to false, an error "a draft exist - usually this means a
+file is being uploaded at another client, or, there was a failed upload attempt"
 will be returned, and no upload will happen.
 
 Properties:
 
 - Config:      replace_existing_draft
-- Env Var:     RCLONE_PROTONDRIVE_REPLACE_EXISTING_DRAFT
+- Env Var:     ZCLONE_PROTONDRIVE_REPLACE_EXISTING_DRAFT
 - Type:        bool
 - Default:     false
 
@@ -294,24 +294,24 @@ Properties:
 
 Caches the files and folders metadata to reduce API calls
 
-Notice: If you are mounting ProtonDrive as a VFS, please disable this feature, 
-as the current implementation doesn't update or clear the cache when there are 
-external changes. 
+Notice: If you are mounting ProtonDrive as a VFS, please disable this feature,
+as the current implementation doesn't update or clear the cache when there are
+external changes.
 
-The files and folders on ProtonDrive are represented as links with keyrings, 
+The files and folders on ProtonDrive are represented as links with keyrings,
 which can be cached to improve performance and be friendly to the API server.
 
-The cache is currently built for the case when the rclone is the only instance 
+The cache is currently built for the case when the zclone is the only instance
 performing operations to the mount point. The event system, which is the proton
-API system that provides visibility of what has changed on the drive, is yet 
-to be implemented, so updates from other clients won’t be reflected in the 
-cache. Thus, if there are concurrent clients accessing the same mount point, 
+API system that provides visibility of what has changed on the drive, is yet
+to be implemented, so updates from other clients won’t be reflected in the
+cache. Thus, if there are concurrent clients accessing the same mount point,
 then we might have a problem with caching the stale data.
 
 Properties:
 
 - Config:      enable_caching
-- Env Var:     RCLONE_PROTONDRIVE_ENABLE_CACHING
+- Env Var:     ZCLONE_PROTONDRIVE_ENABLE_CACHING
 - Type:        bool
 - Default:     true
 
@@ -322,7 +322,7 @@ Description of the remote.
 Properties:
 
 - Config:      description
-- Env Var:     RCLONE_PROTONDRIVE_DESCRIPTION
+- Env Var:     ZCLONE_PROTONDRIVE_DESCRIPTION
 - Type:        string
 - Required:    false
 
@@ -346,7 +346,7 @@ back-off, but it is pretty much just a barebone interface to the Proton API.
 For example, the encryption and decryption of the Proton Drive file are not
 provided in this library.
 
-The Proton-API-Bridge, attempts to bridge the gap, so rclone can be built on
+The Proton-API-Bridge, attempts to bridge the gap, so zclone can be built on
 top of this quickly. This codebase handles the intricate tasks before and after
 calling Proton APIs, particularly the complex encryption scheme, allowing
 developers to implement features for other software on top of this codebase.

@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
 Test program to demonstrate the remote config interfaces in
-rclone.
+zclone.
 
 This program can simulate
 
-    rclone config create
-    rclone config update
-    rclone config password - NOT implemented yet
-    rclone authorize       - NOT implemented yet
+    zclone config create
+    zclone config update
+    zclone config password - NOT implemented yet
+    zclone authorize       - NOT implemented yet
 
 Pass the desired action as the first argument then any parameters.
 
@@ -26,9 +26,9 @@ def rpc(args, command, params):
     """
     Run the command. This could be either over the CLI or the API.
 
-    Here we run over the API either using `rclone rc --loopback` which
+    Here we run over the API either using `zclone rc --loopback` which
     is useful for making sure state is saved properly or to an
-    existing rclone rcd if `--rc` is used on the command line.
+    existing zclone rcd if `--rc` is used on the command line.
     """
     if args.rc:
         import requests
@@ -41,7 +41,7 @@ def rpc(args, command, params):
         if r.status_code != 200:
             raise ValueError(f"RC command failed: Error {r.status_code}: {r.text}")
         return r.json()
-    cmd = ["rclone", "-vv", "rc", "--loopback", command, "--json", json.dumps(params)]
+    cmd = ["zclone", "-vv", "rc", "--loopback", command, "--json", json.dumps(params)]
     result = subprocess.run(cmd, stdout=subprocess.PIPE, check=True)
     return json.loads(result.stdout)
 
@@ -100,8 +100,8 @@ def ask(opt):
 
 def create_or_update(what, args):
     """
-    Run the equivalent of rclone config create
-    or rclone config update
+    Run the equivalent of zclone config create
+    or zclone config update
 
     what should either be "create" or "update
     """
@@ -139,20 +139,20 @@ def create_or_update(what, args):
         inp["opt"]["continue"] = True
 
 def create(args):
-    """Run the equivalent of rclone config create"""
+    """Run the equivalent of zclone config create"""
     create_or_update("create", args)
 
 def update(args):
-    """Run the equivalent of rclone config update"""
+    """Run the equivalent of zclone config update"""
     create_or_update("update", args)
 
 def password(args):
-    """Run the equivalent of rclone config password"""
+    """Run the equivalent of zclone config password"""
     print("password", args)
     raise NotImplementedError()
 
 def authorize(args):
-    """Run the equivalent of rclone authorize"""
+    """Run the equivalent of zclone authorize"""
     print("authorize", args)
     raise NotImplementedError()
 
@@ -169,7 +169,7 @@ def main():
     parser.add_argument("-o", "--obscured-passwords", action='store_true',
                         help="If set assume the passwords are obscured")
     parser.add_argument("--rc", action='store_true',
-                        help="If set use the rc (you'll need to start an rclone rcd)")
+                        help="If set use the rc (you'll need to start an zclone rcd)")
     parser.add_argument("--user", type=str, default="",
                         help="Username for use with --rc")
     parser.add_argument("--pass", type=str, default="", dest='password',
