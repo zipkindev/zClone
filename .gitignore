@@ -23,3 +23,12 @@ resource_windows_*.syso
 .env
 .env.*
 !.env.example
+.envrc
+zclone.conf
+zclone.conf.*
+!zclone.conf.example
+credentials.local.*
+known_hosts
+coverage.out
+coverage.txt
+*.coverprofile

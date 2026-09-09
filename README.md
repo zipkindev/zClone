@@ -1,184 +1,97 @@
 # Zclone
 
-Zclone is a local-first, independently buildable cloud-storage synchronisation tool. It is a command-line program to sync files and
-directories to and from different cloud storage providers.
+Zclone is a local-first file-transfer and synchronization tool for SFTP, SMB,
+cloud storage, and object stores. It provides an rsync-style workflow with a
+bounded concurrent transfer queue, retries, filtering, verification, and one
+consistent CLI across storage backends.
 
-Build it offline with `make zclone`; all Go dependencies are included in `vendor/`.
-This distribution does not assume a central website, download service, forum, or self-update service.
-Run `make verify-local` to compile, type-check every package, and produce a local
-CycloneDX SBOM plus SHA-256 source manifest in `build/`.
+Zclone is not an implementation of rsync's block-delta protocol. For large,
+partially modified files on a host that runs rsync, rsync can be the faster
+choice. Zclone is intended for concurrent, portable synchronization across
+heterogeneous storage services.
 
-## Storage providers
+## Highlights
 
-- 1Fichier [:page_facing_up:](//fichier/)
-- Akamai Netstorage [:page_facing_up:](//netstorage/)
-- Alibaba Cloud (Aliyun) Object Storage System (OSS) [:page_facing_up:](//s3/#alibaba-oss)
-- Amazon S3 [:page_facing_up:](//s3/)
-- ArvanCloud Object Storage (AOS) [:page_facing_up:](//s3/#arvan-cloud-object-storage-aos)
-- Bizfly Cloud Simple Storage [:page_facing_up:](//s3/#bizflycloud)
-- Backblaze B2 [:page_facing_up:](//b2/)
-- Box [:page_facing_up:](//box/)
-- Ceph [:page_facing_up:](//s3/#ceph)
-- China Mobile Ecloud Elastic Object Storage (EOS) [:page_facing_up:](//s3/#china-mobile-ecloud-eos)
-- Citrix ShareFile [:page_facing_up:](//sharefile/)
-- Cloudflare R2 [:page_facing_up:](//s3/#cloudflare-r2)
-- Cloudinary [:page_facing_up:](//cloudinary/)
-- Cubbit DS3 [:page_facing_up:](//s3/#Cubbit)
-- DigitalOcean Spaces [:page_facing_up:](//s3/#digitalocean-spaces)
-- Digi Storage [:page_facing_up:](//koofr/#digi-storage)
-- Dreamhost [:page_facing_up:](//s3/#dreamhost)
-- Drime [:page_facing_up:](//s3/#drime)
-- Dropbox [:page_facing_up:](//dropbox/)
-- Enterprise File Fabric [:page_facing_up:](//filefabric/)
-- Exaba [:page_facing_up:](//s3/#exaba)
-- Fastly Object Storage [:page_facing_up:](//s3/#fastly)
-- Fastmail Files [:page_facing_up:](//webdav/#fastmail-files)
-- FileLu [:page_facing_up:](//filelu/)
-- Filen [:page_facing_up:](//filen/)
-- Files.com [:page_facing_up:](//filescom/)
-- FlashBlade [:page_facing_up:](//s3/#pure-storage-flashblade)
-- FTP [:page_facing_up:](//ftp/)
-- GoFile [:page_facing_up:](//gofile/)
-- Google Cloud Storage [:page_facing_up:](//googlecloudstorage/)
-- Google Drive [:page_facing_up:](//drive/)
-- Google Photos [:page_facing_up:](//googlephotos/)
-- HDFS (Hadoop Distributed Filesystem) [:page_facing_up:](//hdfs/)
-- Hetzner Object Storage [:page_facing_up:](//s3/#hetzner)
-- Hetzner Storage Box [:page_facing_up:](//sftp/#hetzner-storage-box)
-- HiDrive [:page_facing_up:](//hidrive/)
-- Hitachi Content Platform (HCP) [:page_facing_up:](//s3/#hcp)
-- HTTP [:page_facing_up:](//http/)
-- Huawei Cloud Object Storage Service(OBS) [:page_facing_up:](//s3/#huawei-obs)
-- Huawei Drive [:page_facing_up:](//huaweidrive/)
-- iCloud Drive [:page_facing_up:](//iclouddrive/)
-- ImageKit [:page_facing_up:](//imagekit/)
-- Internet Archive [:page_facing_up:](//internetarchive/)
-- Internxt [:page_facing_up:](//internxt/)
-- Jottacloud [:page_facing_up:](//jottacloud/)
-- IBM COS S3 [:page_facing_up:](//s3/#ibm-cos-s3)
-- Impossible Cloud [:page_facing_up:](//s3/#impossible-cloud)
-- Intercolo Object Storage [:page_facing_up:](//s3/#intercolo)
-- IONOS Cloud [:page_facing_up:](//s3/#ionos)
-- Koofr [:page_facing_up:](//koofr/)
-- Leviia Object Storage [:page_facing_up:](//s3/#leviia)
-- Liara Object Storage [:page_facing_up:](//s3/#liara-object-storage)
-- Linkbox [:page_facing_up:](//linkbox)
-- Linode Object Storage [:page_facing_up:](//s3/#linode)
-- Magalu Object Storage [:page_facing_up:](//s3/#magalu)
-- Mail.ru Cloud [:page_facing_up:](//mailru/)
-- Memset Memstore [:page_facing_up:](//swift/)
-- MEGA [:page_facing_up:](//mega/)
-- MEGA S4 Object Storage [:page_facing_up:](//s3/#mega)
-- Memory [:page_facing_up:](//memory/)
-- Microsoft Azure Blob Storage [:page_facing_up:](//azureblob/)
-- Microsoft Azure Files Storage [:page_facing_up:](//azurefiles/)
-- Microsoft OneDrive [:page_facing_up:](//onedrive/)
-- Minio [:page_facing_up:](//s3/#minio)
-- Nextcloud [:page_facing_up:](//webdav/#nextcloud)
-- Blomp Cloud Storage [:page_facing_up:](//swift/)
-- OpenDrive [:page_facing_up:](//opendrive/)
-- OpenStack Swift [:page_facing_up:](//swift/)
-- Oracle Cloud Storage [:page_facing_up:](//swift/)
-- Oracle Object Storage [:page_facing_up:](//oracleobjectstorage/)
-- Outscale [:page_facing_up:](//s3/#outscale)
-- OVHcloud Object Storage (Swift) [:page_facing_up:](//swift/)
-- OVHcloud Object Storage (S3-compatible) [:page_facing_up:](//s3/#ovhcloud)
-- ownCloud [:page_facing_up:](//webdav/#owncloud)
-- pCloud [:page_facing_up:](//pcloud/)
-- Petabox [:page_facing_up:](//s3/#petabox)
-- PikPak [:page_facing_up:](//pikpak/)
-- Pixeldrain [:page_facing_up:](//pixeldrain/)
-- premiumize.me [:page_facing_up:](//premiumizeme/)
-- put.io [:page_facing_up:](//putio/)
-- Proton Drive [:page_facing_up:](//protondrive/)
-- QingStor [:page_facing_up:](//qingstor/)
-- Qiniu Cloud Object Storage (Kodo) [:page_facing_up:](//s3/#qiniu)
-- Rabata Cloud Storage [:page_facing_up:](//s3/#Rabata)
-- Quatrix [:page_facing_up:](//quatrix/)
-- Rackspace Cloud Files [:page_facing_up:](//swift/)
-- RackCorp Object Storage [:page_facing_up:](//s3/#RackCorp)
-- rsync.net [:page_facing_up:](//sftp/#rsync-net)
-- Scaleway [:page_facing_up:](//s3/#scaleway)
-- Scality (RING / ARTESCA) [:page_facing_up:](//s3/#scality)
-- Seafile [:page_facing_up:](//seafile/)
-- Seagate Lyve Cloud [:page_facing_up:](//s3/#lyve)
-- SeaweedFS [:page_facing_up:](//s3/#seaweedfs)
-- Selectel Object Storage [:page_facing_up:](//s3/#selectel)
-- Servercore Object Storage [:page_facing_up:](//s3/#servercore)
-- SFTP [:page_facing_up:](//sftp/)
-- Shade [:page_facing_up:](//shade/)
-- SMB / CIFS [:page_facing_up:](//smb/)
-- Spectra Logic [:page_facing_up:](//s3/#spectralogic)
-- Storj [:page_facing_up:](//storj/)
-- SugarSync [:page_facing_up:](//sugarsync/)
-- Synology C2 Object Storage [:page_facing_up:](//s3/#synology-c2)
-- Tencent Cloud Object Storage (COS) [:page_facing_up:](//s3/#tencent-cos)
-- Uloz.to [:page_facing_up:](//ulozto/)
-- US3 Object Storage [:page_facing_up:](//s3/#us3)
-- Wasabi [:page_facing_up:](//s3/#wasabi)
-- WebDAV [:page_facing_up:](//webdav/)
-- Yandex Disk [:page_facing_up:](//yandex/)
-- Zadara Object Storage [:page_facing_up:](//s3/#zadara)
-- Zero Services (ZERO-Z3) [:page_facing_up:](//s3/#zero-z3)
-- Zoho WorkDrive [:page_facing_up:](//zoho/)
-- Zata.ai [:page_facing_up:](//s3/#Zata)
-- The local filesystem [:page_facing_up:](//local/)
+- Concurrent copy, move, sync, check, and bidirectional-sync operations.
+- Support for SFTP, SMB/CIFS, WebDAV, FTP, S3-compatible stores, and many
+  cloud providers.
+- Optional encryption, compression, archive, cache, chunking, and union
+  backends.
+- Local-only, repeatable Go builds: all standard build dependencies are in
+  `vendor/`; no module download is required.
+- Local SBOM and source-manifest generation for release review.
 
-Please see [the full list of all storage providers and their features](//overview/)
+## Quick start
 
-### Virtual storage providers
+Build Zclone without downloading Go modules:
 
-These backends adapt or modify other storage providers
+```console
+make zclone
+./build/zclone version
+```
 
-- Alias: rename existing remotes [:page_facing_up:](//alias/)
-- Archive: read archive files [:page_facing_up:](//archive/)
-- Cache: cache remotes (DEPRECATED) [:page_facing_up:](//cache/)
-- Chunker: split large files [:page_facing_up:](//chunker/)
-- Combine: combine multiple remotes into a directory tree [:page_facing_up:](//combine/)
-- Compress: compress files [:page_facing_up:](//compress/)
-- Crypt: encrypt files [:page_facing_up:](//crypt/)
-- Hasher: hash files [:page_facing_up:](//hasher/)
-- Union: join multiple remotes to work together [:page_facing_up:](//union/)
+Copy a local directory to a remote with bounded parallelism:
 
-## Features
+```console
+zclone copy --transfers 4 --checkers 8 ./source remote:archive/source
+```
 
-- MD5/SHA-1 hashes checked at all times for file integrity
-- Timestamps preserved on files
-- Partial syncs supported on a whole file basis
-- [Copy](//commands/zclone_copy/) mode to just copy new/changed
-  files
-- [Sync](//commands/zclone_sync/) (one way) mode to make a directory
-  identical
-- [Bisync](//bisync/) (two way) to keep two directories in sync
-  bidirectionally
-- [Check](//commands/zclone_check/) mode to check for file hash
-  equality
-- Can sync to and from network, e.g. two different cloud accounts
-- Optional large file chunking ([Chunker](//chunker/))
-- Optional transparent compression ([Compress](//compress/))
-- Optional encryption ([Crypt](//crypt/))
-- Optional FUSE mount ([zclone mount](//commands/zclone_mount/))
-- Multi-threaded downloads to local disk
-- Can [serve](//commands/zclone_serve/) local or remote files
-  over HTTP/WebDAV/FTP/SFTP/DLNA
+Use `copy` for additive archive-style transfers. Use `sync` only when the
+destination should exactly mirror the source, including deletion of
+destination-only files:
 
-## Installation & documentation
+```console
+zclone sync --transfers 4 --checkers 8 ./source remote:mirror/source
+```
 
-Please see the [zclone website](//) for:
+Verify a remote after a copy:
 
-- [Installation](//install/)
-- [Documentation & configuration](//docs/)
-- [Changelog](//changelog/)
-- [FAQ](//faq/)
-- [Storage providers](//overview/)
-- [Forum](/)
-- ...and more
+```console
+zclone check --download ./source remote:archive/source
+```
 
-## Downloads
+`--download` is the strongest verification option for backends that do not
+provide a common server-side hash.
 
-- <//downloads/>
+## macOS installation
 
-## License
+Create a locally installable package:
 
-This is free software under the terms of the MIT license (check the
-[COPYING file](/COPYING) included in this package).
+```console
+make macos-installer
+sudo installer -pkg build/Zclone-v0.1.0-arm64.pkg -target /
+```
+
+The installer places `zclone` in `/usr/local/bin` and adds that directory to
+new login-shell PATHs through `/etc/paths.d/zclone`.
+
+## Validation and offline supply chain
+
+Run the local verification suite:
+
+```console
+ZCLONE_SKIP_NETWORK_TESTS=1 make verify-local
+```
+
+This builds the binary, compiles every package, runs static analysis, verifies
+the vendored dependency manifest, generates a CycloneDX SBOM, verifies the GUI
+asset archive, and validates the macOS code signature.
+
+The repository ignores local credentials and machine-specific configuration.
+Copy `.env.example` to `.env` only for local integration tests; never commit
+the resulting file.
+
+## Repository layout
+
+- `backend/` — storage-provider implementations.
+- `cmd/` — command-line commands and local GUI assets.
+- `fs/` and `vfs/` — synchronization, filesystem, filtering, and VFS core.
+- `docs/content/` — command and backend documentation.
+- `vendor/` — reviewed Go dependency source used for offline builds.
+- `installer/macos/` — macOS package build and install scripts.
+
+## License and attribution
+
+Zclone is maintained as a distinct local project. Required upstream copyright,
+license, and third-party attribution are retained in [COPYING](COPYING),
+[NOTICE](NOTICE), and `vendor/`.
