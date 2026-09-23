@@ -280,7 +280,7 @@ func TestMiddlewareAuthCertificateUser(t *testing.T) {
 		{
 			name:        "Valid",
 			status:      http.StatusOK,
-			result:      "zclone-dev-client",
+			result:      "rclone-dev-client",
 			clientCerts: []tls.Certificate{clientCert},
 			http: Config{
 				ListenAddr:    []string{"127.0.0.1:0"},
@@ -315,7 +315,7 @@ func TestMiddlewareAuthCertificateUser(t *testing.T) {
 		{
 			name:        "CustomAuth/Valid",
 			status:      http.StatusOK,
-			result:      "zclone-dev-client",
+			result:      "rclone-dev-client",
 			clientCerts: []tls.Certificate{clientCert},
 			http: Config{
 				ListenAddr:    []string{"127.0.0.1:0"},
@@ -328,7 +328,7 @@ func TestMiddlewareAuthCertificateUser(t *testing.T) {
 				Realm: "test",
 				CustomAuthFn: func(_ *http.Request, user, pass string) (value any, err error) {
 					fmt.Println("CUSTOMAUTH", user, pass)
-					if user == "zclone-dev-client" && pass == "" {
+					if user == "rclone-dev-client" && pass == "" {
 						return true, nil
 					}
 					return nil, errors.New("invalid credentials")

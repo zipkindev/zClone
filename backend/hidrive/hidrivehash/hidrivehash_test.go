@@ -162,13 +162,13 @@ var testTable = []struct {
 		"documentation-example L2",
 	},
 	{
-		[]byte("hello zclone\n"),
+		[]byte("hello rclone\n"),
 		[]int64{316},
 		mustDecode("72370f9c18a2c20b31d71f3f4cee7a3cd2703737"),
 		"not-block-aligned",
 	},
 	{
-		[]byte("hello zclone\n"),
+		[]byte("hello rclone\n"),
 		[]int64{13, 4096 * 3, 4},
 		mustDecode("a6990b81791f0d2db750b38f046df321c975aa60"),
 		"not-block-aligned-with-null-bytes",

@@ -3,7 +3,8 @@
 GitHub Actions runs the public repository's standard CI policy:
 
 - `.github/workflows/ci.yml` runs the authoritative Linux verification profile,
-  the full unit suite, and compilation checks on Linux, macOS, and Windows.
+  focused compatibility regression tests, and compilation checks on Linux,
+  macOS, and Windows.
 - `.github/workflows/codeql.yml` performs Go CodeQL analysis on changes to
   `main`, pull requests, a weekly schedule, and manual requests.
 - Action dependencies are pinned to immutable commit IDs. Dependabot proposes

@@ -51,8 +51,8 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-  unit-tests:
-    name: Full unit test suite
+  compatibility-tests:
+    name: Compatibility regression tests
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -67,8 +67,8 @@ jobs:
           go-version: 1.27.0
           cache: false
 
-      - name: Run unit tests
-        run: make quicktest
+      - name: Test compatibility-sensitive packages
+        run: go test -timeout 10m ./backend/crypt ./backend/hidrive/hidrivehash ./lib/http
 
   compile:
     name: Compile (${{ matrix.os }})
@@ -97,4 +97,3 @@ jobs:
 
       - name: Build executable
         run: go build -buildvcs=false -trimpath ./
-

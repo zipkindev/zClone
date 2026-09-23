@@ -32,7 +32,7 @@ import (
 // Constants
 const (
 	nameCipherBlockSize = aes.BlockSize
-	fileMagic           = "ZCLONE\x00\x00"
+	fileMagic           = "RCLONE\x00\x00"
 	fileMagicSize       = len(fileMagic)
 	fileNonceSize       = 24
 	fileHeaderSize      = fileMagicSize + fileNonceSize
@@ -619,7 +619,7 @@ func (c *Cipher) DecryptFileName(in string) (string, error) {
 //
 // Unlike DecryptFileName, a version string on the last segment is
 // expected to be part of the encrypted name. Directory names created
-// by zclone before v1.76 had a version-like suffix left in plain
+// by rclone before v1.76 had a version-like suffix left in plain
 // text; these are still decrypted so that they appear in listings,
 // but they can't be opened or removed until renamed on the
 // underlying remote.
