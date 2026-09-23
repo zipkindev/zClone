@@ -1,12 +1,36 @@
 # AGENTS.md
 
-This file provides guidance to AI coding agents (e.g. Claude Code, Codex, Cursor, Gemini CLI, and similar tools) when working with code in this repository.
+This file provides guidance to AI coding agents (e.g. Claude Code, Codex, Cursor,
+Gemini CLI, and similar tools) when working with code in this repository.
 
 Zclone welcomes AI-assisted contributions, but the expectation is that you, the human submitter, understand every line you propose and have compiled and tested it against real zclone code - not just generated it. See the "AI-assisted contributions" section of [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
 ## Project Overview
 
-Zclone is a command-line program to sync files and directories to and from cloud storage providers. It's written in Go and supports 70+ backends (cloud storage systems). Think "rsync for cloud storage".
+Zclone is a Go command-line program for syncing files and directories across
+local, network, and cloud storage. It is an independently maintained derivative
+of rclone, created for a locally controlled and restricted-system-friendly build
+profile. Read [FORK.md](FORK.md) before changing project identity, licensing,
+attribution, module paths, update behavior, or upstream synchronization policy.
+
+## Fork and Attribution Guardrails
+
+- Treat pre-fork code as rclone-derived work, not as original Zclone work. Keep
+  [COPYING](COPYING), [NOTICE](NOTICE), and the upstream credit in the README.
+- Preserve Git authorship. Do not squash the inherited history into a new root,
+  rewrite contributor identities, or replace upstream copyright notices with the
+  downstream maintainer's name.
+- Do not describe rclone contributors as Zclone maintainers or imply that rclone
+  endorses or supports Zclone. Current downstream ownership is documented in
+  [MAINTAINERS.md](MAINTAINERS.md).
+- When porting an upstream commit, prefer `git cherry-pick -x` when practical.
+  Otherwise identify the upstream commit or range in the downstream commit
+  message and describe any Zclone-specific adaptation.
+- Avoid global `rclone` to `zclone` replacements. Historical text, protocol/API
+  identifiers, provider integration values, migration compatibility, licenses,
+  vendored files, and generated files may need to retain upstream names.
+- Never edit vendored or generated files merely to change attribution. Update
+  source-of-truth files and regenerate only when the task requires it.
 
 ## General Notes
 
@@ -23,24 +47,22 @@ Make sure added tests **actually test the code you have written** and test the i
 ## Build and Test Commands
 
 ```bash
-# Build zclone (simple)
-go build
+# Build zclone using the reviewed vendored dependencies
+make zclone
 
-# Build with version info (preferred)
-make
+# Direct Go commands must remain offline and use vendor/
+GOPROXY=off GOSUMDB=off GOFLAGS=-mod=vendor go build
 
 # Run all unit tests (no cloud credentials needed)
 make quicktest
-# or equivalently:
-ZCLONE_CONFIG="/notfound" go test ./...
+# Run the repository's local verification profile
+make verify-local
 
-# Run tests for a specific package
-cd backend/memory && go test -v
-# or from root:
-go test -v ./backend/memory/
+# Run tests for a specific package, preserving offline vendoring
+GOPROXY=off GOSUMDB=off GOFLAGS=-mod=vendor go test -v ./backend/memory/
 
 # Run a single test
-go test -v -run TestIntegration/FsCheckWrap ./backend/memory/
+GOPROXY=off GOSUMDB=off GOFLAGS=-mod=vendor go test -v -run TestIntegration/FsCheckWrap ./backend/memory/
 
 # Run tests with race detector
 make racequicktest
@@ -55,8 +77,31 @@ cd fs/sync && go test -v -remote TestDrive:
 cd fs/operations && go test -v -remote TestDrive:
 
 # Run integration tests via test framework
-go run ./fstest/test_all -backends drive
+GOPROXY=off GOSUMDB=off GOFLAGS=-mod=vendor go run ./fstest/test_all -backends drive
 ```
+
+The reviewed verification environment uses Go 1.27.0 even though `go.mod`
+declares Go 1.26.0. See [toolchain/README.md](toolchain/README.md). Tests that
+bind loopback sockets may require `ZCLONE_SKIP_NETWORK_TESTS=1` on restricted
+runners, but a skipped network suite is not equivalent to full verification.
+
+Never use real work data, production remotes, or credentials for tests. Commands
+such as `sync`, `move`, `delete`, and `purge` can remove data. Use temporary local
+directories or an explicitly disposable test remote, and use `--dry-run` where
+the command supports it.
+
+## Continuous Integration
+
+- `.github/workflows/ci.yml` is the required build/test workflow. Keep its Go
+  version aligned with `bin/verify-local.sh`, `toolchain/README.md`, and the
+  README badge.
+- `.github/workflows/codeql.yml` provides static security analysis.
+- Pin third-party actions to full commit IDs and retain the release tag in a
+  comment. Update pins through reviewed Dependabot pull requests.
+- CI may install the Go toolchain and actions, but Go module resolution must stay
+  offline and use `vendor/`. Do not add `go mod download` or an online `GOPROXY`.
+- Never add repository or provider credentials merely to make integration tests
+  pass. Credentialed backend tests belong in an explicitly approved environment.
 
 ## Architecture
 

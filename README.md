@@ -1,10 +1,47 @@
 # Zclone
 
+[![CI](https://github.com/zipkindev/zClone/actions/workflows/ci.yml/badge.svg)](https://github.com/zipkindev/zClone/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/zipkindev/zClone/actions/workflows/codeql.yml/badge.svg)](https://github.com/zipkindev/zClone/actions/workflows/codeql.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](COPYING)
+[![Go](https://img.shields.io/badge/Go-1.27.0-00ADD8.svg)](toolchain/README.md)
+
 Zclone is a local-first file-transfer and synchronization application written in
 Go. It provides one command-line interface for local disks, network filesystems,
 cloud drives, and object stores, with concurrent transfers, filtering, retries,
 and verification. An embedded browser interface, a remote-control API, filesystem
 mounts, and protocol servers expose the same storage engine in other workflows.
+
+> [!IMPORTANT]
+> Zclone is an independently maintained derivative of
+> [rclone](https://github.com/rclone/rclone). Most of this code and its Git history
+> were created by Nick Craig-Wood and the rclone contributors. Zclone is not
+> affiliated with or endorsed by the rclone project. See [FORK.md](FORK.md) for
+> the fork point, project relationship, and upstream synchronization guidance.
+
+## Why this project exists
+
+Zclone packages the rclone storage engine for environments where builds and
+deployment must remain locally controlled. It began as a practical adaptation
+for a restricted work laptop and evolved into a reproducible downstream
+distribution with reviewed vendored dependencies, offline Go module resolution,
+source-integrity verification, an embedded local control interface, and explicit
+release boundaries.
+
+The downstream engineering work is intentionally distinguishable from upstream:
+
+- **Reproducible offline builds:** normal builds use the committed `vendor/`
+  tree with `GOPROXY=off`, `GOSUMDB=off`, and `GOFLAGS=-mod=vendor`.
+- **Supply-chain evidence:** a reviewed dependency checksum manifest, CycloneDX
+  SBOM generation, embedded-asset verification, and immutable CI action pins.
+- **Restricted-system defaults:** self-update and implicit release endpoints are
+  disabled, and external GUI assets are replaced by a small embedded interface.
+- **Local distribution tooling:** deterministic application naming, local
+  verification scripts, macOS packaging, and explicit signing hooks.
+- **Automated assurance:** Linux verification and unit tests, cross-platform
+  compilation on Linux/macOS/Windows, and CodeQL analysis through GitHub Actions.
+
+This repository is best understood as downstream productization and maintenance
+of a mature open-source codebase—not a claim of authorship over rclone itself.
 
 Zclone runs on the machine where you launch it. Ordinary copy and sync commands
 run to completion; a persistent service is only needed for workflows such as
@@ -17,6 +54,7 @@ partially modified files on a host that runs rsync, rsync can be faster.
 
 ## Contents
 
+- [Why this project exists](#why-this-project-exists)
 - [Getting started](#getting-started)
 - [How transfers work](#how-transfers-work)
 - [Features and commands](#features-and-commands)
@@ -25,6 +63,7 @@ partially modified files on a host that runs rsync, rsync can be faster.
 - [Build, installation, and verification](#build-installation-and-verification)
 - [Repository guide](#repository-guide)
 - [Contributing and attribution](#contributing-and-attribution)
+- [Security](#security)
 
 ## Getting started
 
@@ -447,6 +486,15 @@ core design constraint. Contributions should stay focused, use existing shared
 helpers, and include tests that exercise the intended behavior. Backend contract
 tests live in `fstest/fstests`; real-provider testing complements local tests.
 
-Zclone is maintained as a distinct local project. Required upstream copyright,
-license, and third-party attribution are retained in [COPYING](COPYING),
-[NOTICE](NOTICE), and `vendor/`.
+Zclone is maintained as a distinct downstream project derived from
+[rclone](https://github.com/rclone/rclone). The original authors remain credited
+in the preserved Git history, and required upstream copyright, license, and
+third-party attribution are retained in [COPYING](COPYING), [NOTICE](NOTICE),
+and `vendor/`. See [FORK.md](FORK.md) for detailed provenance. The Zclone name
+does not imply affiliation with or endorsement by the rclone project.
+
+## Security
+
+Please report suspected vulnerabilities privately as described in
+[SECURITY.md](SECURITY.md). Never include live credentials, private file names,
+or production endpoint details in an issue, log excerpt, or test fixture.

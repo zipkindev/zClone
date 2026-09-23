@@ -2,6 +2,10 @@
 
 This is a short guide on how to contribute things to zclone.
 
+Zclone is a downstream derivative of rclone, not an official rclone project.
+Before changing project identity, upstream-derived code, or attribution, read
+[FORK.md](FORK.md) and preserve [COPYING](COPYING) and [NOTICE](NOTICE).
+
 ## Reporting a bug
 
 If you've got a question or aren't sure if you've found a bug, use the
@@ -172,19 +176,23 @@ Your previously pushed commits are replaced by:
 git push --force origin my-new-feature 
 ```
 
-### Basing your changes on the latest master
+### Basing your changes on the latest main branch
 
 To base your changes on the latest version of the
-[zclone master](/) (upstream):
+[Zclone main branch](https://github.com/zipkindev/zClone):
 
 ```console
-git checkout master
-git fetch upstream
-git merge --ff-only
-git push origin --follow-tags    # optional update of your fork in GitHub
+git checkout main
+git fetch origin
+git merge --ff-only origin/main
 git checkout my-new-feature
-git rebase master
+git rebase main
 ```
+
+Here, `origin` means the Zclone repository or your Zclone fork. The separate
+`upstream` remote is reserved for rclone; do not merge `upstream/master` as a
+routine branch update. Follow [the upstream-porting guidance](FORK.md#tracking-upstream)
+when intentionally importing rclone changes.
 
 If you rebase commits that have been pushed to GitHub, then you will have to
 [replace your previously pushed commits](#replacing-your-previously-pushed-commits).

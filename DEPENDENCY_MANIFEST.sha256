@@ -1367,7 +1367,6 @@ cdc428ced351c7e32652a863dbbdadc5accd2ba3b786e39239c0065a363380f0  vendor/github.
 bf93d0c9f7793f8c04714b33492b30fbe6f759d4938b5dda1e91248e9020ab2d  vendor/github.com/anchore/go-lzo/.chronicle.yaml
 13cda0007b98c06e52b612e44693a22bf1f926b9675cb1776a51b7cc965ffab0  vendor/github.com/anchore/go-lzo/.gitignore
 a699e911951cd6ca154d1280d4e7144d29e0a9b62d49985080d02fc2b443040e  vendor/github.com/anchore/go-lzo/.golangci.yaml
-eeeecc7a40f5a86a1b5cb4fd1e6e6faa8a44d92a40c0f65a43af17f32368c035  vendor/github.com/anchore/go-lzo/CHANGELOG.md
 571666e437d068903375a8d332a6635ae34e49833d86ed43b5254fa6e943e7a6  vendor/github.com/anchore/go-lzo/CONTRIBUTING.md
 7a78f5386a8f400f82103eb494af478b12a52f9f810a6a9a9f11c77a0ffe77a8  vendor/github.com/anchore/go-lzo/DEVELOPING.md
 08fe5bad51f49efda971e7b602e5b3442fc31ee6c8f85b5248749ca916213d76  vendor/github.com/anchore/go-lzo/LICENSE
@@ -4457,7 +4456,6 @@ ad3ce08787da9d837254562ec09c0979011235611a29d26c67fe4c048a0c3e66  vendor/github.
 5817748aad843816ee7e69566f8b9f98e746360f18fc551d0e72e09dae7ab6d7  vendor/github.com/leodido/go-urn/urn8141.go
 a7e49a16176944cd385e3019293263707bcfd192c331c07e347c96dc5a333fb7  vendor/github.com/lpar/calendar/LICENSE
 3d57a11cd3fe552342dd21ab2bfd66632f53db080dd0d60b0191d2464646e302  vendor/github.com/lpar/calendar/README.md
-5bad955b75f3dc92fb21bd2917b7dc43c37a228df5ade92c4a3a5c9d167ad7da  vendor/github.com/lpar/calendar/calendar.iml
 74d3d494e529a7b037e7b3feb64b75cbc52ce05cad0bf58020e5aed2346395c8  vendor/github.com/lpar/calendar/date.go
 4fe737bd6a24bcb1a9e0d0f89c7ed03f12839160648e0aea90c9a82cd7dcf438  vendor/github.com/lpar/calendar/nulldate.go
 2da4ede553faa5cc12d555e1f57e64b92996515f6db6a588998e0ff5ab5e83ba  vendor/github.com/lpar/calendar/nulltime.go

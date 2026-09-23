@@ -1,7 +1,18 @@
-Zclone is a derivative work of rclone.
+Zclone is an independently maintained derivative of rclone:
+https://github.com/rclone/rclone
 
-Copyright (C) 2012 Nick Craig-Wood and contributors.
+It diverged from upstream commit 6a617a379bc9883d015370cf9dc4320f6e0138e4.
+The repository retains the upstream Git history so the authorship of individual
+commits remains available.
 
-The upstream copyright and MIT license are retained in COPYING. Third-party
-dependency licenses and notices are retained in vendor/ and in the locally
-maintained compatibility libraries under lib/.
+Original work copyright (C) 2012 Nick Craig-Wood and rclone contributors.
+Zclone-specific modifications copyright (C) 2026 Michael Zipkin.
+
+The upstream copyright notice and MIT license are retained in COPYING. The MIT
+license permits modification and redistribution provided its copyright and
+permission notices remain with copies or substantial portions of the software.
+Third-party dependency licenses and notices remain in vendor/ and in locally
+maintained compatibility libraries under lib/ and third_party/.
+
+Zclone is not affiliated with or endorsed by Nick Craig-Wood or the rclone
+project.

@@ -1,0 +1,53 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "17 8 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+concurrency:
+  group: codeql-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GOPROXY: "off"
+  GOSUMDB: "off"
+  GOFLAGS: "-mod=vendor"
+
+jobs:
+  analyze:
+    name: Analyze Go
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Install Go 1.27.0
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: 1.27.0
+          cache: false
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@c23de5a82f64bb08c6d9f28844551440ca298e76 # v4.38.1
+        with:
+          languages: go
+          build-mode: manual
+
+      - name: Build analyzed executable
+        run: make zclone
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@c23de5a82f64bb08c6d9f28844551440ca298e76 # v4.38.1
+
