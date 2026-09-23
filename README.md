@@ -37,8 +37,9 @@ The downstream engineering work is intentionally distinguishable from upstream:
   disabled, and external GUI assets are replaced by a small embedded interface.
 - **Local distribution tooling:** deterministic application naming, local
   verification scripts, macOS packaging, and explicit signing hooks.
-- **Automated assurance:** Linux verification and unit tests, cross-platform
-  compilation on Linux/macOS/Windows, and CodeQL analysis through GitHub Actions.
+- **Automated assurance:** Linux verification and compatibility regression tests,
+  cross-platform compilation on Linux/macOS/Windows, and CodeQL analysis through
+  GitHub Actions.
 
 This repository is best understood as downstream productization and maintenance
 of a mature open-source codebase—not a claim of authorship over rclone itself.

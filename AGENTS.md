@@ -53,7 +53,8 @@ make zclone
 # Direct Go commands must remain offline and use vendor/
 GOPROXY=off GOSUMDB=off GOFLAGS=-mod=vendor go build
 
-# Run all unit tests (no cloud credentials needed)
+# Run the broad upstream-style test suite. Some packages require host tools,
+# local services, loopback sockets, or privileges; see the note below.
 make quicktest
 # Run the repository's local verification profile
 make verify-local
@@ -84,6 +85,12 @@ The reviewed verification environment uses Go 1.27.0 even though `go.mod`
 declares Go 1.26.0. See [toolchain/README.md](toolchain/README.md). Tests that
 bind loopback sockets may require `ZCLONE_SKIP_NETWORK_TESTS=1` on restricted
 runners, but a skipped network suite is not equivalent to full verification.
+The broad `make quicktest` target also contains integration-style packages that
+may expect git-annex, MinIO, NFS privileges, or other host capabilities. Do not
+add credentials, weaken assertions, or rewrite golden fixtures merely to make
+those packages pass in a generic runner. The required hosted policy is the
+focused verification and compatibility suite in `.github/workflows/ci.yml`;
+run environment-dependent packages only in an explicitly provisioned job.
 
 Never use real work data, production remotes, or credentials for tests. Commands
 such as `sync`, `move`, `delete`, and `purge` can remove data. Use temporary local
