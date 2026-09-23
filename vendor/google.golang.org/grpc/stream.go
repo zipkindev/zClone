@@ -328,14 +328,11 @@ func newClientStream(ctx context.Context, desc *StreamDesc, cc *ClientConn, meth
 
 	mc := &emptyMethodConfig
 	var onCommit func()
-	newStream := func(ctx context.Context, filterOpts ...CallOption) (ClientStream, error) {
-		if filterOpts != nil {
-			opts = combine(opts, filterOpts)
-		}
+	newStream := func(ctx context.Context, opts ...CallOption) (ClientStream, error) {
 		return newClientStreamWithParams(ctx, desc, cc, method, mc, onCommit, nameResolutionDelayed, opts...)
 	}
 
-	rpcInfo := iresolver.RPCInfo{Context: ctx, Method: method}
+	rpcInfo := iresolver.RPCInfo{Context: ctx, Method: method, Authority: cc.authority}
 	rpcConfig, err := cc.safeConfigSelector.SelectConfig(rpcInfo)
 	if err != nil {
 		if st, ok := status.FromError(err); ok {
@@ -353,13 +350,23 @@ func newClientStream(ctx context.Context, desc *StreamDesc, cc *ClientConn, meth
 			ctx = rpcConfig.Context
 		}
 		mc = &rpcConfig.MethodConfig
-		onCommit = rpcConfig.OnCommitted
+
+		if rpcConfig.OnCommitted != nil {
+			onCommit = rpcConfig.OnCommitted
+			// Register an OnFinish CallOption with the OnCommitted callback to
+			// ensure it is invoked on stream termination, even if the stream
+			// fails early before committing. Implementations of OnCommitted are
+			// expected to be idempotent (e.g., guarded by sync.Once), since both
+			// onCommit and OnFinish may run for a single RPC.
+			opts = append(opts, OnFinish(func(error) { rpcConfig.OnCommitted() }))
+		}
+
 		if rpcConfig.Interceptor != nil {
 			rpcInfo.Context = nil
 			ns := newStream
 			if interceptor, ok := rpcConfig.Interceptor.(clientInterceptor); ok {
-				newStream = func(ctx context.Context, filterOpts ...CallOption) (ClientStream, error) {
-					cs, err := interceptor.NewStream(ctx, rpcInfo, ns, filterOpts...)
+				newStream = func(ctx context.Context, opts ...CallOption) (ClientStream, error) {
+					cs, err := interceptor.NewStream(ctx, rpcInfo, ns, opts...)
 					if err != nil {
 						return nil, toRPCErr(err)
 					}
@@ -371,7 +378,7 @@ func newClientStream(ctx context.Context, desc *StreamDesc, cc *ClientConn, meth
 		}
 	}
 
-	return newStream(ctx)
+	return newStream(ctx, opts...)
 }
 
 func newClientStreamWithParams(ctx context.Context, desc *StreamDesc, cc *ClientConn, method string, mc *serviceconfig.MethodConfig, onCommit func(), nameResolutionDelayed bool, opts ...CallOption) (_ ClientStream, err error) {
@@ -611,13 +618,21 @@ func (a *csAttempt) getTransport() error {
 
 func (a *csAttempt) newStream() error {
 	cs := a.cs
-	cs.callHdr.PreviousAttempts = cs.numRetries
+	// The header is copied because the fields set below, notably the authority
+	// override taken from the pick result, describe the endpoint picked for
+	// this attempt only. Mutating the clientStream's header would carry them
+	// into a later attempt.
+	callHdr := *cs.callHdr
+	callHdr.PreviousAttempts = cs.numRetries
 
 	// Merge metadata stored in PickResult, if any, with existing call metadata.
 	// It is safe to overwrite the csAttempt's context here, since all state
 	// maintained in it are local to the attempt. When the attempt has to be
 	// retried, a new instance of csAttempt will be created.
 	if a.pickResult.Metadata != nil {
+		if err := imetadata.Validate(a.pickResult.Metadata); err != nil {
+			return status.Error(codes.Internal, err.Error())
+		}
 		// We currently do not have a function it the metadata package which
 		// merges given metadata with existing metadata in a context. Existing
 		// function `AppendToOutgoingContext()` takes a variadic argument of key
@@ -635,11 +650,11 @@ func (a *csAttempt) newStream() error {
 		// apply it, as specified in gRFC A81.
 		if cs.callInfo.authority == "" {
 			if authMD := a.pickResult.Metadata.Get(":authority"); len(authMD) > 0 {
-				cs.callHdr.Authority = authMD[0]
+				callHdr.Authority = authMD[0]
 			}
 		}
 	}
-	s, err := a.transport.NewStream(a.ctx, cs.callHdr, a.statsHandler)
+	s, err := a.transport.NewStream(a.ctx, &callHdr, a.statsHandler)
 	if err != nil {
 		nse, ok := err.(*transport.NewStreamError)
 		if !ok {
@@ -674,10 +689,6 @@ type clientStream struct {
 
 	cancel context.CancelFunc // cancels all attempts
 
-	sentLast bool // sent an end stream
-
-	receivedFirstMsg bool // set after the first message is received
-
 	methodConfig *MethodConfig
 
 	ctx context.Context // the application's context, wrapped by stats/tracing
@@ -685,19 +696,10 @@ type clientStream struct {
 	retryThrottler *retryThrottler // The throttler active when the RPC began.
 
 	binlogs []binarylog.MethodLogger
-	// serverHeaderBinlogged is a boolean for whether server header has been
-	// logged. Server header will be logged when the first time one of those
-	// happens: stream.Header(), stream.Recv().
-	//
-	// It's only read and used by Recv() and Header(), so it doesn't need to be
-	// synchronized.
-	serverHeaderBinlogged bool
 
 	mu                      sync.Mutex
-	firstAttempt            bool // if true, transparent retry is valid
-	numRetries              int  // exclusive of transparent retry attempt(s)
-	numRetriesSincePushback int  // retries since pushback; to reset backoff
-	finished                bool // TODO: replace with atomic cmpxchg or sync.Once?
+	numRetries              int // exclusive of transparent retry attempt(s)
+	numRetriesSincePushback int // retries since pushback; to reset backoff
 	// attempt is the active client stream attempt.
 	// The only place where it is written is the newAttemptLocked method and this method never writes nil.
 	// So, attempt can be nil only inside newClientStream function when clientStream is first created.
@@ -707,13 +709,33 @@ type clientStream struct {
 	// place where we need to check if the attempt is nil.
 	attempt *csAttempt
 	// TODO(hedging): hedging will have multiple attempts simultaneously.
-	committed        bool // active attempt committed for retry?
 	onCommit         func()
 	replayBuffer     []replayOp // operations to replay on retry
 	replayBufferSize int        // current size of replayBuffer
+
+	// Bool fields are grouped at the tail to eliminate the alignment padding
+	// that would otherwise follow each bool when the next field is pointer- or
+	// int-sized. See https://github.com/grpc/grpc-go/issues/9280 for benchmarks.
+	// Add new bool fields here, not inline above.
+
+	// Not guarded by mu.
+	sentLast         bool // sent an end stream
+	receivedFirstMsg bool // set after the first message is received
+	// serverHeaderBinlogged is a boolean for whether server header has been
+	// logged. Server header will be logged when the first time one of those
+	// happens: stream.Header(), stream.Recv().
+	//
+	// It's only read and used by Recv() and Header(), so it doesn't need to be
+	// synchronized.
+	serverHeaderBinlogged bool
 	// nameResolutionDelay indicates if there was a delay in the name resolution.
 	// This field is only valid on client side, it's always false on server side.
 	nameResolutionDelay bool
+
+	// Guarded by mu.
+	firstAttempt bool // if true, transparent retry is valid
+	finished     bool // TODO: replace with atomic cmpxchg or sync.Once?
+	committed    bool // active attempt committed for retry?
 }
 
 type replayOp struct {
