@@ -69,6 +69,10 @@ more build options.) Finally make a branch to add your new feature
 git checkout -b my-new-feature
 ```
 
+Install the version validation hook with `make install-hooks`. It checks the
+three downstream version files in the staged commit. See [RELEASE.md](RELEASE.md)
+for explicit version bumps and release tags.
+
 And get hacking.
 
 You may like one of the [popular editors/IDE's for Go](https://github.com/golang/go/wiki/IDEsAndTextEditorPlugins)

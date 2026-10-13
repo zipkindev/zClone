@@ -391,6 +391,10 @@ do not make cloud operations offline: those still contact the configured service
 
 ## Build, installation, and verification
 
+Download platform archives from [GitHub Releases](https://github.com/zipkindev/zClone/releases).
+Zclone has independent version numbers. See [RELEASE.md](RELEASE.md) for the
+version validation hook, explicit bumps, and tag-triggered releases.
+
 ### Offline build profile
 
 `make zclone` builds `build/zclone` with version information, vendored modules,

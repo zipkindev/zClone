@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+"""Build a vendored, standalone Zclone release archive for one platform."""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import tempfile
+import zipfile
+
+from version import read_versions
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('version')
+    parser.add_argument('os', choices=['linux', 'darwin', 'windows'])
+    parser.add_argument('arch', choices=['amd64', 'arm64'])
+    parser.add_argument('--output', default='build/releases')
+    args = parser.parse_args()
+    if read_versions() != args.version:
+        parser.error('release version must match VERSION')
+    if 'go1.27.0 ' not in subprocess.check_output(['go', 'version'], text=True):
+        parser.error('release builds require Go 1.27.0')
+    output = Path(args.output).resolve()
+    output.mkdir(parents=True, exist_ok=True)
+    scratch = Path('build/recovery-verification/tmp').resolve()
+    scratch.mkdir(parents=True, exist_ok=True)
+    name = 'zclone-{}-{}-{}'.format(args.version, args.os, args.arch)
+    env = dict(os.environ, GOPROXY='off', GOSUMDB='off', GOFLAGS='-mod=vendor',
+               GOTOOLCHAIN='local', CGO_ENABLED='0', GOOS=args.os, GOARCH=args.arch)
+    env.setdefault('GOTMPDIR', str(scratch))
+    with tempfile.TemporaryDirectory(dir=output) as directory:
+        binary = Path(directory) / ('zclone.exe' if args.os == 'windows' else 'zclone')
+        subprocess.run(['go', 'build', '-buildvcs=false', '-trimpath', '-ldflags',
+                        '-s -w -X zclone/fs.Version=' + args.version, '-o', str(binary), '.'],
+                       env=env, check=True)
+        info = {'version': args.version, 'os': args.os, 'arch': args.arch,
+                'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+                'go': 'go1.27.0', 'cgo': False}
+        with zipfile.ZipFile(output / (name + '.zip'), 'w', zipfile.ZIP_DEFLATED) as archive:
+            archive.write(binary, name + '/' + binary.name)
+            for source in ['COPYING', 'NOTICE', 'README.md', 'DEPENDENCY_MANIFEST.sha256',
+                           'bin/zclone-recover.py', 'docs/content/recovery.md', 'build/zclone.sbom.cdx.json']:
+                archive.write(source, name + '/' + source)
+            archive.writestr(name + '/build-info.json', json.dumps(info, indent=2) + '\n')
+    path = output / (name + '.zip')
+    with path.open('rb') as stream:
+        hasher = hashlib.sha256()
+        while data := stream.read(1024 * 1024):
+            hasher.update(data)
+        digest = hasher.hexdigest()
+    (output / (name + '.zip.sha256')).write_text(digest + '  ' + path.name + '\n')
+    print(path)
+
+
+if __name__ == '__main__':
+    main()

@@ -2,18 +2,18 @@ SHELL = bash
 # Branch we are working on
 BRANCH := $(or $(BUILD_SOURCEBRANCHNAME),$(lastword $(subst /, ,$(GITHUB_REF))),$(shell git rev-parse --abbrev-ref HEAD))
 # Tag of the current commit, if any.  If this is not "" then we are building a release
-RELEASE_TAG := $(shell git tag -l --points-at HEAD)
+RELEASE_TAG := $(shell git tag -l --points-at HEAD "$(shell cat VERSION)")
 # Version of last release (may not be on this branch)
 VERSION := $(shell cat VERSION)
 # Last tag on this branch
-LAST_TAG := $(shell git describe --tags --abbrev=0)
+LAST_TAG := $(shell git describe --tags --abbrev=0 2>/dev/null)
 # Next version
 NEXT_VERSION := $(shell echo $(VERSION) | awk -F. -v OFS=. '{print $$1,$$2+1,0}')
 NEXT_PATCH_VERSION := $(shell echo $(VERSION) | awk -F. -v OFS=. '{print $$1,$$2,$$3+1}')
-# If we are working on a release, override branch to master
+# Release builds use the downstream main branch.
 ifdef RELEASE_TAG
-	BRANCH := master
-	LAST_TAG := $(shell git describe --abbrev=0 --tags $(VERSION)^)
+	BRANCH := main
+	LAST_TAG := $(shell git describe --abbrev=0 --tags $(VERSION)^ 2>/dev/null)
 endif
 TAG_BRANCH := .$(subst /,_,$(BRANCH))
 BRANCH_PATH := branch/$(BRANCH)/
@@ -57,7 +57,7 @@ endif
 LDFLAGS=--ldflags "-s -X zclone/fs.Version=$(TAG)"
 GO_OFFLINE=GOPROXY=off GOSUMDB=off GOFLAGS=-mod=vendor
 
-.PHONY: zclone sign release-sign macos-installer sbom source-manifest verify-sources verify-local debt-report gui-dist verify-gui-dist test_all vars version fetch-gui fetch-gui-and-commit
+.PHONY: install-hooks bump-version zclone sign release-sign macos-installer sbom source-manifest verify-sources verify-local debt-report gui-dist verify-gui-dist test_all vars version fetch-gui fetch-gui-and-commit
 
 zclone:
 ifeq ($(GO_OS),windows)
@@ -393,3 +393,11 @@ docker-plugin-push:
 	docker plugin rm ${PLUGIN_IMAGE}
 
 docker-plugin: docker-plugin-create docker-plugin-push
+
+# Install the opt-in version validation hook for this checkout.
+install-hooks:
+	git config core.hooksPath .githooks
+
+# Bump all downstream version files together, e.g. make bump-version PART=patch.
+bump-version:
+	python3 bin/version.py bump $(PART)
