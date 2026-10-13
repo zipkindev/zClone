@@ -218,6 +218,10 @@ only where the backend supports them.
 See [filtering](docs/content/filtering.md), [usage](docs/content/docs.md), and
 individual command help for detailed interactions and defaults.
 
+For resumable image recovery, the [checkpointed recovery helper](docs/content/recovery.md)
+stages independent gzip chunks, verifies remote content, and resumes from a
+persistent journal.
+
 ### Mounts and protocol servers
 
 `mount`, `mount2`, `cmount`, and `nfsmount` provide platform-dependent ways to
@@ -432,7 +436,13 @@ make verify-local
 make quicktest
 ```
 
-`verify-local` checks the toolchain, builds the executable, compiles package tests,
+`verify-local` defaults Go scratch files and its build cache to
+`build/recovery-verification/`, avoiding RAM-backed `/tmp`. Explicit `GOTMPDIR`
+and `GOCACHE` settings take precedence.
+
+`verify-local` requires Python 3.9+ for the recovery helper tests. It checks the
+toolchain, builds the executable, runs recovery interruption and restoration
+tests, compiles package tests,
 runs `go vet`, and executes focused tests for the GUI, configuration, operations,
 sync, and memory backend. It also generates a CycloneDX SBOM, verifies the vendored
 source manifest and embedded GUI archive, and signs/verifies the executable when
