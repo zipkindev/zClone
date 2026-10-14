@@ -126,5 +126,7 @@ jobs:
             build/windows-qa/*.log
             build/windows-qa/*.json
             build/windows-qa/*.exe
+            COPYING
+            NOTICE
           if-no-files-found: error
           retention-days: 14
