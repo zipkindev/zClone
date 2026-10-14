@@ -98,3 +98,32 @@ jobs:
 
       - name: Build executable
         run: go build -buildvcs=false -trimpath ./
+
+  windows-runtime-qa:
+    name: Windows executable regression and compression QA
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: 1.27.0
+          cache: false
+      - name: Compare ordinary, packed, and filesystem-compressed executables
+        shell: pwsh
+        env:
+          BASELINE_REF: ${{ github.event.pull_request.base.sha || github.event.before || 'origin/main' }}
+        run: |
+          if ($env:BASELINE_REF -match '^0+$') { $env:BASELINE_REF = 'origin/main' }
+          ./bin/windows-build-qa.ps1 -BaselineRef $env:BASELINE_REF
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always()
+        with:
+          name: windows-size-and-regression-${{ github.sha }}
+          path: |
+            build/windows-qa/*.json
+            build/windows-qa/*.exe
+          if-no-files-found: error
+          retention-days: 14

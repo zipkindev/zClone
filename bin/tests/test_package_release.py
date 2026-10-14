@@ -42,7 +42,8 @@ else:
     assert os.environ['GOFLAGS'] == '-mod=vendor'
     assert os.environ['CGO_ENABLED'] == '0'
     output = pathlib.Path(sys.argv[sys.argv.index('-o') + 1])
-    output.write_text(json.dumps({'os': os.environ['GOOS'], 'arch': os.environ['GOARCH']}))
+    output.write_text(json.dumps({'os': os.environ['GOOS'], 'arch': os.environ['GOARCH'],
+                                  'tags': sys.argv[sys.argv.index('-tags') + 1] if '-tags' in sys.argv else ''}))
     output.chmod(0o755)
 ''')
             go.chmod(0o755)
@@ -62,6 +63,34 @@ else:
                 self.assertEqual(info['version'], 'v0.1.0')
                 self.assertEqual(len(info['commit']), 40)
                 self.assertTrue((package.getinfo(prefix + 'zclone').external_attr >> 16) & 0o111)
+
+
+            result = subprocess.run([sys.executable, str(SCRIPT), 'v0.1.0', 'windows', 'amd64'],
+                                    cwd=root, env=env, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            with zipfile.ZipFile(root / 'build/releases/zclone-v0.1.0-windows-amd64.zip') as package:
+                prefix = 'zclone-v0.1.0-windows-amd64/'
+                binary = json.loads(package.read(prefix + 'zclone.exe'))
+                self.assertEqual(binary['tags'], 'cmount')
+                info = json.loads(package.read(prefix + 'build-info.json'))
+                self.assertEqual(info['tags'], ['cmount'])
+                self.assertEqual(info['compression'], 'none')
+            upx = tools / 'upx'
+            upx.write_text("#!/usr/bin/env python3\nimport sys\nprint('upx 5.1.1')\n")
+            upx.chmod(0o755)
+            result = subprocess.run([sys.executable, str(SCRIPT), 'v0.1.0', 'windows', 'amd64',
+                                     '--compression', 'upx'], cwd=root, env=env,
+                                    capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            with zipfile.ZipFile(root / 'build/releases/zclone-v0.1.0-windows-amd64-upx.zip') as package:
+                info = json.loads(package.read('zclone-v0.1.0-windows-amd64-upx/build-info.json'))
+                self.assertEqual(info['compression'], 'upx')
+                self.assertEqual(info['upx'], 'upx 5.1.1')
+            result = subprocess.run([sys.executable, str(SCRIPT), 'v0.1.0', 'windows', 'arm64',
+                                     '--compression', 'upx'], cwd=root, env=env,
+                                    capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('only supported for windows/amd64', result.stderr)
 
 
 if __name__ == '__main__':

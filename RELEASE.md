@@ -68,6 +68,64 @@ Build a single archive locally after `make sbom`:
 python3 bin/package-release.py v0.1.0 linux amd64
 ```
 
+## Windows size and runtime qualification
+
+Windows archives include the `cmount` build tag and use the vendored cgofuse
+Windows implementation without CGO. Mounting requires WinFsp on the destination
+machine. Linux and macOS build tags are unchanged.
+
+The ordinary executable remains the default. An optional packed x64 archive can
+be built with an installed UPX tool:
+
+```console
+python3 bin/package-release.py v0.1.0 windows amd64 --compression upx
+```
+
+Packed archives have a separate `-upx` name and record the UPX version, original
+size, packed size, compression method, and build tags in `build-info.json`.
+Packing precedes Authenticode signing. ARM64 packing is rejected until that
+platform has separate tool and runtime qualification. The publishing workflow
+continues to publish the six ordinary archives; packed candidates are QA
+artifacts rather than an automatic replacement for the default executable.
+
+The required Windows CI job runs `bin/windows-build-qa.ps1`. It downloads official
+UPX 5.1.1 and WinFsp 2.1.25156 installers with pinned SHA-256 checksums, builds the
+base revision and candidate with identical release linker settings, and uses
+`bin/compare-executables.py` to compare backend option inventories and preserve
+existing commands and flags. Candidate, UPX, and Windows `compact /EXE` XPRESS8K
+and LZX variants undergo disposable copy/sync/check, JSON listing, archive and
+crypt roundtrips, custom HTTP template, RC, GUI, and mount read/write checks.
+The baseline undergoes the same checks except mount, which is newly enabled.
+CI also runs Drive, crypt, Azure Blob, GUI, and HTTP package tests and scans the
+ordinary and packed candidates with the runner's Defender engine.
+
+The comparison report records executable and ZIP sizes, hashes, startup medians, server peak working sets,
+and native compression allocation measurements. Startup numbers are warm,
+runner-specific observations, not cold-start performance guarantees. Uploads
+include reports and candidate executables for review. Missing WinFsp support,
+unavailable Defender, failed scans, or failed runtime checks fail qualification;
+they are not silently skipped. Defender qualification does not establish
+compatibility with every organization's endpoint-security product.
+
+For a manual run on a disposable, administrator-capable Windows QA machine with
+Go 1.27.0 and Python installed:
+
+```powershell
+./bin/windows-build-qa.ps1 -BaselineRef <baseline-commit>
+```
+
+This script installs WinFsp on that QA machine. Go dependency resolution remains
+offline. Provider integration tests require a separately approved disposable
+remote; local QA and inventory equality alone cannot prove cloud-service parity.
+The Drive v2 download tests compare the narrower implementation against the SDK
+and cover API errors, cancellation, client replacement, retries, ranged reads,
+and fallback to the original download URL.
+
+Retain authentication and transfer SDK components needed by supported providers.
+Do not remove an SDK based on the size of its vendored source tree. Experimental
+Arrow listing and dynamic/custom templates remain available; disabling them is
+a feature-profile decision, not a behavior-preserving optimization.
+
 ## Prerequisites
 
 - The required Go toolchain and any packaging tools are installed locally.

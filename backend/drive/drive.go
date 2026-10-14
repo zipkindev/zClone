@@ -16,6 +16,7 @@ import (
 	"io"
 	"mime"
 	"net/http"
+	"net/url"
 	"os"
 	"path"
 	"slices"
@@ -29,7 +30,6 @@ import (
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
-	drive_v2 "google.golang.org/api/drive/v2"
 	drive "google.golang.org/api/drive/v3"
 	"google.golang.org/api/googleapi"
 	"google.golang.org/api/option"
@@ -52,6 +52,7 @@ import (
 	"zclone/lib/oauthutil"
 	"zclone/lib/pacer"
 	"zclone/lib/readers"
+	"zclone/lib/rest"
 )
 
 // Constants
@@ -859,7 +860,6 @@ type Fs struct {
 	ci               *fs.ConfigInfo     // global config
 	features         *fs.Features       // optional features
 	svc              *drive.Service     // the connection to the drive server
-	v2Svc            *drive_v2.Service  // used to create download links for the v2 api
 	client           *http.Client       // authorized client
 	rootFolderID     string             // the id of the root folder
 	dirCache         *dircache.DirCache // Map of directory path to directory id
@@ -1433,13 +1433,6 @@ func newFs(ctx context.Context, name, path string, m configmap.Mapper) (*Fs, err
 	f.svc, err = drive.NewService(context.Background(), option.WithHTTPClient(f.client))
 	if err != nil {
 		return nil, fmt.Errorf("couldn't create Drive client: %w", err)
-	}
-
-	if f.opt.V2DownloadMinSize >= 0 {
-		f.v2Svc, err = drive_v2.NewService(context.Background(), option.WithHTTPClient(f.client))
-		if err != nil {
-			return nil, fmt.Errorf("couldn't create Drive v2 client: %w", err)
-		}
 	}
 
 	return f, nil
@@ -3411,7 +3404,6 @@ func (f *Fs) changeServiceAccountFile(ctx context.Context, file string) (err err
 		return nil
 	}
 	oldSvc := f.svc
-	oldv2Svc := f.v2Svc
 	oldOAuthClient := f.client
 	oldFile := f.opt.ServiceAccountFile
 	oldCredentials := f.opt.ServiceAccountCredentials
@@ -3419,7 +3411,6 @@ func (f *Fs) changeServiceAccountFile(ctx context.Context, file string) (err err
 		// Undo all the changes instead of doing selective undo's
 		if err != nil {
 			f.svc = oldSvc
-			f.v2Svc = oldv2Svc
 			f.client = oldOAuthClient
 			f.opt.ServiceAccountFile = oldFile
 			f.opt.ServiceAccountCredentials = oldCredentials
@@ -3435,12 +3426,6 @@ func (f *Fs) changeServiceAccountFile(ctx context.Context, file string) (err err
 	f.svc, err = drive.NewService(context.Background(), option.WithHTTPClient(f.client))
 	if err != nil {
 		return fmt.Errorf("couldn't create Drive client: %w", err)
-	}
-	if f.opt.V2DownloadMinSize >= 0 {
-		f.v2Svc, err = drive_v2.NewService(context.Background(), option.WithHTTPClient(f.client))
-		if err != nil {
-			return fmt.Errorf("couldn't create Drive v2 client: %w", err)
-		}
 	}
 	return nil
 }
@@ -4411,23 +4396,38 @@ func (o *baseObject) open(ctx context.Context, url string, options ...fs.OpenOpt
 	return res.Body, nil
 }
 
+// getV2DownloadURL fetches the legacy download URL using the current authorized client.
+func (f *Fs) getV2DownloadURL(ctx context.Context, id string) (string, error) {
+	client := rest.NewClient(f.client).SetRoot("https://www.googleapis.com/drive/v2/").SetErrorHandler(func(resp *http.Response) error {
+		defer googleapi.CloseBody(resp)
+		return googleapi.CheckResponse(resp)
+	})
+	var result struct {
+		DownloadURL string `json:"downloadUrl"`
+	}
+	_, err := client.CallJSON(ctx, &rest.Opts{
+		Method:       "GET",
+		Path:         "files/" + url.PathEscape(id),
+		ExtraHeaders: map[string]string{"User-Agent": googleapi.UserAgent},
+		Parameters:   url.Values{"alt": {"json"}, "prettyPrint": {"false"}, "fields": {"downloadUrl"}, "supportsAllDrives": {"true"}},
+	}, nil, &result)
+	return result.DownloadURL, err
+}
+
 // Open an object for read
 func (o *Object) Open(ctx context.Context, options ...fs.OpenOption) (in io.ReadCloser, err error) {
 	if o.mimeType == shortcutMimeTypeDangling {
 		return nil, errors.New("can't read dangling shortcut")
 	}
 	if o.v2Download {
-		var v2File *drive_v2.File
+		var downloadURL string
 		err = o.fs.pacer.Call(func() (bool, error) {
-			v2File, err = o.fs.v2Svc.Files.Get(actualID(o.id)).
-				Fields("downloadUrl").
-				SupportsAllDrives(true).
-				Context(ctx).Do()
+			downloadURL, err = o.fs.getV2DownloadURL(ctx, actualID(o.id))
 			return o.fs.shouldRetry(ctx, err)
 		})
 		if err == nil {
-			fs.Debugf(o, "Using v2 download: %v", v2File.DownloadUrl)
-			o.url = v2File.DownloadUrl
+			fs.Debugf(o, "Using v2 download: %v", downloadURL)
+			o.url = downloadURL
 			o.v2Download = false
 		}
 	}
