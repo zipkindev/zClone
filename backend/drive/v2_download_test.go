@@ -9,8 +9,6 @@ import (
 	"strings"
 	"testing"
 	"time"
-	"zclone/fs"
-	"zclone/lib/pacer"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -18,6 +16,8 @@ import (
 	drivev3 "google.golang.org/api/drive/v3"
 	"google.golang.org/api/googleapi"
 	"google.golang.org/api/option"
+	"zclone/fs"
+	"zclone/lib/pacer"
 )
 
 type downloadTransport func(*http.Request) (*http.Response, error)
@@ -40,8 +40,7 @@ func TestV2DownloadURL(t *testing.T) {
 		{"success", 200, `{"downloadUrl":"https://download.invalid/file","ignored":true}`},
 		{"missing URL", 200, `{}`},
 		{"malformed JSON", 200, `{`},
-		{"rate limit", 403, `{"error":{"code":403,"message":"slow down","errors"
- "fmt":[{"reason":"rateLimitExceeded"}]}}`},
+		{"rate limit", 403, `{"error":{"code":403,"message":"slow down","errors":[{"reason":"rateLimitExceeded"}]}}`},
 		{"server error", 503, `unavailable`},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
@@ -72,6 +71,13 @@ func TestV2DownloadURL(t *testing.T) {
 				require.Equal(t, expectedGoogleError.Code, gotGoogleError.Code)
 				require.Equal(t, expectedGoogleError.Errors, gotGoogleError.Errors)
 				require.Equal(t, expectedGoogleError.Header, gotGoogleError.Header)
+				if tc.name == "rate limit" {
+					require.Len(t, gotGoogleError.Errors, 1)
+					require.Equal(t, "rateLimitExceeded", gotGoogleError.Errors[0].Reason)
+					retry, retryErr := f.shouldRetry(context.Background(), err)
+					require.True(t, retry)
+					require.Equal(t, err, retryErr)
+				}
 			}
 			for _, b := range bodies {
 				require.True(t, b.closed, "response body must close")
