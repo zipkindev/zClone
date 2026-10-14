@@ -12,8 +12,10 @@ import (
 	"zclone/fs"
 	"zclone/lib/pacer"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	drivev2 "google.golang.org/api/drive/v2"
+	drivev3 "google.golang.org/api/drive/v3"
 	"google.golang.org/api/googleapi"
 	"google.golang.org/api/option"
 )
@@ -54,7 +56,7 @@ func TestV2DownloadURL(t *testing.T) {
 			service, err := drivev2.NewService(context.Background(), option.WithHTTPClient(client))
 			require.NoError(t, err)
 			reference, referenceErr := service.Files.Get("id /?#%").Fields("downloadUrl").SupportsAllDrives(true).Context(context.Background()).Do()
-			f := &Fs{client: client}
+			f := &Fs{svc: &drivev3.Service{BasePath: "https://www.googleapis.com/drive/v3/"}, client: client}
 			got, err := f.getV2DownloadURL(context.Background(), "id /?#%")
 			require.Len(t, requests, 2)
 			require.Equal(t, requests[0].Method, requests[1].Method)
@@ -81,7 +83,7 @@ func TestV2DownloadURL(t *testing.T) {
 func TestV2DownloadURLCancellationAndClientChange(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
-	f := &Fs{client: &http.Client{Transport: downloadTransport(func(r *http.Request) (*http.Response, error) {
+	f := &Fs{svc: &drivev3.Service{BasePath: "https://www.googleapis.com/drive/v3/"}, client: &http.Client{Transport: downloadTransport(func(r *http.Request) (*http.Response, error) {
 		return nil, r.Context().Err()
 	})}}
 	_, err := f.getV2DownloadURL(ctx, "id")
@@ -110,16 +112,16 @@ func TestV2DownloadOpen(t *testing.T) {
 						body = `{"downloadUrl":"https://new.invalid/file"}`
 					}
 				} else {
-					require.Equal(t, "bytes=0-6", r.Header.Get("Range"))
+					assert.Equal(t, "bytes=0-6", r.Header.Get("Range"))
 					if failMetadata {
-						require.Equal(t, "original.invalid", r.URL.Host)
+						assert.Equal(t, "original.invalid", r.URL.Host)
 					} else {
-						require.Equal(t, "new.invalid", r.URL.Host)
+						assert.Equal(t, "new.invalid", r.URL.Host)
 					}
 				}
 				return &http.Response{StatusCode: status, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(body))}, nil
 			})}
-			f := &Fs{client: client, pacer: fs.NewPacer(context.Background(), pacer.NewGoogleDrive(pacer.MinSleep(time.Millisecond), pacer.Burst(100)))}
+			f := &Fs{svc: &drivev3.Service{BasePath: "https://www.googleapis.com/drive/v3/"}, client: client, pacer: fs.NewPacer(context.Background(), pacer.NewGoogleDrive(pacer.MinSleep(time.Millisecond), pacer.Burst(100)))}
 			o := &Object{baseObject: baseObject{fs: f, id: "id", bytes: 7}, url: "https://original.invalid/file", v2Download: true}
 			in, err := o.Open(context.Background(), &fs.RangeOption{Start: 0, End: 6})
 			require.NoError(t, err)
@@ -135,5 +137,16 @@ func TestV2DownloadOpen(t *testing.T) {
 				require.False(t, o.v2Download)
 			}
 		})
+	}
+}
+
+func TestV2DownloadEndpoint(t *testing.T) {
+	for _, root := range []string{"https://www.mtls.googleapis.com/drive/", "https://www.example.invalid/drive/"} {
+		f := &Fs{svc: &drivev3.Service{BasePath: root + "v3/"}, client: &http.Client{Transport: downloadTransport(func(r *http.Request) (*http.Response, error) {
+			assert.Equal(t, root+"v2/files/id", strings.Split(r.URL.String(), "?")[0])
+			return &http.Response{StatusCode: 200, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(`{"downloadUrl":"https://download.invalid"}`))}, nil
+		})}}
+		_, err := f.getV2DownloadURL(context.Background(), "id")
+		require.NoError(t, err)
 	}
 }

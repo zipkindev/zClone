@@ -107,6 +107,20 @@ unavailable Defender, failed scans, or failed runtime checks fail qualification;
 they are not silently skipped. Defender qualification does not establish
 compatibility with every organization's endpoint-security product.
 
+For installed disk savings on Windows 10 or later with NTFS, the ordinary
+executable can be compressed transparently without changing its file contents:
+
+```powershell
+compact /C /EXE:XPRESS8K "C:\Tools\zclone.exe"
+# Undo executable compression:
+compact /U /EXE "C:\Tools\zclone.exe"
+```
+
+LZX favors disk savings; compare it against XPRESS8K using the QA report before
+choosing it for a deployment. This reduces allocated disk space, not the logical
+file size or the size of an executable copied to another machine. See the
+[Microsoft compact documentation](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/compact).
+
 For a manual run on a disposable, administrator-capable Windows QA machine with
 Go 1.27.0 and Python installed:
 
@@ -119,7 +133,7 @@ offline. Provider integration tests require a separately approved disposable
 remote; local QA and inventory equality alone cannot prove cloud-service parity.
 The Drive v2 download tests compare the narrower implementation against the SDK
 and cover API errors, cancellation, client replacement, retries, ranged reads,
-and fallback to the original download URL.
+selected API endpoints, and fallback to the original download URL.
 
 Retain authentication and transfer SDK components needed by supported providers.
 Do not remove an SDK based on the size of its vendored source tree. Experimental

@@ -8,6 +8,16 @@ $repo = (Get-Location).Path
 $out = [IO.Path]::GetFullPath((Join-Path $repo $Output))
 New-Item -ItemType Directory -Force $out | Out-Null
 
+@{
+    baseline_commit = (git rev-parse $BaselineRef)
+    candidate_commit = (git rev-parse HEAD)
+    go = (go version)
+    baseline_tags = @()
+    candidate_tags = @("cmount")
+    upx = "5.1.1"
+    winfsp = "2.1.25156"
+} | ConvertTo-Json | Set-Content (Join-Path $out "build-context.json")
+
 function Get-VerifiedFile($Url, $Path, $Hash) {
     Invoke-WebRequest -Uri $Url -OutFile $Path
     if ((Get-FileHash -Algorithm SHA256 $Path).Hash.ToLowerInvariant() -ne $Hash) {

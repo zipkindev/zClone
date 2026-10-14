@@ -111,8 +111,18 @@ def smoke(binary, root, require_mount=False):
     run(binary, config, 'copy', source, target)
     assert tree(target) == expected
     run(binary, config, 'check', source, target)
+    filtered = root / 'filtered'
+    run(binary, config, 'copy', source, filtered, '--include', '*.txt', '--exclude', '**')
+    assert tree(filtered) == {name: digest for name, digest in expected.items() if name.endswith('.txt')}
+    (target / 'unicode-é.txt').write_bytes(b'corrupted disposable data')
+    mismatch = subprocess.run([str(binary), '--config', str(config), 'check', str(source), str(target)],
+                              capture_output=True, timeout=120)
+    assert mismatch.returncode != 0, 'check accepted corrupted data'
     (source / 'unicode-é.txt').write_bytes(b'updated QA data\n')
     (target / 'extra').write_bytes(b'disposable extra file')
+    before = tree(target)
+    run(binary, config, 'sync', source, target, '--dry-run')
+    assert tree(target) == before, 'dry-run modified destination'
     run(binary, config, 'sync', source, target)
     assert tree(target) == tree(source)
     listing = json.loads(run(binary, config, 'lsjson', target, '--recursive', '--files-only'))
@@ -175,7 +185,7 @@ def smoke(binary, root, require_mount=False):
         start = time.perf_counter()
         run(binary, config, 'version')
         starts.append(time.perf_counter() - start)
-    return {'tests': ['copy', 'check', 'sync', 'lsjson', 'archive roundtrips', 'crypt roundtrip',
+    return {'tests': ['copy', 'check/corruption detection', 'filters', 'sync/dry-run', 'lsjson', 'archive roundtrips', 'crypt roundtrip',
                       'HTTP custom template', 'RC', 'GUI'] + (['mount read/write'] if require_mount else []),
             'startup_median_seconds': statistics.median(starts),
             'rc_peak_working_set_bytes': rc_memory, 'gui_peak_working_set_bytes': gui_memory}

@@ -4398,7 +4398,9 @@ func (o *baseObject) open(ctx context.Context, url string, options ...fs.OpenOpt
 
 // getV2DownloadURL fetches the legacy download URL using the current authorized client.
 func (f *Fs) getV2DownloadURL(ctx context.Context, id string) (string, error) {
-	client := rest.NewClient(f.client).SetRoot("https://www.googleapis.com/drive/v2/").SetErrorHandler(func(resp *http.Response) error {
+	// Both API versions use the endpoint selected by the authenticated v3 service.
+	rootURL := strings.TrimSuffix(f.svc.BasePath, "v3/") + "v2/"
+	client := rest.NewClient(f.client).SetRoot(rootURL).SetErrorHandler(func(resp *http.Response) error {
 		defer googleapi.CloseBody(resp)
 		return googleapi.CheckResponse(resp)
 	})
