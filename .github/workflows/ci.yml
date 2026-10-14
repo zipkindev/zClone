@@ -123,6 +123,7 @@ jobs:
         with:
           name: windows-size-and-regression-${{ github.sha }}
           path: |
+            build/windows-qa/*.log
             build/windows-qa/*.json
             build/windows-qa/*.exe
           if-no-files-found: error

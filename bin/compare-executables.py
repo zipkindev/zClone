@@ -30,7 +30,7 @@ def inventory(binary, config):
     while pending:
         command = pending.pop()
         help_text = run(binary, config, *command, '--help').decode()
-        commands[' '.join(command)] = sorted(re.findall(r'^\s+(--[\w-]+)', help_text, re.M))
+        commands[' '.join(command)] = sorted(re.findall(r'^\s+(?:-\w,\s+)?(--[\w-]+)', help_text, re.M))
         section = help_text.split('Available Commands:', 1)
         if len(section) == 2:
             listing = section[1].split('Flags:', 1)[0].split('Global Flags:', 1)[0]

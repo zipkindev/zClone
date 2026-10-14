@@ -19,7 +19,10 @@ Get-VerifiedFile "https://github.com/upx/upx/releases/download/v5.1.1/upx-5.1.1-
 Expand-Archive -Path "$out/upx.zip" -DestinationPath "$out/upx" -Force
 $upx = "$out/upx/upx-5.1.1-win64/upx.exe"
 Get-VerifiedFile "https://github.com/winfsp/winfsp/releases/download/v2.1/winfsp-2.1.25156.msi" "$out/winfsp.msi" "073a70e00f77423e34bed98b86e600def93393ba5822204fac57a29324db9f7a"
-$install = Start-Process msiexec.exe -ArgumentList "/i `"$out/winfsp.msi`" /qn /norestart" -Wait -PassThru
+$msi = Join-Path $out "winfsp.msi"
+$installLog = Join-Path $out "winfsp-install.log"
+Unblock-File $msi
+$install = Start-Process msiexec.exe -ArgumentList "/i `"$msi`" /qn /norestart /L*v `"$installLog`"" -Wait -PassThru
 if ($install.ExitCode -ne 0) { throw "WinFsp installation failed or requires reboot: $($install.ExitCode)" }
 
 $env:GOPROXY = "off"
