@@ -85,9 +85,28 @@ def exercise_gui(updater, archive, root, screenshot=None):
             return True
         user.EnumChildWindows(picker, find_edit, 0)
         assert edits, 'Folder picker has no path entry field'
-        # WM_SETTEXT/WM_GETTEXT are marshalled by Windows across processes.
-        # BFFM_SETSELECTION carries a raw process-local pointer and cannot be used here.
-        user.SendMessageW(edits[0], 0xC, 0, ctypes.addressof(path))
+        # This shell message carries a pointer, so the string must live in the
+        # child process. Allocate only a writable data buffer in our own updater.
+        kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+        kernel.VirtualAllocEx.argtypes = [wintypes.HANDLE, ctypes.c_void_p, ctypes.c_size_t,
+                                         wintypes.DWORD, wintypes.DWORD]
+        kernel.VirtualAllocEx.restype = ctypes.c_void_p
+        kernel.WriteProcessMemory.argtypes = [wintypes.HANDLE, ctypes.c_void_p, ctypes.c_void_p,
+                                             ctypes.c_size_t, ctypes.POINTER(ctypes.c_size_t)]
+        kernel.VirtualFreeEx.argtypes = [wintypes.HANDLE, ctypes.c_void_p, ctypes.c_size_t, wintypes.DWORD]
+        handle = wintypes.HANDLE(int(process._handle))
+        remote = kernel.VirtualAllocEx(handle, None, ctypes.sizeof(path), 0x3000, 4)
+        if not remote:
+            raise ctypes.WinError(ctypes.get_last_error())
+        try:
+            written = ctypes.c_size_t()
+            if not kernel.WriteProcessMemory(handle, remote, path, ctypes.sizeof(path), ctypes.byref(written)):
+                raise ctypes.WinError(ctypes.get_last_error())
+            assert written.value == ctypes.sizeof(path)
+            user.SendMessageW(picker, 0x467, 1, remote)
+            time.sleep(0.3)
+        finally:
+            kernel.VirtualFreeEx(handle, remote, 0, 0x8000)
         wait(lambda: user.IsWindowEnabled(user.GetDlgItem(picker, 1)))
         user.PostMessageW(picker, 0x111, 1, 0)
         wait(lambda: not user.IsWindow(picker))
