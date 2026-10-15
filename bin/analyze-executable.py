@@ -62,7 +62,8 @@ def analyze(path):
             's3_client_methods': [f['name'][len(s3):] for f in functions
                                   if f['name'].startswith(s3) and '.' not in f['name'][len(s3):]],
             'go_json_code_bytes': sum(f['bytes'] for f in functions
-                                      if f['name'].startswith('github.com/goccy/go-json/')),
+                                      if f['name'].startswith(('github.com/goccy/go-json.',
+                                                               'github.com/goccy/go-json/'))),
             'packages': dict(sorted(packages.items(), key=lambda item: -item[1])),
             'largest_functions': sorted(functions, key=lambda item: -item['bytes'])[:30]}
 

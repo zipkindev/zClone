@@ -140,7 +140,7 @@ contracts. Debug symbols are already stripped from release executables.
 
 Windows archives include the `cmount` build tag and use the vendored cgofuse
 Windows implementation without CGO. Mounting requires WinFsp on the destination
-machine. Linux and macOS build tags are unchanged.
+machine. Linux and macOS packaging use the standard Arrow JSON profile.
 
 The ordinary executable remains the default. An optional packed x64 archive can
 be built with an installed UPX tool:
