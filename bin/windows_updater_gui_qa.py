@@ -103,18 +103,27 @@ def exercise_gui(updater, archive, root, screenshot=None):
             if not kernel.WriteProcessMemory(handle, remote, path, ctypes.sizeof(path), ctypes.byref(written)):
                 raise ctypes.WinError(ctypes.get_last_error())
             assert written.value == ctypes.sizeof(path)
-            user.SendMessageW(picker, 0x467, 1, remote)
+            selection_result = user.SendMessageW(picker, 0x467, 1, remote)
             time.sleep(0.3)
+            wait(lambda: user.IsWindowEnabled(user.GetDlgItem(picker, 1)))
+            diagnostic = {'expected': str(destination), 'selection_result': selection_result,
+                          'picker_text': text(edits[0]), 'initial_folder': text(folder)}
+            if screenshot:
+                capture_window(user, picker, screenshot.with_name('updater-picker.bmp'))
+            user.PostMessageW(user.GetDlgItem(picker, 1), 0xF5, 0, 0)
+            wait(lambda: not user.IsWindow(picker))
         finally:
             kernel.VirtualFreeEx(handle, remote, 0, 0x8000)
-        wait(lambda: user.IsWindowEnabled(user.GetDlgItem(picker, 1)))
-        user.PostMessageW(picker, 0x111, 1, 0)
-        wait(lambda: not user.IsWindow(picker))
+        time.sleep(0.1)
+        diagnostic['returned_folder'] = text(folder)
+        print('FOLDER_SELECTION=' + json.dumps(diagnostic), flush=True)
+        if screenshot:
+            capture_window(user, window, screenshot.with_name('updater-selection.bmp'))
         wait(lambda: Path(text(folder)) == destination)
         # Verify cancelling the picker retains the selection.
         user.PostMessageW(window, 0x111, 102, 0)
         picker = wait(lambda: windows('#32770'))[0]
-        user.PostMessageW(picker, 0x111, 2, 0)
+        user.PostMessageW(user.GetDlgItem(picker, 2), 0xF5, 0, 0)
         wait(lambda: not user.IsWindow(picker))
         assert Path(text(folder)) == destination
         user.PostMessageW(window, 0x111, 103, 0)
@@ -148,7 +157,7 @@ def exercise_gui(updater, archive, root, screenshot=None):
         user.PostMessageW(window, 0x111, 103, 0)
         wait(lambda: 'Installation failed:' in text(user.GetDlgItem(window, 105)))
         dialog = wait(lambda: windows('#32770'))[0]
-        user.PostMessageW(dialog, 0x111, 1, 0)
+        user.PostMessageW(user.GetDlgItem(dialog, 1), 0xF5, 0, 0)
         wait(lambda: not user.IsWindow(dialog))
         assert hashlib.sha256(binary.read_bytes()).digest() == hashlib.sha256(original).digest()
         assert user.IsWindowEnabled(user.GetDlgItem(window, 103))
