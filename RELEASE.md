@@ -27,7 +27,10 @@ make bump-version PART=patch
 ```
 
 The bump changes all three files; it does not commit, tag, or push them. Review
-and commit the version change, run verification, and push it to main. Releases
+and commit the version change. Update `RELEASE-NOTES.md` with user-facing changes
+and installation instructions; its first line must be `# zClone vMAJOR.MINOR.PATCH`
+matching the release tag. The publishing job uses that file as the release body
+and refuses a mismatched heading. Run verification and push to main. Releases
 use immutable downstream tags matching `VERSION` exactly:
 
 ```console
