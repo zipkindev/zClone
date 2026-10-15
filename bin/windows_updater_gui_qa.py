@@ -119,13 +119,13 @@ def exercise_gui(updater, archive, root, screenshot=None):
         print('FOLDER_SELECTION=' + json.dumps(diagnostic), flush=True)
         if screenshot:
             capture_window(user, window, screenshot.with_name('updater-selection.bmp'))
-        wait(lambda: Path(text(folder)) == destination)
+        wait(lambda: Path(text(folder)).samefile(destination))
         # Verify cancelling the picker retains the selection.
         user.PostMessageW(window, 0x111, 102, 0)
         picker = wait(lambda: windows('#32770'))[0]
         user.PostMessageW(user.GetDlgItem(picker, 2), 0xF5, 0, 0)
         wait(lambda: not user.IsWindow(picker))
-        assert Path(text(folder)) == destination
+        assert Path(text(folder)).samefile(destination)
         user.PostMessageW(window, 0x111, 103, 0)
         status = user.GetDlgItem(window, 105)
         wait(lambda: 'Installed successfully.' in text(status), timeout=180)
@@ -139,13 +139,13 @@ def exercise_gui(updater, archive, root, screenshot=None):
         from windows_installer_qa import allocated_bytes
         assert allocated_bytes(binary) < binary.stat().st_size
         saved = json.loads((root / 'preferences/zclone-updater/settings.json').read_text())
-        assert Path(saved['install_directory']) == destination
+        assert Path(saved['install_directory']).samefile(destination)
         user.PostMessageW(window, 0x10, 0, 0)
         assert process.wait(timeout=15) == 0
         # Double-click behavior uses the remembered folder without flags.
         process = subprocess.Popen([str(updater)], env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         window = wait(lambda: windows('zCloneUpdaterWindow'))[0]
-        assert Path(text(user.GetDlgItem(window, 101))) == destination
+        assert Path(text(user.GetDlgItem(window, 101))).samefile(destination)
         user.PostMessageW(window, 0x10, 0, 0)
         assert process.wait(timeout=15) == 0
         # A GUI verification error must be visible and preserve the installed image.
