@@ -49,11 +49,9 @@ WEBSITE_DESTINATION ?=
 DOWNLOAD_DESTINATION ?=
 PUBLIC_BETA_DESTINATION ?=
 PRIVATE_BETA_DESTINATION ?=
-# Pass in GOTAGS=xyz on the make command line to set build tags
-ifdef GOTAGS
-BUILDTAGS=-tags "$(GOTAGS)"
-LINTTAGS=--build-tags "$(GOTAGS)"
-endif
+# GOTAGS adds optional tags to the standard release profile.
+BUILDTAGS=-tags "arrow_json_stdlib $(GOTAGS)"
+LINTTAGS=--build-tags "arrow_json_stdlib $(GOTAGS)"
 LDFLAGS=--ldflags "-s -X zclone/fs.Version=$(TAG)"
 GO_OFFLINE=GOPROXY=off GOSUMDB=off GOFLAGS=-mod=vendor
 

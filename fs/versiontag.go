@@ -1,4 +1,4 @@
 package fs
 
 // VersionTag of zclone
-var VersionTag = "v0.1.0"
+var VersionTag = "v0.1.1"

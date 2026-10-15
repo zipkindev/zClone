@@ -33,7 +33,7 @@ var (
 	exclude         = flag.String("exclude", "^$", "os/arch regexp to exclude")
 	cgo             = flag.Bool("cgo", false, "Use cgo for the build")
 	noClean         = flag.Bool("no-clean", false, "Don't clean the build directory before running")
-	tags            = flag.String("tags", "", "Space separated list of build tags")
+	tags            = flag.String("tags", "arrow_json_stdlib", "Space separated list of build tags")
 	buildmode       = flag.String("buildmode", "", "Passed to go build -buildmode flag")
 	compileOnly     = flag.Bool("compile-only", false, "Just build the binary, not the zip")
 	extraEnv        = flag.String("env", "", "comma separated list of VAR=VALUE env vars to set")
