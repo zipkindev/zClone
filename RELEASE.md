@@ -208,6 +208,123 @@ Do not remove an SDK based on the size of its vendored source tree. Experimental
 Arrow listing and dynamic/custom templates remain available; disabling them is
 a feature-profile decision, not a behavior-preserving optimization.
 
+## Whole-executable assessment
+
+The qualified Windows x64 executable at `b67d08e` is 77.77 MiB. Its actual PE
+sections break down as follows; code sizes include function alignment:
+
+| Portion | MiB | Share of executable |
+| --- | ---: | ---: |
+| Machine code | 34.63 | 44.5% |
+| Read-only data, including runtime metadata | 37.81 | 48.6% |
+| Initialized data | 3.75 | 4.8% |
+| Unwind records, relocations, headers and other sections | 1.59 | 2.0% |
+
+A same-source diagnostic build retaining symbols has identical function counts,
+total function code bytes, function-name bytes, and PC-mapping bytes to the
+qualified build. Its named data attributes approximately 21.8 MiB to the Go
+runtime function table, 8.9 MiB to type information, 4.0 MiB to `go:func.*` data,
+and 2.0 MiB to the string pool. These figures are diagnostic attributions within
+the read-only section, not additional sections or safely removable budgets.
+Some named symbols overlap, so arbitrary symbol sizes must not be added together.
+Runtime tables support stack walking, garbage collection, reflection, and
+diagnostics; debug-symbol stripping does not remove these runtime requirements.
+
+Third-party libraries collectively account for approximately 21.9 MiB of
+function code, and Zclone packages for approximately 6.3 MiB. The remainder
+includes the Go runtime, standard library, and compiler helpers. S3 contributes
+about 2.9 MiB of code, or 3.7% of the executable, excluding its associated data,
+metadata, and shared dependencies. An S3-only code reduction cannot be assumed
+to produce a large whole-application reduction. The repository's embedded
+payload source files total approximately 0.18 MiB; the embedded GUI ZIP itself
+is only 1,909 bytes. Removing GUI assets is not a meaningful size opportunity.
+
+The Arrow tag's 559-function reduction is a net count: 563 functions disappear
+and four appear. Of the removals, 541 belong to `github.com/goccy/go-json`, 13 are
+compiler-generated equality helpers, and nine are standard-library helpers.
+The four additions belong to Arrow's standard adapter and the standard JSON
+implementation. No Zclone application functions disappear in this controlled
+comparison. `bin/analyze-executable.py` reports the exact removed and added
+identities and their package counts on every Windows qualification run.
+These identities explain the change; runtime tests remain necessary to assess
+behavior. No SDK source files are deleted or edited by the Arrow switch.
+
+The measured options with large overall savings are compression:
+
+| Full-feature variant | Size or allocated disk | Warm startup | RC peak working set |
+| --- | ---: | ---: | ---: |
+| Ordinary executable | 77.77 MiB file | 109 ms | 43.67 MiB |
+| ZIP of ordinary executable | 26.70 MiB download | Extract before use | Same executable |
+| NTFS LZX | 25.65 MiB allocated disk | 106 ms | 43.89 MiB |
+| UPX | 23.25 MiB file | 454 ms | 135.14 MiB |
+
+Measurements come from one qualified hosted Windows run; repeated runs varied
+in timing and memory while producing identical executable hashes. The ZIP and
+LZX variants preserve the ordinary executable's bytes and feature set. LZX
+reduces allocated disk space by about 67%; copying or extracting the executable
+elsewhere can require reapplying compression on a compatible filesystem. UPX
+reduces portable executable size by about 70%, with substantial measured startup
+and memory costs. It remains optional. No evidence currently supports a
+similarly large reduction in the ordinary executable's logical size without
+additional compatibility, runtime, or maintenance tradeoffs.
+
+## Maintaining dependency reductions
+
+Keep the complete reviewed dependency sources and normal upstream SDK update
+path. Supported upstream build profiles and ordinary Go dead-code elimination
+are preferred over maintaining a pruned SDK, replacing SDK authentication, or
+rewriting application components. A count of unused SDK methods, source files,
+or functions is not permission to remove them. A proposal needs a meaningful
+whole-application benefit that justifies its maintenance burden. Narrow code
+savings alone do not establish that benefit.
+
+For each dependency or size-related update:
+
+1. Record the baseline commit and executable hashes, SDK versions, reviewed Go
+   version, target architecture, tags, and linker flags. Preserve a complete SDK
+   reference build. Change dependency versions in the controlled environment
+   described below; never prune `vendor/` by hand to make a binary smaller.
+2. Regenerate the imported-package inventory, SBOM, and source manifest from the
+   full dependency sources. Build both profiles with offline vendoring and the
+   same toolchain/settings. The imported-package graph and linked function
+   inventory answer different questions; neither alone proves feature parity.
+3. Run `bin/analyze-executable.py` on the old and new executables. Review the
+   exact removed/added functions, affected packages, PE sections, and overall
+   archive/file/allocated-disk gains. Do not freeze a function count or assume
+   every change in compiler-generated names is a feature change.
+4. Run required CI, the Windows executable comparison, and affected backend
+   tests against the reference. Preserve provider options, commands, flags,
+   custom templates, transfers, error/retry/cancellation behavior, and mount,
+   archive, crypt, RC, and GUI behavior. For S3, explicitly cover signing,
+   presigned URLs, region/endpoint selection, and the credential-provider chain,
+   including session/refresh behavior, roles, profiles, environment, web
+   identity, SSO, container/instance credentials, and supported provider signers.
+   Keep SDK-internal operations required for authentication, such as S3 Express
+   `CreateSession`, even when Zclone does not call them directly.
+5. Apply the existing compatibility and listing-performance gates. Compare
+   repeated startup, working-set, and allocation measurements and disclose
+   regressions. Credentialed cloud cases require approved disposable accounts;
+   untested cases keep a new SDK reduction unqualified. Retain the reference
+   profile and reports for rollback and the next update.
+
+For example, from a reviewed checkout with the pinned toolchain installed:
+
+```bash
+export GOPROXY=off GOSUMDB=off GOFLAGS=-mod=vendor GOTOOLCHAIN=local
+mkdir -p build
+GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go list -deps -json \
+  -tags arrow_json_stdlib,cmount . > build/windows-dependencies.json
+go version -m build/windows-qa/candidate.exe > build/windows-build-modules.txt
+python3 bin/analyze-executable.py --baseline old-zclone.exe \
+  --candidate build/windows-qa/candidate.exe --output build/size-review.json
+```
+
+Any future source transformation would require a separately reviewed,
+deterministic generator, recorded upstream inputs and hashes, checks that reject
+unexpected SDK structure, a reproducibility check in CI, and full SDK reference
+parity tests. Silent method allowlists, patched Go runtimes, and automatic
+feature or authentication removal are not part of the build profile.
+
 ## Prerequisites
 
 - The required Go toolchain and any packaging tools are installed locally.

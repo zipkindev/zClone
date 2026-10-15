@@ -7,7 +7,43 @@ from pathlib import Path
 import struct
 
 
-def analyze(path):
+def function_package(name):
+    head = name.split('[', 1)[0]
+    directory, _, tail = head.rpartition('/')
+    return (directory + '/' if directory else '') + tail.split('.', 1)[0]
+
+
+def function_changes(baseline, candidate):
+    old, new = defaultdict(list), defaultdict(list)
+    for source, target in [(baseline, old), (candidate, new)]:
+        for function in source:
+            target[function['name']].append(function['bytes'])
+    removed, added = [], []
+    for name in sorted(old.keys() | new.keys()):
+        delta = len(old[name]) - len(new[name])
+        if delta:
+            entry = {'name': name, 'count': abs(delta),
+                     'baseline_code_bytes': sum(old[name]), 'candidate_code_bytes': sum(new[name])}
+            (removed if delta > 0 else added).append(entry)
+    packages = {}
+    for label, functions in [('removed', removed), ('added', added)]:
+        grouped = defaultdict(lambda: {'count': 0, 'baseline_code_bytes': 0, 'candidate_code_bytes': 0})
+        for function in functions:
+            entry = grouped[function_package(function['name'])]
+            entry['count'] += function['count']
+            entry['baseline_code_bytes'] += function['baseline_code_bytes']
+            entry['candidate_code_bytes'] += function['candidate_code_bytes']
+        packages[label] = dict(sorted(grouped.items()))
+    removed_count = sum(f['count'] for f in removed)
+    added_count = sum(f['count'] for f in added)
+    return {'removed_count': removed_count, 'added_count': added_count,
+            'net_removed_count': removed_count - added_count,
+            'packages': packages, 'removed': removed, 'added': added,
+            'removed_application_functions': [f['name'] for f in removed
+                                               if f['name'].startswith('zclone/')]}
+
+
+def analyze(path, include_functions=False):
     data = path.read_bytes()
     if data[:2] != b'MZ':
         raise ValueError('Expected a Windows PE executable')
@@ -47,12 +83,9 @@ def analyze(path):
         functions.append({'name': name, 'bytes': end - entry})
     packages = defaultdict(int)
     for function in functions:
-        head = function['name'].split('[', 1)[0]
-        directory, _, tail = head.rpartition('/')
-        package = (directory + '/' if directory else '') + tail.split('.', 1)[0]
-        packages[package] += function['bytes']
+        packages[function_package(function['name'])] += function['bytes']
     s3 = 'github.com/aws/aws-sdk-go-v2/service/s3.(*Client).'
-    return {'path': str(path), 'file_bytes': len(data),
+    result = {'path': str(path), 'file_bytes': len(data),
             'sections': {name: {key: value for key, value in section.items() if key != 'data'}
                          for name, section in sections.items()},
             'function_count': nfunc, 'function_code_bytes': sum(f['bytes'] for f in functions),
@@ -66,6 +99,9 @@ def analyze(path):
                                                                'github.com/goccy/go-json/'))),
             'packages': dict(sorted(packages.items(), key=lambda item: -item[1])),
             'largest_functions': sorted(functions, key=lambda item: -item['bytes'])[:30]}
+    if include_functions:
+        result['functions'] = functions
+    return result
 
 
 def main():
@@ -75,11 +111,16 @@ def main():
     parser.add_argument('--link-dependencies', type=Path)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
-    report = {'baseline': analyze(args.baseline), 'candidate': analyze(args.candidate),
+    report = {'baseline': analyze(args.baseline, include_functions=True),
+              'candidate': analyze(args.candidate, include_functions=True),
               'notes': ['Function sizes include alignment to the next function.',
                         'Library code sizes exclude associated data and metadata.',
                         'Generic instantiations are not inherently unnecessary code.',
+                        'Function identity differences require review and do not establish feature parity.',
+                        'Function name multiplicities include ABI wrappers; per-name bytes include any retained instances.',
                         'Linker trace edges record first-reach parents, not a complete runtime call graph.']}
+    report['function_changes'] = function_changes(report['baseline'].pop('functions'),
+                                                   report['candidate'].pop('functions'))
     report['saved_bytes'] = {key: report['baseline'][key] - report['candidate'][key]
                              for key in ['file_bytes', 'function_code_bytes', 'function_count',
                                          'function_names_bytes', 'pc_mapping_bytes', 'go_json_code_bytes']}
