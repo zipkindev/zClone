@@ -3,6 +3,7 @@ import argparse
 import ctypes
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import time
@@ -73,7 +74,15 @@ def install_cases(updater, archive, previous, root):
         process.wait(timeout=15)
     apply(previous, old)
     apply(archive, new)
+    scanners = sorted((Path(os.environ['ProgramData']) / 'Microsoft/Windows Defender/Platform').glob('*/MpCmdRun.exe'))
+    if not scanners:
+        raise RuntimeError('Defender scanner is unavailable')
+    scan = subprocess.run([str(scanners[-1]), '-Scan', '-ScanType', '3', '-File', str(binary),
+                           '-DisableRemediation'], capture_output=True, text=True, timeout=180)
+    if scan.returncode:
+        raise RuntimeError('Installed executable Defender scan failed: ' + scan.stdout + scan.stderr)
     return binary, {'experimental': True, 'default_algorithm': 'XPRESS4K',
+                    'installed_defender_scan': 'passed',
                     'updater_bytes': updater.stat().st_size, 'archive_bytes': archive.stat().st_size,
                     'updater_sha256': hashlib.sha256(updater.read_bytes()).hexdigest(),
                     'operations': records, 'allocated_bytes': allocated_bytes(binary),
