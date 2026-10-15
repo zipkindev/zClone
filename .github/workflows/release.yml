@@ -97,7 +97,8 @@ jobs:
           cat ./*.sha256 > SHA256SUMS
           sha256sum --check SHA256SUMS
           test "$(find . -maxdepth 1 -name '*.zip' | wc -l)" -eq 6
-          printf 'zClone %s\n\nIndependent downstream release built from vendored dependencies.\n\nIncludes Linux, macOS and Windows archives for amd64 and arm64, zClone-Updater.exe for Windows x64, the recovery helper, attribution, SBOM and SHA-256 checksums. Linux binaries use CGO_ENABLED=0 for restricted systems and QNAP compatibility.\n\nArchives are unsigned; macOS binaries are not notarized. Verification passed before publication. NAS recovery testing remains separate.\n' "$RELEASE_TAG" > notes.md
+          test "$(head -n 1 ../../RELEASE-NOTES.md)" = "# zClone $RELEASE_TAG"
+          cp ../../RELEASE-NOTES.md notes.md
           if gh release view "$RELEASE_TAG" --json isDraft > release.json 2>/dev/null; then
             python3 -c 'import json; assert json.load(open("release.json"))["isDraft"], "Release is already published; refusing to replace assets"'
           else

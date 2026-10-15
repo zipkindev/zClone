@@ -133,6 +133,9 @@ partially modified files on a host that runs rsync, rsync can be faster.
 
 ## Contents
 
+- [Install or update](#install-or-update)
+- [Recovery transfers](#recovery-transfers-that-can-resume-after-interruption)
+- [What's new](#whats-new-in-v012)
 - [Why this project exists](#why-this-project-exists)
 - [Getting started](#getting-started)
 - [How transfers work](#how-transfers-work)
