@@ -178,6 +178,8 @@ ordinary and packed candidates with the runner's Defender engine. Native
 variants use the packaged helper under built-in Windows PowerShell; QA verifies
 compression, undo, reapplication, allocated-disk savings, and content hashes.
 
+Comparisons copy every executable to the same temporary filesystem before
+testing, so the ordinary and compressed variants use the same storage.
 Startup comparisons warm each variant and alternate forward/reverse execution
 order across nine samples per variant, preserving every sample in the report.
 XPRESS4K qualification fails if median warm startup rises more than 20% or either

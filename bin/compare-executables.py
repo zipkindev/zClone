@@ -255,6 +255,10 @@ def main():
     report = {'binaries': {}, 'provider_inventory_equal': False, 'existing_commands_and_flags_preserved': False}
     with tempfile.TemporaryDirectory(prefix='zclone-qa-') as directory:
         root = Path(directory)
+        for name, binary in list(binaries.items()):
+            local = root / (name + ('.exe' if os.name == 'nt' else ''))
+            shutil.copy2(binary, local)
+            binaries[name] = local
         config = root / 'inventory.conf'
         config.write_text('')
         inventories = {name: inventory(binary, config) for name, binary in binaries.items()}
