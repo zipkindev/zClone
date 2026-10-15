@@ -44,11 +44,13 @@ def inventory(binary, config):
         command = pending.pop()
         help_text = run(binary, config, *command, '--help').decode()
         commands[' '.join(command)] = sorted(re.findall(r'^\s+(?:-\w,\s+)?(--[\w-]+)', help_text, re.M))
-        section = help_text.split('Available Commands:', 1)
+        section = re.split(r'Available commands:', help_text, maxsplit=1, flags=re.I)
         if len(section) == 2:
             listing = section[1].split('Flags:', 1)[0].split('Global Flags:', 1)[0]
             pending += [(*command, name) for name in re.findall(r'^  ([\w-]+)\s+', listing, re.M)
                         if name != 'help']
+    global_help = run(binary, config, 'help', 'flags').decode()
+    commands['help flags'] = sorted(re.findall(r'^\s+(?:-\w,\s+)?(--[\w-]+)', global_help, re.M))
     return {'providers': providers, 'commands': commands}
 
 
@@ -296,6 +298,7 @@ def main():
         config.write_text('')
         inventories = {name: inventory(binary, config) for name, binary in binaries.items()}
         baseline = inventories['baseline']
+        report['inventory_command_counts'] = {name: len(value['commands']) for name, value in inventories.items()}
         for name, value in inventories.items():
             assert normalize_branding(value['providers']) == normalize_branding(baseline['providers']), 'Provider options changed: ' + name
             for command, flags in baseline['commands'].items():
