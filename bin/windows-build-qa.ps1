@@ -9,8 +9,11 @@ $out = [IO.Path]::GetFullPath((Join-Path $repo $Output))
 New-Item -ItemType Directory -Force $out | Out-Null
 Copy-Item "bin/compress-windows.ps1" "$out/compress-windows.ps1"
 
-$helperFixture = Join-Path $out "compression-helper-check.exe"
-Copy-Item "$env:SystemRoot/System32/where.exe" $helperFixture
+$helperFixture = Join-Path ([IO.Path]::GetTempPath()) ("zclone-compression-check-" + [Guid]::NewGuid().ToString() + ".exe")
+$helperBytes = [byte[]]::new(131072)
+$helperBytes[0] = 0x4d
+$helperBytes[1] = 0x5a
+[IO.File]::WriteAllBytes($helperFixture, $helperBytes)
 try {
     & powershell.exe -NoLogo -NoProfile -NonInteractive -File bin/compress-windows.ps1 -Path $helperFixture
     if ($LASTEXITCODE -ne 0) { throw "Compression helper startup check failed" }
