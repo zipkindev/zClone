@@ -86,6 +86,17 @@ python bin/windows_installer_qa.py --archive $archive --previous-binary "$out/js
 if ($LASTEXITCODE -ne 0) { throw "Installer update fixture preparation failed" }
 go build -buildvcs=false -trimpath -ldflags "-s -w" -o "$out/zclone-updater-experimental.exe" ./bin/windows-installer
 if ($LASTEXITCODE -ne 0) { throw "Updater build failed" }
+@{
+    artifact_kind = "experimental-updater"
+    commit = (git rev-parse HEAD)
+    go = (go version)
+    os = "windows"
+    arch = "amd64"
+    default_algorithm = "XPRESS4K"
+    default_channel = "published-including-prereleases"
+    repository = "zipkindev/zClone"
+    sha256 = (Get-FileHash -Algorithm SHA256 "$out/zclone-updater-experimental.exe").Hash.ToLowerInvariant()
+} | ConvertTo-Json | Set-Content "$out/updater-info.json"
 $env:ZCLONE_INSTALLER_QA_ARCHIVE = $archive
 go test -timeout 5m ./bin/windows-installer
 if ($LASTEXITCODE -ne 0) { throw "Updater streaming and failure QA failed" }

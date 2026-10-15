@@ -51,6 +51,18 @@ jobs:
             build/zclone.sources.verify.sha256
           if-no-files-found: error
           retention-days: 14
+      - name: Upload experimental standalone Windows updater
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: windows-updater-experimental-${{ github.sha }}
+          path: |
+            build/windows-qa/zclone-updater-experimental.exe
+            build/windows-qa/updater-info.json
+            COPYING
+            NOTICE
+            RELEASE.md
+          if-no-files-found: error
+          retention-days: 14
 
   compatibility-tests:
     name: Compatibility regression tests
