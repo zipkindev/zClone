@@ -18,8 +18,9 @@ class PackageTests(unittest.TestCase):
             root = Path(directory)
             sources = {'VERSION': 'v0.1.0\n', 'fs/versiontag.go': 'var VersionTag = "v0.1.0"\n',
                        'docs/layouts/partials/version.html': 'v0.1.0'}
-            for name in ['COPYING', 'NOTICE', 'README.md', 'DEPENDENCY_MANIFEST.sha256',
-                         'bin/zclone-recover.py', 'docs/content/recovery.md', 'build/zclone.sbom.cdx.json']:
+            for name in ['COPYING', 'NOTICE', 'README.md', 'RELEASE.md', 'DEPENDENCY_MANIFEST.sha256',
+                         'bin/zclone-recover.py', 'bin/compress-windows.ps1',
+                         'docs/content/recovery.md', 'build/zclone.sbom.cdx.json']:
                 sources[name] = name
             for name, data in sources.items():
                 path = root / name
@@ -64,6 +65,8 @@ else:
                 self.assertEqual(info['tags'], ['arrow_json_stdlib'])
                 self.assertEqual(len(info['commit']), 40)
                 self.assertTrue((package.getinfo(prefix + 'zclone').external_attr >> 16) & 0o111)
+                self.assertNotIn(prefix + 'compress-windows.ps1', package.namelist())
+                self.assertNotIn('windows_native_compression', info)
 
 
             result = subprocess.run([sys.executable, str(SCRIPT), 'v0.1.0', 'windows', 'amd64'],
@@ -76,6 +79,11 @@ else:
                 info = json.loads(package.read(prefix + 'build-info.json'))
                 self.assertEqual(info['tags'], ['arrow_json_stdlib', 'cmount'])
                 self.assertEqual(info['compression'], 'none')
+                self.assertEqual(package.read(prefix + 'compress-windows.ps1'), b'bin/compress-windows.ps1')
+                self.assertIn(prefix + 'RELEASE.md', package.namelist())
+                self.assertEqual(info['windows_native_compression'], {
+                    'helper': 'compress-windows.ps1', 'default_algorithm': 'XPRESS4K',
+                    'alternatives': ['XPRESS8K', 'LZX'], 'applied_to_archive': False})
             upx = tools / 'upx'
             upx.write_text("#!/usr/bin/env python3\nimport sys\nprint('upx 5.1.1')\n")
             upx.chmod(0o755)
@@ -87,6 +95,8 @@ else:
                 info = json.loads(package.read('zclone-v0.1.0-windows-amd64-upx/build-info.json'))
                 self.assertEqual(info['compression'], 'upx')
                 self.assertEqual(info['upx'], 'upx 5.1.1')
+                self.assertNotIn('windows_native_compression', info)
+                self.assertNotIn('zclone-v0.1.0-windows-amd64-upx/compress-windows.ps1', package.namelist())
             result = subprocess.run([sys.executable, str(SCRIPT), 'v0.1.0', 'windows', 'arm64',
                                      '--compression', 'upx'], cwd=root, env=env,
                                     capture_output=True, text=True)

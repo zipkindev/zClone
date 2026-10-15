@@ -7,6 +7,7 @@ $ErrorActionPreference = "Stop"
 $repo = (Get-Location).Path
 $out = [IO.Path]::GetFullPath((Join-Path $repo $Output))
 New-Item -ItemType Directory -Force $out | Out-Null
+Copy-Item "bin/compress-windows.ps1" "$out/compress-windows.ps1"
 
 @{
     baseline_commit = (git rev-parse $BaselineRef)
@@ -17,6 +18,8 @@ New-Item -ItemType Directory -Force $out | Out-Null
     json_baseline_tags = @("cmount")
     upx = "5.1.1"
     winfsp = "2.1.25156"
+    native_compression = @("XPRESS4K", "XPRESS8K", "LZX")
+    preferred_native_compression = "XPRESS4K"
 } | ConvertTo-Json | Set-Content (Join-Path $out "build-context.json")
 
 function Get-VerifiedFile($Url, $Path, $Hash) {

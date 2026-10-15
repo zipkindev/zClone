@@ -180,31 +180,59 @@ def smoke(binary, root, require_mount=False):
                 except subprocess.TimeoutExpired:
                     process.kill()
                     process.wait(timeout=10)
-    starts = []
-    for _ in range(7):
-        start = time.perf_counter()
-        run(binary, config, 'version')
-        starts.append(time.perf_counter() - start)
     return {'tests': ['copy', 'check/corruption detection', 'filters', 'sync/dry-run', 'lsjson', 'archive roundtrips', 'crypt roundtrip',
                       'HTTP custom template', 'RC', 'GUI'] + (['mount read/write'] if require_mount else []),
-            'startup_median_seconds': statistics.median(starts),
             'rc_peak_working_set_bytes': rc_memory, 'gui_peak_working_set_bytes': gui_memory}
 
 
 def compact(binary, algorithm, root):
     candidate = root / ('compact-' + algorithm + '.exe')
     shutil.copyfile(binary, candidate)
-    result = subprocess.run(['compact', '/C', '/EXE:' + algorithm, str(candidate)],
-                            check=True, capture_output=True, text=True)
+    helper = Path(__file__).with_name('compress-windows.ps1').resolve()
+    command = ['powershell.exe', '-NoLogo', '-NoProfile', '-NonInteractive', '-File', str(helper),
+               '-Path', str(candidate)]
+    def apply(*options):
+        result = subprocess.run(command + list(options), capture_output=True, text=True, timeout=180)
+        if result.returncode:
+            raise RuntimeError('Native compression helper failed:\n' + result.stdout + result.stderr)
+        return result
     kernel = ctypes.WinDLL('kernel32', use_last_error=True)
     size = kernel.GetCompressedFileSizeW
     size.argtypes = [ctypes.c_wchar_p, ctypes.POINTER(ctypes.c_ulong)]
     size.restype = ctypes.c_ulong
-    high = ctypes.c_ulong()
-    low = size(str(candidate), ctypes.byref(high))
-    if low == 0xffffffff and ctypes.get_last_error():
-        raise ctypes.WinError(ctypes.get_last_error())
-    return candidate, {'allocated_bytes': (high.value << 32) | low, 'compact_output': result.stdout}
+    def allocated():
+        ctypes.set_last_error(0)
+        high = ctypes.c_ulong()
+        low = size(str(candidate), ctypes.byref(high))
+        if low == 0xffffffff and ctypes.get_last_error():
+            raise ctypes.WinError(ctypes.get_last_error())
+        return (high.value << 32) | low
+    for selection in ['XPRESS4K', algorithm]:
+        apply('-Algorithm', selection)
+    assert allocated() < candidate.stat().st_size, 'Native compression did not reduce allocated disk'
+    apply('-Undo')
+    restored_bytes = allocated()
+    assert restored_bytes >= candidate.stat().st_size, 'Undo left executable compression applied'
+    result = apply('-Algorithm', algorithm)
+    return candidate, {'allocated_bytes': allocated(), 'undo_allocated_bytes': restored_bytes,
+                       'compression_undo_reapply_passed': True, 'switch_from_XPRESS4K_passed': True,
+                       'compact_output': result.stdout}
+
+
+def startup_comparison(binaries, config, report):
+    samples = {name: [] for name in binaries}
+    for binary in binaries.values():
+        run(binary, config, 'version')
+    for trial in range(9):
+        order = list(binaries) if trial % 2 == 0 else list(reversed(binaries))
+        for name in order:
+            start = time.perf_counter()
+            run(binaries[name], config, 'version')
+            samples[name].append(time.perf_counter() - start)
+    for name, values in samples.items():
+        report['binaries'][name]['startup_median_seconds'] = statistics.median(values)
+        report['binaries'][name]['startup_samples_seconds'] = values
+    report['startup_method'] = 'Nine warm samples per variant after warmup, alternating forward/reverse order; not cold-start measurements'
 
 
 def main():
@@ -242,7 +270,7 @@ def main():
         report['existing_commands_and_flags_preserved'] = True
         report['added_commands'] = sorted(set(inventories['candidate']['commands']) - set(baseline['commands']))
         if args.compact:
-            for algorithm in ['XPRESS8K', 'LZX']:
+            for algorithm in ['XPRESS4K', 'XPRESS8K', 'LZX']:
                 binary, metrics = compact(binaries['candidate'], algorithm, root)
                 assert binary.read_bytes() == binaries['candidate'].read_bytes(), 'Native compression changed bytes'
                 binaries[algorithm] = binary
@@ -257,6 +285,25 @@ def main():
                     archive.write(binary, 'zclone.exe')
                 result['zip_bytes'] = compressed.tell()
             result['saved_bytes'] = binaries['baseline'].stat().st_size - binary.stat().st_size
+        startup_comparison(binaries, config, report)
+    failures = []
+    if args.compact:
+        ordinary = report['binaries']['candidate']
+        report['native_compression_performance'] = {
+            'preferred_algorithm': 'XPRESS4K', 'startup_limit_percent': 20,
+            'working_set_limit_percent': 10, 'change_percent': {}}
+        for name in ['XPRESS4K', 'XPRESS8K', 'LZX']:
+            values = report['binaries'][name]
+            changes = {key: 100 * (values[key] / ordinary[key] - 1)
+                       for key in ['startup_median_seconds', 'rc_peak_working_set_bytes',
+                                   'gui_peak_working_set_bytes']}
+            report['native_compression_performance']['change_percent'][name] = changes
+            if name == 'XPRESS4K':
+                for key, limit in [('startup_median_seconds', 20), ('rc_peak_working_set_bytes', 10),
+                                   ('gui_peak_working_set_bytes', 10)]:
+                    if changes[key] > limit:
+                        failures.append(name + ' ' + key + ' regression')
+        report['native_compression_performance']['regressions'] = failures
     if args.json_baseline:
         old, new = report['binaries']['json_baseline'], report['binaries']['candidate']
         report['arrow_json_change'] = {
@@ -267,6 +314,8 @@ def main():
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report, indent=2))
+    if failures:
+        raise SystemExit('; '.join(failures))
 
 
 if __name__ == '__main__':

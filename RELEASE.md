@@ -142,8 +142,17 @@ Windows archives include the `cmount` build tag and use the vendored cgofuse
 Windows implementation without CGO. Mounting requires WinFsp on the destination
 machine. Linux and macOS packaging use the standard Arrow JSON profile.
 
-The ordinary executable remains the default. An optional packed x64 archive can
-be built with an installed UPX tool:
+Release downloads use ZIP compression and preserve the ordinary executable.
+Windows ordinary archives include `compress-windows.ps1` and this document.
+After extracting to NTFS, the helper defaults to XPRESS4K, the performance-first
+native algorithm. XPRESS8K and LZX are explicit alternatives; LZX favors disk
+savings. Every helper operation verifies that the executable's SHA-256 remains
+unchanged. Reapply compression after replacing the executable during an update.
+ZIP extraction or copying to a different filesystem does not maintain native
+compression automatically. The same full SDKs, features, and authentication
+options remain available.
+
+An optional packed x64 archive can be built with an installed UPX tool:
 
 ```console
 python3 bin/package-release.py v0.1.0 windows amd64 --compression upx
@@ -160,12 +169,25 @@ The required Windows CI job runs `bin/windows-build-qa.ps1`. It downloads offici
 UPX 5.1.1 and WinFsp 2.1.25156 installers with pinned SHA-256 checksums, builds the
 base revision and candidate with identical release linker settings, and uses
 `bin/compare-executables.py` to compare backend option inventories and preserve
-existing commands and flags. Candidate, UPX, and Windows `compact /EXE` XPRESS8K
+existing commands and flags. Candidate, UPX, and native XPRESS4K, XPRESS8K,
 and LZX variants undergo disposable copy/sync/check, JSON listing, archive and
 crypt roundtrips, custom HTTP template, RC, GUI, and mount read/write checks.
 The baseline undergoes the same checks except mount, which is newly enabled.
 CI also runs Drive, crypt, Azure Blob, GUI, and HTTP package tests and scans the
-ordinary and packed candidates with the runner's Defender engine.
+ordinary and packed candidates with the runner's Defender engine. Native
+variants use the packaged helper under built-in Windows PowerShell; QA verifies
+compression, undo, reapplication, allocated-disk savings, and content hashes.
+
+Startup comparisons warm each variant and alternate forward/reverse execution
+order across nine samples per variant, preserving every sample in the report.
+XPRESS4K qualification fails if median warm startup rises more than 20% or either
+RC/GUI peak working set rises more than 10% versus the ordinary executable.
+XPRESS8K, LZX, and UPX measurements remain visible for comparison. These gates
+identify material regressions; they do not establish the fastest algorithm on
+every device. Working sets are single-process observations, and these tests do
+not claim cold-start or sustained-throughput qualification. ARM64 release
+archives include the helper, but native runtime/performance qualification is
+currently Windows x64 only.
 
 The comparison report records executable and ZIP sizes, hashes, startup medians, server peak working sets,
 and native compression allocation measurements. Startup numbers are warm,
@@ -176,17 +198,23 @@ they are not silently skipped. Defender qualification does not establish
 compatibility with every organization's endpoint-security product.
 
 For installed disk savings on Windows 10 or later with NTFS, the ordinary
-executable can be compressed transparently without changing its file contents:
+executable can be compressed transparently without changing its file contents.
+From the extracted Windows release directory:
 
 ```powershell
-compact /C /EXE:XPRESS8K "C:\Tools\zclone.exe"
+.\compress-windows.ps1
+# Prefer minimum allocated disk over the fastest native algorithm:
+.\compress-windows.ps1 -Algorithm LZX
 # Undo executable compression:
-compact /U /EXE "C:\Tools\zclone.exe"
+.\compress-windows.ps1 -Undo
 ```
 
-LZX favors disk savings; compare it against XPRESS8K using the QA report before
-choosing it for a deployment. This reduces allocated disk space, not the logical
-file size or the size of an executable copied to another machine. See the
+The equivalent direct native command for the performance-first profile is
+`compact /C /F /EXE:XPRESS4K "C:\Tools\zclone.exe"`; undo it with
+`compact /U /F /EXE "C:\Tools\zclone.exe"`. Microsoft identifies XPRESS4K as the
+fastest algorithm and LZX as the most compact. This reduces allocated disk
+space, not the logical file size or the size of an executable copied to another
+machine. See the
 [Microsoft compact documentation](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/compact).
 
 For a manual run on a disposable, administrator-capable Windows QA machine with

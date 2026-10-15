@@ -126,6 +126,7 @@ jobs:
             build/windows-qa/*.log
             build/windows-qa/*.json
             build/windows-qa/*.exe
+            build/windows-qa/*.ps1
             COPYING
             NOTICE
           if-no-files-found: error

@@ -59,11 +59,19 @@ def main():
                 'executable_bytes': binary.stat().st_size}
         if upx_version:
             info['upx'] = upx_version
+        native_compression = args.os == 'windows' and args.compression == 'none'
+        if native_compression:
+            info['windows_native_compression'] = {
+                'helper': 'compress-windows.ps1', 'default_algorithm': 'XPRESS4K',
+                'alternatives': ['XPRESS8K', 'LZX'], 'applied_to_archive': False}
         with zipfile.ZipFile(output / (name + '.zip'), 'w', zipfile.ZIP_DEFLATED) as archive:
             archive.write(binary, name + '/' + binary.name)
             for source in ['COPYING', 'NOTICE', 'README.md', 'DEPENDENCY_MANIFEST.sha256',
                            'bin/zclone-recover.py', 'docs/content/recovery.md', 'build/zclone.sbom.cdx.json']:
                 archive.write(source, name + '/' + source)
+            if native_compression:
+                archive.write('bin/compress-windows.ps1', name + '/compress-windows.ps1')
+                archive.write('RELEASE.md', name + '/RELEASE.md')
             archive.writestr(name + '/build-info.json', json.dumps(info, indent=2) + '\n')
     path = output / (name + '.zip')
     with path.open('rb') as stream:
