@@ -9,6 +9,15 @@ $out = [IO.Path]::GetFullPath((Join-Path $repo $Output))
 New-Item -ItemType Directory -Force $out | Out-Null
 Copy-Item "bin/compress-windows.ps1" "$out/compress-windows.ps1"
 
+$helperFixture = Join-Path $out "compression-helper-check.exe"
+Copy-Item "$env:SystemRoot/System32/where.exe" $helperFixture
+try {
+    & powershell.exe -NoLogo -NoProfile -NonInteractive -File bin/compress-windows.ps1 -Path $helperFixture
+    if ($LASTEXITCODE -ne 0) { throw "Compression helper startup check failed" }
+    & powershell.exe -NoLogo -NoProfile -NonInteractive -File bin/compress-windows.ps1 -Path $helperFixture -Undo
+    if ($LASTEXITCODE -ne 0) { throw "Compression helper undo startup check failed" }
+} finally { Remove-Item -LiteralPath $helperFixture }
+
 @{
     baseline_commit = (git rev-parse $BaselineRef)
     candidate_commit = (git rev-parse HEAD)

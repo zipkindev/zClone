@@ -7,11 +7,20 @@ param(
     [Parameter(Mandatory = $true, ParameterSetName = "Undo")][switch]$Undo
 )
 $ErrorActionPreference = "Stop"
+function Get-ExecutableHash([string]$FilePath) {
+    $hasher = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        $stream = [System.IO.File]::OpenRead($FilePath)
+        try {
+            return [BitConverter]::ToString($hasher.ComputeHash($stream)).Replace("-", "").ToLowerInvariant()
+        } finally { $stream.Dispose() }
+    } finally { $hasher.Dispose() }
+}
 $file = Get-Item -LiteralPath $Path -ErrorAction Stop
 if ($file.PSIsContainer -or $file.Extension -ine ".exe") {
     throw "Path must name one Windows executable"
 }
-$before = (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash
+$before = Get-ExecutableHash $file.FullName
 $compact = Join-Path $env:SystemRoot "System32/compact.exe"
 if ($Undo) {
     $arguments = @("/U", "/F", "/EXE", $file.FullName)
@@ -20,7 +29,7 @@ if ($Undo) {
 }
 $details = (& $compact @arguments 2>&1 | Out-String)
 $result = $LASTEXITCODE
-$after = (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash
+$after = Get-ExecutableHash $file.FullName
 if ($before -ne $after) { throw "Executable content hash changed during native compression" }
 if ($result -ne 0) { throw "Native compression failed (NTFS required): $details" }
 $operation = "compress"
