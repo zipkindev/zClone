@@ -1,6 +1,6 @@
 ---
 title: "Koofr"
-description: "Zclone docs for Koofr"
+description: "zClone docs for Koofr"
 versionIntroduced: "v1.47"
 ---
 

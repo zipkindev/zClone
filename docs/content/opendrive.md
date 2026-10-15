@@ -1,6 +1,6 @@
 ---
 title: "OpenDrive"
-description: "Zclone docs for OpenDrive"
+description: "zClone docs for OpenDrive"
 versionIntroduced: "v1.42"
 ---
 
@@ -208,7 +208,7 @@ file called "Hello.doc" and one called "hello.doc".
 
 There are quite a few characters that can't be in OpenDrive file
 names.  These can't occur on Windows platforms, but on non-Windows
-platforms they are common.  Zclone will map these names to and from an
+platforms they are common.  zClone will map these names to and from an
 identical looking unicode equivalent.  For example if a file has a `?`
 in it will be mapped to `？` instead.
 

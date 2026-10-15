@@ -1,6 +1,6 @@
 ---
 title: "Internet Archive"
-description: "Zclone docs for Internet Archive"
+description: "zClone docs for Internet Archive"
 versionIntroduced: "v1.59"
 ---
 
@@ -326,7 +326,7 @@ Properties:
 
 Metadata fields provided by Internet Archive.
 If there are multiple values for a key, only the first one is returned.
-This is a limitation of Zclone, that supports one value per one key.
+This is a limitation of zClone, that supports one value per one key.
 
 Owner is able to add custom keys. Metadata feature grabs all the keys including them.
 
@@ -337,7 +337,7 @@ Here are the possible system metadata items for the internetarchive backend.
 | crc32 | CRC32 calculated by Internet Archive | string | 01234567 | **Y** |
 | format | Name of format identified by Internet Archive | string | Comma-Separated Values | **Y** |
 | md5 | MD5 hash calculated by Internet Archive | string | 01234567012345670123456701234567 | **Y** |
-| mtime | Time of last modification, managed by Zclone | RFC 3339 | 2006-01-02T15:04:05.999999999Z | **Y** |
+| mtime | Time of last modification, managed by zClone | RFC 3339 | 2006-01-02T15:04:05.999999999Z | **Y** |
 | name | Full file path, without the bucket part | filename | backend/internetarchive/internetarchive.go | **Y** |
 | old_version | Whether the file was replaced and moved by keep-old-version flag | boolean | true | **Y** |
 | sha1 | SHA1 hash calculated by Internet Archive | string | 0123456701234567012345670123456701234567 | **Y** |
@@ -346,8 +346,8 @@ Here are the possible system metadata items for the internetarchive backend.
 | summation | Check / for how it is used | string | md5 | **Y** |
 | viruscheck | The last time viruscheck process was run for the file (?) | unixtime | 1654191352 | **Y** |
 | zclone-ia-mtime | Time of last modification, managed by Internet Archive | RFC 3339 | 2006-01-02T15:04:05.999999999Z | N |
-| zclone-mtime | Time of last modification, managed by Zclone | RFC 3339 | 2006-01-02T15:04:05.999999999Z | N |
-| zclone-update-track | Random value used by Zclone for tracking changes inside Internet Archive | string | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa | N |
+| zclone-mtime | Time of last modification, managed by zClone | RFC 3339 | 2006-01-02T15:04:05.999999999Z | N |
+| zclone-update-track | Random value used by zClone for tracking changes inside Internet Archive | string | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa | N |
 
 See the [metadata](/docs/#metadata) docs for more info.
 

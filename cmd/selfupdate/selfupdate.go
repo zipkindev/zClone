@@ -10,7 +10,7 @@ import (
 	"zclone/cmd"
 )
 
-var errReleaseServiceDisabled = errors.New("self-update is disabled because this Zclone build has no configured release service")
+var errReleaseServiceDisabled = errors.New("self-update is disabled because this zClone build has no configured release service")
 
 func init() {
 	cmd.Root.AddCommand(commandDefinition)
@@ -21,7 +21,7 @@ var commandDefinition = &cobra.Command{
 	Use:     "selfupdate",
 	Aliases: []string{"self-update"},
 	Short:   "Report that self-update is unavailable.",
-	Long: `This local Zclone distribution does not configure a release service.
+	Long: `This local zClone distribution does not configure a release service.
 
 Build a replacement locally with "make zclone" and install it using your normal
 local deployment process.`,

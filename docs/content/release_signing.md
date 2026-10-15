@@ -1,6 +1,6 @@
 ---
 title: "Local signing"
-description: "Sign locally built Zclone binaries."
+description: "Sign locally built zClone binaries."
 ---
 
 # Local signing

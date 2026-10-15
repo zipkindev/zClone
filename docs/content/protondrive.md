@@ -1,6 +1,6 @@
 ---
 title: "Proton Drive"
-description: "Zclone docs for Proton Drive"
+description: "zClone docs for Proton Drive"
 versionIntroduced: "v1.64.0"
 ---
 

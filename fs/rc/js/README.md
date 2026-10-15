@@ -1,4 +1,4 @@
-# Zclone as WASM
+# zClone as WASM
 
 This directory contains files to use the zclone rc as a library in the browser.
 

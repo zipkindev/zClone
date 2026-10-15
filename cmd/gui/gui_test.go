@@ -271,7 +271,7 @@ func TestHandlerServesIndexHTML(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	assert.Contains(t, string(body), "<h1>Zclone Control</h1>")
+	assert.Contains(t, string(body), "<h1>zClone Control</h1>")
 }
 
 func TestHandlerServesStaticAssets(t *testing.T) {
@@ -301,7 +301,7 @@ func TestHandlerSPAFallback(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	assert.Contains(t, string(body), "<h1>Zclone Control</h1>",
+	assert.Contains(t, string(body), "<h1>zClone Control</h1>",
 		"SPA fallback should serve index.html for unknown routes")
 }
 
@@ -317,7 +317,7 @@ func TestHandlerSPAFallbackDeepPath(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	assert.Contains(t, string(body), "<h1>Zclone Control</h1>")
+	assert.Contains(t, string(body), "<h1>zClone Control</h1>")
 }
 
 func TestHandlerServesGzip(t *testing.T) {

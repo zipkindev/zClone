@@ -4,7 +4,7 @@ set -eu
 case "$(go version)" in
   *"go1.27.0 "*) ;;
   *)
-    echo "Zclone verification requires Go 1.27.0; see toolchain/README.md" >&2
+    echo "zClone verification requires Go 1.27.0; see toolchain/README.md" >&2
     exit 2
     ;;
 esac

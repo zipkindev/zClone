@@ -1,6 +1,6 @@
 ---
 title: "DOI"
-description: "Zclone docs for DOI"
+description: "zClone docs for DOI"
 versionIntroduced: "v1.70"
 ---
 

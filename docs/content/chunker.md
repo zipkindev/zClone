@@ -460,8 +460,8 @@ Properties:
   - "norename"
     - Leave temporary file names and write transaction ID to metadata file.
     - Metadata is required for no rename transactions (meta format cannot be "none").
-    - If you are using norename transactions you should be careful not to downgrade Zclone
-    - as older versions of Zclone don't support this transaction style and will misinterpret
+    - If you are using norename transactions you should be careful not to downgrade zClone
+    - as older versions of zClone don't support this transaction style and will misinterpret
     - files manipulated by norename transactions.
     - This method is EXPERIMENTAL, don't use on production systems.
   - "auto"

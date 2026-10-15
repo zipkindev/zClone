@@ -6,7 +6,7 @@ type: page
 
 # Overview of cloud storage systems
 
-Each cloud storage system is slightly different.  Zclone attempts to
+Each cloud storage system is slightly different.  zClone attempts to
 provide a unified interface to them, but some underlying differences
 show through.
 
@@ -139,7 +139,7 @@ punctuation marks that are used.
 
 On Windows, the characters `:`, `*` and `?` are examples of restricted
 characters. If these are used in filenames on a remote that supports it,
-Zclone will transparently convert them to their fullwidth Unicode
+zClone will transparently convert them to their fullwidth Unicode
 variants `＊`, `？` and `：` when downloading to Windows, and back again
 when uploading. This way files with names that are not allowed on Windows
 can still be stored.
@@ -162,7 +162,7 @@ to `Test：1.jpg`. The original filename is not legal on Windows, due to
 the `:`, and zclone therefore renames it to make the copy possible.
 That is all good. However, this can also lead to an issue: If you already
 had a *different* file named `Test：1.jpg` on Windows, and then use zclone
-to copy either way. Zclone will then treat the file originally named
+to copy either way. zClone will then treat the file originally named
 `Test:1.jpg` on Google Drive and the file originally named `Test：1.jpg`
 on Windows as the same file, and replace the contents from one with the other.
 
@@ -341,7 +341,7 @@ that the file gets renamed to `Test:1.jpg`.
 
 To avoid this you can change the set of characters zclone should convert
 for the local filesystem, using command-line argument `--local-encoding`.
-Zclone's default behavior on Windows corresponds to
+zClone's default behavior on Windows corresponds to
 
 ```text
 --local-encoding "Slash,LtGt,DoubleQuote,Colon,Question,Asterisk,Pipe,BackSlash,Ctl,RightSpace,RightPeriod,InvalidUtf8,Dot"
@@ -479,7 +479,7 @@ on the particular cloud provider.
 
 ### About
 
-Zclone `about` prints quota information for a remote. Typical output
+zClone `about` prints quota information for a remote. Typical output
 includes bytes used, free, quota and in trash.
 
 If a remote lacks about capability `zclone about remote:`returns

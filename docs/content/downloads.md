@@ -1,6 +1,6 @@
 ---
 title: "Local builds"
-description: "Build and install Zclone from this source distribution."
+description: "Build and install zClone from this source distribution."
 type: page
 ---
 
@@ -9,7 +9,7 @@ type: page
 This distribution does not publish binaries or operate a download service.
 All Go dependencies required for the default build are checked into `vendor/`.
 
-Build Zclone without contacting a Go module service:
+Build zClone without contacting a Go module service:
 
 ```console
 make zclone

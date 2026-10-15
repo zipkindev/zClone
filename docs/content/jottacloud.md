@@ -1,6 +1,6 @@
 ---
 title: "Jottacloud"
-description: "Zclone docs for Jottacloud"
+description: "zClone docs for Jottacloud"
 versionIntroduced: "v1.43"
 ---
 
@@ -49,7 +49,7 @@ Jottacloud uses two optional OAuth security mechanisms, referred to as "Refresh
 Token Rotation" and "Automatic Reuse Detection", which has some implications.
 Access tokens normally have one hour expiry, after which they need to be
 refreshed (rotated), an operation that requires the refresh token to be
-supplied. Zclone does this automatically. This is standard OAuth. But in
+supplied. zClone does this automatically. This is standard OAuth. But in
 Jottacloud, such a refresh operation not only creates a new access token, but
 also refresh token, and invalidates the existing refresh token, the one that
 was supplied. It keeps track of the history of refresh tokens, sometimes
@@ -122,7 +122,7 @@ Log in to your service's web user interface, navigate to "Settings" and then
 "Security", or, for the official service, use the direct link presented to you
 by zclone when configuring the remote: <https://www.jottacloud.com/web/secure>.
 Scroll down to the section "Personal login token", and click the "Generate"
-button. Copy the presented string and paste it where zclone asks for it. Zclone
+button. Copy the presented string and paste it where zclone asks for it. zClone
 will then use this to perform an initial token request, and receive a regular
 OAuth token which it stores in your remote configuration. There will then also
 be a new entry in the "My logged in devices" list in the web interface, with
@@ -321,7 +321,7 @@ With the built-in Jotta device, only existing, built-in, mountpoints can be
 selected. In addition to the mentioned Archive and Sync, it may contain
 several other mountpoints such as: Latest, Links, Shared and Trash. All of
 these are special mountpoints with a different internal representation than
-the "regular" mountpoints. Zclone will only to a very limited degree support
+the "regular" mountpoints. zClone will only to a very limited degree support
 them. Generally you should avoid these, unless you know what you are doing.
 
 ### --fast-list
@@ -593,7 +593,7 @@ Note that Jottacloud is case insensitive so you can't have a file called
 "Hello.doc" and one called "hello.doc".
 
 There are quite a few characters that can't be in Jottacloud file names.
-Zclone will map these names to and from an identical looking unicode
+zClone will map these names to and from an identical looking unicode
 equivalent. For example if a file has a ? in it will be mapped to ？ instead.
 
 Jottacloud only supports filenames up to 255 characters in length.

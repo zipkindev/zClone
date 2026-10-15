@@ -570,7 +570,7 @@ func (f *Fs) put(ctx context.Context, in io.Reader, src fs.ObjectInfo, remote st
 	_, err = io.Copy(upload, in)
 	if err != nil {
 		if errors.Is(err, uplink.ErrBucketNotFound) {
-			// Zclone assumes the backend will create the bucket if not existing yet.
+			// zClone assumes the backend will create the bucket if not existing yet.
 			// Here we create the bucket and return a retry error for zclone to retry the upload.
 			_, err = f.project.EnsureBucket(ctx, bucketName)
 			if err != nil {
@@ -588,7 +588,7 @@ func (f *Fs) put(ctx context.Context, in io.Reader, src fs.ObjectInfo, remote st
 	err = upload.Commit()
 	if err != nil {
 		if errors.Is(err, uplink.ErrBucketNotFound) {
-			// Zclone assumes the backend will create the bucket if not existing yet.
+			// zClone assumes the backend will create the bucket if not existing yet.
 			// Here we create the bucket and return a retry error for zclone to retry the upload.
 			_, err = f.project.EnsureBucket(ctx, bucketName)
 			if err != nil {
@@ -844,7 +844,7 @@ func (f *Fs) PublicLink(ctx context.Context, remote string, expire fs.Duration, 
 		return "", errors.New("path must be specified")
 	}
 
-	// Zclone requires that a link is only generated if the remote path exists
+	// zClone requires that a link is only generated if the remote path exists
 	if key == "" {
 		_, err := f.project.StatBucket(ctx, bucket)
 		if err != nil {

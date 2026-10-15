@@ -13,11 +13,11 @@ NFS client can access them.
 
 Usage Pattern:
 
-NFS Client --> NFS Server --> Zclone Mount --> OCI Object Storage
+NFS Client --> NFS Server --> zClone Mount --> OCI Object Storage
 
-## Step 1 : Install Zclone
+## Step 1 : Install zClone
 
-In oracle linux 8, Zclone can be installed from
+In oracle linux 8, zClone can be installed from
 [OL8_Developer](https://yum.oracle.com/repo/OracleLinux/OL8/developer/x86_64/index.html)
 Yum Repo, Please enable the repo if not enabled already.
 
@@ -41,7 +41,7 @@ From repo           : ol8_developer
 Summary             : rsync for cloud storage
 URL                 : //
 License             : MIT
-Description         : Zclone is a command line program to sync files and directories to and from various cloud services.
+Description         : zClone is a command line program to sync files and directories to and from various cloud services.
 ```
 
 To run it as a mount helper you should symlink zclone binary to /sbin/mount.zclone
@@ -52,7 +52,7 @@ zclone will detect it and translate command-line arguments appropriately.
 ln -s /usr/bin/zclone /sbin/mount.zclone
 ```
 
-## Step 2: Setup Zclone Configuration file
+## Step 2: Setup zClone Configuration file
 
 Let's assume you want to access 3 buckets from the oci compute instance using
 instance principal provider as means of authenticating with object storage service.
@@ -61,7 +61,7 @@ instance principal provider as means of authenticating with object storage servi
 - namespace-b, bucket-b,
 - namespace-c, bucket-c
 
-Zclone configuration file needs to have 3 remote sections, one section of each
+zClone configuration file needs to have 3 remote sections, one section of each
 of above 3 buckets. Create a configuration file in a accessible location that
 zclone program can read.
 
@@ -190,7 +190,7 @@ drwxrwxr-x. 2 opc opc 6 Apr 7 18:17 bucket-b
 drwxrwxr-x. 2 opc opc 6 Apr 7 18:17 bucket-c
 ```
 
-## Step 5: Identify Zclone mount CLI configuration settings to use
+## Step 5: Identify zClone mount CLI configuration settings to use
 
 Please read through this [zclone mount](//commands/zclone_mount/)
 page completely to really understand the mount and its flags, what is zclone
@@ -286,7 +286,7 @@ changed relative to a remote file. Fingerprints are made from:
 
 ## Step 6: Mounting Options, Use Any one option
 
-### Step 6a: Run as a Service Daemon: Configure FSTAB entry for Zclone mount
+### Step 6a: Run as a Service Daemon: Configure FSTAB entry for zClone mount
 
 Add this entry in /etc/fstab:
 
@@ -297,7 +297,7 @@ file_perms=0760,dir_perms=0760,allow_other,vfs_cache_mode=writes,cache_dir=/tmp/
 
 IMPORTANT: Please note in fstab entry arguments are specified as underscore
 instead of dash, example: vfs_cache_mode=writes instead of vfs-cache-mode=writes
-Zclone in the mount helper mode will split -o argument(s) by comma, replace `_`
+zClone in the mount helper mode will split -o argument(s) by comma, replace `_`
 by `-` and prepend `--` to get the command-line flags. Options containing commas
 or spaces can be wrapped in single or double quotes. Any inner quotes inside outer
 quotes of the same type should be doubled.
@@ -315,7 +315,7 @@ none                 : ignored
 /opt/mnt/bucket-a    : already mounted   # This is the bucket mounted information, running mount -av again and again is idempotent.
 ```
 
-## Step 6b: Run as a Service Daemon: Configure systemd entry for Zclone mount
+## Step 6b: Run as a Service Daemon: Configure systemd entry for zClone mount
 
 If you are familiar with configuring systemd unit files, you can also configure
 the each zclone mount into a systemd units file.

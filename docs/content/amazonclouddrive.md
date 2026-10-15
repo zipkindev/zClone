@@ -1,6 +1,6 @@
 ---
 title: "Amazon Drive"
-description: "Zclone docs for Amazon Drive"
+description: "zClone docs for Amazon Drive"
 versionIntroduced: "v1.20"
 status: Removed
 ---

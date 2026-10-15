@@ -74,7 +74,7 @@ Use "zclone help flags" for to see the global flags.
 Use "zclone help backends" for a list of supported services.
 
 ```
-# Zclone syncs your files to cloud storage
+# zClone syncs your files to cloud storage
 
 <!-- markdownlint-disable-next-line line-length -->
 <img width="50%" src="//img/logo_on_light__horizontal_color.svg" dark-src="/img/logo_on_dark__horizontal_color.svg" alt="zclone logo" style="float:right; padding: 5px;" class="hide-mobile" >
@@ -89,21 +89,21 @@ Use "zclone help backends" for a list of supported services.
 
 ## About zclone {#about}
 
-Zclone is a command-line program to manage files on cloud storage. It
+zClone is a command-line program to manage files on cloud storage. It
 is a feature-rich alternative to cloud vendors' web storage
 interfaces. [Over 70 cloud storage products](#providers) support
 zclone including S3 object stores, business & consumer file storage
 services, as well as standard transfer protocols.
 
-Zclone has powerful cloud equivalents to the unix commands rsync, cp,
-mv, mount, ls, ncdu, tree, rm, and cat. Zclone's familiar syntax
+zClone has powerful cloud equivalents to the unix commands rsync, cp,
+mv, mount, ls, ncdu, tree, rm, and cat. zClone's familiar syntax
 includes shell pipeline support, and `--dry-run` protection. It is
 used at the command line, in scripts or via its [API](/rc).
 
 Users call zclone *"The Swiss army knife of cloud storage"*, and
 *"Technology indistinguishable from magic"*.
 
-Zclone really looks after your data. It preserves timestamps and
+zClone really looks after your data. It preserves timestamps and
 verifies checksums at all times. Transfers over limited bandwidth;
 intermittent connections, or subject to quota can be restarted, from
 the last good file transferred. You can
@@ -119,7 +119,7 @@ Virtual backends wrap local and cloud file systems to apply
 [hashing](//hasher/) and
 [joining](//union/).
 
-Zclone [mounts](//commands/zclone_mount/) any local, cloud or
+zClone [mounts](//commands/zclone_mount/) any local, cloud or
 virtual filesystem as a disk on Windows,
 macOS, linux and FreeBSD, and also serves these over
 [SFTP](//commands/zclone_serve_sftp/),
@@ -128,21 +128,21 @@ macOS, linux and FreeBSD, and also serves these over
 [FTP](//commands/zclone_serve_ftp/) and
 [DLNA](//commands/zclone_serve_dlna/).
 
-Zclone is mature, open-source software originally inspired by rsync
+zClone is mature, open-source software originally inspired by rsync
 and written in [Go](https://golang.org). The friendly support
 community is familiar with varied use cases. Official Ubuntu, Debian,
 Fedora, Brew and Chocolatey repos. include zclone. For the latest
 version [downloading from zclone.org](//downloads/) is recommended.
 
-Zclone is widely used on Linux, Windows and Mac. Third-party
+zClone is widely used on Linux, Windows and Mac. Third-party
 developers create innovative backup, restore, GUI and business
 process solutions using the zclone command line or API.
 
-Zclone does the heavy lifting of communicating with cloud storage.
+zClone does the heavy lifting of communicating with cloud storage.
 
 ## What can zclone do for you? {#what}
 
-Zclone helps you:
+zClone helps you:
 
 - Backup (and encrypt) files to cloud storage
 - Restore (and decrypt) files from cloud storage
@@ -270,7 +270,7 @@ WebDAV or S3, that work out of the box.)
 - Rabata Cloud Storage
 - RackCorp Object Storage
 - Rackspace Cloud Files
-- Zclone Serve S3
+- zClone Serve S3
 - rsync.net
 - Scaleway
 - Scality (RING / ARTESCA)
@@ -325,10 +325,10 @@ These backends adapt or modify other storage providers:
 
 - [Home page](///)
 - [GitHub project page for source and bug tracker](/)
-- [Zclone Forum](/)
+- [zClone Forum](/)
 - [Downloads](//downloads/)
 
-# Install Zclone locally
+# Install zClone locally
 
 This source distribution intentionally has no central installer, download
 service, or self-update endpoint. The complete Go dependency set for the
@@ -357,13 +357,13 @@ make macos-installer
 ```
 
 This signs the binary with the configured local signing identity (ad-hoc by
-default), creates `build/Zclone-<version>-<architecture>.pkg`, and installs the
+default), creates `build/zClone-<version>-<architecture>.pkg`, and installs the
 binary in `/usr/local/lib/zclone/zclone`. Its post-install script provides a
 `/usr/local/bin/zclone` symlink and `/etc/paths.d/zclone`, so it is available
 in newly opened Terminal sessions. Install it with:
 
 ```console
-sudo installer -pkg build/Zclone-<version>-<architecture>.pkg -target /
+sudo installer -pkg build/zClone-<version>-<architecture>.pkg -target /
 ```
 
 Set `INSTALLER_SIGN_IDENTITY` to a Developer ID Installer certificate when
@@ -376,7 +376,7 @@ in this checkout.
 
 # Usage
 
-Zclone is a command line program to manage files on cloud storage.
+zClone is a command line program to manage files on cloud storage.
 After [download](//downloads/) and [install](/install), continue
 here to learn how to use it: Initial [configuration](#configure),
 what the [basic syntax](#basic-syntax) looks like, describes the
@@ -471,7 +471,7 @@ See the following for detailed instructions for
 
 ## Basic syntax
 
-Zclone syncs a directory tree from one storage system to another.
+zClone syncs a directory tree from one storage system to another.
 
 Its syntax is like this
 
@@ -635,7 +635,7 @@ recently very efficiently like this:
 zclone copy --max-age 24h --no-traverse /path/to/src remote:
 ```
 
-Zclone will sync the modification times of files and directories if
+zClone will sync the modification times of files and directories if
 the backend supports it. If metadata syncing is required then use the
 `--metadata` flag.
 
@@ -860,7 +860,7 @@ the destination from the sync with a filter rule or by putting an
 exclude-if-present file inside the destination directory and sync to a
 destination that is inside the source directory.
 
-Zclone will sync the modification times of files and directories if
+zClone will sync the modification times of files and directories if
 the backend supports it. If metadata syncing is required then use the
 `--metadata` flag.
 
@@ -1074,7 +1074,7 @@ Move files from source to dest.
 ## Synopsis
 
 Moves the contents of the source directory to the destination
-directory. Zclone will error if the source and destination overlap and
+directory. zClone will error if the source and destination overlap and
 the remote does not support a server-side directory move operation.
 
 To move single files, use the [moveto](//commands/zclone_moveto/)
@@ -1098,7 +1098,7 @@ whether zclone lists the destination directory or not.  Supplying this
 option when moving a small number of files into a large destination
 can speed transfers up greatly.
 
-Zclone will sync the modification times of files and directories if
+zClone will sync the modification times of files and directories if
 the backend supports it. If metadata syncing is required then use the
 `--metadata` flag.
 
@@ -2202,7 +2202,7 @@ recursion.
 Some backends do not always provide file sizes, see for example
 [Google Photos](//googlephotos/#size) and
 [Google Docs](//drive/#limitations-of-google-docs).
-Zclone will then show a notice in the log indicating how many such
+zClone will then show a notice in the log indicating how many such
 files were encountered, and count them in as empty files in the output
 of the size command.
 
@@ -3052,7 +3052,7 @@ Bisync is considered an **advanced command**, so use with care.
 Make sure you have read and understood the entire [manual](//bisync)
 (especially the [Limitations](///bisync/#limitations) section)
 before using, or data loss can result. Questions can be asked in the
-[Zclone Forum](/).
+[zClone Forum](/).
 
 See [full bisync description](///bisync/) for details.
 
@@ -5598,7 +5598,7 @@ Speaks with git-annex over stdin/stdout.
 
 ## Synopsis
 
-Zclone's `gitannex` subcommand enables [git-annex] to store and retrieve content
+zClone's `gitannex` subcommand enables [git-annex] to store and retrieve content
 from an zclone remote. It is meant to be run by git-annex, not directly by
 users.
 
@@ -6462,8 +6462,8 @@ Mount the remote as file system on a mountpoint.
 
 ## Synopsis
 
-Zclone mount allows Linux, FreeBSD, macOS and Windows to
-mount any of Zclone's cloud storage systems as a file system with FUSE.
+zClone mount allows Linux, FreeBSD, macOS and Windows to
+mount any of zClone's cloud storage systems as a file system with FUSE.
 
 First set up your remote using `zclone config`. Check it works with `zclone ls`
 etc.
@@ -6757,7 +6757,7 @@ but consider lowering this limit if the server's system resource usage causes pr
 ### macFUSE Notes
 
 Install macFUSE or FUSE-T from an approved local package source before using
-this command. Zclone locates the macFUSE libraries without further intervention.
+this command. zClone locates the macFUSE libraries without further intervention.
 If the approved package is installed under `/opt/local`, the following addition
 steps are required.
 
@@ -6944,7 +6944,7 @@ Since mounting requires the `fusermount` or `fusermount3` program,
 zclone will use the fallback PATH of `/bin:/usr/bin` in this scenario.
 Please ensure that `fusermount`/`fusermount3` is present on this PATH.
 
-## Zclone as Unix mount helper
+## zClone as Unix mount helper
 
 The core Unix program `/bin/mount` normally takes the `-t FSTYPE` argument
 then runs the `/sbin/mount.FSTYPE` helper program passing it mount options
@@ -6998,7 +6998,7 @@ or use classic Automountd.
 Remember to provide explicit `config=...,cache-dir=...` as a workaround for
 mount units being run without `HOME`.
 
-Zclone in the mount helper mode will split `-o` argument(s) by comma, replace `_`
+zClone in the mount helper mode will split `-o` argument(s) by comma, replace `_`
 by `-` and prepend `--` to get the command-line flags. Options containing commas
 or spaces can be wrapped in single or double quotes. Any inner quotes inside outer
 quotes of the same type should be doubled.
@@ -7212,7 +7212,7 @@ When using this mode it is recommended that `--buffer-size` is not set
 too large and `--vfs-read-ahead` is set large if required.
 
 **IMPORTANT** not all file systems support sparse files. In particular
-FAT/exFAT do not. Zclone will perform very badly if the cache
+FAT/exFAT do not. zClone will perform very badly if the cache
 directory is on a filesystem which doesn't support sparse files and it
 will log an ERROR message if one is detected.
 
@@ -7268,7 +7268,7 @@ The chunking behaves differently depending on the `--vfs-read-chunk-streams` par
 
 ### `--vfs-read-chunk-streams` == 0
 
-Zclone will start reading a chunk of size `--vfs-read-chunk-size`,
+zClone will start reading a chunk of size `--vfs-read-chunk-size`,
 and then double the size for each read. When `--vfs-read-chunk-size-limit` is
 specified, and greater than `--vfs-read-chunk-size`, the chunk size for each
 open file will get doubled only until the specified value is reached. If the
@@ -7286,7 +7286,7 @@ The chunks will not be buffered in memory.
 
 ### `--vfs-read-chunk-streams` > 0
 
-Zclone reads `--vfs-read-chunk-streams` chunks of size
+zClone reads `--vfs-read-chunk-streams` chunks of size
 `--vfs-read-chunk-size` concurrently. The size for each read will stay
 constant.
 
@@ -7968,8 +7968,8 @@ Mount the remote as file system on a mountpoint.
 
 ## Synopsis
 
-Zclone nfsmount allows Linux, FreeBSD, macOS and Windows to
-mount any of Zclone's cloud storage systems as a file system with FUSE.
+zClone nfsmount allows Linux, FreeBSD, macOS and Windows to
+mount any of zClone's cloud storage systems as a file system with FUSE.
 
 First set up your remote using `zclone config`. Check it works with `zclone ls`
 etc.
@@ -8268,7 +8268,7 @@ but consider lowering this limit if the server's system resource usage causes pr
 ### macFUSE Notes
 
 Install macFUSE or FUSE-T from an approved local package source before using
-this command. Zclone locates the macFUSE libraries without further intervention.
+this command. zClone locates the macFUSE libraries without further intervention.
 If the approved package is installed under `/opt/local`, the following addition
 steps are required.
 
@@ -8455,7 +8455,7 @@ Since mounting requires the `fusermount` or `fusermount3` program,
 zclone will use the fallback PATH of `/bin:/usr/bin` in this scenario.
 Please ensure that `fusermount`/`fusermount3` is present on this PATH.
 
-## Zclone as Unix mount helper
+## zClone as Unix mount helper
 
 The core Unix program `/bin/mount` normally takes the `-t FSTYPE` argument
 then runs the `/sbin/mount.FSTYPE` helper program passing it mount options
@@ -8509,7 +8509,7 @@ or use classic Automountd.
 Remember to provide explicit `config=...,cache-dir=...` as a workaround for
 mount units being run without `HOME`.
 
-Zclone in the mount helper mode will split `-o` argument(s) by comma, replace `_`
+zClone in the mount helper mode will split `-o` argument(s) by comma, replace `_`
 by `-` and prepend `--` to get the command-line flags. Options containing commas
 or spaces can be wrapped in single or double quotes. Any inner quotes inside outer
 quotes of the same type should be doubled.
@@ -8724,7 +8724,7 @@ When using this mode it is recommended that `--buffer-size` is not set
 too large and `--vfs-read-ahead` is set large if required.
 
 **IMPORTANT** not all file systems support sparse files. In particular
-FAT/exFAT do not. Zclone will perform very badly if the cache
+FAT/exFAT do not. zClone will perform very badly if the cache
 directory is on a filesystem which doesn't support sparse files and it
 will log an ERROR message if one is detected.
 
@@ -8780,7 +8780,7 @@ The chunking behaves differently depending on the `--vfs-read-chunk-streams` par
 
 ### `--vfs-read-chunk-streams` == 0
 
-Zclone will start reading a chunk of size `--vfs-read-chunk-size`,
+zClone will start reading a chunk of size `--vfs-read-chunk-size`,
 and then double the size for each read. When `--vfs-read-chunk-size-limit` is
 specified, and greater than `--vfs-read-chunk-size`, the chunk size for each
 open file will get doubled only until the specified value is reached. If the
@@ -8798,7 +8798,7 @@ The chunks will not be buffered in memory.
 
 ### `--vfs-read-chunk-streams` > 0
 
-Zclone reads `--vfs-read-chunk-streams` chunks of size
+zClone reads `--vfs-read-chunk-streams` chunks of size
 `--vfs-read-chunk-size` concurrently. The size for each read will stay
 constant.
 
@@ -9410,7 +9410,7 @@ headers. Use the format `Header-Name: value`.
 `--rc-baseurl` controls the URL prefix that zclone serves from.  By default
 zclone will serve from the root.  If you used `--rc-baseurl "/zclone"` then
 zclone would serve from a URL starting with "/zclone/".  This is
-useful if you wish to proxy zclone serve.  Zclone automatically
+useful if you wish to proxy zclone serve.  zClone automatically
 inserts leading and trailing "/" on `--rc-baseurl`, so `--rc-baseurl "zclone"`,
 `--rc-baseurl "/zclone"` and `--rc-baseurl "/zclone/"` are all treated
 identically.
@@ -9712,12 +9712,12 @@ this server in the LAN and play audio/video from it. VLC is also
 supported. Service discovery uses UDP multicast packets (SSDP) and
 will thus only work on LANs.
 
-Zclone will list all files present in the remote, without filtering
+zClone will list all files present in the remote, without filtering
 based on media formats or file extensions. Additionally, there is no
 media transcoding support. This means that some players might show
 files that they are not able to play back correctly.
 
-Zclone will add external subtitle files (.srt) to videos if they have the same
+zClone will add external subtitle files (.srt) to videos if they have the same
 filename as the video file itself (except the extension), either in the same
 directory as the video, or in a "Subs" subdirectory.
 
@@ -9928,7 +9928,7 @@ When using this mode it is recommended that `--buffer-size` is not set
 too large and `--vfs-read-ahead` is set large if required.
 
 **IMPORTANT** not all file systems support sparse files. In particular
-FAT/exFAT do not. Zclone will perform very badly if the cache
+FAT/exFAT do not. zClone will perform very badly if the cache
 directory is on a filesystem which doesn't support sparse files and it
 will log an ERROR message if one is detected.
 
@@ -9984,7 +9984,7 @@ The chunking behaves differently depending on the `--vfs-read-chunk-streams` par
 
 ### `--vfs-read-chunk-streams` == 0
 
-Zclone will start reading a chunk of size `--vfs-read-chunk-size`,
+zClone will start reading a chunk of size `--vfs-read-chunk-size`,
 and then double the size for each read. When `--vfs-read-chunk-size-limit` is
 specified, and greater than `--vfs-read-chunk-size`, the chunk size for each
 open file will get doubled only until the specified value is reached. If the
@@ -10002,7 +10002,7 @@ The chunks will not be buffered in memory.
 
 ### `--vfs-read-chunk-streams` > 0
 
-Zclone reads `--vfs-read-chunk-streams` chunks of size
+zClone reads `--vfs-read-chunk-streams` chunks of size
 `--vfs-read-chunk-size` concurrently. The size for each read will stay
 constant.
 
@@ -10605,7 +10605,7 @@ When using this mode it is recommended that `--buffer-size` is not set
 too large and `--vfs-read-ahead` is set large if required.
 
 **IMPORTANT** not all file systems support sparse files. In particular
-FAT/exFAT do not. Zclone will perform very badly if the cache
+FAT/exFAT do not. zClone will perform very badly if the cache
 directory is on a filesystem which doesn't support sparse files and it
 will log an ERROR message if one is detected.
 
@@ -10661,7 +10661,7 @@ The chunking behaves differently depending on the `--vfs-read-chunk-streams` par
 
 ### `--vfs-read-chunk-streams` == 0
 
-Zclone will start reading a chunk of size `--vfs-read-chunk-size`,
+zClone will start reading a chunk of size `--vfs-read-chunk-size`,
 and then double the size for each read. When `--vfs-read-chunk-size-limit` is
 specified, and greater than `--vfs-read-chunk-size`, the chunk size for each
 open file will get doubled only until the specified value is reached. If the
@@ -10679,7 +10679,7 @@ The chunks will not be buffered in memory.
 
 ### `--vfs-read-chunk-streams` > 0
 
-Zclone reads `--vfs-read-chunk-streams` chunks of size
+zClone reads `--vfs-read-chunk-streams` chunks of size
 `--vfs-read-chunk-size` concurrently. The size for each read will stay
 constant.
 
@@ -11235,7 +11235,7 @@ When using this mode it is recommended that `--buffer-size` is not set
 too large and `--vfs-read-ahead` is set large if required.
 
 **IMPORTANT** not all file systems support sparse files. In particular
-FAT/exFAT do not. Zclone will perform very badly if the cache
+FAT/exFAT do not. zClone will perform very badly if the cache
 directory is on a filesystem which doesn't support sparse files and it
 will log an ERROR message if one is detected.
 
@@ -11291,7 +11291,7 @@ The chunking behaves differently depending on the `--vfs-read-chunk-streams` par
 
 ### `--vfs-read-chunk-streams` == 0
 
-Zclone will start reading a chunk of size `--vfs-read-chunk-size`,
+zClone will start reading a chunk of size `--vfs-read-chunk-size`,
 and then double the size for each read. When `--vfs-read-chunk-size-limit` is
 specified, and greater than `--vfs-read-chunk-size`, the chunk size for each
 open file will get doubled only until the specified value is reached. If the
@@ -11309,7 +11309,7 @@ The chunks will not be buffered in memory.
 
 ### `--vfs-read-chunk-streams` > 0
 
-Zclone reads `--vfs-read-chunk-streams` chunks of size
+zClone reads `--vfs-read-chunk-streams` chunks of size
 `--vfs-read-chunk-size` concurrently. The size for each read will stay
 constant.
 
@@ -11767,7 +11767,7 @@ headers. Use the format `Header-Name: value`.
 `--baseurl` controls the URL prefix that zclone serves from.  By default
 zclone will serve from the root.  If you used `--baseurl "/zclone"` then
 zclone would serve from a URL starting with "/zclone/".  This is
-useful if you wish to proxy zclone serve.  Zclone automatically
+useful if you wish to proxy zclone serve.  zClone automatically
 inserts leading and trailing "/" on `--baseurl`, so `--baseurl "zclone"`,
 `--baseurl "/zclone"` and `--baseurl "/zclone/"` are all treated
 identically.
@@ -12083,7 +12083,7 @@ When using this mode it is recommended that `--buffer-size` is not set
 too large and `--vfs-read-ahead` is set large if required.
 
 **IMPORTANT** not all file systems support sparse files. In particular
-FAT/exFAT do not. Zclone will perform very badly if the cache
+FAT/exFAT do not. zClone will perform very badly if the cache
 directory is on a filesystem which doesn't support sparse files and it
 will log an ERROR message if one is detected.
 
@@ -12139,7 +12139,7 @@ The chunking behaves differently depending on the `--vfs-read-chunk-streams` par
 
 ### `--vfs-read-chunk-streams` == 0
 
-Zclone will start reading a chunk of size `--vfs-read-chunk-size`,
+zClone will start reading a chunk of size `--vfs-read-chunk-size`,
 and then double the size for each read. When `--vfs-read-chunk-size-limit` is
 specified, and greater than `--vfs-read-chunk-size`, the chunk size for each
 open file will get doubled only until the specified value is reached. If the
@@ -12157,7 +12157,7 @@ The chunks will not be buffered in memory.
 
 ### `--vfs-read-chunk-streams` > 0
 
-Zclone reads `--vfs-read-chunk-streams` chunks of size
+zClone reads `--vfs-read-chunk-streams` chunks of size
 `--vfs-read-chunk-size` concurrently. The size for each read will stay
 constant.
 
@@ -12616,7 +12616,7 @@ when needed. These are stored in memory. If the server is restarted
 the handle cache will be lost and connected NFS clients will get stale
 handle errors.
 
-`--nfs-cache-type disk` uses an on disk NFS handle cache. Zclone
+`--nfs-cache-type disk` uses an on disk NFS handle cache. zClone
 hashes the path of the object and stores it in a file named after the
 hash. These hashes are stored on disk the directory controlled by
 `--cache-dir` or the exact directory may be specified with
@@ -12625,7 +12625,7 @@ restarted at will without affecting the connected clients.
 
 `--nfs-cache-type symlink` is similar to `--nfs-cache-type disk` in
 that it uses an on disk cache, but the cache entries are held as
-symlinks. Zclone will use the handle of the underlying file as the NFS
+symlinks. zClone will use the handle of the underlying file as the NFS
 handle which improves performance. This sort of cache can't be backed
 up and restored as the underlying handles will change. This is Linux
 only. It requires running zclone as root or with `CAP_DAC_READ_SEARCH`.
@@ -12874,7 +12874,7 @@ When using this mode it is recommended that `--buffer-size` is not set
 too large and `--vfs-read-ahead` is set large if required.
 
 **IMPORTANT** not all file systems support sparse files. In particular
-FAT/exFAT do not. Zclone will perform very badly if the cache
+FAT/exFAT do not. zClone will perform very badly if the cache
 directory is on a filesystem which doesn't support sparse files and it
 will log an ERROR message if one is detected.
 
@@ -12930,7 +12930,7 @@ The chunking behaves differently depending on the `--vfs-read-chunk-streams` par
 
 ### `--vfs-read-chunk-streams` == 0
 
-Zclone will start reading a chunk of size `--vfs-read-chunk-size`,
+zClone will start reading a chunk of size `--vfs-read-chunk-size`,
 and then double the size for each read. When `--vfs-read-chunk-size-limit` is
 specified, and greater than `--vfs-read-chunk-size`, the chunk size for each
 open file will get doubled only until the specified value is reached. If the
@@ -12948,7 +12948,7 @@ The chunks will not be buffered in memory.
 
 ### `--vfs-read-chunk-streams` > 0
 
-Zclone reads `--vfs-read-chunk-streams` chunks of size
+zClone reads `--vfs-read-chunk-streams` chunks of size
 `--vfs-read-chunk-size` concurrently. The size for each read will stay
 constant.
 
@@ -13385,7 +13385,7 @@ headers. Use the format `Header-Name: value`.
 `--baseurl` controls the URL prefix that zclone serves from.  By default
 zclone will serve from the root.  If you used `--baseurl "/zclone"` then
 zclone would serve from a URL starting with "/zclone/".  This is
-useful if you wish to proxy zclone serve.  Zclone automatically
+useful if you wish to proxy zclone serve.  zClone automatically
 inserts leading and trailing "/" on `--baseurl`, so `--baseurl "zclone"`,
 `--baseurl "/zclone"` and `--baseurl "/zclone/"` are all treated
 identically.
@@ -13605,7 +13605,7 @@ is defined like this:
 ```ini
 [serves3]
 type = s3
-provider = Zclone
+provider = zClone
 endpoint = http://127.0.0.1:8080/
 access_key_id = ACCESS_KEY_ID
 secret_access_key = SECRET_ACCESS_KEY
@@ -13973,7 +13973,7 @@ headers. Use the format `Header-Name: value`.
 `--baseurl` controls the URL prefix that zclone serves from.  By default
 zclone will serve from the root.  If you used `--baseurl "/zclone"` then
 zclone would serve from a URL starting with "/zclone/".  This is
-useful if you wish to proxy zclone serve.  Zclone automatically
+useful if you wish to proxy zclone serve.  zClone automatically
 inserts leading and trailing "/" on `--baseurl`, so `--baseurl "zclone"`,
 `--baseurl "/zclone"` and `--baseurl "/zclone/"` are all treated
 identically.
@@ -14221,7 +14221,7 @@ When using this mode it is recommended that `--buffer-size` is not set
 too large and `--vfs-read-ahead` is set large if required.
 
 **IMPORTANT** not all file systems support sparse files. In particular
-FAT/exFAT do not. Zclone will perform very badly if the cache
+FAT/exFAT do not. zClone will perform very badly if the cache
 directory is on a filesystem which doesn't support sparse files and it
 will log an ERROR message if one is detected.
 
@@ -14277,7 +14277,7 @@ The chunking behaves differently depending on the `--vfs-read-chunk-streams` par
 
 ### `--vfs-read-chunk-streams` == 0
 
-Zclone will start reading a chunk of size `--vfs-read-chunk-size`,
+zClone will start reading a chunk of size `--vfs-read-chunk-size`,
 and then double the size for each read. When `--vfs-read-chunk-size-limit` is
 specified, and greater than `--vfs-read-chunk-size`, the chunk size for each
 open file will get doubled only until the specified value is reached. If the
@@ -14295,7 +14295,7 @@ The chunks will not be buffered in memory.
 
 ### `--vfs-read-chunk-streams` > 0
 
-Zclone reads `--vfs-read-chunk-streams` chunks of size
+zClone reads `--vfs-read-chunk-streams` chunks of size
 `--vfs-read-chunk-size` concurrently. The size for each read will stay
 constant.
 
@@ -14896,7 +14896,7 @@ When using this mode it is recommended that `--buffer-size` is not set
 too large and `--vfs-read-ahead` is set large if required.
 
 **IMPORTANT** not all file systems support sparse files. In particular
-FAT/exFAT do not. Zclone will perform very badly if the cache
+FAT/exFAT do not. zClone will perform very badly if the cache
 directory is on a filesystem which doesn't support sparse files and it
 will log an ERROR message if one is detected.
 
@@ -14952,7 +14952,7 @@ The chunking behaves differently depending on the `--vfs-read-chunk-streams` par
 
 ### `--vfs-read-chunk-streams` == 0
 
-Zclone will start reading a chunk of size `--vfs-read-chunk-size`,
+zClone will start reading a chunk of size `--vfs-read-chunk-size`,
 and then double the size for each read. When `--vfs-read-chunk-size-limit` is
 specified, and greater than `--vfs-read-chunk-size`, the chunk size for each
 open file will get doubled only until the specified value is reached. If the
@@ -14970,7 +14970,7 @@ The chunks will not be buffered in memory.
 
 ### `--vfs-read-chunk-streams` > 0
 
-Zclone reads `--vfs-read-chunk-streams` chunks of size
+zClone reads `--vfs-read-chunk-streams` chunks of size
 `--vfs-read-chunk-size` concurrently. The size for each read will stay
 constant.
 
@@ -15505,7 +15505,7 @@ headers. Use the format `Header-Name: value`.
 `--baseurl` controls the URL prefix that zclone serves from.  By default
 zclone will serve from the root.  If you used `--baseurl "/zclone"` then
 zclone would serve from a URL starting with "/zclone/".  This is
-useful if you wish to proxy zclone serve.  Zclone automatically
+useful if you wish to proxy zclone serve.  zClone automatically
 inserts leading and trailing "/" on `--baseurl`, so `--baseurl "zclone"`,
 `--baseurl "/zclone"` and `--baseurl "/zclone/"` are all treated
 identically.
@@ -15821,7 +15821,7 @@ When using this mode it is recommended that `--buffer-size` is not set
 too large and `--vfs-read-ahead` is set large if required.
 
 **IMPORTANT** not all file systems support sparse files. In particular
-FAT/exFAT do not. Zclone will perform very badly if the cache
+FAT/exFAT do not. zClone will perform very badly if the cache
 directory is on a filesystem which doesn't support sparse files and it
 will log an ERROR message if one is detected.
 
@@ -15877,7 +15877,7 @@ The chunking behaves differently depending on the `--vfs-read-chunk-streams` par
 
 ### `--vfs-read-chunk-streams` == 0
 
-Zclone will start reading a chunk of size `--vfs-read-chunk-size`,
+zClone will start reading a chunk of size `--vfs-read-chunk-size`,
 and then double the size for each read. When `--vfs-read-chunk-size-limit` is
 specified, and greater than `--vfs-read-chunk-size`, the chunk size for each
 open file will get doubled only until the specified value is reached. If the
@@ -15895,7 +15895,7 @@ The chunks will not be buffered in memory.
 
 ### `--vfs-read-chunk-streams` > 0
 
-Zclone reads `--vfs-read-chunk-streams` chunks of size
+zClone reads `--vfs-read-chunk-streams` chunks of size
 `--vfs-read-chunk-size` concurrently. The size for each read will stay
 constant.
 
@@ -16381,7 +16381,7 @@ Run a test command
 
 ## Synopsis
 
-Zclone test is used to run test commands.
+zClone test is used to run test commands.
 
 Select which test command you want with the subcommand, eg
 
@@ -17162,7 +17162,7 @@ the console traditionally uses a non-Unicode character set - defined
 by the so-called "code page".
 
 Do not use single character names on Windows as it creates ambiguity with Windows
-drives' names, e.g.: remote called `C` is indistinguishable from `C` drive. Zclone
+drives' names, e.g.: remote called `C` is indistinguishable from `C` drive. zClone
 will always assume that single letter name refers to a drive.
 
 ## Adding global configuration to a remote {#globalconfig}
@@ -17367,7 +17367,7 @@ Metadata is data about a file (or directory) which isn't the contents
 of the file (or directory). Normally zclone only preserves the
 modification time and the content (MIME) type where possible.
 
-Zclone supports preserving all the available metadata on files and
+zClone supports preserving all the available metadata on files and
 directories when using the `--metadata` or `-M` flag.
 
 Exactly what metadata is supported and what that support means depends
@@ -17378,7 +17378,7 @@ in their docs and are listed in the [features table](//overview/#features)
 Some backends don't support metadata, some only support metadata on
 files and some support metadata on both files and directories.
 
-Zclone only supports a one-time sync of metadata. This means that
+zClone only supports a one-time sync of metadata. This means that
 metadata will be synced from the source object to the destination
 object only when the source object has changed and needs to be
 re-uploaded. If the metadata subsequently changes on the source object
@@ -17398,7 +17398,7 @@ The [--metadata-mapper](#metadata-mapper) flag can be used to pass the
 name of a program in which can transform metadata when it is being
 copied from source to destination.
 
-Zclone supports `--metadata-set` and `--metadata-mapper` when doing
+zClone supports `--metadata-set` and `--metadata-mapper` when doing
 server-side `Move` and server-side `Copy`, but not when doing server
 side `DirMove` (renaming a directory) as this would involve recursing
 into the directory. Note that you can disable `DirMove` with
@@ -17429,7 +17429,7 @@ back to s3, the Content-Type will be set correctly.
 
 ### Metadata framework
 
-Zclone implements a metadata framework which can read metadata from an
+zClone implements a metadata framework which can read metadata from an
 object and write it to the object when (and only when) it is being
 uploaded.
 
@@ -17499,7 +17499,7 @@ way of reading those already.
 
 ## Options
 
-Zclone has a number of options to control its behaviour. These are
+zClone has a number of options to control its behaviour. These are
 documented below, and in the [flags](/flags) page.
 
 Options that take parameters can have the values passed in two ways,
@@ -17890,7 +17890,7 @@ backwards compatibility, but in most cases it is as simple as:
 - `%APPDATA%/zclone/zclone.conf` on Windows
 - `~/.config/zclone/zclone.conf` on other
 
-The complete logic is as follows: Zclone will look for an existing
+The complete logic is as follows: zClone will look for an existing
 configuration file in any of the following locations, in priority order:
 
 1. `zclone.conf` (in program directory, where zclone executable is)
@@ -17968,7 +17968,7 @@ editing the configuration file.
 
 The configuration file will typically contain login information, and
 should therefore have restricted permissions so that only the current user
-can read it. Zclone tries to ensure this when it writes the file.
+can read it. zClone tries to ensure this when it writes the file.
 You may also choose to [encrypt](#configuration-encryption) the file.
 
 When token-based authentication are used, the configuration file
@@ -18185,7 +18185,7 @@ supported by `--header-upload` and `--header-download` so may be used
 as a workaround for those with care.
 
 ```console
-zclone ls remote:test --header "X-Zclone: Foo" --header "X-LetMeIn: Yes"
+zclone ls remote:test --header "X-zClone: Foo" --header "X-LetMeIn: Yes"
 ```
 
 ### --header-download stringArray
@@ -18217,18 +18217,18 @@ currently supported backends.
 Use this option to set an HTTP proxy for all HTTP based services to
 use.
 
-Zclone also supports the standard HTTP proxy environment variables
+zClone also supports the standard HTTP proxy environment variables
 which it will pick up automatically. The is the way the HTTP proxy
 will normally be set but this flag can be used to override it.
 
 ### --human-readable
 
-Zclone commands output values for sizes (e.g. number of bytes) and
+zClone commands output values for sizes (e.g. number of bytes) and
 counts (e.g. number of files) either as *raw* numbers, or
 in *human-readable* format.
 
 In human-readable format the values are scaled to larger units, indicated with
-a suffix shown after the value, and rounded to three decimals. Zclone consistently
+a suffix shown after the value, and rounded to three decimals. zClone consistently
 uses binary units (powers of 2) for sizes and decimal units (powers of 10) for counts.
 The unit prefix for size is according to IEC standard notation, e.g. `Ki` for kibi.
 Used with byte unit, `1 KiB` means 1024 Byte. In list type of output, only the
@@ -18559,7 +18559,7 @@ and `Error`. If enabled we map zclone levels like this.
 - `Warning` ←  `WARNING` (note that this level is defined but not currently used).
 - `Info` ← `NOTICE`, `INFO` and `DEBUG`.
 
-Zclone will declare its log source as "zclone" if it is has enough
+zClone will declare its log source as "zclone" if it is has enough
 permissions to create the registry key needed. If not then logs will
 appear as "Application". You can run `zclone version --windows-event-log-level DEBUG`
 once as administrator to create the registry key in advance.
@@ -18724,7 +18724,7 @@ operation in progress.
 
 ### --max-delete-size SizeSuffix
 
-Zclone will stop deleting files when the total size of deletions has
+zClone will stop deleting files when the total size of deletions has
 reached the size specified. It defaults to off.
 
 If that limit is exceeded then a fatal error will be generated and
@@ -18750,24 +18750,24 @@ what will happen.
 
 ### --max-duration Duration
 
-Zclone will stop transferring when it has run for the
+zClone will stop transferring when it has run for the
 duration specified.
 Defaults to off.
 
 When the limit is reached all transfers will stop immediately.
 Use `--cutoff-mode` to modify this behaviour.
 
-Zclone will exit with exit code 10 if the duration limit is reached.
+zClone will exit with exit code 10 if the duration limit is reached.
 
 ### --max-transfer SizeSuffix
 
-Zclone will stop transferring when it has reached the size specified.
+zClone will stop transferring when it has reached the size specified.
 Defaults to off.
 
 When the limit is reached all transfers will stop immediately.
 Use `--cutoff-mode` to modify this behaviour.
 
-Zclone will exit with exit code 8 if the transfer limit is reached.
+zClone will exit with exit code 8 if the transfer limit is reached.
 
 ### --cutoff-mode HARD|SOFT|CAUTIOUS
 
@@ -19147,7 +19147,7 @@ means that it may transfer some files out of the order specified if
 - there are no files in the backlog or the source has not been fully scanned yet
 - there are more than [--max-backlog](#max-backlog-int) files in the backlog
 
-Zclone will do its best to transfer the best file it has so in
+zClone will do its best to transfer the best file it has so in
 practice this should not cause a problem.  Think of `--order-by` as
 being more of a best efforts flag rather than a perfect ordering.
 
@@ -19583,7 +19583,7 @@ it is fast for operations involving processing of the list results.
 
 Some backends provide the support for an alternative strategy, where all
 files beneath a directory can be listed in one (or a small number) of
-transactions. Zclone supports this alternative strategy through an optional
+transactions. zClone supports this alternative strategy through an optional
 backend feature called [`ListR`](//overview/#listr). You can see in the storage
 system overview documentation's [optional features](//overview/#optional-features)
 section which backends it is enabled for (these tend to be the bucket-based
@@ -19601,12 +19601,12 @@ prefer `List`, e.g. for `sync` and `copy`, where it needs to keep the listed
 files in memory, and is performing operations on them where parallelization
 may be a huge advantage.
 
-Zclone is not able to take all relevant parameters into account for deciding
+zClone is not able to take all relevant parameters into account for deciding
 the best strategy, and therefore allows you to influence the choice in two ways:
 You can stop zclone from using `ListR` by disabling the feature, using the
 [--disable](#disable-string) option (`--disable ListR`), or you can
 allow zclone to use `ListR` where it would normally choose not to do so due to
-higher memory usage, using the `--fast-list` option. Zclone should always
+higher memory usage, using the `--fast-list` option. zClone should always
 produce identical results either way. Using `--disable ListR` or `--fast-list`
 on a remote which doesn't support `ListR` does nothing, zclone will just ignore
 it.
@@ -19720,7 +19720,7 @@ Prints the version number
 
 The outgoing SSL/TLS connections zclone makes can be controlled with
 these options.  For example this can be very useful with the HTTP or
-WebDAV backends. Zclone HTTP servers have their own set of
+WebDAV backends. zClone HTTP servers have their own set of
 configuration for SSL/TLS which you can find in their documentation.
 
 ### --ca-cert stringArray
@@ -20103,20 +20103,20 @@ If you use the `--log-file` option, zclone will redirect `Error`,
 If you use the `--syslog` flag then zclone will log to syslog and the
 `--syslog-facility` control which facility it uses.
 
-Zclone prefixes all log messages with their level in capitals, e.g. INFO
+zClone prefixes all log messages with their level in capitals, e.g. INFO
 which makes it easy to grep the log file for different kinds of
 information.
 
 ## Metrics
 
-Zclone can publish metrics in the OpenMetrics/Prometheus format.
+zClone can publish metrics in the OpenMetrics/Prometheus format.
 
 To enable the metrics endpoint, use the `--metrics-addr` flag. Metrics can
 also be published on the `--rc-addr` port if the `--rc` flag and
 `--rc-enable-metrics` flags are supplied or if using zclone rcd
 `--rc-enable-metrics`
 
-Zclone provides extensive configuration options for the metrics HTTP endpoint.
+zClone provides extensive configuration options for the metrics HTTP endpoint.
 These settings are grouped under the Metrics section and have a prefix
 `--metrics-*`.
 
@@ -20162,7 +20162,7 @@ it will log a high priority message if the retry was successful.
 
 ## Environment variables
 
-Zclone can be configured entirely using environment variables.  These
+zClone can be configured entirely using environment variables.  These
 can be used to set defaults for options or config file entries.
 
 ### Options
@@ -20378,7 +20378,7 @@ y/e/d>
 
 ## Configuring by copying the config file
 
-Zclone stores all of its configuration in a single file. This can easily be
+zClone stores all of its configuration in a single file. This can easily be
 copied to configure a remote zclone (although some backends do not support
 reusing the same configuration, consult your backend documentation to be
 sure).
@@ -20445,12 +20445,12 @@ lists; file age and size, or presence of a file in a directory. Bucket
 based remotes without the concept of directory apply filters to object
 key, age and size in an analogous way.
 
-Zclone `purge` does not obey filters.
+zClone `purge` does not obey filters.
 
 To test filters without risk of damage to data, apply them to `zclone
 ls`, or with the `--dry-run` and `-vv` flags.
 
-Zclone filter patterns can only be used in filter command line options, not
+zClone filter patterns can only be used in filter command line options, not
 in the specification of a remote.
 
 E.g. `zclone copy "remote:dir*.jpg" /path/to/dir` does not have a filter effect.
@@ -20467,7 +20467,7 @@ you expect. Instead use a `--filter...` flag.
 Here is a formal definition of the pattern syntax,
 [examples](#examples) are below.
 
-Zclone matching rules follow a glob style:
+zClone matching rules follow a glob style:
 
 ```text
 *         matches any sequence of non-separator (/) characters
@@ -20579,7 +20579,7 @@ uses) to make things easy for users. However this does not provide
 absolute control over the matching, so for advanced users zclone also
 provides a regular expression syntax.
 
-Zclone generally accepts Perl-style regular expressions, the exact syntax
+zClone generally accepts Perl-style regular expressions, the exact syntax
 is defined in the [Go regular expression reference](https://golang.org/pkg/regexp/syntax/).
 Regular expressions should be enclosed in `{{` `}}`. They will match only the
 last path segment if the glob doesn't start with `/` or the whole path
@@ -20657,7 +20657,7 @@ them into regular expressions.
 
 ## How filter rules are applied to files {#how-filter-rules-work}
 
-Zclone path/file name filters are made up of one or more of the following flags:
+zClone path/file name filters are made up of one or more of the following flags:
 
 - `--include`
 - `--include-from`
@@ -20668,7 +20668,7 @@ Zclone path/file name filters are made up of one or more of the following flags:
 
 There can be more than one instance of individual flags.
 
-Zclone internally uses a combined list of all the include and exclude
+zClone internally uses a combined list of all the include and exclude
 rules. The order in which rules are processed can influence the result
 of the filter.
 
@@ -20715,7 +20715,7 @@ classes. [Go regular expression reference](https://golang.org/pkg/regexp/syntax/
 
 ### How filter rules are applied to directories {#directory_filter}
 
-Zclone commands are applied to path/file names not
+zClone commands are applied to path/file names not
 directories. The entire contents of a directory can be matched
 to a filter by the pattern `directory/*` or recursively by
 `directory/**`.
@@ -20724,7 +20724,7 @@ Directory filter rules are defined with a closing `/` separator.
 
 E.g. `/directory/subdirectory/` is an zclone directory filter rule.
 
-Zclone commands can use directory filter rules to determine whether they
+zClone commands can use directory filter rules to determine whether they
 recurse into subdirectories. This potentially optimises access to a remote
 by avoiding listing unnecessary directories. Whether optimisation is
 desirable depends on the specific filter rules and source remote content.
@@ -20746,7 +20746,7 @@ are not.
 
 - Whenever the `--disable ListR` flag is applied to an zclone command.
 
-Zclone commands imply directory filter rules from path/file filter
+zClone commands imply directory filter rules from path/file filter
 rules. To view the directory filter rules zclone has implied for a
 command specify the `--dump filters` flag.
 
@@ -20756,7 +20756,7 @@ E.g. for an include rule
 /a/*.jpg
 ```
 
-Zclone implies the directory include rule
+zClone implies the directory include rule
 
 ```text
 /a/
@@ -20801,7 +20801,7 @@ E.g. for an include rule
 {dir1/**,dir2/**}
 ```
 
-Zclone will match files below directories `dir1` or `dir2` only,
+zClone will match files below directories `dir1` or `dir2` only,
 but will not be able to use this filter to exclude a directory `dir3`
 from being traversed.
 
@@ -21037,7 +21037,7 @@ Only file 42.doc is listed. Prior rules are cleared by the `!`.
 ### `--files-from` - Read list of source-file names
 
 Adds path/files to an zclone command from a list in a named file.
-Zclone processes the path/file names in the order of the list, and
+zClone processes the path/file names in the order of the list, and
 no others.
 
 Other filter flags (`--include`, `--include-from`, `--exclude`,
@@ -21050,7 +21050,7 @@ with `#` or `;` are ignored.
 
 `--files-from` followed by `-` reads the list of files from standard input.
 
-Zclone commands with a `--files-from` flag traverse the remote,
+zClone commands with a `--files-from` flag traverse the remote,
 treating the names in `--files-from` as a set of filters.
 
 If the `--no-traverse` and `--files-from` flags are used together
@@ -21059,7 +21059,7 @@ each path/file named in the file individually. For each path/file name, that
 requires typically 1 API call. This can be efficient for a short `--files-from`
 list and a remote containing many files.
 
-Zclone commands do not error if any names in the `--files-from` file are
+zClone commands do not error if any names in the `--files-from` file are
 missing from the source remote.
 
 The `--files-from` flag can be repeated in a single zclone command to
@@ -21175,7 +21175,7 @@ E.g. `--include "zaphod.txt"` does not match a file `Zaphod.txt`. With
 
 ## Quoting shell metacharacters
 
-Zclone commands with filter patterns containing shell metacharacters may
+zClone commands with filter patterns containing shell metacharacters may
 not as work as expected in your shell and may require quoting.
 
 E.g. linux, OSX (`*` metacharacter)
@@ -21278,14 +21278,14 @@ This will stay constant across retries.
 
 #### How It Works
 
-- Zclone takes each file's full path, normalizes it to lowercase, and applies
+- zClone takes each file's full path, normalizes it to lowercase, and applies
   Unicode normalization.
 - It then hashes the normalized path into a 64 bit number.
 - The hash result is reduced modulo `N` to assign the file to a partition.
 - If the calculated partition does not match `K` the file is excluded.
 - Other filters may apply if the file is not excluded.
 
-**Important:** Zclone will traverse all directories to apply the filter.
+**Important:** zClone will traverse all directories to apply the filter.
 
 #### Usage Notes
 
@@ -21465,7 +21465,7 @@ which will show more logging output from the rc server.
 The bundled local control page submits RC API commands. Enter the RC username
 and password locally in the page, choose an RC command such as `core/version`,
 and run it. Credentials are used only for that browser request: they are not
-written to the URL, persistent browser storage, or Zclone logs.
+written to the URL, persistent browser storage, or zClone logs.
 
 The bundled page is intentionally local and minimal. It does not check for
 updates, collect telemetry, fetch external assets, or contact a central web
@@ -21475,10 +21475,10 @@ service.
 
 When you run `zclone gui` this is what happens
 
-- Zclone starts the remote control API ("rc").
-- Zclone starts a second server to serve the Web GUI.
+- zClone starts the remote control API ("rc").
+- zClone starts a second server to serve the Web GUI.
 - Authentication requires `--pass` unless `--no-auth` is explicitly set.
-- If a username is not specified, Zclone uses `gui`.
+- If a username is not specified, zClone uses `gui`.
 - Unless `--no-open-browser` is passed, a browser window will open.
 - The URL contains no credentials.
 
@@ -21511,7 +21511,7 @@ A few good measures:
       --user string            User name for RC authentication
 ```
 
-The GUI bundle ships as a compressed zip embedded in the Zclone binary and is
+The GUI bundle ships as a compressed zip embedded in the zClone binary and is
 served from the zip at runtime.
 
 # Remote controlling zclone with its API
@@ -21560,7 +21560,7 @@ Consequently:
   [`--rc-no-auth`](#--rc-no-auth).
 - **Use authentication and TLS** (`--rc-user`/`--rc-pass` or `--rc-htpasswd`,
   plus `--rc-cert`/`--rc-key`) whenever the port is reachable by anyone you do
-  not fully trust. Zclone defaults to TLS 1.2 when TLS is enabled.
+  not fully trust. zClone defaults to TLS 1.2 when TLS is enabled.
 
 ## Supported parameters
 
@@ -21715,7 +21715,7 @@ User-specified template.
 
 ## Accessing the remote control via the zclone rc command {#api-rc}
 
-Zclone itself implements the remote control protocol in its `zclone
+zClone itself implements the remote control protocol in its `zclone
 rc` command.
 
 You can use it like this:
@@ -22973,7 +22973,7 @@ Eg
 ### mount/mount: Create a new mount point {#mount-mount}
 
 zclone allows Linux, FreeBSD, macOS and Windows to mount any of
-Zclone's cloud storage systems as a file system with FUSE.
+zClone's cloud storage systems as a file system with FUSE.
 
 If no mountType is provided, the priority is given as follows: 1. mount 2.cmount 3.mount2
 
@@ -23035,7 +23035,7 @@ Eg
 ### mount/unmount: Unmount selected active mount {#mount-unmount}
 
 zclone allows Linux, FreeBSD, macOS and Windows to
-mount any of Zclone's cloud storage systems as a file system with
+mount any of zClone's cloud storage systems as a file system with
 FUSE.
 
 This takes the following parameters:
@@ -23049,7 +23049,7 @@ Example:
 ### mount/unmountall: Unmount all active mounts {#mount-unmountall}
 
 zclone allows Linux, FreeBSD, macOS and Windows to
-mount any of Zclone's cloud storage systems as a file system with
+mount any of zClone's cloud storage systems as a file system with
 FUSE.
 
 This takes no parameters and returns error if unmount does not succeed.
@@ -24025,7 +24025,7 @@ must be supplied.
 
 ## Accessing the remote control via HTTP {#api-http}
 
-Zclone implements a simple HTTP based protocol.
+zClone implements a simple HTTP based protocol.
 
 Each endpoint takes an JSON object and returns a JSON object or an
 error.  The JSON objects are essentially a map of string names to
@@ -24258,7 +24258,7 @@ The profiling hook is [zero overhead unless it is used](https://stackoverflow.co
 
 # Overview of cloud storage systems
 
-Each cloud storage system is slightly different.  Zclone attempts to
+Each cloud storage system is slightly different.  zClone attempts to
 provide a unified interface to them, but some underlying differences
 show through.
 
@@ -24391,7 +24391,7 @@ punctuation marks that are used.
 
 On Windows, the characters `:`, `*` and `?` are examples of restricted
 characters. If these are used in filenames on a remote that supports it,
-Zclone will transparently convert them to their fullwidth Unicode
+zClone will transparently convert them to their fullwidth Unicode
 variants `＊`, `？` and `：` when downloading to Windows, and back again
 when uploading. This way files with names that are not allowed on Windows
 can still be stored.
@@ -24414,7 +24414,7 @@ to `Test：1.jpg`. The original filename is not legal on Windows, due to
 the `:`, and zclone therefore renames it to make the copy possible.
 That is all good. However, this can also lead to an issue: If you already
 had a *different* file named `Test：1.jpg` on Windows, and then use zclone
-to copy either way. Zclone will then treat the file originally named
+to copy either way. zClone will then treat the file originally named
 `Test:1.jpg` on Google Drive and the file originally named `Test：1.jpg`
 on Windows as the same file, and replace the contents from one with the other.
 
@@ -24593,7 +24593,7 @@ that the file gets renamed to `Test:1.jpg`.
 
 To avoid this you can change the set of characters zclone should convert
 for the local filesystem, using command-line argument `--local-encoding`.
-Zclone's default behavior on Windows corresponds to
+zClone's default behavior on Windows corresponds to
 
 ```text
 --local-encoding "Slash,LtGt,DoubleQuote,Colon,Question,Asterisk,Pipe,BackSlash,Ctl,RightSpace,RightPeriod,InvalidUtf8,Dot"
@@ -24731,7 +24731,7 @@ on the particular cloud provider.
 
 ### About
 
-Zclone `about` prints quota information for a remote. Typical output
+zClone `about` prints quota information for a remote. Typical output
 includes bytes used, free, quota and in trash.
 
 If a remote lacks about capability `zclone about remote:`returns
@@ -24750,7 +24750,7 @@ The remote supports empty directories. See [Limitations](//bugs/#limitations)
 
 # Tiers
 
-Zclone backends are divided into tiers to give users an idea of the stability of each backend.
+zClone backends are divided into tiers to give users an idea of the stability of each backend.
 
 | Tier   | Label         | Intended meaning |
 |--------|---------------|------------------|
@@ -25409,7 +25409,7 @@ Backend-only flags (these can be set in the config file also).
       --filelu-chunk-size SizeSuffix                        Chunk size to use for uploading. Used for multipart uploads (default 64Mi)
       --filelu-description string                           Description of the remote
       --filelu-encoding Encoding                            The encoding for the backend (default Slash,LtGt,DoubleQuote,SingleQuote,BackQuote,Dollar,Colon,Question,Asterisk,Pipe,Hash,Percent,BackSlash,CrLf,Del,Ctl,LeftSpace,LeftPeriod,LeftTilde,LeftCrLfHtVt,RightSpace,RightPeriod,RightCrLfHtVt,InvalidUtf8,Dot,SquareBracket,Semicolon,Exclamation)
-      --filelu-key string                                   Your FileLu Zclone key from My Account
+      --filelu-key string                                   Your FileLu zClone key from My Account
       --filelu-upload-cutoff SizeSuffix                     Cutoff for switching to chunked upload. Any files larger than this will be uploaded in chunks of chunk_size (default 500Mi)
       --filen-api-key string                                API Key for your Filen account (obscured)
       --filen-auth-version string                           Authentication Version (internal use only)
@@ -26087,7 +26087,7 @@ volumes shared across containers and hosts. Unlike local volumes, your
 data will *not* be deleted when such volume is removed. Plugins can run
 managed by the docker daemon, as a native system service
 (under systemd, *sysv* or *upstart*) or as a standalone executable.
-Zclone can run as docker volume plugin in all these modes.
+zClone can run as docker volume plugin in all these modes.
 It interacts with the local docker daemon
 via [plugin API](https://docs.docker.com/engine/extend/plugin_api/) and
 handles mounting of remote file systems into docker containers so it must
@@ -26252,7 +26252,7 @@ docker volume inspect vol1
 
 ## Volume Configuration
 
-Zclone flags and volume options are set via the `-o` flag to the
+zClone flags and volume options are set via the `-o` flag to the
 `docker volume create` command. They include backend-specific parameters
 as well as mount and *VFS* options. Also there are a few
 special `-o` options:
@@ -26388,7 +26388,7 @@ We maintain the
 [docker-volume-zclone](https://hub.docker.com/p/zclone/docker-volume-zclone/)
 plugin image on [Docker Hub](https://hub.docker.com).
 
-Zclone volume plugin requires **Docker Engine >= 19.03.15**
+zClone volume plugin requires **Docker Engine >= 19.03.15**
 
 The plugin requires presence of two directories on the host before it can
 be installed. Note that plugin will **not** create them automatically.
@@ -26670,7 +26670,7 @@ or swarm services that use it and stop them first.
 Make sure you have read and understood the entire
 [manual](//bisync) (especially the [Limitations](#limitations)
 section) before using, or data loss can result. Questions can be asked in the
-[Zclone Forum](/).
+[zClone Forum](/).
 
 ## Getting started {#getting-started}
 
@@ -28088,7 +28088,7 @@ copied to Path1 then the threatened deletes on Path2 may be disregarded.
 
 ### Retries
 
-Zclone has built-in retries. If you run with `--verbose` you'll see
+zClone has built-in retries. If you run with `--verbose` you'll see
 error and retry messages such as shown below. This is usually not a bug.
 If at the end of the run, you see `Bisync successful` and not
 `Bisync critical error` or `Bisync aborted` then the run was successful,
@@ -28096,7 +28096,7 @@ and you can ignore the error messages.
 
 The following run shows an intermittent fail. Lines *5* and *6* are
 low-level messages. Line *6* is a bubbled-up *warning* message, conveying
-the error. Zclone normally retries failing commands, so there may be
+the error. zClone normally retries failing commands, so there may be
 numerous such messages in the log.
 
 Since there are no final error/warning messages on line *7*, zclone has
@@ -28192,7 +28192,7 @@ To ignore Google Docs entirely, use
 
 ### Cron {#cron}
 
-Zclone does not yet have a built-in capability to monitor the local file
+zClone does not yet have a built-in capability to monitor the local file
 system for changes and must be blindly run periodically.
 On Windows this can be done using a *Task Scheduler*,
 on Linux you can use *Cron* which is described below.
@@ -29085,7 +29085,7 @@ The S3 backend can be used with a number of different providers:
 - Qiniu Cloud Object Storage (Kodo)
 - Rabata Cloud Storage
 - RackCorp Object Storage
-- Zclone Serve S3
+- zClone Serve S3
 - Scaleway
 - Scality (RING / ARTESCA)
 - Seagate Lyve Cloud
@@ -29443,7 +29443,7 @@ upload.
 
 #### Avoiding GET requests to read directory listings
 
-Zclone's default directory traversal is to process each directory
+zClone's default directory traversal is to process each directory
 individually.  This takes one API call per directory.  Using the
 `--fast-list` flag will read all info about the objects into
 memory first using a smaller number of API calls (one per 1000
@@ -29506,7 +29506,7 @@ API requests zclone makes.
 You can increase the rate of API requests to S3 by increasing the parallelism
 using `--transfers` and `--checkers` options.
 
-Zclone uses a very conservative defaults for these settings, as not all
+zClone uses a very conservative defaults for these settings, as not all
 providers support high rates of requests. Depending on your provider, you can
 increase significantly the number of transfers and checkers.
 
@@ -29523,7 +29523,7 @@ your setup.
 
 ### Data integrity
 
-Zclone does its best to verify every part of an upload or download to
+zClone does its best to verify every part of an upload or download to
 the s3 provider using various hashes.
 
 Every HTTP transaction to/from the provider has a
@@ -29536,11 +29536,11 @@ and additional error protection.
 
 #### Single part uploads
 
-- Zclone uploads single part uploads with a `Content-Md5` using the
+- zClone uploads single part uploads with a `Content-Md5` using the
   MD5 hash read from the source. The provider checks this is correct
   on receipt of the data.
 
-- Zclone then does a HEAD request (disable with `--s3-no-head`) to
+- zClone then does a HEAD request (disable with `--s3-no-head`) to
   read the `ETag` back which is the MD5 of the file and checks that with
   what it sent.
 
@@ -29567,7 +29567,7 @@ the upload by sending:
 The provider checks the MD5 for all the parts it has received against
 what zclone sends and if it is good it returns OK.
 
-Zclone then does a HEAD request (disable with `--s3-no-head`) and
+zClone then does a HEAD request (disable with `--s3-no-head`) and
 checks the ETag is what it expects (in this case it should be the MD5
 sum of all the MD5 sums of all the parts with the number of parts on
 the end).
@@ -29579,14 +29579,14 @@ known in order to calculate it.
 
 #### Downloads
 
-Zclone checks the MD5 hash of the data downloaded against either the
+zClone checks the MD5 hash of the data downloaded against either the
 ETag or the `X-Amz-Meta-Md5chksum` metadata (if present) which zclone
 uploads with multipart uploads.
 
 #### Further checking
 
 At each stage zclone and the provider are sending and checking hashes of
-**everything**. Zclone deliberately HEADs each object after upload to
+**everything**. zClone deliberately HEADs each object after upload to
 check it arrived safely for extra security. (You can disable this with
 `--s3-no-head`).
 
@@ -29822,7 +29822,7 @@ To use assume role, configure the following parameters:
   This is typically used when the role is accessed by a third party.
 
 The assume role feature works with both direct credentials (`env_auth = false`) and environment-based
-authentication (`env_auth = true`). Zclone will first authenticate using the base credentials, then
+authentication (`env_auth = true`). zClone will first authenticate using the base credentials, then
 use those credentials to assume the specified role.
 
 Example configuration for cross-account access:
@@ -29956,13 +29956,13 @@ According to AWS's [documentation on S3 Object Lock](https://docs.aws.amazon.com
 > If you configure a default retention period on a bucket, requests to upload
 objects in such a bucket must include the Content-MD5 header.
 
-Zclone automatically computes and includes the Content-MD5 header when
+zClone automatically computes and includes the Content-MD5 header when
 uploading objects with Object Lock parameters set. No special
 configuration is needed.
 
 #### Setting Object Lock retention
 
-Zclone supports setting Object Lock retention on uploaded objects with
+zClone supports setting Object Lock retention on uploaded objects with
 the following options:
 
 - `--s3-object-lock-mode` - Set the Object Lock mode (GOVERNANCE or COMPLIANCE)
@@ -30005,7 +30005,7 @@ mode from COMPLIANCE to GOVERNANCE while preserving the original retention date:
 <!-- autogenerated options start - DO NOT EDIT - instead edit fs.RegInfo in backend/s3/s3.go and run make backenddocs to verify --> <!-- markdownlint-disable-line line-length -->
 ### Standard options
 
-Here are the Standard options specific to s3 (Amazon S3 Compliant Storage Providers including AWS, Alibaba, ArvanCloud, BizflyCloud, Ceph, ChinaMobile, Cloudflare, Cubbit, DigitalOcean, Dreamhost, Exaba, Fastly, FileLu, FlashBlade, GCS, HCP, Hetzner, HuaweiOBS, IBMCOS, IDrive, ImpossibleCloud, Intercolo, IONOS, Leviia, Liara, Linode, LyveCloud, Magalu, Mega, Minio, Netease, Outscale, OVHcloud, Petabox, Qiniu, Rabata, RackCorp, Scaleway, Scality, SeaweedFS, Selectel, Servercore, SpectraLogic, Storj, Synology, TencentCOS, US3, Wasabi, Zadara, Zata, Zclone, ZeroServices, Other).
+Here are the Standard options specific to s3 (Amazon S3 Compliant Storage Providers including AWS, Alibaba, ArvanCloud, BizflyCloud, Ceph, ChinaMobile, Cloudflare, Cubbit, DigitalOcean, Dreamhost, Exaba, Fastly, FileLu, FlashBlade, GCS, HCP, Hetzner, HuaweiOBS, IBMCOS, IDrive, ImpossibleCloud, Intercolo, IONOS, Leviia, Liara, Linode, LyveCloud, Magalu, Mega, Minio, Netease, Outscale, OVHcloud, Petabox, Qiniu, Rabata, RackCorp, Scaleway, Scality, SeaweedFS, Selectel, Servercore, SpectraLogic, Storj, Synology, TencentCOS, US3, Wasabi, Zadara, Zata, zClone, ZeroServices, Other).
 
 #### --s3-provider
 
@@ -30118,8 +30118,8 @@ Properties:
     - Zadara Object Storage
   - "Zata"
     - Zata (S3 compatible Gateway)
-  - "Zclone"
-    - Zclone S3 Server
+  - "zClone"
+    - zClone S3 Server
   - "ZeroServices"
     - Zero Services GmbH (ZERO-Z3)
   - "Other"
@@ -30691,7 +30691,7 @@ Properties:
 
 - Config:      endpoint
 - Env Var:     ZCLONE_S3_ENDPOINT
-- Provider:    AWS,Alibaba,ArvanCloud,BizflyCloud,Ceph,ChinaMobile,Cloudflare,Cubbit,DigitalOcean,Dreamhost,Exaba,Fastly,FileLu,FlashBlade,GCS,HCP,Hetzner,HuaweiOBS,IBMCOS,ImpossibleCloud,Intercolo,IONOS,Leviia,Liara,Linode,LyveCloud,Magalu,Mega,Minio,Netease,Outscale,OVHcloud,Petabox,Qiniu,Rabata,RackCorp,Scaleway,Scality,SeaweedFS,Selectel,Servercore,SpectraLogic,Storj,Synology,TencentCOS,US3,Wasabi,Zadara,Zata,Zclone,ZeroServices,Other
+- Provider:    AWS,Alibaba,ArvanCloud,BizflyCloud,Ceph,ChinaMobile,Cloudflare,Cubbit,DigitalOcean,Dreamhost,Exaba,Fastly,FileLu,FlashBlade,GCS,HCP,Hetzner,HuaweiOBS,IBMCOS,ImpossibleCloud,Intercolo,IONOS,Leviia,Liara,Linode,LyveCloud,Magalu,Mega,Minio,Netease,Outscale,OVHcloud,Petabox,Qiniu,Rabata,RackCorp,Scaleway,Scality,SeaweedFS,Selectel,Servercore,SpectraLogic,Storj,Synology,TencentCOS,US3,Wasabi,Zadara,Zata,zClone,ZeroServices,Other
 - Type:        string
 - Required:    false
 - Examples:
@@ -32385,7 +32385,7 @@ Properties:
 
 ### Advanced options
 
-Here are the Advanced options specific to s3 (Amazon S3 Compliant Storage Providers including AWS, Alibaba, ArvanCloud, BizflyCloud, Ceph, ChinaMobile, Cloudflare, Cubbit, DigitalOcean, Dreamhost, Exaba, Fastly, FileLu, FlashBlade, GCS, HCP, Hetzner, HuaweiOBS, IBMCOS, IDrive, ImpossibleCloud, Intercolo, IONOS, Leviia, Liara, Linode, LyveCloud, Magalu, Mega, Minio, Netease, Outscale, OVHcloud, Petabox, Qiniu, Rabata, RackCorp, Scaleway, Scality, SeaweedFS, Selectel, Servercore, SpectraLogic, Storj, Synology, TencentCOS, US3, Wasabi, Zadara, Zata, Zclone, ZeroServices, Other).
+Here are the Advanced options specific to s3 (Amazon S3 Compliant Storage Providers including AWS, Alibaba, ArvanCloud, BizflyCloud, Ceph, ChinaMobile, Cloudflare, Cubbit, DigitalOcean, Dreamhost, Exaba, Fastly, FileLu, FlashBlade, GCS, HCP, Hetzner, HuaweiOBS, IBMCOS, IDrive, ImpossibleCloud, Intercolo, IONOS, Leviia, Liara, Linode, LyveCloud, Magalu, Mega, Minio, Netease, Outscale, OVHcloud, Petabox, Qiniu, Rabata, RackCorp, Scaleway, Scality, SeaweedFS, Selectel, Servercore, SpectraLogic, Storj, Synology, TencentCOS, US3, Wasabi, Zadara, Zata, zClone, ZeroServices, Other).
 
 #### --s3-bucket-acl
 
@@ -32532,7 +32532,7 @@ in memory per transfer.
 If you are transferring large files over high-speed links and you have
 enough memory, then increasing this will speed up the transfers.
 
-Zclone will automatically increase the chunk size when uploading a
+zClone will automatically increase the chunk size when uploading a
 large file of known size to stay below the 10,000 chunks limit.
 
 Files of unknown size are uploaded with the configured
@@ -32542,7 +32542,7 @@ a file you can stream upload is 48 GiB.  If you wish to stream upload
 larger files then you will need to increase chunk_size.
 
 Increasing the chunk size decreases the accuracy of the progress
-statistics displayed with "-P" flag. Zclone treats chunk as sent when
+statistics displayed with "-P" flag. zClone treats chunk as sent when
 it's buffered by the AWS SDK, when in fact it may still be uploading.
 A bigger chunk size means a bigger AWS SDK buffer and progress
 reporting more deviating from the truth.
@@ -32565,7 +32565,7 @@ when doing a multipart upload.
 This can be useful if a service does not support the AWS S3
 specification of 10,000 chunks.
 
-Zclone will automatically increase the chunk size when uploading a
+zClone will automatically increase the chunk size when uploading a
 large file of a known size to stay below this number of chunks limit.
 
 
@@ -33027,7 +33027,7 @@ Properties:
 
 Whether to use an unsigned payload in PutObject
 
-Zclone has to avoid the AWS SDK seeking the body when calling
+zClone has to avoid the AWS SDK seeking the body when calling
 PutObject. The AWS provider can add checksums in the trailer to avoid
 seeking but other providers can't.
 
@@ -33338,12 +33338,12 @@ Note that Directory Buckets do not support:
 - Versioning
 - `Content-Encoding: gzip`
 
-Zclone limitations with Directory Buckets:
+zClone limitations with Directory Buckets:
 
 - zclone does not support creating Directory Buckets with `zclone mkdir`
 - ... or removing them with `zclone rmdir` yet
 - Directory Buckets do not appear when doing `zclone lsf` at the top level.
-- Zclone can't remove auto created directories yet. In theory this should
+- zClone can't remove auto created directories yet. In theory this should
   work with `directory_markers = true` but it doesn't.
 - Directories don't seem to appear in recursive (ListR) listings.
 
@@ -34907,7 +34907,7 @@ endpoint = https://storage.googleapis.com
 ```
 
 **Note** that `--s3-versions` does not work with GCS when it needs to do
-directory paging. Zclone will return the error:
+directory paging. zClone will return the error:
 
 ```text
 s3 protocol error: received versions listing with IsTruncated set with no NextKeyMarker
@@ -34939,7 +34939,7 @@ Option Storage.
 Type of storage to configure.
 Choose a number from below, or type in your own value.
 [snip]
- XX / Amazon S3 Compliant Storage Providers including AWS, Alibaba, ArvanCloud, Ceph, ChinaMobile, Cloudflare, DigitalOcean, Dreamhost, GCS, Hetzner, HuaweiOBS, IBMCOS, IDrive, IONOS, LyveCloud, Leviia, Liara, Linode, Magalu, Minio, Netease, Outscale, Petabox, RackCorp, Zclone, Scaleway, SeaweedFS, Selectel, Storj, Synology, TencentCOS, Wasabi, Qiniu and others
+ XX / Amazon S3 Compliant Storage Providers including AWS, Alibaba, ArvanCloud, Ceph, ChinaMobile, Cloudflare, DigitalOcean, Dreamhost, GCS, Hetzner, HuaweiOBS, IBMCOS, IDrive, IONOS, LyveCloud, Leviia, Liara, Linode, Magalu, Minio, Netease, Outscale, Petabox, RackCorp, zClone, Scaleway, SeaweedFS, Selectel, Storj, Synology, TencentCOS, Wasabi, Qiniu and others
    \ (s3)
 [snip]
 Storage> s3
@@ -35084,7 +35084,7 @@ Option Storage.
 Type of storage to configure.
 Choose a number from below, or type in your own value.
 [snip]
- XX / Amazon S3 Compliant Storage Providers including AWS, Alibaba, ArvanCloud, Ceph, ChinaMobile, Cloudflare, DigitalOcean, Dreamhost, GCS, HCP, Hetzner, HuaweiOBS, IBMCOS, IDrive, IONOS, LyveCloud, Leviia, Liara, Linode, Magalu, Minio, Netease, Outscale, Petabox, RackCorp, Zclone, Scaleway, SeaweedFS, Selectel, Storj, Synology, TencentCOS, Wasabi, Qiniu and others
+ XX / Amazon S3 Compliant Storage Providers including AWS, Alibaba, ArvanCloud, Ceph, ChinaMobile, Cloudflare, DigitalOcean, Dreamhost, GCS, HCP, Hetzner, HuaweiOBS, IBMCOS, IDrive, IONOS, LyveCloud, Leviia, Liara, Linode, Magalu, Minio, Netease, Outscale, Petabox, RackCorp, zClone, Scaleway, SeaweedFS, Selectel, Storj, Synology, TencentCOS, Wasabi, Qiniu and others
    \ (s3)
 [snip]
 Storage> s3
@@ -35686,7 +35686,7 @@ Option Storage.
 Type of storage to configure.
 Choose a number from below, or type in your own value.
 [snip]
- XX / Amazon S3 Compliant Storage Providers including AWS, Alibaba, ArvanCloud, Ceph, ChinaMobile, Cloudflare, DigitalOcean, Dreamhost, GCS, Hetzner, HuaweiOBS, IBMCOS, IDrive, ImpossibleCloud, IONOS, LyveCloud, Leviia, Liara, Linode, Magalu, Minio, Netease, Outscale, Petabox, RackCorp, Zclone, Scaleway, SeaweedFS, Selectel, Storj, Synology, TencentCOS, Wasabi, Qiniu and others
+ XX / Amazon S3 Compliant Storage Providers including AWS, Alibaba, ArvanCloud, Ceph, ChinaMobile, Cloudflare, DigitalOcean, Dreamhost, GCS, Hetzner, HuaweiOBS, IBMCOS, IDrive, ImpossibleCloud, IONOS, LyveCloud, Leviia, Liara, Linode, Magalu, Minio, Netease, Outscale, Petabox, RackCorp, zClone, Scaleway, SeaweedFS, Selectel, Storj, Synology, TencentCOS, Wasabi, Qiniu and others
    \ (s3)
 [snip]
 Storage> s3
@@ -37021,7 +37021,7 @@ Option Storage.
 Type of storage to configure.
 Choose a number from below, or type in your own value.
 [...]
- XX / Amazon S3 Compliant Storage Providers including AWS, Alibaba, ArvanCloud, Ceph, ChinaMobile, Cloudflare, DigitalOcean, Dreamhost, GCS, HuaweiOBS, IBMCOS, IDrive, IONOS, LyveCloud, Leviia, Liara, Linode, Magalu, Minio, Netease, Outscale, OVHcloud, Petabox, RackCorp, Zclone, Scaleway, SeaweedFS, Selectel, Storj, Synology, TencentCOS, Wasabi, Qiniu and others
+ XX / Amazon S3 Compliant Storage Providers including AWS, Alibaba, ArvanCloud, Ceph, ChinaMobile, Cloudflare, DigitalOcean, Dreamhost, GCS, HuaweiOBS, IBMCOS, IDrive, IONOS, LyveCloud, Leviia, Liara, Linode, Magalu, Minio, Netease, Outscale, OVHcloud, Petabox, RackCorp, zClone, Scaleway, SeaweedFS, Selectel, Storj, Synology, TencentCOS, Wasabi, Qiniu and others
    \ (s3)
 [...]
 Storage> s3
@@ -37395,7 +37395,7 @@ Option Storage.
 Type of storage to configure.
 Choose a number from below, or type in your own value.
 [snip]
- 4 / Amazon S3 Compliant Storage Providers including AWS, Alibaba, ArvanCloud, Ceph, ChinaMobile, Cloudflare, DigitalOcean, Dreamhost, FlashBlade, GCS, HuaweiOBS, IBMCOS, IDrive, IONOS, LyveCloud, Leviia, Liara, Linode, Magalu, Minio, Netease, Outscale, Petabox, RackCorp, Zclone, Scaleway, SeaweedFS, Selectel, Storj, Synology, TencentCOS, Wasabi, Qiniu and others
+ 4 / Amazon S3 Compliant Storage Providers including AWS, Alibaba, ArvanCloud, Ceph, ChinaMobile, Cloudflare, DigitalOcean, Dreamhost, FlashBlade, GCS, HuaweiOBS, IBMCOS, IDrive, IONOS, LyveCloud, Leviia, Liara, Linode, Magalu, Minio, Netease, Outscale, Petabox, RackCorp, zClone, Scaleway, SeaweedFS, Selectel, Storj, Synology, TencentCOS, Wasabi, Qiniu and others
    \ (s3)
 [snip]
 Storage> s3
@@ -37797,7 +37797,7 @@ archive use cases.
 Server side copy is not implemented with Rabata, also meaning modification time
 of objects cannot be updated.
 
-Zclone config:
+zClone config:
 
 ```text
 zclone config
@@ -37942,9 +37942,9 @@ endpoint = s3.rackcorp.com
 location_constraint = au-nsw
 ```
 
-### Zclone Serve S3 {#zclone}
+### zClone Serve S3 {#zclone}
 
-Zclone can serve any remote over the S3 protocol. For details see the
+zClone can serve any remote over the S3 protocol. For details see the
 [zclone serve s3](//commands/zclone_serve_s3/) documentation.
 
 For example, to serve `remote:path` over s3, run the server like this:
@@ -37958,7 +37958,7 @@ This will be compatible with an zclone remote which is defined like this:
 ```ini
 [serves3]
 type = s3
-provider = Zclone
+provider = zClone
 endpoint = http://127.0.0.1:8080/
 access_key_id = ACCESS_KEY_ID
 secret_access_key = SECRET_ACCESS_KEY
@@ -39652,7 +39652,7 @@ directory with millions of files in. Despite s3 not really having the
 concepts of directories, zclone does the sync on a directory by
 directory basis to be compatible with normal filing systems.
 
-Zclone loads each directory into memory as zclone objects. Each zclone
+zClone loads each directory into memory as zclone objects. Each zclone
 object takes 0.5k-1k of memory, so approximately 1GB per 1,000,000
 files, and the sync for that directory does not begin until it is
 entirely loaded in memory. So the sync can take a long time to start
@@ -39834,7 +39834,7 @@ transmission. It typically uses compression (most commonly the DEFLATE
 algorithm) to reduce the overall size of the archived content. Zip
 files are supported natively by most modern operating systems.
 
-Zclone does not support the following advanced features of Zip files:
+zClone does not support the following advanced features of Zip files:
 
 - Splitting large archives into smaller parts
 - Password protection
@@ -39851,7 +39851,7 @@ compressed, Squashfs is ideal for live CDs/USBs, embedded devices with
 limited storage, and software package distribution, as it saves space
 and ensures the integrity of the original files.
 
-Zclone supports the following squashfs compression formats:
+zClone supports the following squashfs compression formats:
 
 - `Gzip`
 - `Lzma`
@@ -39863,7 +39863,7 @@ These are not yet working:
 - `Lzo` - Not yet supported
 - `Lz4` - Broken with "error decompressing: lz4: bad magic number"
 
-Zclone works fastest with large squashfs block sizes. For example:
+zClone works fastest with large squashfs block sizes. For example:
 
 ```
 mksquashfs 100files 100files.sqfs -comp zstd -b 1M
@@ -40085,7 +40085,7 @@ Invalid UTF-8 bytes will also be [replaced](//overview/#invalid-utf8),
 as they can't be used in JSON strings.
 
 Note that in 2020-05 Backblaze started allowing \ characters in file
-names. Zclone hasn't changed its encoding as this could cause syncs to
+names. zClone hasn't changed its encoding as this could cause syncs to
 re-transfer files. If you want zclone not to replace \ then see the
 `--b2-encoding` flag below and remove the `BackSlash` from the
 string. This can be set in the config.
@@ -40299,7 +40299,7 @@ permitted, so you can't upload files or delete them.
 
 ### B2 and zclone link
 
-Zclone supports generating file share links for private B2 buckets.
+zClone supports generating file share links for private B2 buckets.
 They can either be for a file for example:
 
 ```console
@@ -40518,7 +40518,7 @@ Custom endpoint for downloads.
 
 This is usually set to a Cloudflare CDN URL as Backblaze offers
 free egress for data downloaded through the Cloudflare network.
-Zclone works with private buckets by sending an "Authorization" header.
+zClone works with private buckets by sending an "Authorization" header.
 If the custom endpoint rewrites the requests for authentication,
 e.g., in Cloudflare Workers, this header needs to be handled properly.
 Leave blank if you want to use the endpoint provided by Backblaze.
@@ -40733,7 +40733,7 @@ zclone backend lifecycle b2:bucket -o daysFromUploadingToHiding=5 -o daysFromHid
 
 This will run and then print the new lifecycle rules as above.
 
-Zclone only lets you set lifecycles for the whole bucket with the
+zClone only lets you set lifecycles for the whole bucket with the
 fileNamePrefix = "".
 
 You can't disable versioning with B2. The best you can do is to set
@@ -40858,9 +40858,9 @@ access_token>
 
 Enter a string value. Press Enter for the default ("user").
 Choose a number from below, or type in your own value
- 1 / Zclone should act on behalf of a user
+ 1 / zClone should act on behalf of a user
    \ "user"
- 2 / Zclone should act on behalf of a service account
+ 2 / zClone should act on behalf of a service account
    \ "enterprise"
 box_sub_type>
 Remote config
@@ -41044,7 +41044,7 @@ as they can't be used in JSON strings.
 
 ### Transfers
 
-For files above 50 MiB zclone will use a chunked transfer.  Zclone will
+For files above 50 MiB zclone will use a chunked transfer.  zClone will
 upload up to `--transfers` chunks at the same time (shared among all
 the multipart uploads).  Chunks are buffered in memory and are
 normally 8 MiB so increasing `--transfers` will increase memory use.
@@ -41153,9 +41153,9 @@ Properties:
 - Default:     "user"
 - Examples:
   - "user"
-    - Zclone should act on behalf of a user.
+    - zClone should act on behalf of a user.
   - "enterprise"
-    - Zclone should act on behalf of a service account.
+    - zClone should act on behalf of a service account.
 
 ### Advanced options
 
@@ -41542,7 +41542,7 @@ cloud provider for smaller file chunks and combines them together locally
 where they can be available almost immediately before the reader usually
 needs them.
 
-This is similar to buffering when media files are played online. Zclone
+This is similar to buffering when media files are played online. zClone
 will stay around the current marker but always try its best to stay ahead
 and prepare the data before.
 
@@ -42528,8 +42528,8 @@ Properties:
   - "norename"
     - Leave temporary file names and write transaction ID to metadata file.
     - Metadata is required for no rename transactions (meta format cannot be "none").
-    - If you are using norename transactions you should be careful not to downgrade Zclone
-    - as older versions of Zclone don't support this transaction style and will misinterpret
+    - If you are using norename transactions you should be careful not to downgrade zClone
+    - as older versions of zClone don't support this transaction style and will misinterpret
     - files manipulated by norename transactions.
     - This method is EXPERIMENTAL, don't use on production systems.
   - "auto"
@@ -42924,7 +42924,7 @@ flag.
 
 ### Transfers
 
-For files above 128 MiB zclone will use a chunked transfer.  Zclone will
+For files above 128 MiB zclone will use a chunked transfer.  zClone will
 upload up to `--transfers` chunks at the same time (shared among all
 the multipart uploads).  Chunks are buffered in memory and are
 normally 64 MiB so increasing `--transfers` will increase memory use.
@@ -43155,7 +43155,7 @@ and [zclone about](///commands/zclone_about/).
 
 # Crypt
 
-Zclone `crypt` remotes encrypt and decrypt other remotes.
+zClone `crypt` remotes encrypt and decrypt other remotes.
 
 A remote of type `crypt` does not access a [storage system](///overview/)
 directly, but instead wraps another remote, which in turn accesses
@@ -43163,7 +43163,7 @@ the storage system. This is similar to how [alias](///alias/),
 [union](///union/), [chunker](///chunker/)
 and a few others work. It makes the usage very flexible, as you can
 add a layer, in this case an encryption layer, on top of any other
-backend, even in multiple layers. Zclone's functionality
+backend, even in multiple layers. zClone's functionality
 can be used as with any other remote, for example you can
 [mount](///commands/zclone_mount/) a crypt remote.
 
@@ -43339,7 +43339,7 @@ If you reconfigure zclone with the same passwords/passphrases
 elsewhere it will be compatible, but the obscured version will be different
 due to the different salt.
 
-Zclone does not encrypt
+zClone does not encrypt
 
 - file length - this can be calculated within 16 bytes
 - modification time - used for syncing
@@ -43499,7 +43499,7 @@ Standard
 Obfuscation
 
 This is a simple "rotate" of the filename, with each file having a rot
-distance based on the filename. Zclone stores the distance at the
+distance based on the filename. zClone stores the distance at the
 beginning of the filename. A file called "hello" may become "53.jgnnq".
 
 Obfuscation is not a strong encryption of filenames, but hinders
@@ -43965,7 +43965,7 @@ This means that
 A version string of the form `-vYYYY-MM-DD-HHMMSS-NNN` on the end of a
 file name (as added by `--b2-versions` / `--s3-versions`) is left in
 plain text so that versioned files can be found. Directory names are
-encrypted in full. Zclone before v1.76 left such a suffix in plain
+encrypted in full. zClone before v1.76 left such a suffix in plain
 text on directory names too, so a directory named like this created by
 an older zclone will appear in listings with a warning but can't be
 opened or removed until renamed on the underlying remote to the name
@@ -43986,7 +43986,7 @@ used on case insensitive remotes (e.g. Windows, Box, Dropbox, Onedrive etc).
 
 ### Key derivation
 
-Zclone uses `scrypt` with parameters `N=16384, r=8, p=1` with an
+zClone uses `scrypt` with parameters `N=16384, r=8, p=1` with an
 optional user supplied salt (password2) to derive the 32+32+16 = 80
 bytes of key material required.  If the user doesn't supply a salt
 then zclone uses an internal one.
@@ -44313,7 +44313,7 @@ y/e/d> y
 
 ### Configuring for Google Drive Shared Drives
 
-Zclone has a convenience feature for making a combine backend for all
+zClone has a convenience feature for making a combine backend for all
 the shared drives you have access to.
 
 Assuming your main (non shared drive) Google drive remote is called
@@ -44840,7 +44840,7 @@ in memory per transfer.
 If you are transferring large files over high-speed links and you have
 enough memory, then increasing this will speed up the transfers.
 
-Zclone will automatically increase the chunk size when uploading a
+zClone will automatically increase the chunk size when uploading a
 large file of known size to stay below the 10,000 chunks limit.
 
 Files of unknown size are uploaded with the configured
@@ -44993,7 +44993,7 @@ zclone copy /home/source remote:backup
 
 ### Dropbox for business
 
-Zclone supports Dropbox for business and Team Folders.
+zClone supports Dropbox for business and Team Folders.
 
 When using Dropbox for business `remote:` and `remote:path/to/file`
 will refer to your personal folder.
@@ -45114,11 +45114,11 @@ download based on the `--dropbox-export-formats` setting. By
 default, the export formats are `html,md`, which are sensible
 defaults for Dropbox Paper.
 
-Zclone chooses the first format ID in the export formats list that
+zClone chooses the first format ID in the export formats list that
 Dropbox supports for a given file. If no format in the list is
 usable, zclone will choose the default format that Dropbox suggests.
 
-Zclone will change the extension to correspond to the export format.
+zClone will change the extension to correspond to the export format.
 Here are some examples of how extensions are mapped:
 
 | File type      | Filename in Dropbox | Filename in zclone |
@@ -45319,7 +45319,7 @@ Instructs zclone to work on shared folders.
 
 When this flag is used with no path only the List operation is supported and
 all available shared folders will be listed. If you specify a path the first part
-will be interpreted as the name of shared folder. Zclone will then try to mount this
+will be interpreted as the name of shared folder. zClone will then try to mount this
 shared to the root namespace. On success shared folder zclone proceeds normally.
 The shared folder is now pretty much a normal folder and all normal operations
 are supported.
@@ -45479,7 +45479,7 @@ This has 3 possible values
 - sync - batch uploads and check completion (default)
 - async - batch upload and don't check completion
 
-Zclone will close any outstanding batches when it exits which may make
+zClone will close any outstanding batches when it exits which may make
 a delay on quit.
 
 
@@ -45503,7 +45503,7 @@ depending on the setting of batch_mode.
 - batch_mode: sync - default batch_size is the same as --transfers
 - batch_mode: off - not in use
 
-Zclone will close any outstanding batches when it exits which may make
+zClone will close any outstanding batches when it exits which may make
 a delay on quit.
 
 Setting this is a great idea if you are uploading lots of small files
@@ -45560,7 +45560,7 @@ Note that Dropbox is case insensitive so you can't have a file called
 
 There are some file names such as `thumbs.db` which Dropbox can't
 store.  There is a full list of them in the ["Ignored Files" section
-of this document](https://www.dropbox.com/en/help/145).  Zclone will
+of this document](https://www.dropbox.com/en/help/145).  zClone will
 issue an error message `File name disallowed - not uploading` if it
 attempts to upload one of those file names, but the sync won't fail.
 
@@ -45744,7 +45744,7 @@ as they can't be used in JSON strings.
 
 ### Empty files
 
-Empty files aren't supported by the Enterprise File Fabric. Zclone will therefore
+Empty files aren't supported by the Enterprise File Fabric. zClone will therefore
 upload an empty file as a single space with a mime type of
 `application/vnd.zclone.empty.file` and files with that mime type are
 treated as empty.
@@ -45949,7 +45949,7 @@ xx / FileLu Cloud Storage
    \ "filelu"
 [snip]
 Storage> filelu
-Enter your FileLu Zclone Key:
+Enter your FileLu zClone Key:
 key> YOUR_FILELU_ZCLONE_KEY RC_xxxxxxxxxxxxxxxxxxxxxxxx
 Configuration complete.
 
@@ -45962,10 +45962,10 @@ y/e/d> y
 
 ### Paths
 
-A path without an initial `/` will operate in the `Zclone` directory.
+A path without an initial `/` will operate in the `zClone` directory.
 
 A path with an initial `/` will operate at the root where you can see
-the `Zclone` directory.
+the `zClone` directory.
 
 ```console
 $ zclone lsf TestFileLu:/
@@ -45974,14 +45974,14 @@ Camera/
 Documents/
 Music/
 Photos/
-Zclone/
+zClone/
 Vault/
 Videos/
 ```
 
 ### Example Commands
 
-Create a new folder named `foldername` in the `Zclone` directory:
+Create a new folder named `foldername` in the `zClone` directory:
 
 ```console
 zclone mkdir filelu:foldername
@@ -46079,16 +46079,16 @@ where a character is a Unicode character.
 
 ### Duplicated Files
 
-When uploading and syncing via Zclone, FileLu does not allow uploading
+When uploading and syncing via zClone, FileLu does not allow uploading
 duplicate files within the same directory. However, you can upload
 duplicate files, provided they are in different directories (folders).
 
 ### Failure to Log / Invalid Credentials or KEY
 
-Ensure that you have the correct Zclone key, which can be found in [My
-Account](https://filelu.com/account/). Every time you toggle Zclone
+Ensure that you have the correct zClone key, which can be found in [My
+Account](https://filelu.com/account/). Every time you toggle zClone
 OFF and ON in My Account, a new RC_xxxxxxxxxxxxxxxxxxxx key is
-generated. Be sure to update your Zclone configuration with the new
+generated. Be sure to update your zClone configuration with the new
 key.
 
 If you are connecting to your FileLu remote for the first time and
@@ -46098,7 +46098,7 @@ encounter an error such as:
 Failed to create file system for "my-filelu-remote:": couldn't login: Invalid credentials
 ```
 
-Ensure your Zclone Key is correct.
+Ensure your zClone Key is correct.
 
 ### Process `killed`
 
@@ -46114,7 +46114,7 @@ Here are the Standard options specific to filelu (FileLu Cloud Storage).
 
 #### --filelu-key
 
-Your FileLu Zclone key from My Account
+Your FileLu zClone key from My Account
 
 Properties:
 
@@ -46537,7 +46537,7 @@ visiting the "File Integrity" section in "Data Governance" to
 configure your settings and select the checksum algorithms that meet
 your requirements.
 
-Zclone currently only support CRC32 and MD5 for use in syncing but
+zClone currently only support CRC32 and MD5 for use in syncing but
 selecting more checksums will not affect zclone's operations.
 
 For use with zclone, selecting at least MD5 is recommended so zclone
@@ -46626,11 +46626,11 @@ Properties:
 
 # FTP
 
-FTP is the File Transfer Protocol. Zclone FTP support is provided using the
+FTP is the File Transfer Protocol. zClone FTP support is provided using the
 [github.com/jlaffaye/ftp](https://godoc.org/github.com/jlaffaye/ftp)
 package.
 
-[Limitations of Zclone's FTP backend](#limitations)
+[Limitations of zClone's FTP backend](#limitations)
 
 Paths are specified as `remote:path`. If the path does not begin with
 a `/` it is relative to the home directory of the user.  An empty path
@@ -46644,7 +46644,7 @@ To create an FTP configuration named `remote`, run
 zclone config
 ```
 
-Zclone config guides you through an interactive setup process. A minimal
+zClone config guides you through an interactive setup process. A minimal
 zclone FTP remote definition only requires host, username and password.
 For an anonymous FTP server, see [below](#anonymous-ftp).
 
@@ -47191,11 +47191,11 @@ Properties:
 
 FTP servers acting as zclone remotes must support `passive` mode.
 The mode cannot be configured as `passive` is the only supported one.
-Zclone's FTP implementation is not compatible with `active` mode
+zClone's FTP implementation is not compatible with `active` mode
 as [the library it uses doesn't support it](https://github.com/jlaffaye/ftp/issues/29).
 This will likely never be supported due to security concerns.
 
-Zclone's FTP backend does not support any checksums but can compare
+zClone's FTP backend does not support any checksums but can compare
 file sizes.
 
 `zclone about` is not supported by the FTP backend. Backends without
@@ -47214,7 +47214,7 @@ for zclone HTTP based backends - it has less fine grained control.
 
 `--bind` isn't supported.
 
-Zclone's FTP backend could support server-side move but does not
+zClone's FTP backend could support server-side move but does not
 at present.
 
 The `ftp_proxy` environment variable is not currently supported.
@@ -47499,7 +47499,7 @@ you attempt to upload more than that you will get
 Gofile is capable of having files with duplicated file names. For
 instance two files called `hello.txt` in the same directory.
 
-Zclone cannot sync that to a normal file system but it can be fixed
+zClone cannot sync that to a normal file system but it can be fixed
 with the `zclone dedupe` command.
 
 Duplicated files cause problems with the syncing and you will see
@@ -48473,7 +48473,7 @@ zclone copy /home/source remote:backup
 
 ### Scopes
 
-Zclone allows you to select which scope you would like for zclone to
+zClone allows you to select which scope you would like for zclone to
 use.  This changes what type of token is granted to zclone.  [The
 scopes are defined
 here](https://developers.google.com/drive/v3/web/about-auth).
@@ -48509,7 +48509,7 @@ Files created with this scope are visible in the web interface.
 
 #### drive.appfolder
 
-This gives zclone its own private area to store files.  Zclone will
+This gives zclone its own private area to store files.  zClone will
 not be able to see any other files on your drive and you won't be able
 to see zclone's files from the web interface either.
 
@@ -48678,11 +48678,11 @@ n) No
 y/n> y
 Fetching Shared Drive list...
 Choose a number from below, or type in your own value
- 1 / Zclone Test
+ 1 / zClone Test
    \ "xxxxxxxxxxxxxxxxxxxx"
- 2 / Zclone Test 2
+ 2 / zClone Test 2
    \ "yyyyyyyyyyyyyyyyyyyy"
- 3 / Zclone Test 3
+ 3 / zClone Test 3
    \ "zzzzzzzzzzzzzzzzzzzz"
 Enter a Shared Drive ID> 1
 Configuration complete.
@@ -48833,7 +48833,7 @@ target file ID followed by the shortcut ID, separated by a tab. This internal
 tab is not changed by `--separator`.
 
 If you have a folder shortcut that points at one of its own parent folders it
-would lead to an infinite recursion. Zclone detects this, leaves the offending
+would lead to an infinite recursion. zClone detects this, leaves the offending
 shortcut out of the listing and logs an ERROR, so the rest of the drive can
 still be copied.
 
@@ -49651,7 +49651,7 @@ Normally zclone will work around a bug in Google Drive when using
 parents)" returns nothing sometimes. See #3114, #4289 and
 https://issuetracker.google.com/issues/149522397
 
-Zclone detects this by finding no items in more than one directory
+zClone detects this by finding no items in more than one directory
 when listing and retries them as lists of individual directories.
 
 This means that if you have a lot of empty directories zclone will end
@@ -50260,7 +50260,7 @@ Use `zclone dedupe` to fix duplicated files.
 Note that this isn't just a problem with zclone, even Google Photos on
 Android duplicates files on drive sometimes.
 
-### Zclone appears to be re-copying files it shouldn't
+### zClone appears to be re-copying files it shouldn't
 
 The most likely cause of this is the duplicated file issue above - run
 `zclone dedupe` and check your logs for duplicate object or directory
@@ -50332,7 +50332,7 @@ users in your organisation).
 including
     - `https://www.googleapis.com/auth/docs`
     - `https://www.googleapis.com/auth/drive` in order to be able to edit,
-        create and delete files with Zclone.
+        create and delete files with zClone.
     - `https://www.googleapis.com/auth/drive.metadata.readonly` which you may
       also want to add.
 
@@ -50870,7 +50870,7 @@ This has 3 possible values
 - sync - batch uploads and check completion (default)
 - async - batch upload and don't check completion
 
-Zclone will close any outstanding batches when it exits which may make
+zClone will close any outstanding batches when it exits which may make
 a delay on quit.
 
 
@@ -50894,7 +50894,7 @@ depending on the setting of batch_mode.
 - batch_mode: sync - default batch_size is the same as --transfers
 - batch_mode: off - not in use
 
-Zclone will close any outstanding batches when it exits which may make
+zClone will close any outstanding batches when it exits which may make
 a delay on quit.
 
 Setting this is a great idea if you are uploading lots of small files
@@ -51036,18 +51036,18 @@ You'll need to experiment to see if it works for you without the flag.
 
 ### Albums
 
-Zclone can only upload files to albums it created. This is a
+zClone can only upload files to albums it created. This is a
 [limitation of the Google Photos API](https://developers.google.com/photos/library/guides/manage-albums).
 
-Zclone can remove files it uploaded from albums it created only.
+zClone can remove files it uploaded from albums it created only.
 
 ### Deleting files
 
-Zclone can remove files from albums it created, but note that the
+zClone can remove files from albums it created, but note that the
 Google Photos API does not allow media to be deleted permanently so
 this media will still remain. See [bug #109759781](https://issuetracker.google.com/issues/109759781).
 
-Zclone cannot delete files anywhere except under `album`.
+zClone cannot delete files anywhere except under `album`.
 
 ### Deleting albums
 
@@ -51568,7 +51568,7 @@ Follow the detailed guides for complete setup instructions:
 - [Huawei HMS Core Web App Preparations](https://developer.huawei.com/consumer/cn/doc/HMSCore-Guides/web-preparations-0000001050050891)
 - [Huawei HMS Core Server Preparations](https://developer.huawei.com/consumer/cn/doc/HMSCore-Guides/server-preparations-0000001050185577#section194911701377)
 
-Zclone uses the web application access method to connect to Huawei Drive. Before starting, you need to implement quick login authorization through Huawei Account Open Service. With user authorization credentials, zclone can call Huawei Cloud Drive Service APIs.
+zClone uses the web application access method to connect to Huawei Drive. Before starting, you need to implement quick login authorization through Huawei Account Open Service. With user authorization credentials, zclone can call Huawei Cloud Drive Service APIs.
 
 #### Create Server Application
 
@@ -51610,7 +51610,7 @@ Key steps summary:
 
 ### Scopes
 
-Zclone uses the following OAuth2 scopes when accessing Huawei Drive:
+zClone uses the following OAuth2 scopes when accessing Huawei Drive:
 
 - `https://www.huawei.com/auth/drive` - Full access to Huawei Drive files (excluding application data folder)
 - `https://www.huawei.com/auth/drive.file` - Access to files created by the application
@@ -51879,13 +51879,13 @@ Huawei Drive has some rate limiting which may cause zclone to slow down transfer
 
 ### API rate limits  
 
-Huawei Drive imposes API rate limits. Zclone automatically handles these by backing off when limits are hit.
+Huawei Drive imposes API rate limits. zClone automatically handles these by backing off when limits are hit.
 
 ### OAuth2 token expiry
 
 - Access tokens expire after 1 hour
 - Refresh tokens expire after 180 days  
-- Zclone will automatically refresh tokens as needed
+- zClone will automatically refresh tokens as needed
 
 ### File size limits
 
@@ -52382,7 +52382,7 @@ with a length of 255 characters or less.
 HiDrive limits file sizes per single request to a maximum of 2 GiB.
 To allow storage of larger files and allow for better upload performance,
 the hidrive backend will use a chunked transfer for files larger than 96 MiB.
-Zclone will upload multiple parts/chunks of the file at the same time.
+zClone will upload multiple parts/chunks of the file at the same time.
 Chunks in the process of being uploaded are buffered in memory,
 so you may want to restrict this behaviour on systems with limited resources.
 
@@ -52815,7 +52815,7 @@ This remote is read only - you can't upload files to an HTTP server.
 
 ### Servers without directory listings
 
-Zclone normally needs the HTTP server to return a parseable directory
+zClone normally needs the HTTP server to return a parseable directory
 listing in order to discover files. However if the path points
 directly at a single file (i.e. it does not end with `/` and the
 initial HEAD request reports it as a file), zclone will skip the
@@ -53928,7 +53928,7 @@ Properties:
 
 Metadata fields provided by Internet Archive.
 If there are multiple values for a key, only the first one is returned.
-This is a limitation of Zclone, that supports one value per one key.
+This is a limitation of zClone, that supports one value per one key.
 
 Owner is able to add custom keys. Metadata feature grabs all the keys including them.
 
@@ -53939,7 +53939,7 @@ Here are the possible system metadata items for the internetarchive backend.
 | crc32 | CRC32 calculated by Internet Archive | string | 01234567 | **Y** |
 | format | Name of format identified by Internet Archive | string | Comma-Separated Values | **Y** |
 | md5 | MD5 hash calculated by Internet Archive | string | 01234567012345670123456701234567 | **Y** |
-| mtime | Time of last modification, managed by Zclone | RFC 3339 | 2006-01-02T15:04:05.999999999Z | **Y** |
+| mtime | Time of last modification, managed by zClone | RFC 3339 | 2006-01-02T15:04:05.999999999Z | **Y** |
 | name | Full file path, without the bucket part | filename | backend/internetarchive/internetarchive.go | **Y** |
 | old_version | Whether the file was replaced and moved by keep-old-version flag | boolean | true | **Y** |
 | sha1 | SHA1 hash calculated by Internet Archive | string | 0123456701234567012345670123456701234567 | **Y** |
@@ -53948,8 +53948,8 @@ Here are the possible system metadata items for the internetarchive backend.
 | summation | Check / for how it is used | string | md5 | **Y** |
 | viruscheck | The last time viruscheck process was run for the file (?) | unixtime | 1654191352 | **Y** |
 | zclone-ia-mtime | Time of last modification, managed by Internet Archive | RFC 3339 | 2006-01-02T15:04:05.999999999Z | N |
-| zclone-mtime | Time of last modification, managed by Zclone | RFC 3339 | 2006-01-02T15:04:05.999999999Z | N |
-| zclone-update-track | Random value used by Zclone for tracking changes inside Internet Archive | string | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa | N |
+| zclone-mtime | Time of last modification, managed by zClone | RFC 3339 | 2006-01-02T15:04:05.999999999Z | N |
+| zclone-update-track | Random value used by zClone for tracking changes inside Internet Archive | string | aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa | N |
 
 See the [metadata](//docs/#metadata) docs for more info.
 
@@ -54216,7 +54216,7 @@ Jottacloud uses two optional OAuth security mechanisms, referred to as "Refresh
 Token Rotation" and "Automatic Reuse Detection", which has some implications.
 Access tokens normally have one hour expiry, after which they need to be
 refreshed (rotated), an operation that requires the refresh token to be
-supplied. Zclone does this automatically. This is standard OAuth. But in
+supplied. zClone does this automatically. This is standard OAuth. But in
 Jottacloud, such a refresh operation not only creates a new access token, but
 also refresh token, and invalidates the existing refresh token, the one that
 was supplied. It keeps track of the history of refresh tokens, sometimes
@@ -54289,7 +54289,7 @@ Log in to your service's web user interface, navigate to "Settings" and then
 "Security", or, for the official service, use the direct link presented to you
 by zclone when configuring the remote: <https://www.jottacloud.com/web/secure>.
 Scroll down to the section "Personal login token", and click the "Generate"
-button. Copy the presented string and paste it where zclone asks for it. Zclone
+button. Copy the presented string and paste it where zclone asks for it. zClone
 will then use this to perform an initial token request, and receive a regular
 OAuth token which it stores in your remote configuration. There will then also
 be a new entry in the "My logged in devices" list in the web interface, with
@@ -54488,7 +54488,7 @@ With the built-in Jotta device, only existing, built-in, mountpoints can be
 selected. In addition to the mentioned Archive and Sync, it may contain
 several other mountpoints such as: Latest, Links, Shared and Trash. All of
 these are special mountpoints with a different internal representation than
-the "regular" mountpoints. Zclone will only to a very limited degree support
+the "regular" mountpoints. zClone will only to a very limited degree support
 them. Generally you should avoid these, unless you know what you are doing.
 
 ### --fast-list
@@ -54760,7 +54760,7 @@ Note that Jottacloud is case insensitive so you can't have a file called
 "Hello.doc" and one called "hello.doc".
 
 There are quite a few characters that can't be in Jottacloud file names.
-Zclone will map these names to and from an identical looking unicode
+zClone will map these names to and from an identical looking unicode
 equivalent. For example if a file has a ? in it will be mapped to ？ instead.
 
 Jottacloud only supports filenames up to 255 characters in length.
@@ -55322,7 +55322,7 @@ Here is an example of making a mailru configuration.
 
 First create a Mail.ru Cloud account and choose a tariff.
 
-You will need to log in and create an app password for zclone. Zclone
+You will need to log in and create an app password for zclone. zClone
 **will not work** with your normal username and password - it will
 give an error like `oauth2: server response missing access_token`.
 
@@ -55331,7 +55331,7 @@ give an error like `oauth2: server response missing access_token`.
 - Click password for apps / "Пароли для внешних приложений"
 - Add the password - give it a name - eg "zclone"
 - Select the permissions level. For some reason just "Full access to Cloud"
-  (WebDav) doesn't work for Zclone currently. You have to select "Full access
+  (WebDav) doesn't work for zClone currently. You have to select "Full access
   to Mail, Cloud and Calendar" (all protocols).
   ([thread on forum.zclone.org](/))
 - Copy the password and use this password below - your normal login password
@@ -55899,7 +55899,7 @@ mount`. This will log-in when mounting and a log-out when unmounting
 only. You can also run `zclone rcd` and then use `zclone rc` to run
 the commands over the API to avoid logging in each time.
 
-Zclone does not currently close mega sessions (you can see them in the
+zClone does not currently close mega sessions (you can see them in the
 web interface), however closing the sessions does not solve the issue.
 
 If you space zclone commands by 3 seconds it will avoid blocking the
@@ -56359,10 +56359,10 @@ With NetStorage, directories can exist in one of two forms:
   as "implicit." While the directories aren't physically created, they exist
   implicitly and the noted path is connected with the uploaded file.
 
-Zclone will intercept all file uploads and mkdir commands for the NetStorage
+zClone will intercept all file uploads and mkdir commands for the NetStorage
 remote and will explicitly issue the mkdir command for each directory in the
 uploading path. This will help with the interoperability with the other Akamai
-services such as SFTP and the Content Management Shell (CMShell). Zclone will
+services such as SFTP and the Content Management Shell (CMShell). zClone will
 not guarantee correctness of operations with implicit directories which might
 have been created as a result of using an upload API directly.
 
@@ -56372,11 +56372,11 @@ NetStorage remote supports the ListR feature by using the "list" NetStorage API
 action to return a lexicographical list of all objects within the specified CP
 code, recursing into subdirectories as they're encountered.
 
-- **Zclone will use the ListR method for some commands by default**. Commands
+- **zClone will use the ListR method for some commands by default**. Commands
 such as `lsf -R` will use ListR by default. To disable this, include the
 `--disable listR` option to use the non-recursive method of listing objects.
 
-- **Zclone will not use the ListR method for some commands**. Commands such as
+- **zClone will not use the ListR method for some commands**. Commands such as
 `sync` don't use ListR by default. To force using the ListR method, include the
 `--fast-list` option.
 
@@ -56394,7 +56394,7 @@ is to pass "--disable listR" flag if these numbers are important in the output.
 
 NetStorage remote supports the purge feature by using the "quick-delete"
 NetStorage API action. The quick-delete action is disabled by default for security
-reasons and can be enabled for the account through the Akamai portal. Zclone
+reasons and can be enabled for the account through the Akamai portal. zClone
 will first try to use quick-delete action for the purge command and if this
 functionality is disabled then will fall back to a standard delete method.
 
@@ -56631,7 +56631,7 @@ hashes, e.g. the local disk.
 
 ### Metadata and tags
 
-Zclone can map arbitrary metadata to Azure Blob headers, user metadata, and tags
+zClone can map arbitrary metadata to Azure Blob headers, user metadata, and tags
 when `--metadata` is enabled (or when using `--metadata-set` / `--metadata-mapper`).
 
 - Headers: Set these keys in metadata to map to the corresponding blob headers:
@@ -56647,7 +56647,7 @@ when `--metadata` is enabled (or when using `--metadata-set` / `--metadata-mappe
   logs a debug message and ignores the override.
 
 Notes:
-- Zclone ignores reserved `x-ms-*` keys (except `x-ms-tags`) for user metadata.
+- zClone ignores reserved `x-ms-*` keys (except `x-ms-tags`) for user metadata.
 
 ### Performance
 
@@ -56680,7 +56680,7 @@ as they can't be used in JSON strings.
 ### Authentication {#authentication}
 
 There are a number of ways of supplying credentials for Azure Blob
-Storage. Zclone tries them in the order of the sections below.
+Storage. zClone tries them in the order of the sections below.
 
 #### Env Auth
 
@@ -57395,7 +57395,7 @@ If true (the default) then zclone will use the Copy Blob API for
 copies to the same storage account even when the size is above the
 copy_cutoff.
 
-Zclone assumes that the same storage account means the same config
+zClone assumes that the same storage account means the same config
 and does not check for the same storage account in different configs.
 
 There should be no need to change this value.
@@ -57833,7 +57833,7 @@ as these have to be uploaded with the file.
 ### Authentication {#authentication}
 
 There are a number of ways of supplying credentials for Azure Files
-Storage. Zclone tries them in the order of the sections below.
+Storage. zClone tries them in the order of the sections below.
 
 #### Env Auth
 
@@ -58759,7 +58759,7 @@ endpoint.
    ".driveAccessToken": "access_token={access_token}"
    ```
 
-#### Zclone configuration
+#### zClone configuration
 
 Use the extracted values to configure your remote:
 
@@ -59272,7 +59272,7 @@ Properties:
 - Default:     "auto"
 - Examples:
   - "auto"
-    - Zclone chooses the best hash
+    - zClone chooses the best hash
   - "quickxor"
     - QuickXor
   - "sha1"
@@ -59612,7 +59612,7 @@ file called "Hello.doc" and one called "hello.doc".
 
 There are quite a few characters that can't be in OneDrive file
 names.  These can't occur on Windows platforms, but on non-Windows
-platforms they are common.  Zclone will map these names to and from an
+platforms they are common.  zClone will map these names to and from an
 identical looking unicode equivalent.  For example if a file has a `?`
 in it will be mapped to `？` instead.
 
@@ -59707,7 +59707,7 @@ versioning on OneDrive
 OneDrive supports `zclone cleanup` which causes zclone to look through
 every file under the path supplied and delete all version but the
 current version. Because this involves traversing all the files, then
-querying each file for versions it can be quite slow. Zclone does
+querying each file for versions it can be quite slow. zClone does
 `--checkers` tests in parallel. The command also supports `--interactive`/`i`
 or `--dry-run` which is a great way to see what it would do.
 
@@ -60076,7 +60076,7 @@ file called "Hello.doc" and one called "hello.doc".
 
 There are quite a few characters that can't be in OpenDrive file
 names.  These can't occur on Windows platforms, but on non-Windows
-platforms they are common.  Zclone will map these names to and from an
+platforms they are common.  zClone will map these names to and from an
 identical looking unicode equivalent.  For example if a file has a `?`
 in it will be mapped to `？` instead.
 
@@ -60245,7 +60245,7 @@ OCI has various authentication methods. To learn more about authentication metho
 please refer [oci authentication methods](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdk_authentication_methods.htm)
 These choices can be specified in the zclone config file.
 
-Zclone supports the following OCI authentication provider.
+zClone supports the following OCI authentication provider.
 
 ```text
 User Principal
@@ -60322,7 +60322,7 @@ Considerations:
 Resource principal auth is very similar to instance principal auth but used for
 resources that are not  compute instances such as
 [serverless functions](https://docs.oracle.com/en-us/iaas/Content/Functions/Concepts/functionsoverview.htm).
-To use resource principal ensure Zclone process is started with these environment
+To use resource principal ensure zClone process is started with these environment
 variables set in its process.
 
 ```console
@@ -60345,10 +60345,10 @@ provider = resource_principal_auth
 
 ### Workload Identity
 
-Workload Identity auth may be used when running Zclone from Kubernetes pod on
+Workload Identity auth may be used when running zClone from Kubernetes pod on
 a Container Engine for Kubernetes (OKE) cluster. For more details on configuring
 Workload Identity, see [Granting Workloads Access to OCI Resources](https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contenggrantingworkloadaccesstoresources.htm).
-To use workload identity, ensure Zclone is started with these environment
+To use workload identity, ensure zClone is started with these environment
 variables set in its process.
 
 ```console
@@ -60578,7 +60578,7 @@ in memory per transfer.
 If you are transferring large files over high-speed links and you have
 enough memory, then increasing this will speed up the transfers.
 
-Zclone will automatically increase the chunk size when uploading a
+zClone will automatically increase the chunk size when uploading a
 large file of known size to stay below the 10,000 chunks limit.
 
 Files of unknown size are uploaded with the configured
@@ -60607,7 +60607,7 @@ when doing a multipart upload.
 
 OCI has max parts limit of 10,000 chunks.
 
-Zclone will automatically increase the chunk size when uploading a
+zClone will automatically increase the chunk size when uploading a
 large file of a known size to stay below this number of chunks limit.
 
 
@@ -61518,7 +61518,7 @@ equal to `.` or `..` nor contain `/` , `\` or non-printable ascii.
 
 ### Transfers
 
-For files above 50 MiB zclone will use a chunked transfer. Zclone will upload
+For files above 50 MiB zclone will use a chunked transfer. zClone will upload
 up to `--transfers` chunks at the same time (shared among all multipart uploads).
 Chunks are buffered in memory, and the minimal chunk size is 10_000_000 bytes by
 default, and it can be changed in the advanced configuration, so increasing `--transfers`
@@ -62444,7 +62444,7 @@ or a `.file-segments` directory. (See the `use_segments_container` option
 for more info). Default for this is 5 GiB which is its maximum value, which
 means only files above this size will be chunked.
 
-Zclone uploads chunked files as dynamic large objects (DLO).
+zClone uploads chunked files as dynamic large objects (DLO).
 
 
 Properties:
@@ -62466,7 +62466,7 @@ This will limit the maximum streamed upload size to 5 GiB. This is
 useful because non chunked files are easier to deal with and have an
 MD5SUM.
 
-Zclone will still chunk files bigger than `chunk_size` when doing
+zClone will still chunk files bigger than `chunk_size` when doing
 normal copy operations.
 
 Properties:
@@ -62577,7 +62577,7 @@ MD5SUM for these.
 
 ## Troubleshooting
 
-### Zclone gives Failed to create file system for "remote:": Bad Request
+### zClone gives Failed to create file system for "remote:": Bad Request
 
 Due to an oddity of the underlying swift library, it gives a "Bad
 Request" error rather than a more sensible error when the
@@ -62589,7 +62589,7 @@ investigate further with the `--dump bodies` flag.
 This may also be caused by specifying the region when you shouldn't
 have (e.g. OVH).
 
-### Zclone gives Failed to create file system: Response didn't have storage url and auth token
+### zClone gives Failed to create file system: Response didn't have storage url and auth token
 
 This is most likely caused by forgetting to specify your tenant when
 setting up a swift remote.
@@ -62615,7 +62615,7 @@ end of the output with a message like the following:
 2019/03/23 13:06:33 NOTICE: Received retry after error - sleeping until 2019-03-23T13:16:33.481657164+01:00 (9m59.99985121s)
 ```
 
-Zclone will wait for the time specified then retry the copy.
+zClone will wait for the time specified then retry the copy.
 
 # pCloud
 
@@ -63210,7 +63210,7 @@ in memory.
 If you are transferring large files over high-speed links and you have
 enough memory, then increasing this will speed up the transfers.
 
-Zclone will automatically increase the chunk size when uploading a
+zClone will automatically increase the chunk size when uploading a
 large file of known size to stay below the 10,000 chunks limit.
 
 Increasing the chunk size decreases the accuracy of the progress
@@ -64960,7 +64960,7 @@ as they can't be used in JSON strings.
 
 ### Seafile and zclone link
 
-Zclone supports generating share links for non-encrypted libraries only.
+zClone supports generating share links for non-encrypted libraries only.
 They can either be for a file or a directory:
 
 ```console
@@ -65325,7 +65325,7 @@ cat id_rsa-cert.pub id_rsa > merged_key
 By default zclone will not check the server's host key for validation.
 This can allow an attacker to replace a server with their own and if
 you use password authentication then this can lead to that password
-being exposed. Zclone will produce a warning `No host key validation
+being exposed. zClone will produce a warning `No host key validation
 is being performed` each time the backend is started in this mode.
 
 Host key matching, using standard ssh `known_hosts` files can be
@@ -65401,7 +65401,7 @@ command-line flag.
 The recommended workflow is:
 
 1. For the very first connection to a new remote, run zclone once with
-   `--sftp-pin-host-key`. Zclone records the server's host key into the
+   `--sftp-pin-host-key`. zClone records the server's host key into the
    remote's `host_keys` config option and logs the SHA256 fingerprint:
 
    ```console
@@ -65410,11 +65410,11 @@ The recommended workflow is:
    2026/01/01 12:00:00 NOTICE: sftp://sftpuser@example.com:22/: Pinned ssh-ed25519 host key SHA256:abc... for example.com:22 in config
    ```
 
-2. For every subsequent run, omit the flag. Zclone consults the pinned
+2. For every subsequent run, omit the flag. zClone consults the pinned
    `host_keys` and refuses the connection on any mismatch.
 
 This is a strict improvement over the default of no host key validation,
-but note that the first connection itself is unauthenticated. Zclone
+but note that the first connection itself is unauthenticated. zClone
 detects later key changes, not a man-in-the-middle who is already on-path
 the first time you connect. Ideally do the first connection over a trusted
 network or cross-check the fingerprint zclone logs against one provided out
@@ -65515,7 +65515,7 @@ and the possibility to execute commands. This includes [checksum](#checksum),
 and in some cases also [about](#about-command). The shell commands that
 must be executed may be different on different type of shells, and also
 quoting/escaping of file path arguments containing special characters may
-be different. Zclone therefore needs to know what type of shell it is,
+be different. zClone therefore needs to know what type of shell it is,
 and if shell access is available at all.
 
 Most servers run on some version of Unix, and then a basic Unix shell can
@@ -65527,7 +65527,7 @@ be set up to use a Unix type shell, e.g. Cygwin bash, the default is to
 use Windows Command Prompt (cmd.exe), and PowerShell is a recommended
 alternative. All of these have behave differently, which zclone must handle.
 
-Zclone tries to auto-detect what type of shell is used on the server,
+zClone tries to auto-detect what type of shell is used on the server,
 first time you access the SFTP remote. If a remote shell session is
 successfully created, it will look for indications that it is CMD or
 PowerShell, with fall-back to Unix if not something else is detected.
@@ -65575,7 +65575,7 @@ or disable shell access until you know.
 SFTP does not natively support checksums (file hash), but zclone
 is able to use checksumming if the same login has shell access,
 and can execute remote commands. If there is a command that can
-calculate compatible checksums on the remote system, Zclone can
+calculate compatible checksums on the remote system, zClone can
 then be configured to execute this whenever a checksum is needed,
 and read back the results. By default MD5 and SHA-1 are considered,
 but also CRC32, SHA-256, BLAKE3, XXH3 and XXH128 are supported,
@@ -65600,7 +65600,7 @@ the commands to be executed for calculation of checksums. You can for
 example set a specific path to where the md5sum executable are located,
 or specify some other tool that print checksums in compatible format.
 The value can include command-line arguments, or even shell script blocks
-as with PowerShell. Zclone has subcommands [hashsum](//commands/zclone_hashsum/),
+as with PowerShell. zClone has subcommands [hashsum](//commands/zclone_hashsum/),
 [md5sum](//commands/zclone_md5sum/) and [sha1sum](//commands/zclone_sha1sum/)
 that use compatible format, which means if you have an zclone executable
 on the server it can be used. As mentioned above, they will be automatically
@@ -65634,7 +65634,7 @@ Modified times are used in syncing and are fully supported.
 Some SFTP servers disable setting/modifying the file modification time after
 upload (for example, certain configurations of ProFTPd with mod_sftp). If you
 are using one of these servers, you can set the option `set_modtime = false` in
-your Zclone backend configuration to disable this behaviour.
+your zClone backend configuration to disable this behaviour.
 
 ### About command
 
@@ -65851,14 +65851,14 @@ Normally zclone will use its internal ssh library to connect to the
 SFTP server. However it does not implement all possible ssh options so
 it may be desirable to use an external ssh binary.
 
-Zclone ignores all the internal config if you use this option and
+zClone ignores all the internal config if you use this option and
 expects you to configure the ssh binary with the user/host/port and
 any other options you need.
 
 **Important** The ssh command must log in without asking for a
 password so needs to be configured with keys or certificates.
 
-Zclone will run the command supplied either with the additional
+zClone will run the command supplied either with the additional
 arguments "-s sftp" to access the SFTP subsystem or with commands such
 as "md5sum /path/to/file" appended to read checksums.
 
@@ -67012,7 +67012,7 @@ Properties:
 
 Service principal name.
 
-Zclone presents this name to the server. Some servers use this as further
+zClone presents this name to the server. Some servers use this as further
 authentication, and it often needs to be set for clusters. For example:
 
     cifs/remotehost:1020
@@ -68055,7 +68055,7 @@ as they can't be used in JSON strings.
 ### Transfers
 
 All files are currently uploaded using a single HTTP request, so
-for uploading large files a stable connection is necessary.  Zclone will
+for uploading large files a stable connection is necessary.  zClone will
 upload up to `--transfers` chunks at the same time (shared among all
 uploads).
 
@@ -68432,7 +68432,7 @@ When files are written, they will be written to both `remote:dir` and `/local`.
 As many remotes as desired can be added to `upstreams` but there should only be
 one `:writeback` tag.
 
-Zclone does not manage the `:writeback` remote in any way other than writing
+zClone does not manage the `:writeback` remote in any way other than writing
 files back to it. So if you need to expire old files or manage the size then you
 will have to do this yourself.
 
@@ -68932,7 +68932,7 @@ The chunk size is currently fixed 10 MB.
 
 ### Sharepoint Online
 
-Zclone can be used with Sharepoint provided by OneDrive for Business
+zClone can be used with Sharepoint provided by OneDrive for Business
 or Office365 Education Accounts.
 This feature is only needed for a few of these Accounts,
 mostly Office365 Education ones. These accounts are sometimes not
@@ -69009,15 +69009,15 @@ As SharePoint does some special things with uploaded documents, you won't be
 able to use the documents size or the documents hash to compare if a file has
 been changed since the upload / which file is newer.
 
-For Zclone calls copying files (especially Office files such as .docx, .xlsx, etc.)
+For zClone calls copying files (especially Office files such as .docx, .xlsx, etc.)
 from/to SharePoint (like copy, sync, etc.), you should append these flags to ensure
-Zclone uses the "Last Modified" datetime property to compare your documents:
+zClone uses the "Last Modified" datetime property to compare your documents:
 
 ```text
 --ignore-size --ignore-checksum --update
 ```
 
-## Zclone
+## zClone
 
 Use this option if you are hosting remotes over WebDAV provided by zclone.
 Read [zclone serve webdav](commands/zclone_serve_webdav/) for more details.
@@ -69401,7 +69401,7 @@ too soon causes these errors. Yandex support recommend waiting
 1.5s - 3s after each upload.
 
 Having a Yandex Mail account is mandatory to use the Yandex.Disk subscription.
-Token generation will work without a mail account, but Zclone won't be able to
+Token generation will work without a mail account, but zClone won't be able to
 complete any actions.
 
 ```text
@@ -69486,7 +69486,7 @@ y/e/d>
 See the [remote setup docs](//remote_setup/) for how to set it up on a
 machine without an internet-connected web browser available.
 
-Zclone runs a webserver on your local computer to collect the
+zClone runs a webserver on your local computer to collect the
 authorization token from Zoho Workdrive. This is only from the moment
 your browser is opened until the token is returned.
 The webserver runs on `http://127.0.0.1:53682/`.
@@ -69853,7 +69853,7 @@ easier not to.
 
 ### Modification times
 
-Zclone reads and writes the modification times using an accuracy determined
+zClone reads and writes the modification times using an accuracy determined
 by the OS. Typically this is 1ns on Linux, 10 ns on Windows and 1 Second
 on OS X.
 
@@ -69967,7 +69967,7 @@ identified by their GUID, e.g. `\\?\Volume{b75e2c83-0000-0000-0000-602f00000000}
 
 #### Long paths
 
-Zclone handles long paths automatically, by converting all paths to
+zClone handles long paths automatically, by converting all paths to
 [extended-length path format](https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation),
 which allows paths up to 32,767 characters.
 
@@ -70188,7 +70188,7 @@ $ zclone -q ls root
         0 file2
 ```
 
-**NB** Zclone (like most unix tools such as `du`, `rsync` and `tar`)
+**NB** zClone (like most unix tools such as `du`, `rsync` and `tar`)
 treats a bind mount to the same device as being on the same
 filesystem.
 
@@ -70269,7 +70269,7 @@ Properties:
 
 Assume the Stat size of links is zero (and read them instead) (deprecated).
 
-Zclone used to use the Stat size of links as the link size, but this fails in quite a few places:
+zClone used to use the Stat size of links as the link size, but this fails in quite a few places:
 
 - Windows
 - On some virtual filesystems (such ash LucidLink)
@@ -70292,7 +70292,7 @@ Apply unicode NFC normalization to paths and filenames.
 This flag can be used to normalize file names into unicode NFC form
 that are read from the local filesystem.
 
-Zclone does not normally touch the encoding of file names it reads from
+zClone does not normally touch the encoding of file names it reads from
 the file system.
 
 This can be useful when using macOS as it normally provides decomposed (NFD)
@@ -71899,10 +71899,10 @@ Options:
     - [Selectel](//s3/#selectel) (Nick Craig-Wood)
 - Security fixes
   - serve sftp: Resolve CVE-2024-45337 - Misuse of ServerConfig.PublicKeyCallback may cause authorization bypass (dependabot)
-    - Zclone was **not** vulnerable to this.
+    - zClone was **not** vulnerable to this.
     - See <https://github.com/advisories/GHSA-v778-237x-gjrc>
   - build: Update golang.org/x/net to v0.33.0 to fix CVE-2024-45338 - Non-linear parsing of case-insensitive content (Nick Craig-Wood)
-    - Zclone was **not** vulnerable to this.
+    - zClone was **not** vulnerable to this.
     - See <https://github.com/advisories/GHSA-w32m-9786-jp63>
 - New Features
   - accounting: Write the current bwlimit to the log on SIGUSR2 (Nick Craig-Wood)
@@ -72349,10 +72349,10 @@ Options:
 [See commits](/)
 
 - Major features
-  - Zclone will now sync directory modification times if the backend supports it.
+  - zClone will now sync directory modification times if the backend supports it.
     - This can be disabled with [--no-update-dir-modtime](//docs/#no-update-dir-modtime)
     - See [the overview](//overview/#features) and look for the `D` flags in the `ModTime` column to see which backends support it.
-  - Zclone will now sync directory metadata if the backend supports it when `-M`/`--metadata` is in use.
+  - zClone will now sync directory metadata if the backend supports it when `-M`/`--metadata` is in use.
     - See [the overview](//overview/#features) and look for the `D` flags in the `Metadata` column to see which backends support it.
   - Bisync has received many updates see below for more details or [bisync's changelog](//bisync/#changelog)
 - Removed backends
@@ -75534,7 +75534,7 @@ all the docs and Edward Barker for helping re-write the front page.
   - rc
     - Add ability to stop async jobs (Aleksandar Jankovic)
     - Return current settings if core/bwlimit called without parameters (Nick Craig-Wood)
-    - Zclone-WebUI integration with zclone (Chaitanya Bankanhal)
+    - zClone-WebUI integration with zclone (Chaitanya Bankanhal)
     - Added command line parameter to control the cross origin resource sharing (CORS) in the rcd. (Security Improvement) (Chaitanya Bankanhal)
     - Add anchor tags to the docs so links are consistent (Nick Craig-Wood)
     - Remove _async key from input parameters after parsing so later operations won't get confused (buengese)
@@ -76479,7 +76479,7 @@ Point release to fix hubic and azureblob backends.
   - Offline uploading
   - Remote control support for path flushing
 - Amazon cloud drive
-  - Zclone no longer has any working keys - disable integration tests
+  - zClone no longer has any working keys - disable integration tests
   - Implement DirChangeNotify to notify cache/vfs/mount of changes
 - Azureblob
   - Don't check for bucket/container presence if listing was OK
@@ -77500,7 +77500,7 @@ supports it. Some backends do not support it -- see
 that empty directories are not synced by default (this can be enabled with
 `--create-empty-src-dirs`.)
 
-### Zclone struggles with millions of files in a directory/bucket
+### zClone struggles with millions of files in a directory/bucket
 
 Currently zclone loads each directory/bucket entirely into memory before
 using it.  Since each zclone object takes 0.5k-1k of memory this can take
@@ -77513,12 +77513,12 @@ the bucket.
 ### Bucket-based remotes and folders
 
 Bucket-based remotes (e.g. S3/GCS/Swift/B2) do not have a concept of
-directories.  Zclone therefore cannot create directories in them which
+directories.  zClone therefore cannot create directories in them which
 means that empty directories on a bucket-based remote will tend to
 disappear.
 
 Some software creates empty keys ending in `/` as directory markers.
-Zclone doesn't do this as it potentially creates more objects and
+zClone doesn't do this as it potentially creates more objects and
 costs more.  This ability may be added in the future (probably via a
 flag/option).
 
@@ -77540,7 +77540,7 @@ work on all the remote storage systems.
 
 ### Can I copy the config from one machine to another
 
-Sure!  Zclone stores all of its config in a single file.  If you want
+Sure!  zClone stores all of its config in a single file.  If you want
 to find this file, run `zclone config file` which will tell you where
 it is.
 
@@ -77566,7 +77566,7 @@ zclone config touch
 
 ### Can zclone sync directly from drive to s3
 
-Zclone can sync between two remote cloud storage systems just fine.
+zClone can sync between two remote cloud storage systems just fine.
 
 Note that it effectively downloads the file and uploads it again, so
 the node running zclone would need to have lots of bandwidth.
@@ -77603,7 +77603,7 @@ make duplicates.
 
 ### Why doesn't zclone support partial transfers / binary diffs like rsync?
 
-Zclone stores each file you transfer as a native object on the remote
+zClone stores each file you transfer as a native object on the remote
 cloud storage system.  This means that you can see the files you
 upload as expected using alternative access methods (e.g. using the
 Google Drive web interface).  There is a 1:1 mapping between files on
@@ -77685,7 +77685,7 @@ support an HTTP CONNECT proxy (
 [--ftp-http-proxy](///ftp/#ftp-http-proxy) and
 [--sftp-http-proxy](///ftp/#sftp-http-proxy) )
 
-### Zclone gives x509 SSL root certificates error
+### zClone gives x509 SSL root certificates error
 
 `x509: failed to load system roots and no roots provided` means that `zclone` can't
 find the SSL root certificates.  Likely you are running `zclone` on a NAS with
@@ -77694,7 +77694,7 @@ a cut-down Linux OS, or possibly on Solaris.
 `x509: certificate signed by unknown authority` error may occur on outdated systems,
 where `zclone` can't verify the server with the SSL root certificates.
 
-Zclone (via the Go runtime) tries to load the root certificates from
+zClone (via the Go runtime) tries to load the root certificates from
 these places on Linux.
 
 ```text
@@ -77720,7 +77720,7 @@ On macOS, install a reviewed CA bundle through your approved local software
 distribution process, then specify it with the [--ca-cert](//docs/#ca-cert-stringarray)
 flag when required.
 
-### Zclone gives Failed to load config file: function not implemented error
+### zClone gives Failed to load config file: function not implemented error
 
 Likely this means that you are running zclone on Linux version not
 supported by the go runtime, ie earlier than version 2.6.23.
@@ -77784,9 +77784,9 @@ synced. By default, zclone only gets 10,000 files ahead in a sync so as
 not to use up too much memory. You can change this default with the
 [--max-backlog](//docs/#max-backlog-int) flag.
 
-### Zclone is using too much memory or appears to have a memory leak
+### zClone is using too much memory or appears to have a memory leak
 
-Zclone is written in Go which uses a garbage collector.  The default
+zClone is written in Go which uses a garbage collector.  The default
 settings for the garbage collector mean that it runs when the heap
 size has doubled.
 
@@ -77812,7 +77812,7 @@ From v1.70 zclone also has the [--max-buffer-memory](//docs/#max-buffer-memory)
 flag which helps particularly when multi-thread transfers are using
 too much memory.
 
-### Zclone changes fullwidth Unicode punctuation marks in file names
+### zClone changes fullwidth Unicode punctuation marks in file names
 
 For example: On a Windows system, you have a file with name `Test：1.jpg`,
 where `：` is the Unicode fullwidth colon symbol. When using zclone

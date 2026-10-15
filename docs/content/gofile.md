@@ -1,6 +1,6 @@
 ---
 title: "Gofile"
-description: "Zclone docs for Gofile"
+description: "zClone docs for Gofile"
 versionIntroduced: "v1.68"
 ---
 
@@ -264,7 +264,7 @@ you attempt to upload more than that you will get
 Gofile is capable of having files with duplicated file names. For
 instance two files called `hello.txt` in the same directory.
 
-Zclone cannot sync that to a normal file system but it can be fixed
+zClone cannot sync that to a normal file system but it can be fixed
 with the `zclone dedupe` command.
 
 Duplicated files cause problems with the syncing and you will see

@@ -3,11 +3,11 @@
 This file provides guidance to AI coding agents (e.g. Claude Code, Codex, Cursor,
 Gemini CLI, and similar tools) when working with code in this repository.
 
-Zclone welcomes AI-assisted contributions, but the expectation is that you, the human submitter, understand every line you propose and have compiled and tested it against real zclone code - not just generated it. See the "AI-assisted contributions" section of [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+zClone welcomes AI-assisted contributions, but the expectation is that you, the human submitter, understand every line you propose and have compiled and tested it against real zclone code - not just generated it. See the "AI-assisted contributions" section of [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
 ## Project Overview
 
-Zclone is a Go command-line program for syncing files and directories across
+zClone is a Go command-line program for syncing files and directories across
 local, network, and cloud storage. It is an independently maintained derivative
 of rclone, created for a locally controlled and restricted-system-friendly build
 profile. Read [FORK.md](FORK.md) before changing project identity, licensing,
@@ -15,17 +15,17 @@ attribution, module paths, update behavior, or upstream synchronization policy.
 
 ## Fork and Attribution Guardrails
 
-- Treat pre-fork code as rclone-derived work, not as original Zclone work. Keep
+- Treat pre-fork code as rclone-derived work, not as original zClone work. Keep
   [COPYING](COPYING), [NOTICE](NOTICE), and the upstream credit in the README.
 - Preserve Git authorship. Do not squash the inherited history into a new root,
   rewrite contributor identities, or replace upstream copyright notices with the
   downstream maintainer's name.
-- Do not describe rclone contributors as Zclone maintainers or imply that rclone
-  endorses or supports Zclone. Current downstream ownership is documented in
+- Do not describe rclone contributors as zClone maintainers or imply that rclone
+  endorses or supports zClone. Current downstream ownership is documented in
   [MAINTAINERS.md](MAINTAINERS.md).
 - When porting an upstream commit, prefer `git cherry-pick -x` when practical.
   Otherwise identify the upstream commit or range in the downstream commit
-  message and describe any Zclone-specific adaptation.
+  message and describe any zClone-specific adaptation.
 - Avoid global `rclone` to `zclone` replacements. Historical text, protocol/API
   identifiers, provider integration values, migration compatibility, licenses,
   vendored files, and generated files may need to retain upstream names.
@@ -34,9 +34,9 @@ attribution, module paths, update behavior, or upstream synchronization policy.
 
 ## General Notes
 
-**We take backwards compatibility very seriously.** PRs should not change the observable behaviour of existing commands, flags or rc API without very good reason. Zclone does not try to preserve a stable Go API but try not to change it gratuitously.
+**We take backwards compatibility very seriously.** PRs should not change the observable behaviour of existing commands, flags or rc API without very good reason. zClone does not try to preserve a stable Go API but try not to change it gratuitously.
 
-Zclone operates with a lot of different backends, so **compatibility is key**. It is the backend integration tests which guarantee that compatibility. Changes should consider both known and unknown backends and should take care not to break functionality of existing installations.
+zClone operates with a lot of different backends, so **compatibility is key**. It is the backend integration tests which guarantee that compatibility. Changes should consider both known and unknown backends and should take care not to break functionality of existing installations.
 
 The core parts of zclone under `fs` and `vfs` need to work with all backends and **backend specific hacks won't be merged**. Fixes likely need to go in the relevant backend or if new behaviour is really needed, a new Feature flag needs to be added.
 

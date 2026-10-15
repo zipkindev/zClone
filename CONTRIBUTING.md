@@ -2,7 +2,7 @@
 
 This is a short guide on how to contribute things to zclone.
 
-Zclone is a downstream derivative of rclone, not an official rclone project.
+zClone is a downstream derivative of rclone, not an official rclone project.
 Before changing project identity, upstream-derived code, or attribution, read
 [FORK.md](FORK.md) and preserve [COPYING](COPYING) and [NOTICE](NOTICE).
 
@@ -15,7 +15,7 @@ When filing an issue, please include the following information if
 possible as well as a description of the problem.  Make sure you test
 with the [latest beta of zclone](/):
 
-- Zclone version (e.g. output from `zclone version`)
+- zClone version (e.g. output from `zclone version`)
 - Which OS you are using and how many bits (e.g. Windows 10, 64 bit)
 - The command you were trying to run (e.g. `zclone copy /tmp remote:tmp`)
 - A log of the command with the `-vv` flag (e.g. output from
@@ -30,7 +30,7 @@ like to implement then please submit a pull request via GitHub.
 
 If it is a big feature, open an issue first so it can be discussed.
 
-To prepare a pull request, fork or clone the Zclone repository hosted by your
+To prepare a pull request, fork or clone the zClone repository hosted by your
 project owner.
 
 Then [install Git](https://git-scm.com/downloads) and set your public contribution
@@ -117,7 +117,7 @@ or [squash your commits](#squashing-your-commits).
 ## AI-assisted contributions
 
 You are welcome to use AI coding assistants (Claude Code, Codex, Cursor, Gemini
-CLI, and similar) to help write your contribution. Zclone has an
+CLI, and similar) to help write your contribution. zClone has an
 [AGENTS.md](AGENTS.md) file at the top of the repository describing the project's
 conventions; point your tool at it so the code it produces matches zclone's
 style.
@@ -183,7 +183,7 @@ git push --force origin my-new-feature
 ### Basing your changes on the latest main branch
 
 To base your changes on the latest version of the
-[Zclone main branch](https://github.com/zipkindev/zClone):
+[zClone main branch](https://github.com/zipkindev/zClone):
 
 ```console
 git checkout main
@@ -193,7 +193,7 @@ git checkout my-new-feature
 git rebase main
 ```
 
-Here, `origin` means the Zclone repository or your Zclone fork. The separate
+Here, `origin` means the zClone repository or your zClone fork. The separate
 `upstream` remote is reserved for rclone; do not merge `upstream/master` as a
 routine branch update. Follow [the upstream-porting guidance](FORK.md#tracking-upstream)
 when intentionally importing rclone changes.
@@ -232,7 +232,7 @@ more complex situation.
 
 ### Continuous Integration
 
-Zclone is verified on a controlled self-hosted runner using the local toolchain
+zClone is verified on a controlled self-hosted runner using the local toolchain
 and committed dependency tree. See `ci/README.md`; hosted CI services are not a
 build dependency of this distribution.
 
@@ -323,7 +323,7 @@ your controlled test infrastructure.
 
 ## Code Organisation
 
-Zclone code is organised into a small number of top level directories
+zClone code is organised into a small number of top level directories
 with modules beneath.
 
 - backend - the zclone backends for interfacing to cloud providers -
@@ -529,8 +529,8 @@ Fixes #1498
 ## Adding a dependency
 
 Review new dependencies in a controlled environment, then bring the reviewed
-source, `go.mod`, `go.sum`, and regenerated `vendor/` tree into Zclone together.
-Run `make source-manifest` in the same change. The normal Zclone build never
+source, `go.mod`, `go.sum`, and regenerated `vendor/` tree into zClone together.
+Run `make source-manifest` in the same change. The normal zClone build never
 downloads a module.
 
 ## Updating a dependency
@@ -711,7 +711,7 @@ Then, run `go build -buildmode=plugin -o PLUGIN_NAME.so .` to build the plugin.
 
 ## Keeping a backend or command out of tree
 
-Zclone was designed to be modular so it is very easy to keep a backend
+zClone was designed to be modular so it is very easy to keep a backend
 or a command out of the main zclone source tree.
 
 So for example if you had a backend which accessed your proprietary

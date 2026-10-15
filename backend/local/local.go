@@ -137,7 +137,7 @@ skipped.`,
 				Name: "zero_size_links",
 				Help: `Assume the Stat size of links is zero (and read them instead) (deprecated).
 
-Zclone used to use the Stat size of links as the link size, but this fails in quite a few places:
+zClone used to use the Stat size of links as the link size, but this fails in quite a few places:
 
 - Windows
 - On some virtual filesystems (such ash LucidLink)
@@ -155,7 +155,7 @@ So zclone now always reads the link.
 This flag can be used to normalize file names into unicode NFC form
 that are read from the local filesystem.
 
-Zclone does not normally touch the encoding of file names it reads from
+zClone does not normally touch the encoding of file names it reads from
 the file system.
 
 This can be useful when using macOS as it normally provides decomposed (NFD)

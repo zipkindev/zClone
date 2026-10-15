@@ -43,7 +43,7 @@ the destination from the sync with a filter rule or by putting an
 exclude-if-present file inside the destination directory and sync to a
 destination that is inside the source directory.
 
-Zclone will sync the modification times of files and directories if
+zClone will sync the modification times of files and directories if
 the backend supports it. If metadata syncing is required then use the
 `--metadata` flag.
 

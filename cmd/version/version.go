@@ -116,7 +116,7 @@ func GetVersion(ctx context.Context, url string) (v *semver.Version, vs string, 
 
 // CheckVersion reports that this local build has no configured release service.
 func CheckVersion(context.Context) error {
-	return errors.New("version checking is disabled because this Zclone build has no configured release service")
+	return errors.New("version checking is disabled because this zClone build has no configured release service")
 }
 
 // Print info about a build module

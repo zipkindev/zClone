@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a vendored, standalone Zclone release archive for one platform."""
+"""Build a vendored, standalone zClone release archive for one platform."""
 import argparse
 import hashlib
 import json

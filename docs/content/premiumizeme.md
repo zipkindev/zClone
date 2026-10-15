@@ -1,6 +1,6 @@
 ---
 title: "premiumize.me"
-description: "Zclone docs for premiumize.me"
+description: "zClone docs for premiumize.me"
 versionIntroduced: "v1.49"
 ---
 

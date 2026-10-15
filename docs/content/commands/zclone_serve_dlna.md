@@ -16,12 +16,12 @@ this server in the LAN and play audio/video from it. VLC is also
 supported. Service discovery uses UDP multicast packets (SSDP) and
 will thus only work on LANs.
 
-Zclone will list all files present in the remote, without filtering
+zClone will list all files present in the remote, without filtering
 based on media formats or file extensions. Additionally, there is no
 media transcoding support. This means that some players might show
 files that they are not able to play back correctly.
 
-Zclone will add external subtitle files (.srt) to videos if they have the same
+zClone will add external subtitle files (.srt) to videos if they have the same
 filename as the video file itself (except the extension), either in the same
 directory as the video, or in a "Subs" subdirectory.
 
@@ -232,7 +232,7 @@ When using this mode it is recommended that `--buffer-size` is not set
 too large and `--vfs-read-ahead` is set large if required.
 
 **IMPORTANT** not all file systems support sparse files. In particular
-FAT/exFAT do not. Zclone will perform very badly if the cache
+FAT/exFAT do not. zClone will perform very badly if the cache
 directory is on a filesystem which doesn't support sparse files and it
 will log an ERROR message if one is detected.
 
@@ -288,7 +288,7 @@ The chunking behaves differently depending on the `--vfs-read-chunk-streams` par
 
 ### `--vfs-read-chunk-streams` == 0
 
-Zclone will start reading a chunk of size `--vfs-read-chunk-size`,
+zClone will start reading a chunk of size `--vfs-read-chunk-size`,
 and then double the size for each read. When `--vfs-read-chunk-size-limit` is
 specified, and greater than `--vfs-read-chunk-size`, the chunk size for each
 open file will get doubled only until the specified value is reached. If the
@@ -306,7 +306,7 @@ The chunks will not be buffered in memory.
 
 ### `--vfs-read-chunk-streams` > 0
 
-Zclone reads `--vfs-read-chunk-streams` chunks of size
+zClone reads `--vfs-read-chunk-streams` chunks of size
 `--vfs-read-chunk-size` concurrently. The size for each read will stay
 constant.
 

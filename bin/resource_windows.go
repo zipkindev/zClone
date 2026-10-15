@@ -1,4 +1,4 @@
-// Utility program to generate Zclone-specific Windows resource system object
+// Utility program to generate zClone-specific Windows resource system object
 // file (.syso), that can be picked up by a following go build for embedding
 // version information and icon resources into a zclone binary.
 //
@@ -94,12 +94,12 @@ func main() {
 	vi.FixedFileInfo.ProductVersion.Build = 0
 
 	// StringFileInfo
-	vi.StringFileInfo.CompanyName = "Zclone"
-	vi.StringFileInfo.ProductName = "Zclone"
-	vi.StringFileInfo.FileDescription = "Zclone"
+	vi.StringFileInfo.CompanyName = "zClone"
+	vi.StringFileInfo.ProductName = "zClone"
+	vi.StringFileInfo.FileDescription = "zClone"
 	vi.StringFileInfo.InternalName = (*binary)[:len(*binary)-len(binaryExt)]
 	vi.StringFileInfo.OriginalFilename = *binary
-	vi.StringFileInfo.LegalCopyright = "The Zclone Authors"
+	vi.StringFileInfo.LegalCopyright = "The zClone Authors"
 	vi.StringFileInfo.FileVersion = stringVersion
 	vi.StringFileInfo.ProductVersion = stringVersion
 

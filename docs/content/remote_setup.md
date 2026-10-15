@@ -74,7 +74,7 @@ y/e/d>
 
 ## Configuring by copying the config file
 
-Zclone stores all of its configuration in a single file. This can easily be
+zClone stores all of its configuration in a single file. This can easily be
 copied to configure a remote zclone (although some backends do not support
 reusing the same configuration, consult your backend documentation to be
 sure).

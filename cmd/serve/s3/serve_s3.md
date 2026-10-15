@@ -82,7 +82,7 @@ is defined like this:
 ```ini
 [serves3]
 type = s3
-provider = Zclone
+provider = zClone
 endpoint = http://127.0.0.1:8080/
 access_key_id = ACCESS_KEY_ID
 secret_access_key = SECRET_ACCESS_KEY

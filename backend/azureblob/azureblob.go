@@ -219,7 +219,7 @@ If true (the default) then zclone will use the Copy Blob API for
 copies to the same storage account even when the size is above the
 copy_cutoff.
 
-Zclone assumes that the same storage account means the same config
+zClone assumes that the same storage account means the same config
 and does not check for the same storage account in different configs.
 
 There should be no need to change this value.

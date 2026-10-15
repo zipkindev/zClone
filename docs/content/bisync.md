@@ -10,7 +10,7 @@ versionIntroduced: "v1.58"
 Make sure you have read and understood the entire
 [manual](//bisync) (especially the [Limitations](#limitations)
 section) before using, or data loss can result. Questions can be asked in the
-[Zclone Forum](/).
+[zClone Forum](/).
 
 ## Getting started {#getting-started}
 
@@ -1428,7 +1428,7 @@ copied to Path1 then the threatened deletes on Path2 may be disregarded.
 
 ### Retries
 
-Zclone has built-in retries. If you run with `--verbose` you'll see
+zClone has built-in retries. If you run with `--verbose` you'll see
 error and retry messages such as shown below. This is usually not a bug.
 If at the end of the run, you see `Bisync successful` and not
 `Bisync critical error` or `Bisync aborted` then the run was successful,
@@ -1436,7 +1436,7 @@ and you can ignore the error messages.
 
 The following run shows an intermittent fail. Lines *5* and *6* are
 low-level messages. Line *6* is a bubbled-up *warning* message, conveying
-the error. Zclone normally retries failing commands, so there may be
+the error. zClone normally retries failing commands, so there may be
 numerous such messages in the log.
 
 Since there are no final error/warning messages on line *7*, zclone has
@@ -1532,7 +1532,7 @@ To ignore Google Docs entirely, use
 
 ### Cron {#cron}
 
-Zclone does not yet have a built-in capability to monitor the local file
+zClone does not yet have a built-in capability to monitor the local file
 system for changes and must be blindly run periodically.
 On Windows this can be done using a *Task Scheduler*,
 on Linux you can use *Cron* which is described below.

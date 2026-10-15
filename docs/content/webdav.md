@@ -1,6 +1,6 @@
 ---
 title: "WebDAV"
-description: "Zclone docs for WebDAV"
+description: "zClone docs for WebDAV"
 versionIntroduced: "v1.39"
 ---
 
@@ -399,7 +399,7 @@ The chunk size is currently fixed 10 MB.
 
 ### Sharepoint Online
 
-Zclone can be used with Sharepoint provided by OneDrive for Business
+zClone can be used with Sharepoint provided by OneDrive for Business
 or Office365 Education Accounts.
 This feature is only needed for a few of these Accounts,
 mostly Office365 Education ones. These accounts are sometimes not
@@ -476,15 +476,15 @@ As SharePoint does some special things with uploaded documents, you won't be
 able to use the documents size or the documents hash to compare if a file has
 been changed since the upload / which file is newer.
 
-For Zclone calls copying files (especially Office files such as .docx, .xlsx, etc.)
+For zClone calls copying files (especially Office files such as .docx, .xlsx, etc.)
 from/to SharePoint (like copy, sync, etc.), you should append these flags to ensure
-Zclone uses the "Last Modified" datetime property to compare your documents:
+zClone uses the "Last Modified" datetime property to compare your documents:
 
 ```text
 --ignore-size --ignore-checksum --update
 ```
 
-## Zclone
+## zClone
 
 Use this option if you are hosting remotes over WebDAV provided by zclone.
 Read [zclone serve webdav](commands/zclone_serve_webdav/) for more details.

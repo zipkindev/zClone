@@ -211,7 +211,7 @@ cat id_rsa-cert.pub id_rsa > merged_key
 By default zclone will not check the server's host key for validation.
 This can allow an attacker to replace a server with their own and if
 you use password authentication then this can lead to that password
-being exposed. Zclone will produce a warning `No host key validation
+being exposed. zClone will produce a warning `No host key validation
 is being performed` each time the backend is started in this mode.
 
 Host key matching, using standard ssh `known_hosts` files can be
@@ -287,7 +287,7 @@ command-line flag.
 The recommended workflow is:
 
 1. For the very first connection to a new remote, run zclone once with
-   `--sftp-pin-host-key`. Zclone records the server's host key into the
+   `--sftp-pin-host-key`. zClone records the server's host key into the
    remote's `host_keys` config option and logs the SHA256 fingerprint:
 
    ```console
@@ -296,11 +296,11 @@ The recommended workflow is:
    2026/01/01 12:00:00 NOTICE: sftp://sftpuser@example.com:22/: Pinned ssh-ed25519 host key SHA256:abc... for example.com:22 in config
    ```
 
-2. For every subsequent run, omit the flag. Zclone consults the pinned
+2. For every subsequent run, omit the flag. zClone consults the pinned
    `host_keys` and refuses the connection on any mismatch.
 
 This is a strict improvement over the default of no host key validation,
-but note that the first connection itself is unauthenticated. Zclone
+but note that the first connection itself is unauthenticated. zClone
 detects later key changes, not a man-in-the-middle who is already on-path
 the first time you connect. Ideally do the first connection over a trusted
 network or cross-check the fingerprint zclone logs against one provided out
@@ -401,7 +401,7 @@ and the possibility to execute commands. This includes [checksum](#checksum),
 and in some cases also [about](#about-command). The shell commands that
 must be executed may be different on different type of shells, and also
 quoting/escaping of file path arguments containing special characters may
-be different. Zclone therefore needs to know what type of shell it is,
+be different. zClone therefore needs to know what type of shell it is,
 and if shell access is available at all.
 
 Most servers run on some version of Unix, and then a basic Unix shell can
@@ -413,7 +413,7 @@ be set up to use a Unix type shell, e.g. Cygwin bash, the default is to
 use Windows Command Prompt (cmd.exe), and PowerShell is a recommended
 alternative. All of these have behave differently, which zclone must handle.
 
-Zclone tries to auto-detect what type of shell is used on the server,
+zClone tries to auto-detect what type of shell is used on the server,
 first time you access the SFTP remote. If a remote shell session is
 successfully created, it will look for indications that it is CMD or
 PowerShell, with fall-back to Unix if not something else is detected.
@@ -461,7 +461,7 @@ or disable shell access until you know.
 SFTP does not natively support checksums (file hash), but zclone
 is able to use checksumming if the same login has shell access,
 and can execute remote commands. If there is a command that can
-calculate compatible checksums on the remote system, Zclone can
+calculate compatible checksums on the remote system, zClone can
 then be configured to execute this whenever a checksum is needed,
 and read back the results. By default MD5 and SHA-1 are considered,
 but also CRC32, SHA-256, BLAKE3, XXH3 and XXH128 are supported,
@@ -486,7 +486,7 @@ the commands to be executed for calculation of checksums. You can for
 example set a specific path to where the md5sum executable are located,
 or specify some other tool that print checksums in compatible format.
 The value can include command-line arguments, or even shell script blocks
-as with PowerShell. Zclone has subcommands [hashsum](/commands/zclone_hashsum/),
+as with PowerShell. zClone has subcommands [hashsum](/commands/zclone_hashsum/),
 [md5sum](/commands/zclone_md5sum/) and [sha1sum](/commands/zclone_sha1sum/)
 that use compatible format, which means if you have an zclone executable
 on the server it can be used. As mentioned above, they will be automatically
@@ -520,7 +520,7 @@ Modified times are used in syncing and are fully supported.
 Some SFTP servers disable setting/modifying the file modification time after
 upload (for example, certain configurations of ProFTPd with mod_sftp). If you
 are using one of these servers, you can set the option `set_modtime = false` in
-your Zclone backend configuration to disable this behaviour.
+your zClone backend configuration to disable this behaviour.
 
 ### About command
 
@@ -737,14 +737,14 @@ Normally zclone will use its internal ssh library to connect to the
 SFTP server. However it does not implement all possible ssh options so
 it may be desirable to use an external ssh binary.
 
-Zclone ignores all the internal config if you use this option and
+zClone ignores all the internal config if you use this option and
 expects you to configure the ssh binary with the user/host/port and
 any other options you need.
 
 **Important** The ssh command must log in without asking for a
 password so needs to be configured with keys or certificates.
 
-Zclone will run the command supplied either with the additional
+zClone will run the command supplied either with the additional
 arguments "-s sftp" to access the SFTP subsystem or with commands such
 as "md5sum /path/to/file" appended to read checksums.
 

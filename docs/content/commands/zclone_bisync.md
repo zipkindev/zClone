@@ -25,7 +25,7 @@ Bisync is considered an **advanced command**, so use with care.
 Make sure you have read and understood the entire [manual](//bisync)
 (especially the [Limitations](//bisync/#limitations) section)
 before using, or data loss can result. Questions can be asked in the
-[Zclone Forum](/).
+[zClone Forum](/).
 
 See [full bisync description](//bisync/) for details.
 

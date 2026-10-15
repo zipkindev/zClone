@@ -1,16 +1,16 @@
 ---
 title: "FTP"
-description: "Zclone docs for FTP backend"
+description: "zClone docs for FTP backend"
 versionIntroduced: "v1.37"
 ---
 
 # FTP
 
-FTP is the File Transfer Protocol. Zclone FTP support is provided using the
+FTP is the File Transfer Protocol. zClone FTP support is provided using the
 [github.com/jlaffaye/ftp](https://godoc.org/github.com/jlaffaye/ftp)
 package.
 
-[Limitations of Zclone's FTP backend](#limitations)
+[Limitations of zClone's FTP backend](#limitations)
 
 Paths are specified as `remote:path`. If the path does not begin with
 a `/` it is relative to the home directory of the user.  An empty path
@@ -24,7 +24,7 @@ To create an FTP configuration named `remote`, run
 zclone config
 ```
 
-Zclone config guides you through an interactive setup process. A minimal
+zClone config guides you through an interactive setup process. A minimal
 zclone FTP remote definition only requires host, username and password.
 For an anonymous FTP server, see [below](#anonymous-ftp).
 
@@ -571,11 +571,11 @@ Properties:
 
 FTP servers acting as zclone remotes must support `passive` mode.
 The mode cannot be configured as `passive` is the only supported one.
-Zclone's FTP implementation is not compatible with `active` mode
+zClone's FTP implementation is not compatible with `active` mode
 as [the library it uses doesn't support it](https://github.com/jlaffaye/ftp/issues/29).
 This will likely never be supported due to security concerns.
 
-Zclone's FTP backend does not support any checksums but can compare
+zClone's FTP backend does not support any checksums but can compare
 file sizes.
 
 `zclone about` is not supported by the FTP backend. Backends without
@@ -594,7 +594,7 @@ for zclone HTTP based backends - it has less fine grained control.
 
 `--bind` isn't supported.
 
-Zclone's FTP backend could support server-side move but does not
+zClone's FTP backend could support server-side move but does not
 at present.
 
 The `ftp_proxy` environment variable is not currently supported.

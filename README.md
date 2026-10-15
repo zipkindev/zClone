@@ -1,26 +1,104 @@
-# Zclone
+# zClone
 
 [![CI](https://github.com/zipkindev/zClone/actions/workflows/ci.yml/badge.svg)](https://github.com/zipkindev/zClone/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/zipkindev/zClone/actions/workflows/codeql.yml/badge.svg)](https://github.com/zipkindev/zClone/actions/workflows/codeql.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](COPYING)
 [![Go](https://img.shields.io/badge/Go-1.27.0-00ADD8.svg)](toolchain/README.md)
 
-Zclone is a local-first file-transfer and synchronization application written in
+zClone is a local-first file-transfer and synchronization application written in
 Go. It provides one command-line interface for local disks, network filesystems,
 cloud drives, and object stores, with concurrent transfers, filtering, retries,
 and verification. An embedded browser interface, a remote-control API, filesystem
 mounts, and protocol servers expose the same storage engine in other workflows.
 
 > [!IMPORTANT]
-> Zclone is an independently maintained derivative of
+> zClone is an independently maintained derivative of
 > [rclone](https://github.com/rclone/rclone). Most of this code and its Git history
-> were created by Nick Craig-Wood and the rclone contributors. Zclone is not
+> were created by Nick Craig-Wood and the rclone contributors. zClone is not
 > affiliated with or endorsed by the rclone project. See [FORK.md](FORK.md) for
 > the fork point, project relationship, and upstream synchronization guidance.
 
+## Install or update
+
+**Windows x64:** download [zClone-Updater.exe](https://github.com/zipkindev/zClone/releases/latest/download/zClone-Updater.exe),
+double-click it, choose an installation folder with **Browse**, then click
+**Install / Update**. The window shows download and installation progress.
+Run the same updater again when you want the latest stable release; it remembers
+your folder. Close running zClone processes before updating.
+
+The updater compresses the installed executable automatically to save disk space.
+In Windows QA, native compression roughly halved executable disk usage without a
+material startup or memory penalty. It requires a filesystem that supports native
+executable compression, such as NTFS. Configuration files and PATH are unchanged.
+
+**Other platforms or manual installation:** choose the matching OS and architecture
+on the [releases page](https://github.com/zipkindev/zClone/releases/latest), extract
+the archive, and run `zclone`. Windows mounts require WinFsp. The updater is for
+Windows x64; Windows ARM64 users should use the ARM64 archive.
+
+[Installation details and command-line updater options](RELEASE.md#windows-updater)
+
+## Recovery transfers that can resume after interruption
+
+A large disk-image upload should not have to start over because a process or
+connection stopped. A pipeline such as `image → gzip → rcat` feeds an upload
+from stdin; once that process exits, it has no durable checkpoint from which to
+resume that compressed stream. Upstream [rclone documents that limitation](https://rclone.org/commands/rclone_rcat/).
+
+zClone includes **`bin/zclone-recover.py`**, a separate recovery helper that:
+
+- Splits an unchanged image into independently compressed chunks, staging one at a time.
+- Saves source identity, byte ranges, sizes, and SHA-256 hashes in a durable journal.
+- Reads uploaded content back and verifies it before marking a chunk complete.
+- Reconciles interrupted work on restart and skips completed chunks. If RAM
+  staging was lost, it can regenerate an unfinished chunk from the unchanged source.
+- Restores a new image while checking chunk coverage, compressed content, and
+  uncompressed sizes and hashes.
+
+On a POSIX system with Python 3.9 or newer, for example:
+
+```console
+python3 bin/zclone-recover.py upload /safe/source.img drive:recovery/run-001 \
+  --journal /healthy-disk/state/run-001.jsonl \
+  --stage-dir /healthy-disk/staging --zclone ./zclone
+```
+
+Rerun the same command with the same journal to continue. The source must remain
+unchanged, and the journal must be on healthy persistent storage. This helper
+adds checkpointed image recovery; ordinary `copy` and `rcat` do not automatically
+gain byte-offset resume for arbitrary interrupted stdin streams.
+
+[Upload, resume, verification, and restore instructions](docs/content/recovery.md)
+
+### Tested on QNAP, Google Drive, and TNAS
+
+The `QNAP-NAS-Recovery` project used the published zClone v0.1.0 client and helper
+in a QNAP → Google Drive → TNAS workflow. Its retained test records show:
+
+| Check | Verified result |
+| --- | --- |
+| QNAP process interruption | Four forced stops—during staging, preparation, upload, and verification—resumed after RAM staging was removed; each restored the same 8 MiB image. |
+| Drive → TNAS interruption | A downloader stopped after accepting the first chunk, restarted against its persistent journal, and restored the matching 8 MiB test image. |
+| Completed metadata transfer | All 128 chunks / 64 GiB completed. The acquisition, reconstructed TNAS image, and independent analysis copy had matching SHA-256. |
+
+The recovery project's coordinator added a bounded Drive buffer, encrypted
+transport, durable TNAS acceptance, and acknowledgments before removing temporary
+cloud payloads. That orchestration is separate from the packaged helper. The
+result demonstrates verified transport of this metadata image; it does not prove
+that a live capture was coherent or that all files on the damaged NAS were recovered.
+
+[Recovery guarantees, evidence summary, and limits](docs/content/recovery.md#qnap-drive-tnas-validation)
+
+## What's new in v0.1.2
+
+- A Windows updater window with a folder picker and visible progress; no flags are needed.
+- The chosen install folder is remembered for later updates.
+- Consistent **zClone** product naming in the interface, documentation, and releases.
+- A recovery guide explaining the checkpointed-upload gap and the verified QNAP/Drive/TNAS workflow. The recovery helper itself shipped in v0.1.0.
+
 ## Why this project exists
 
-Zclone packages the rclone storage engine for environments where builds and
+zClone packages the rclone storage engine for environments where builds and
 deployment must remain locally controlled. It began as a practical adaptation
 for a restricted work laptop and evolved into a reproducible downstream
 distribution with reviewed vendored dependencies, offline Go module resolution,
@@ -44,12 +122,12 @@ The downstream engineering work is intentionally distinguishable from upstream:
 This repository is best understood as downstream productization and maintenance
 of a mature open-source codebase—not a claim of authorship over rclone itself.
 
-Zclone runs on the machine where you launch it. Ordinary copy and sync commands
+zClone runs on the machine where you launch it. Ordinary copy and sync commands
 run to completion; a persistent service is only needed for workflows such as
 mounting, serving files, or accepting API calls. Remote-to-remote transfers normally
 pass through that machine unless compatible backends support server-side copying.
 
-Zclone is not an implementation of rsync's block-delta protocol. It generally
+zClone is not an implementation of rsync's block-delta protocol. It generally
 transfers changed files rather than only their changed blocks. For large,
 partially modified files on a host that runs rsync, rsync can be faster.
 
@@ -133,7 +211,7 @@ A typical directory copy or sync moves through these stages:
    comparison uses size and modification time; `--checksum` requests size and a
    common hash where available, falling back to size when no common hash exists.
 4. **Queue and transfer.** Transfer workers process changed or missing objects.
-   Compatible backends may copy or move objects server-side; otherwise Zclone
+   Compatible backends may copy or move objects server-side; otherwise zClone
    reads from the source and writes to the destination through the local process.
 5. **Handle failures and account for work.** Request pacing and low-level retries
    handle transient backend errors, while command-level retries can repeat work.
@@ -256,7 +334,7 @@ defaults to `gui`; a password is required unless authentication is explicitly
 disabled with `--no-auth`. Use `--no-open-browser` to open the printed address
 manually, and `--addr` / `--api-addr` to choose listening addresses.
 
-The bundled **Zclone Control** page is a small RC request form. It discovers the
+The bundled **zClone Control** page is a small RC request form. It discovers the
 API endpoint, accepts credentials and a command such as `core/version`, sends an
 empty JSON object, and displays the response. It does not provide a file browser,
 a transfer-planning dashboard, or fields for arbitrary JSON parameters. Although
@@ -296,7 +374,7 @@ library interfaces are experimental.
 
 ## Architectural design
 
-Zclone uses a shared filesystem abstraction so commands and algorithms can work
+zClone uses a shared filesystem abstraction so commands and algorithms can work
 across storage providers without implementing each provider's API themselves.
 
 ```mermaid
@@ -392,47 +470,8 @@ do not make cloud operations offline: those still contact the configured service
 ## Build, installation, and verification
 
 Download platform archives from [GitHub Releases](https://github.com/zipkindev/zClone/releases).
-Zclone has independent version numbers. See [RELEASE.md](RELEASE.md) for the
+zClone has independent version numbers. See [RELEASE.md](RELEASE.md) for the
 version validation hook, explicit bumps, and tag-triggered releases.
-
-### Latest changes: v0.1.1
-
-v0.1.1 is the stable release for the Windows build and compression work:
-
-- Full backend SDK sources and authentication options are retained. The supported
-  Arrow standard-library JSON build tag and a focused Drive download-URL lookup
-  reduce the ordinary executable without removing application features.
-- Windows archives enable WinFsp mount support; using mounts requires WinFsp.
-- `zClone-Updater.exe` downloads the latest stable Windows x64 release, verifies
-  its published SHA-256, and applies native XPRESS4K compression before installing
-  or replacing the executable. No separate compression script is needed.
-- Windows QA measured 38.61 MiB executable disk allocation versus 77.77 MiB
-  ordinary, with about 1% warm-start difference and approximately unchanged
-  memory use. The compressed file has identical bytes and retains its 77.77 MiB
-  logical size. These measurements precede the version increment and vary by
-  system; installation metadata and the updater require additional storage.
-
-Download **[zClone-Updater.exe](https://github.com/zipkindev/zClone/releases/latest/download/zClone-Updater.exe)**
-once and rerun it for future updates:
-
-```powershell
-.\zClone-Updater.exe --install-dir "C:\Tools\zclone"
-```
-
-The first-install default is `%LOCALAPPDATA%\Programs\zclone`. Choose any writable
-destination with `--install-dir`; the updater remembers the last successful
-destination for later runs. An explicit path overrides it. The updater leaves
-configuration and PATH unchanged. It requires HTTPS access to GitHub and a
-filesystem supporting native executable compression. It stages and compresses the
-complete executable after streaming the ZIP to disk, so temporary disk space is
-required. Close running Zclone processes before updating. `--release <tag>` pins
-a release; `--prerelease` explicitly includes prereleases. The updater remains a
-prototype; the ordinary archives remain available for direct installation.
-
-Compatibility, local file operations, archives, encryption, HTTP, RC, GUI, mount
-read/write, update failures, and Defender are covered by Windows CI. Tests use
-disposable data; credentialed provider operations and cold-start performance are
-not part of this qualification. See [RELEASE.md](RELEASE.md) for details.
 
 ### Offline build profile
 
@@ -456,10 +495,10 @@ make macos-installer
 ```
 
 The command prints the generated package path, named
-`build/Zclone-<VERSION>-<architecture>.pkg`. Install that file, for example:
+`build/zClone-<VERSION>-<architecture>.pkg`. Install that file, for example:
 
 ```console
-sudo installer -pkg build/Zclone-v0.1.0-arm64.pkg -target /
+sudo installer -pkg build/zClone-v0.1.0-arm64.pkg -target /
 ```
 
 Use the actual version and architecture printed by the build. The package places
@@ -540,11 +579,11 @@ core design constraint. Contributions should stay focused, use existing shared
 helpers, and include tests that exercise the intended behavior. Backend contract
 tests live in `fstest/fstests`; real-provider testing complements local tests.
 
-Zclone is maintained as a distinct downstream project derived from
+zClone is maintained as a distinct downstream project derived from
 [rclone](https://github.com/rclone/rclone). The original authors remain credited
 in the preserved Git history, and required upstream copyright, license, and
 third-party attribution are retained in [COPYING](COPYING), [NOTICE](NOTICE),
-and `vendor/`. See [FORK.md](FORK.md) for detailed provenance. The Zclone name
+and `vendor/`. See [FORK.md](FORK.md) for detailed provenance. The zClone name
 does not imply affiliation with or endorsement by the rclone project.
 
 ## Security

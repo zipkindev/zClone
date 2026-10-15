@@ -129,7 +129,7 @@ headers. Use the format `Header-Name: value`.
 `--baseurl` controls the URL prefix that zclone serves from.  By default
 zclone will serve from the root.  If you used `--baseurl "/zclone"` then
 zclone would serve from a URL starting with "/zclone/".  This is
-useful if you wish to proxy zclone serve.  Zclone automatically
+useful if you wish to proxy zclone serve.  zClone automatically
 inserts leading and trailing "/" on `--baseurl`, so `--baseurl "zclone"`,
 `--baseurl "/zclone"` and `--baseurl "/zclone/"` are all treated
 identically.

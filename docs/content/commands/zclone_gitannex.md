@@ -12,7 +12,7 @@ Speaks with git-annex over stdin/stdout.
 
 ## Synopsis
 
-Zclone's `gitannex` subcommand enables [git-annex] to store and retrieve content
+zClone's `gitannex` subcommand enables [git-annex] to store and retrieve content
 from an zclone remote. It is meant to be run by git-annex, not directly by
 users.
 

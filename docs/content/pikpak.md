@@ -1,6 +1,6 @@
 ---
 title: "PikPak"
-description: "Zclone docs for PikPak"
+description: "zClone docs for PikPak"
 versionIntroduced: "v1.62"
 ---
 
@@ -230,7 +230,7 @@ in memory.
 If you are transferring large files over high-speed links and you have
 enough memory, then increasing this will speed up the transfers.
 
-Zclone will automatically increase the chunk size when uploading a
+zClone will automatically increase the chunk size when uploading a
 large file of known size to stay below the 10,000 chunks limit.
 
 Increasing the chunk size decreases the accuracy of the progress

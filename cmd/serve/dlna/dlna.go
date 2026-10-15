@@ -102,12 +102,12 @@ this server in the LAN and play audio/video from it. VLC is also
 supported. Service discovery uses UDP multicast packets (SSDP) and
 will thus only work on LANs.
 
-Zclone will list all files present in the remote, without filtering
+zClone will list all files present in the remote, without filtering
 based on media formats or file extensions. Additionally, there is no
 media transcoding support. This means that some players might show
 files that they are not able to play back correctly.
 
-Zclone will add external subtitle files (.srt) to videos if they have the same
+zClone will add external subtitle files (.srt) to videos if they have the same
 filename as the video file itself (except the extension), either in the same
 directory as the video, or in a "Subs" subdirectory.
 

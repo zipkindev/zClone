@@ -1,6 +1,6 @@
-# Zclone maintainers
+# zClone maintainers
 
-Zclone is currently maintained by:
+zClone is currently maintained by:
 
 | Name | GitHub ID | Scope |
 | --- | --- | --- |
@@ -12,4 +12,4 @@ they are not presumed to maintain or support this downstream project. See
 
 Repository ownership rules, when configured, live in
 [`.github/CODEOWNERS`](.github/CODEOWNERS). Do not add an upstream rclone
-maintainer as a Zclone owner without that person's explicit agreement.
+maintainer as a zClone owner without that person's explicit agreement.

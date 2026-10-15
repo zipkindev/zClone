@@ -1,6 +1,6 @@
 ---
 title: "Linkbox"
-description: "Zclone docs for Linkbox"
+description: "zClone docs for Linkbox"
 versionIntroduced: "v1.65"
 ---
 

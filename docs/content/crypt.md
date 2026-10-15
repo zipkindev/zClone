@@ -6,7 +6,7 @@ versionIntroduced: "v1.33"
 
 # Crypt
 
-Zclone `crypt` remotes encrypt and decrypt other remotes.
+zClone `crypt` remotes encrypt and decrypt other remotes.
 
 A remote of type `crypt` does not access a [storage system](//overview/)
 directly, but instead wraps another remote, which in turn accesses
@@ -14,7 +14,7 @@ the storage system. This is similar to how [alias](//alias/),
 [union](//union/), [chunker](//chunker/)
 and a few others work. It makes the usage very flexible, as you can
 add a layer, in this case an encryption layer, on top of any other
-backend, even in multiple layers. Zclone's functionality
+backend, even in multiple layers. zClone's functionality
 can be used as with any other remote, for example you can
 [mount](//commands/zclone_mount/) a crypt remote.
 
@@ -190,7 +190,7 @@ If you reconfigure zclone with the same passwords/passphrases
 elsewhere it will be compatible, but the obscured version will be different
 due to the different salt.
 
-Zclone does not encrypt
+zClone does not encrypt
 
 - file length - this can be calculated within 16 bytes
 - modification time - used for syncing
@@ -350,7 +350,7 @@ Standard
 Obfuscation
 
 This is a simple "rotate" of the filename, with each file having a rot
-distance based on the filename. Zclone stores the distance at the
+distance based on the filename. zClone stores the distance at the
 beginning of the filename. A file called "hello" may become "53.jgnnq".
 
 Obfuscation is not a strong encryption of filenames, but hinders
@@ -816,7 +816,7 @@ This means that
 A version string of the form `-vYYYY-MM-DD-HHMMSS-NNN` on the end of a
 file name (as added by `--b2-versions` / `--s3-versions`) is left in
 plain text so that versioned files can be found. Directory names are
-encrypted in full. Zclone before v1.76 left such a suffix in plain
+encrypted in full. zClone before v1.76 left such a suffix in plain
 text on directory names too, so a directory named like this created by
 an older zclone will appear in listings with a warning but can't be
 opened or removed until renamed on the underlying remote to the name
@@ -837,7 +837,7 @@ used on case insensitive remotes (e.g. Windows, Box, Dropbox, Onedrive etc).
 
 ### Key derivation
 
-Zclone uses `scrypt` with parameters `N=16384, r=8, p=1` with an
+zClone uses `scrypt` with parameters `N=16384, r=8, p=1` with an
 optional user supplied salt (password2) to derive the 32+32+16 = 80
 bytes of key material required.  If the user doesn't supply a salt
 then zclone uses an internal one.

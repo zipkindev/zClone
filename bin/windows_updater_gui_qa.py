@@ -1,0 +1,169 @@
+"""Drive the updater's native Windows controls using disposable release fixtures."""
+import ctypes
+from ctypes import wintypes
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import struct
+import zipfile
+import time
+
+
+def exercise_gui(updater, archive, root, screenshot=None):
+    root.mkdir()
+    user = ctypes.WinDLL('user32', use_last_error=True)
+    user.GetDlgItem.argtypes = [wintypes.HWND, ctypes.c_int]
+    user.GetDlgItem.restype = wintypes.HWND
+    user.SendMessageW.argtypes = [wintypes.HWND, wintypes.UINT, wintypes.WPARAM, wintypes.LPARAM]
+    user.SendMessageW.restype = wintypes.LPARAM
+    user.PostMessageW.argtypes = user.SendMessageW.argtypes
+    user.PostMessageW.restype = wintypes.BOOL
+    user.GetWindowThreadProcessId.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.DWORD)]
+    user.GetClassNameW.argtypes = [wintypes.HWND, wintypes.LPWSTR, ctypes.c_int]
+    user.GetWindowTextW.argtypes = [wintypes.HWND, wintypes.LPWSTR, ctypes.c_int]
+    user.IsWindow.argtypes = [wintypes.HWND]
+    user.IsWindowEnabled.argtypes = [wintypes.HWND]
+    user.IsWindowVisible.argtypes = [wintypes.HWND]
+    callback_type = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
+    user.EnumWindows.argtypes = [callback_type, wintypes.LPARAM]
+    destination = root / 'chosen folder with spaces'
+    destination.mkdir()
+    env = dict(os.environ, LOCALAPPDATA=str(root / 'preferences'))
+    command = [str(updater), '--gui', '--archive', str(archive), '--sha256',
+               hashlib.sha256(archive.read_bytes()).hexdigest()]
+    process = subprocess.Popen(command, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+    def windows(kind):
+        found = []
+        @callback_type
+        def visit(window, parameter):
+            pid = wintypes.DWORD()
+            user.GetWindowThreadProcessId(window, ctypes.byref(pid))
+            name = ctypes.create_unicode_buffer(256)
+            user.GetClassNameW(window, name, len(name))
+            if pid.value == process.pid and name.value == kind and user.IsWindowVisible(window):
+                found.append(window)
+            return True
+        user.EnumWindows(visit, 0)
+        return found
+
+    def wait(predicate, timeout=30):
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            value = predicate()
+            if value:
+                return value
+            if process.poll() is not None:
+                raise AssertionError('Updater GUI exited unexpectedly: ' + str(process.returncode))
+            time.sleep(0.05)
+        raise AssertionError('Timed out waiting for updater GUI')
+
+    def text(control):
+        buffer = ctypes.create_unicode_buffer(4096)
+        user.GetWindowTextW(control, buffer, len(buffer))
+        return buffer.value
+
+    try:
+        window = wait(lambda: windows('zCloneUpdaterWindow'))[0]
+        folder = user.GetDlgItem(window, 101)
+        assert folder and text(folder)
+        assert not (destination / 'zclone.exe').exists(), 'GUI installed before user confirmation'
+        # Open the real shell picker and select an existing disposable folder.
+        user.PostMessageW(window, 0x111, 102, 0)
+        picker = wait(lambda: windows('#32770'))[0]
+        path = ctypes.create_unicode_buffer(str(destination))
+        user.SendMessageW(picker, 0x467, 1, ctypes.addressof(path))
+        wait(lambda: user.IsWindowEnabled(user.GetDlgItem(picker, 1)))
+        user.PostMessageW(picker, 0x111, 1, 0)
+        wait(lambda: not user.IsWindow(picker))
+        assert Path(text(folder)) == destination, 'Folder picker selection was not applied'
+        # Verify cancelling the picker retains the selection.
+        user.PostMessageW(window, 0x111, 102, 0)
+        picker = wait(lambda: windows('#32770'))[0]
+        user.PostMessageW(picker, 0x111, 2, 0)
+        wait(lambda: not user.IsWindow(picker))
+        assert Path(text(folder)) == destination
+        user.PostMessageW(window, 0x111, 103, 0)
+        status = user.GetDlgItem(window, 105)
+        wait(lambda: 'Installed successfully.' in text(status), timeout=180)
+        assert user.SendMessageW(user.GetDlgItem(window, 106), 0x408, 0, 0) == 100
+        if screenshot:
+            capture_window(user, window, screenshot)
+        with zipfile.ZipFile(archive) as package:
+            original = package.read(next(n for n in package.namelist() if n.endswith('/zclone.exe')))
+        binary = destination / 'zclone.exe'
+        assert hashlib.sha256(binary.read_bytes()).digest() == hashlib.sha256(original).digest()
+        from windows_installer_qa import allocated_bytes
+        assert allocated_bytes(binary) < binary.stat().st_size
+        saved = json.loads((root / 'preferences/zclone-updater/settings.json').read_text())
+        assert Path(saved['install_directory']) == destination
+        user.PostMessageW(window, 0x10, 0, 0)
+        assert process.wait(timeout=15) == 0
+        # Double-click behavior uses the remembered folder without flags.
+        process = subprocess.Popen([str(updater)], env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        window = wait(lambda: windows('zCloneUpdaterWindow'))[0]
+        assert Path(text(user.GetDlgItem(window, 101))) == destination
+        user.PostMessageW(window, 0x10, 0, 0)
+        assert process.wait(timeout=15) == 0
+        # A GUI verification error must be visible and preserve the installed image.
+        failed = command.copy()
+        failed[failed.index('--sha256') + 1] = '0' * 64
+        failed += ['--install-dir', str(destination)]
+        process = subprocess.Popen(failed, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        window = wait(lambda: windows('zCloneUpdaterWindow'))[0]
+        user.PostMessageW(window, 0x111, 103, 0)
+        wait(lambda: 'Installation failed:' in text(user.GetDlgItem(window, 105)))
+        dialog = wait(lambda: windows('#32770'))[0]
+        user.PostMessageW(dialog, 0x111, 1, 0)
+        wait(lambda: not user.IsWindow(dialog))
+        assert hashlib.sha256(binary.read_bytes()).digest() == hashlib.sha256(original).digest()
+        assert user.IsWindowEnabled(user.GetDlgItem(window, 103))
+        user.PostMessageW(window, 0x10, 0, 0)
+        assert process.wait(timeout=15) == 0
+        return {'passed': True, 'tests': ['native window', 'folder picker selection/cancel',
+                 'installation progress', 'successful install', 'native compression',
+                 'remembered destination', 'double-click opens GUI', 'close without installing',
+                 'visible checksum failure', 'failed install preserves application']}
+    finally:
+        if process.poll() is None:
+            process.kill()
+            process.wait(timeout=15)
+
+
+def capture_window(user, window, output):
+    gdi = ctypes.WinDLL('gdi32', use_last_error=True)
+    rectangle = wintypes.RECT()
+    user.GetWindowRect.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.RECT)]
+    user.GetWindowRect(window, ctypes.byref(rectangle))
+    width, height = rectangle.right - rectangle.left, rectangle.bottom - rectangle.top
+    assert width > 0 and height > 0
+    gdi.CreateCompatibleDC.argtypes = [wintypes.HDC]
+    gdi.CreateCompatibleDC.restype = wintypes.HDC
+    gdi.CreateDIBSection.argtypes = [wintypes.HDC, ctypes.c_void_p, wintypes.UINT,
+                                   ctypes.POINTER(ctypes.c_void_p), wintypes.HANDLE, wintypes.DWORD]
+    gdi.CreateDIBSection.restype = wintypes.HANDLE
+    gdi.SelectObject.argtypes = [wintypes.HDC, wintypes.HANDLE]
+    gdi.SelectObject.restype = wintypes.HANDLE
+    gdi.DeleteObject.argtypes = [wintypes.HANDLE]
+    gdi.DeleteDC.argtypes = [wintypes.HDC]
+    user.PrintWindow.argtypes = [wintypes.HWND, wintypes.HDC, wintypes.UINT]
+    dc = gdi.CreateCompatibleDC(None)
+    header = struct.pack('<IiiHHIIiiII', 40, width, -height, 1, 32, 0, width * height * 4, 0, 0, 0, 0)
+    info = ctypes.create_string_buffer(header)
+    pixels = ctypes.c_void_p()
+    bitmap = gdi.CreateDIBSection(dc, info, 0, ctypes.byref(pixels), None, 0)
+    if not bitmap:
+        gdi.DeleteDC(dc)
+        raise ctypes.WinError(ctypes.get_last_error())
+    previous = gdi.SelectObject(dc, bitmap)
+    try:
+        if not user.PrintWindow(window, dc, 2):
+            raise RuntimeError('Could not capture updater window')
+        data = ctypes.string_at(pixels, width * height * 4)
+        output.write_bytes(struct.pack('<2sIHHI', b'BM', 54 + len(data), 0, 0, 54) + header + data)
+    finally:
+        gdi.SelectObject(dc, previous)
+        gdi.DeleteObject(bitmap)
+        gdi.DeleteDC(dc)

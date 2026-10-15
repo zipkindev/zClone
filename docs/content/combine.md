@@ -101,7 +101,7 @@ y/e/d> y
 
 ### Configuring for Google Drive Shared Drives
 
-Zclone has a convenience feature for making a combine backend for all
+zClone has a convenience feature for making a combine backend for all
 the shared drives you have access to.
 
 Assuming your main (non shared drive) Google drive remote is called

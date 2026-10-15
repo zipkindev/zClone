@@ -1,6 +1,6 @@
 ---
 title: "Drime"
-description: "Zclone docs for Drime"
+description: "zClone docs for Drime"
 versionIntroduced: "v1.73"
 ---
 
@@ -251,7 +251,7 @@ in memory per transfer.
 If you are transferring large files over high-speed links and you have
 enough memory, then increasing this will speed up the transfers.
 
-Zclone will automatically increase the chunk size when uploading a
+zClone will automatically increase the chunk size when uploading a
 large file of known size to stay below the 10,000 chunks limit.
 
 Files of unknown size are uploaded with the configured

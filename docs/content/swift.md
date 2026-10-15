@@ -569,7 +569,7 @@ or a `.file-segments` directory. (See the `use_segments_container` option
 for more info). Default for this is 5 GiB which is its maximum value, which
 means only files above this size will be chunked.
 
-Zclone uploads chunked files as dynamic large objects (DLO).
+zClone uploads chunked files as dynamic large objects (DLO).
 
 
 Properties:
@@ -591,7 +591,7 @@ This will limit the maximum streamed upload size to 5 GiB. This is
 useful because non chunked files are easier to deal with and have an
 MD5SUM.
 
-Zclone will still chunk files bigger than `chunk_size` when doing
+zClone will still chunk files bigger than `chunk_size` when doing
 normal copy operations.
 
 Properties:
@@ -702,7 +702,7 @@ MD5SUM for these.
 
 ## Troubleshooting
 
-### Zclone gives Failed to create file system for "remote:": Bad Request
+### zClone gives Failed to create file system for "remote:": Bad Request
 
 Due to an oddity of the underlying swift library, it gives a "Bad
 Request" error rather than a more sensible error when the
@@ -714,7 +714,7 @@ investigate further with the `--dump bodies` flag.
 This may also be caused by specifying the region when you shouldn't
 have (e.g. OVH).
 
-### Zclone gives Failed to create file system: Response didn't have storage url and auth token
+### zClone gives Failed to create file system: Response didn't have storage url and auth token
 
 This is most likely caused by forgetting to specify your tenant when
 setting up a swift remote.
@@ -740,4 +740,4 @@ end of the output with a message like the following:
 2019/03/23 13:06:33 NOTICE: Received retry after error - sleeping until 2019-03-23T13:16:33.481657164+01:00 (9m59.99985121s)
 ```
 
-Zclone will wait for the time specified then retry the copy.
+zClone will wait for the time specified then retry the copy.

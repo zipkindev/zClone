@@ -103,3 +103,59 @@ python3 -m unittest discover -s bin/tests -p test_zclone_recover.py
 The suite includes forced process termination with disposable local remotes.
 It uses `build/zclone` when present; set `ZCLONE_RECOVERY_TEST_BINARY` to another
 built executable. Without one, the real-executable test is explicitly skipped.
+
+## The streamed-upload gap
+
+Upstream [`rcat`](https://rclone.org/commands/rclone_rcat/) consumes stdin. Its
+whole upload cannot be retried when that input is no longer available; supported
+multipart backends can retry individual parts during a running upload. This is
+particularly relevant to `disk image → gzip → rcat`: after the process exits,
+recreating an arbitrary point in one gzip stream is not a durable resume strategy.
+
+The packaged helper changes the unit of recovery to an independently compressed,
+seekable range and records verified progress durably. It uses `copyto` and `cat`;
+it does not patch `rcat` or promise universal resumability for ordinary copies.
+Completed chunks are retained rather than restarting the entire image. An
+unfinished range may need rereading when its staged file is lost, so the source
+must remain unchanged and persistently retaining staging can reduce rereads of a
+failing device. A lost journal cannot be reconstructed automatically.
+
+## QNAP Drive TNAS validation
+
+The retained `QNAP-NAS-Recovery` runbook and diagnostic receipts record the
+following validation on October 13–14, 2026, using published zClone v0.1.0.
+This summary omits private credentials, host addresses, destination names, and
+customer paths.
+
+1. The released static Linux amd64 client ran on QNAP's Linux 5.10.60-qnap
+   without a special QNAP rebuild. Four forced process-kill scenarios interrupted
+   staging and prepared/uploaded/verified checkpoints. RAM staging was removed
+   before resume; all restored the same 8,388,608-byte test image and SHA-256.
+   Uploaded/verified checkpoint tests also guarded against regenerating the first
+   accepted source chunk.
+2. Direct QNAP uploads to Google Drive passed readback, gzip, length, and raw
+   SHA-256 checks with synthetic inputs. A tandem test transferred an 8 MiB image
+   as four independently compressed 2 MiB chunks under a 4,500,000-byte cloud
+   budget. The TNAS downloader was stopped after accepting/draining chunk zero,
+   restarted against the same persistent journal, and restored matching data.
+   The producer waited at its buffer limit and continued as the receiver drained it.
+3. A later metadata transfer completed 128 chunks and 68,719,476,736 bytes
+   (64 GiB). The acquisition reference, TNAS reconstruction, and independent
+   analysis image had the same whole-image SHA-256. The runbook recorded
+   42,878,556,638 compressed payload bytes. This is one input's observed result,
+   not a compression-ratio prediction for other data.
+
+The published helper supplied checkpoint serialization and content verification.
+The recovery project's separate controller supplied bounded parallel staging,
+cloud-buffer backpressure, encryption, durable receiver acceptance, verified
+acknowledgments, and retirement of only its newly generated temporary cloud
+payloads. TNAS acceptance included compressed/raw hashes, sizes, and fsync of the
+retained data. Do not apply that controller's temporary-object deletion policy to
+this helper: `zclone-recover.py` never deletes remote files.
+
+These results demonstrate tested interruption recovery and transport integrity.
+They do not establish whole-host power-loss recovery, live-capture coherence,
+filesystem repair, or recovery of all user files. The live source was not proven
+to be a coherent snapshot; matching copies preserve the captured bytes, including
+any inconsistency already in those bytes. Restoration from retired cloud payloads
+requires the TNAS-retained chunks and the separately protected decryption keys.

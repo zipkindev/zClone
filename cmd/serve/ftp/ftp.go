@@ -216,8 +216,8 @@ func newServer(ctx context.Context, f fs.Fs, opt *Options, vfsOpt *vfscommon.Opt
 	}
 
 	ftpopt := &ftp.Options{
-		Name:           "Zclone FTP Server",
-		WelcomeMessage: "Welcome to Zclone " + fs.Version + " FTP Server",
+		Name:           "zClone FTP Server",
+		WelcomeMessage: "Welcome to zClone " + fs.Version + " FTP Server",
 		Driver:         d,
 		Hostname:       host,
 		Port:           portNum,

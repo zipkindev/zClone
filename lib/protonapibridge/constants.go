@@ -8,10 +8,10 @@ var (
 	/*
 		the upstream implementation
 
-		The idea is that Zclone performs buffering / pre-fetching on it's own so
+		The idea is that zClone performs buffering / pre-fetching on it's own so
 		we don't need to be doing this on our end.
 
-		If you are not using Zclone and instead is directly basing your work on this
+		If you are not using zClone and instead is directly basing your work on this
 		library, then maybe you can increase this value to let the library does
 		the buffering work for you!
 	*/

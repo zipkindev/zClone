@@ -59,7 +59,7 @@ or a |`+segmentsDirectory+`| directory. (See the |use_segments_container| option
 for more info). Default for this is 5 GiB which is its maximum value, which
 means only files above this size will be chunked.
 
-Zclone uploads chunked files as dynamic large objects (DLO).
+zClone uploads chunked files as dynamic large objects (DLO).
 `, "|", "`"),
 	Default:  defaultChunkSize,
 	Advanced: true,
@@ -75,7 +75,7 @@ This will limit the maximum streamed upload size to 5 GiB. This is
 useful because non chunked files are easier to deal with and have an
 MD5SUM.
 
-Zclone will still chunk files bigger than |chunk_size| when doing
+zClone will still chunk files bigger than |chunk_size| when doing
 normal copy operations.`, "|", "`"),
 	Default:  false,
 	Advanced: true,

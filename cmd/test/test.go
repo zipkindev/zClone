@@ -14,7 +14,7 @@ func init() {
 var Command = &cobra.Command{
 	Use:   "test <subcommand>",
 	Short: `Run a test command`,
-	Long: `Zclone test is used to run test commands.
+	Long: `zClone test is used to run test commands.
 
 Select which test command you want with the subcommand, eg
 

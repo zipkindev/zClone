@@ -35,7 +35,7 @@ var commandDefinition = &cobra.Command{
 	Short: `Move files from source to dest.`,
 	// Warning! "|" will be replaced by backticks below
 	Long: strings.ReplaceAll(`Moves the contents of the source directory to the destination
-directory. Zclone will error if the source and destination overlap and
+directory. zClone will error if the source and destination overlap and
 the remote does not support a server-side directory move operation.
 
 To move single files, use the [moveto](/commands/zclone_moveto/)
@@ -59,7 +59,7 @@ whether zclone lists the destination directory or not.  Supplying this
 option when moving a small number of files into a large destination
 can speed transfers up greatly.
 
-Zclone will sync the modification times of files and directories if
+zClone will sync the modification times of files and directories if
 the backend supports it. If metadata syncing is required then use the
 |--metadata| flag.
 

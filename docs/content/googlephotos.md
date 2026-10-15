@@ -1,6 +1,6 @@
 ---
 title: "Google Photos"
-description: "Zclone docs for Google Photos"
+description: "zClone docs for Google Photos"
 versionIntroduced: "v1.49"
 ---
 
@@ -472,7 +472,7 @@ This has 3 possible values
 - sync - batch uploads and check completion (default)
 - async - batch upload and don't check completion
 
-Zclone will close any outstanding batches when it exits which may make
+zClone will close any outstanding batches when it exits which may make
 a delay on quit.
 
 
@@ -496,7 +496,7 @@ depending on the setting of batch_mode.
 - batch_mode: sync - default batch_size is the same as --transfers
 - batch_mode: off - not in use
 
-Zclone will close any outstanding batches when it exits which may make
+zClone will close any outstanding batches when it exits which may make
 a delay on quit.
 
 Setting this is a great idea if you are uploading lots of small files
@@ -638,18 +638,18 @@ You'll need to experiment to see if it works for you without the flag.
 
 ### Albums
 
-Zclone can only upload files to albums it created. This is a
+zClone can only upload files to albums it created. This is a
 [limitation of the Google Photos API](https://developers.google.com/photos/library/guides/manage-albums).
 
-Zclone can remove files it uploaded from albums it created only.
+zClone can remove files it uploaded from albums it created only.
 
 ### Deleting files
 
-Zclone can remove files from albums it created, but note that the
+zClone can remove files from albums it created, but note that the
 Google Photos API does not allow media to be deleted permanently so
 this media will still remain. See [bug #109759781](https://issuetracker.google.com/issues/109759781).
 
-Zclone cannot delete files anywhere except under `album`.
+zClone cannot delete files anywhere except under `album`.
 
 ### Deleting albums
 

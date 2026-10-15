@@ -44,6 +44,11 @@ func get(client *http.Client, address string) (*http.Response, error) {
 }
 
 func downloadRelease(client *http.Client, api, tag, directory string, includePrerelease bool) (string, error) {
+	return downloadReleaseProgress(client, api, tag, directory, includePrerelease, nil)
+}
+
+func downloadReleaseProgress(client *http.Client, api, tag, directory string, includePrerelease bool, progress progressFunc) (string, error) {
+	progress.send("Finding the latest release…", 0)
 	endpoint := api + "latest"
 	if includePrerelease && tag == "" {
 		endpoint = strings.TrimSuffix(api, "/") + "?per_page=100"
@@ -61,6 +66,7 @@ func downloadRelease(client *http.Client, api, tag, directory string, includePre
 		Assets []struct {
 			Name string
 			URL  string `json:"browser_download_url"`
+			Size int64
 		} `json:"assets"`
 	}
 	var release releaseInfo
@@ -86,12 +92,16 @@ func downloadRelease(client *http.Client, api, tag, directory string, includePre
 	}
 	name := "zclone-" + release.Tag + "-windows-amd64.zip"
 	assets := map[string]string{}
+	var archiveSize int64
 	for _, asset := range release.Assets {
 		if asset.Name == name || asset.Name == "SHA256SUMS" {
 			if assets[asset.Name] != "" {
 				return "", errors.New("ambiguous release asset")
 			}
 			assets[asset.Name] = asset.URL
+			if asset.Name == name {
+				archiveSize = asset.Size
+			}
 		}
 	}
 	if assets[name] == "" || assets["SHA256SUMS"] == "" {
@@ -140,11 +150,12 @@ func downloadRelease(client *http.Client, api, tag, directory string, includePre
 	}
 	hasher := sha256.New()
 	// Stream to disk with bounded memory and reject unexpectedly large responses.
-	count, copyErr := io.Copy(io.MultiWriter(output, hasher), io.LimitReader(response.Body, (512<<20)+1))
+	count, copyErr := io.Copy(io.MultiWriter(output, hasher, &downloadProgress{total: archiveSize, progress: progress}), io.LimitReader(response.Body, (512<<20)+1))
 	closeErr := output.Close()
 	if err = errors.Join(copyErr, closeErr); err != nil {
 		return "", err
 	}
+	progress.send("Verifying download…", 67)
 	if count > 512<<20 || hex.EncodeToString(hasher.Sum(nil)) != expected {
 		return "", errors.New("downloaded archive SHA-256 mismatch or size limit exceeded")
 	}

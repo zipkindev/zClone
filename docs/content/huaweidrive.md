@@ -1,6 +1,6 @@
 ---
 title: "Huawei Drive"
-description: "Zclone docs for Huawei Drive"
+description: "zClone docs for Huawei Drive"
 versionIntroduced: "v1.74"
 ---
 
@@ -115,7 +115,7 @@ Follow the detailed guides for complete setup instructions:
 - [Huawei HMS Core Web App Preparations](https://developer.huawei.com/consumer/cn/doc/HMSCore-Guides/web-preparations-0000001050050891)
 - [Huawei HMS Core Server Preparations](https://developer.huawei.com/consumer/cn/doc/HMSCore-Guides/server-preparations-0000001050185577#section194911701377)
 
-Zclone uses the web application access method to connect to Huawei Drive. Before starting, you need to implement quick login authorization through Huawei Account Open Service. With user authorization credentials, zclone can call Huawei Cloud Drive Service APIs.
+zClone uses the web application access method to connect to Huawei Drive. Before starting, you need to implement quick login authorization through Huawei Account Open Service. With user authorization credentials, zclone can call Huawei Cloud Drive Service APIs.
 
 #### Create Server Application
 
@@ -157,7 +157,7 @@ Key steps summary:
 
 ### Scopes
 
-Zclone uses the following OAuth2 scopes when accessing Huawei Drive:
+zClone uses the following OAuth2 scopes when accessing Huawei Drive:
 
 - `https://www.huawei.com/auth/drive` - Full access to Huawei Drive files (excluding application data folder)
 - `https://www.huawei.com/auth/drive.file` - Access to files created by the application
@@ -426,13 +426,13 @@ Huawei Drive has some rate limiting which may cause zclone to slow down transfer
 
 ### API rate limits  
 
-Huawei Drive imposes API rate limits. Zclone automatically handles these by backing off when limits are hit.
+Huawei Drive imposes API rate limits. zClone automatically handles these by backing off when limits are hit.
 
 ### OAuth2 token expiry
 
 - Access tokens expire after 1 hour
 - Refresh tokens expire after 180 days  
-- Zclone will automatically refresh tokens as needed
+- zClone will automatically refresh tokens as needed
 
 ### File size limits
 

@@ -39,7 +39,7 @@ ifdef BETA_SUBDIR
 endif
 BETA_PATH := $(BRANCH_PATH)$(TAG)$(BETA_SUBDIR)
 # Release endpoints are intentionally unset in the local distribution.
-# Set both variables explicitly when publishing a Zclone release.
+# Set both variables explicitly when publishing a zClone release.
 BETA_URL ?=
 BETA_UPLOAD_ROOT ?=
 BETA_UPLOAD := $(BETA_UPLOAD_ROOT)/$(BETA_PATH)
@@ -179,27 +179,27 @@ release_dep_linux:
 
 # Update dependencies
 showupdates:
-	@echo "Online dependency checks are disabled in the local Zclone distribution."
+	@echo "Online dependency checks are disabled in the local zClone distribution."
 	@exit 2
 
 # Update direct dependencies only
 updatedirect:
-	@echo "Online dependency updates are disabled in the local Zclone distribution."
+	@echo "Online dependency updates are disabled in the local zClone distribution."
 	@exit 2
 
 # Update direct dependencies only but won't update the `go` line in go.mod
 updatedirectnoupgrade:
-	@echo "Online dependency updates are disabled in the local Zclone distribution."
+	@echo "Online dependency updates are disabled in the local zClone distribution."
 	@exit 2
 
 # Update direct and indirect dependencies and test dependencies
 update:
-	@echo "Online dependency updates are disabled in the local Zclone distribution."
+	@echo "Online dependency updates are disabled in the local zClone distribution."
 	@exit 2
 
 # Tidy the module dependencies
 tidy:
-	@echo "Online dependency updates are disabled in the local Zclone distribution."
+	@echo "Online dependency updates are disabled in the local zClone distribution."
 	@exit 2
 
 doc:
@@ -278,7 +278,7 @@ upload:
 	zclone lsf build --files-only --include '*.{zip,deb,rpm}' --include version.txt | xargs -i bash -c 'i={}; j="$$i"; [[ $$i =~ (.*)(-v[0-9\.]+-)(.*) ]] && j=$${BASH_REMATCH[1]}-current-$${BASH_REMATCH[3]}; zclone copyto -v "$(DOWNLOAD_DESTINATION)/$(TAG)/$$i" "$(DOWNLOAD_DESTINATION)/$$j"'
 
 upload_github:
-	@echo "GitHub publishing is disabled in the local Zclone distribution."
+	@echo "GitHub publishing is disabled in the local zClone distribution."
 	@exit 2
 
 cross:	doc

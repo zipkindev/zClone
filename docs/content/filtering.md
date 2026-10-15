@@ -1,6 +1,6 @@
 ---
-title: "Zclone Filtering"
-description: "Zclone filtering, includes and excludes"
+title: "zClone Filtering"
+description: "zClone filtering, includes and excludes"
 versionIntroduced: "v1.22"
 ---
 
@@ -15,12 +15,12 @@ lists; file age and size, or presence of a file in a directory. Bucket
 based remotes without the concept of directory apply filters to object
 key, age and size in an analogous way.
 
-Zclone `purge` does not obey filters.
+zClone `purge` does not obey filters.
 
 To test filters without risk of damage to data, apply them to `zclone
 ls`, or with the `--dry-run` and `-vv` flags.
 
-Zclone filter patterns can only be used in filter command line options, not
+zClone filter patterns can only be used in filter command line options, not
 in the specification of a remote.
 
 E.g. `zclone copy "remote:dir*.jpg" /path/to/dir` does not have a filter effect.
@@ -37,7 +37,7 @@ you expect. Instead use a `--filter...` flag.
 Here is a formal definition of the pattern syntax,
 [examples](#examples) are below.
 
-Zclone matching rules follow a glob style:
+zClone matching rules follow a glob style:
 
 ```text
 *         matches any sequence of non-separator (/) characters
@@ -149,7 +149,7 @@ uses) to make things easy for users. However this does not provide
 absolute control over the matching, so for advanced users zclone also
 provides a regular expression syntax.
 
-Zclone generally accepts Perl-style regular expressions, the exact syntax
+zClone generally accepts Perl-style regular expressions, the exact syntax
 is defined in the [Go regular expression reference](https://golang.org/pkg/regexp/syntax/).
 Regular expressions should be enclosed in `{{` `}}`. They will match only the
 last path segment if the glob doesn't start with `/` or the whole path
@@ -227,7 +227,7 @@ them into regular expressions.
 
 ## How filter rules are applied to files {#how-filter-rules-work}
 
-Zclone path/file name filters are made up of one or more of the following flags:
+zClone path/file name filters are made up of one or more of the following flags:
 
 - `--include`
 - `--include-from`
@@ -238,7 +238,7 @@ Zclone path/file name filters are made up of one or more of the following flags:
 
 There can be more than one instance of individual flags.
 
-Zclone internally uses a combined list of all the include and exclude
+zClone internally uses a combined list of all the include and exclude
 rules. The order in which rules are processed can influence the result
 of the filter.
 
@@ -285,7 +285,7 @@ classes. [Go regular expression reference](https://golang.org/pkg/regexp/syntax/
 
 ### How filter rules are applied to directories {#directory_filter}
 
-Zclone commands are applied to path/file names not
+zClone commands are applied to path/file names not
 directories. The entire contents of a directory can be matched
 to a filter by the pattern `directory/*` or recursively by
 `directory/**`.
@@ -294,7 +294,7 @@ Directory filter rules are defined with a closing `/` separator.
 
 E.g. `/directory/subdirectory/` is an zclone directory filter rule.
 
-Zclone commands can use directory filter rules to determine whether they
+zClone commands can use directory filter rules to determine whether they
 recurse into subdirectories. This potentially optimises access to a remote
 by avoiding listing unnecessary directories. Whether optimisation is
 desirable depends on the specific filter rules and source remote content.
@@ -316,7 +316,7 @@ are not.
 
 - Whenever the `--disable ListR` flag is applied to an zclone command.
 
-Zclone commands imply directory filter rules from path/file filter
+zClone commands imply directory filter rules from path/file filter
 rules. To view the directory filter rules zclone has implied for a
 command specify the `--dump filters` flag.
 
@@ -326,7 +326,7 @@ E.g. for an include rule
 /a/*.jpg
 ```
 
-Zclone implies the directory include rule
+zClone implies the directory include rule
 
 ```text
 /a/
@@ -371,7 +371,7 @@ E.g. for an include rule
 {dir1/**,dir2/**}
 ```
 
-Zclone will match files below directories `dir1` or `dir2` only,
+zClone will match files below directories `dir1` or `dir2` only,
 but will not be able to use this filter to exclude a directory `dir3`
 from being traversed.
 
@@ -607,7 +607,7 @@ Only file 42.doc is listed. Prior rules are cleared by the `!`.
 ### `--files-from` - Read list of source-file names
 
 Adds path/files to an zclone command from a list in a named file.
-Zclone processes the path/file names in the order of the list, and
+zClone processes the path/file names in the order of the list, and
 no others.
 
 Other filter flags (`--include`, `--include-from`, `--exclude`,
@@ -620,7 +620,7 @@ with `#` or `;` are ignored.
 
 `--files-from` followed by `-` reads the list of files from standard input.
 
-Zclone commands with a `--files-from` flag traverse the remote,
+zClone commands with a `--files-from` flag traverse the remote,
 treating the names in `--files-from` as a set of filters.
 
 If the `--no-traverse` and `--files-from` flags are used together
@@ -629,7 +629,7 @@ each path/file named in the file individually. For each path/file name, that
 requires typically 1 API call. This can be efficient for a short `--files-from`
 list and a remote containing many files.
 
-Zclone commands do not error if any names in the `--files-from` file are
+zClone commands do not error if any names in the `--files-from` file are
 missing from the source remote.
 
 The `--files-from` flag can be repeated in a single zclone command to
@@ -745,7 +745,7 @@ E.g. `--include "zaphod.txt"` does not match a file `Zaphod.txt`. With
 
 ## Quoting shell metacharacters
 
-Zclone commands with filter patterns containing shell metacharacters may
+zClone commands with filter patterns containing shell metacharacters may
 not as work as expected in your shell and may require quoting.
 
 E.g. linux, OSX (`*` metacharacter)
@@ -848,14 +848,14 @@ This will stay constant across retries.
 
 #### How It Works
 
-- Zclone takes each file's full path, normalizes it to lowercase, and applies
+- zClone takes each file's full path, normalizes it to lowercase, and applies
   Unicode normalization.
 - It then hashes the normalized path into a 64 bit number.
 - The hash result is reduced modulo `N` to assign the file to a partition.
 - If the calculated partition does not match `K` the file is excluded.
 - Other filters may apply if the file is not excluded.
 
-**Important:** Zclone will traverse all directories to apply the filter.
+**Important:** zClone will traverse all directories to apply the filter.
 
 #### Usage Notes
 

@@ -1,6 +1,6 @@
 ---
 title: "Box"
-description: "Zclone docs for Box"
+description: "zClone docs for Box"
 versionIntroduced: "v1.38"
 ---
 
@@ -53,9 +53,9 @@ access_token>
 
 Enter a string value. Press Enter for the default ("user").
 Choose a number from below, or type in your own value
- 1 / Zclone should act on behalf of a user
+ 1 / zClone should act on behalf of a user
    \ "user"
- 2 / Zclone should act on behalf of a service account
+ 2 / zClone should act on behalf of a service account
    \ "enterprise"
 box_sub_type>
 Remote config
@@ -239,7 +239,7 @@ as they can't be used in JSON strings.
 
 ### Transfers
 
-For files above 50 MiB zclone will use a chunked transfer.  Zclone will
+For files above 50 MiB zclone will use a chunked transfer.  zClone will
 upload up to `--transfers` chunks at the same time (shared among all
 the multipart uploads).  Chunks are buffered in memory and are
 normally 8 MiB so increasing `--transfers` will increase memory use.
@@ -348,9 +348,9 @@ Properties:
 - Default:     "user"
 - Examples:
   - "user"
-    - Zclone should act on behalf of a user.
+    - zClone should act on behalf of a user.
   - "enterprise"
-    - Zclone should act on behalf of a service account.
+    - zClone should act on behalf of a service account.
 
 ### Advanced options
 

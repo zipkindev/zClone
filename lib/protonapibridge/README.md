@@ -4,9 +4,9 @@ Thanks to Proton open sourcing [proton-go-api](https://github.com/ProtonMail/go-
 
 [proton-go-api](https://github.com/ProtonMail/go-proton-api) provides the basic building blocks of API calls and error handling, such as 429 exponential back-off, but it is pretty much just a barebone interface to the Proton API. For example, the encryption and decryption of the Proton Drive file are not provided in this library. 
 
-This codebase, Proton API Bridge, bridges the gap so Zclone can be built on top of it. This codebase handles the intricate tasks before and after calling Proton APIs, particularly the complex encryption scheme, allowing developers to implement features for other software on top of this codebase.
+This codebase, Proton API Bridge, bridges the gap so zClone can be built on top of it. This codebase handles the intricate tasks before and after calling Proton APIs, particularly the complex encryption scheme, allowing developers to implement features for other software on top of this codebase.
 
-Currently, only Proton Drive APIs are bridged, as this library supports the Zclone backend.
+Currently, only Proton Drive APIs are bridged, as this library supports the zClone backend.
 
 ## Sidenotes
 
@@ -23,7 +23,7 @@ We are using a fork of the [proton-go-api](https://zclone/lib/protonapi), as we 
 > Thanks to Anson Chen for the motivation and some initial help on various matters!
 
 Currently, the development are split into 2 versions. 
-V1 supports the features required by Zclone, such as `file listing`. The local unit and integration tests provide the compatibility checks for this distribution.
+V1 supports the features required by zClone, such as `file listing`. The local unit and integration tests provide the compatibility checks for this distribution.
 V2 will bring in optimizations and enhancements, esp. supporting thumbnails. Please see the list below.
 
 ## V1
@@ -136,7 +136,7 @@ V2 will bring in optimizations and enhancements, esp. supporting thumbnails. Ple
 
 # Questions
 
-- [x] Folder / file rename detection is handled by the Zclone integration layer.
+- [x] Folder / file rename detection is handled by the zClone integration layer.
 
 # Notes
 

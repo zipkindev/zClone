@@ -35,12 +35,12 @@ Thank you to our sponsors:
 
 <!-- markdownlint-restore -->
 
-Zclone is a free open-source project with thousands of contributions
+zClone is a free open-source project with thousands of contributions
 from volunteers all round the world and I would like to thank all of
 you for donating your time to the project.
 
 However, maintaining zclone is a lot of work - it is **my full time
-job**. Nothing stands still in the world of cloud storage. Zclone
+job**. Nothing stands still in the world of cloud storage. zClone
 needs constant attention adapting to changes by cloud providers,
 adding new providers, adding new features, keeping the integration
 tests working, fixing bugs and many more things!

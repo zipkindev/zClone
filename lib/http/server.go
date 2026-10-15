@@ -58,7 +58,7 @@ headers. Use the format ` + "`Header-Name: value`" + `.
 ` + "`--{{ .Prefix }}baseurl`" + ` controls the URL prefix that zclone serves from.  By default
 zclone will serve from the root.  If you used ` + "`--{{ .Prefix }}baseurl \"/zclone\"`" + ` then
 zclone would serve from a URL starting with "/zclone/".  This is
-useful if you wish to proxy zclone serve.  Zclone automatically
+useful if you wish to proxy zclone serve.  zClone automatically
 inserts leading and trailing "/" on ` + "`--{{ .Prefix }}baseurl`" + `, so ` + "`--{{ .Prefix }}baseurl \"zclone\"`" + `,
 ` + "`--{{ .Prefix }}baseurl \"/zclone\"` and `--{{ .Prefix }}baseurl \"/zclone/\"`" + ` are all treated
 identically.

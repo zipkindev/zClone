@@ -1,6 +1,6 @@
 ---
 title: "Files.com"
-description: "Zclone docs for Files.com"
+description: "zClone docs for Files.com"
 versionIntroduced: "v1.68"
 ---
 
@@ -120,7 +120,7 @@ visiting the "File Integrity" section in "Data Governance" to
 configure your settings and select the checksum algorithms that meet
 your requirements.
 
-Zclone currently only support CRC32 and MD5 for use in syncing but
+zClone currently only support CRC32 and MD5 for use in syncing but
 selecting more checksums will not affect zclone's operations.
 
 For use with zclone, selecting at least MD5 is recommended so zclone

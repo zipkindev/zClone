@@ -1,6 +1,6 @@
 ---
 title: "Memory"
-description: "Zclone docs for Memory backend"
+description: "zClone docs for Memory backend"
 versionIntroduced: "v1.51"
 ---
 

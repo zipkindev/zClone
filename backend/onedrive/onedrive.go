@@ -359,7 +359,7 @@ zclone.
 `,
 			Examples: []fs.OptionExample{{
 				Value: "auto",
-				Help:  "Zclone chooses the best hash",
+				Help:  "zClone chooses the best hash",
 			}, {
 				Value: "quickxor",
 				Help:  "QuickXor",

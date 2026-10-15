@@ -1,6 +1,6 @@
-# Zclone Code of Conduct
+# zClone Code of Conduct
 
-Like the technical community as a whole, the Zclone team and community
+Like the technical community as a whole, the zClone team and community
 is made up of a mixture of professionals and volunteers from all over
 the world, working on every aspect of the mission - including
 mentorship, teaching, and connecting people.
@@ -15,8 +15,8 @@ take it in the spirit in which it's intended - a guide to make it
 easier to enrich all of us and the technical communities in which we
 participate.
 
-This code of conduct applies to all spaces managed by the Zclone
-project or Zclone Services Ltd. This includes the issue tracker, the
+This code of conduct applies to all spaces managed by the zClone
+project or zClone Services Ltd. This includes the issue tracker, the
 forum, the GitHub site, the wiki, any other online services or
 in-person events. In addition, violations of this code outside these
 spaces may affect a person's ability to participate within them.
@@ -41,8 +41,8 @@ spaces may affect a person's ability to participate within them.
   allow that frustration to turn into a personal attack. It's
   important to remember that a community where people feel
   uncomfortable or threatened is not a productive one. Members of the
-  Zclone community should be respectful when dealing with other
-  members as well as with people outside the Zclone community.
+  zClone community should be respectful when dealing with other
+  members as well as with people outside the zClone community.
 - **Be careful in the words that you choose.** We are a community of
   professionals, and we conduct ourselves professionally. Be kind to
   others. Do not insult or put down other participants. Harassment and
@@ -59,10 +59,10 @@ spaces may affect a person's ability to participate within them.
   - Repeated harassment of others. In general, if someone asks you to
     stop, then stop.
 - **When we disagree, try to understand why.** Disagreements, both
-  social and technical, happen all the time and Zclone is no
+  social and technical, happen all the time and zClone is no
   exception. It is important that we resolve disagreements and
   differing views constructively. Remember that we're different. The
-  strength of Zclone comes from its varied community, people from a
+  strength of zClone comes from its varied community, people from a
   wide range of backgrounds. Different people have different
   perspectives on issues. Being unable to understand why someone holds
   a viewpoint doesn't mean that they're wrong. Don't forget that it is

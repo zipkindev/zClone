@@ -1,11 +1,11 @@
 ---
 title: "Documentation"
-description: "Zclone Usage"
+description: "zClone Usage"
 ---
 
 # Usage
 
-Zclone is a command line program to manage files on cloud storage.
+zClone is a command line program to manage files on cloud storage.
 After [download](/downloads/) and [install](/install), continue
 here to learn how to use it: Initial [configuration](#configure),
 what the [basic syntax](#basic-syntax) looks like, describes the
@@ -100,7 +100,7 @@ See the following for detailed instructions for
 
 ## Basic syntax
 
-Zclone syncs a directory tree from one storage system to another.
+zClone syncs a directory tree from one storage system to another.
 
 Its syntax is like this
 
@@ -442,7 +442,7 @@ the console traditionally uses a non-Unicode character set - defined
 by the so-called "code page".
 
 Do not use single character names on Windows as it creates ambiguity with Windows
-drives' names, e.g.: remote called `C` is indistinguishable from `C` drive. Zclone
+drives' names, e.g.: remote called `C` is indistinguishable from `C` drive. zClone
 will always assume that single letter name refers to a drive.
 
 ## Adding global configuration to a remote {#globalconfig}
@@ -647,7 +647,7 @@ Metadata is data about a file (or directory) which isn't the contents
 of the file (or directory). Normally zclone only preserves the
 modification time and the content (MIME) type where possible.
 
-Zclone supports preserving all the available metadata on files and
+zClone supports preserving all the available metadata on files and
 directories when using the `--metadata` or `-M` flag.
 
 Exactly what metadata is supported and what that support means depends
@@ -658,7 +658,7 @@ in their docs and are listed in the [features table](/overview/#features)
 Some backends don't support metadata, some only support metadata on
 files and some support metadata on both files and directories.
 
-Zclone only supports a one-time sync of metadata. This means that
+zClone only supports a one-time sync of metadata. This means that
 metadata will be synced from the source object to the destination
 object only when the source object has changed and needs to be
 re-uploaded. If the metadata subsequently changes on the source object
@@ -678,7 +678,7 @@ The [--metadata-mapper](#metadata-mapper) flag can be used to pass the
 name of a program in which can transform metadata when it is being
 copied from source to destination.
 
-Zclone supports `--metadata-set` and `--metadata-mapper` when doing
+zClone supports `--metadata-set` and `--metadata-mapper` when doing
 server-side `Move` and server-side `Copy`, but not when doing server
 side `DirMove` (renaming a directory) as this would involve recursing
 into the directory. Note that you can disable `DirMove` with
@@ -709,7 +709,7 @@ back to s3, the Content-Type will be set correctly.
 
 ### Metadata framework
 
-Zclone implements a metadata framework which can read metadata from an
+zClone implements a metadata framework which can read metadata from an
 object and write it to the object when (and only when) it is being
 uploaded.
 
@@ -779,7 +779,7 @@ way of reading those already.
 
 ## Options
 
-Zclone has a number of options to control its behaviour. These are
+zClone has a number of options to control its behaviour. These are
 documented below, and in the [flags](/flags) page.
 
 Options that take parameters can have the values passed in two ways,
@@ -1170,7 +1170,7 @@ backwards compatibility, but in most cases it is as simple as:
 - `%APPDATA%/zclone/zclone.conf` on Windows
 - `~/.config/zclone/zclone.conf` on other
 
-The complete logic is as follows: Zclone will look for an existing
+The complete logic is as follows: zClone will look for an existing
 configuration file in any of the following locations, in priority order:
 
 1. `zclone.conf` (in program directory, where zclone executable is)
@@ -1248,7 +1248,7 @@ editing the configuration file.
 
 The configuration file will typically contain login information, and
 should therefore have restricted permissions so that only the current user
-can read it. Zclone tries to ensure this when it writes the file.
+can read it. zClone tries to ensure this when it writes the file.
 You may also choose to [encrypt](#configuration-encryption) the file.
 
 When token-based authentication are used, the configuration file
@@ -1465,7 +1465,7 @@ supported by `--header-upload` and `--header-download` so may be used
 as a workaround for those with care.
 
 ```console
-zclone ls remote:test --header "X-Zclone: Foo" --header "X-LetMeIn: Yes"
+zclone ls remote:test --header "X-zClone: Foo" --header "X-LetMeIn: Yes"
 ```
 
 ### --header-download stringArray
@@ -1497,18 +1497,18 @@ currently supported backends.
 Use this option to set an HTTP proxy for all HTTP based services to
 use.
 
-Zclone also supports the standard HTTP proxy environment variables
+zClone also supports the standard HTTP proxy environment variables
 which it will pick up automatically. The is the way the HTTP proxy
 will normally be set but this flag can be used to override it.
 
 ### --human-readable
 
-Zclone commands output values for sizes (e.g. number of bytes) and
+zClone commands output values for sizes (e.g. number of bytes) and
 counts (e.g. number of files) either as *raw* numbers, or
 in *human-readable* format.
 
 In human-readable format the values are scaled to larger units, indicated with
-a suffix shown after the value, and rounded to three decimals. Zclone consistently
+a suffix shown after the value, and rounded to three decimals. zClone consistently
 uses binary units (powers of 2) for sizes and decimal units (powers of 10) for counts.
 The unit prefix for size is according to IEC standard notation, e.g. `Ki` for kibi.
 Used with byte unit, `1 KiB` means 1024 Byte. In list type of output, only the
@@ -1839,7 +1839,7 @@ and `Error`. If enabled we map zclone levels like this.
 - `Warning` ←  `WARNING` (note that this level is defined but not currently used).
 - `Info` ← `NOTICE`, `INFO` and `DEBUG`.
 
-Zclone will declare its log source as "zclone" if it is has enough
+zClone will declare its log source as "zclone" if it is has enough
 permissions to create the registry key needed. If not then logs will
 appear as "Application". You can run `zclone version --windows-event-log-level DEBUG`
 once as administrator to create the registry key in advance.
@@ -2004,7 +2004,7 @@ operation in progress.
 
 ### --max-delete-size SizeSuffix
 
-Zclone will stop deleting files when the total size of deletions has
+zClone will stop deleting files when the total size of deletions has
 reached the size specified. It defaults to off.
 
 If that limit is exceeded then a fatal error will be generated and
@@ -2030,24 +2030,24 @@ what will happen.
 
 ### --max-duration Duration
 
-Zclone will stop transferring when it has run for the
+zClone will stop transferring when it has run for the
 duration specified.
 Defaults to off.
 
 When the limit is reached all transfers will stop immediately.
 Use `--cutoff-mode` to modify this behaviour.
 
-Zclone will exit with exit code 10 if the duration limit is reached.
+zClone will exit with exit code 10 if the duration limit is reached.
 
 ### --max-transfer SizeSuffix
 
-Zclone will stop transferring when it has reached the size specified.
+zClone will stop transferring when it has reached the size specified.
 Defaults to off.
 
 When the limit is reached all transfers will stop immediately.
 Use `--cutoff-mode` to modify this behaviour.
 
-Zclone will exit with exit code 8 if the transfer limit is reached.
+zClone will exit with exit code 8 if the transfer limit is reached.
 
 ### --cutoff-mode HARD|SOFT|CAUTIOUS
 
@@ -2427,7 +2427,7 @@ means that it may transfer some files out of the order specified if
 - there are no files in the backlog or the source has not been fully scanned yet
 - there are more than [--max-backlog](#max-backlog-int) files in the backlog
 
-Zclone will do its best to transfer the best file it has so in
+zClone will do its best to transfer the best file it has so in
 practice this should not cause a problem.  Think of `--order-by` as
 being more of a best efforts flag rather than a perfect ordering.
 
@@ -2863,7 +2863,7 @@ it is fast for operations involving processing of the list results.
 
 Some backends provide the support for an alternative strategy, where all
 files beneath a directory can be listed in one (or a small number) of
-transactions. Zclone supports this alternative strategy through an optional
+transactions. zClone supports this alternative strategy through an optional
 backend feature called [`ListR`](/overview/#listr). You can see in the storage
 system overview documentation's [optional features](/overview/#optional-features)
 section which backends it is enabled for (these tend to be the bucket-based
@@ -2881,12 +2881,12 @@ prefer `List`, e.g. for `sync` and `copy`, where it needs to keep the listed
 files in memory, and is performing operations on them where parallelization
 may be a huge advantage.
 
-Zclone is not able to take all relevant parameters into account for deciding
+zClone is not able to take all relevant parameters into account for deciding
 the best strategy, and therefore allows you to influence the choice in two ways:
 You can stop zclone from using `ListR` by disabling the feature, using the
 [--disable](#disable-string) option (`--disable ListR`), or you can
 allow zclone to use `ListR` where it would normally choose not to do so due to
-higher memory usage, using the `--fast-list` option. Zclone should always
+higher memory usage, using the `--fast-list` option. zClone should always
 produce identical results either way. Using `--disable ListR` or `--fast-list`
 on a remote which doesn't support `ListR` does nothing, zclone will just ignore
 it.
@@ -3000,7 +3000,7 @@ Prints the version number
 
 The outgoing SSL/TLS connections zclone makes can be controlled with
 these options.  For example this can be very useful with the HTTP or
-WebDAV backends. Zclone HTTP servers have their own set of
+WebDAV backends. zClone HTTP servers have their own set of
 configuration for SSL/TLS which you can find in their documentation.
 
 ### --ca-cert stringArray
@@ -3383,20 +3383,20 @@ If you use the `--log-file` option, zclone will redirect `Error`,
 If you use the `--syslog` flag then zclone will log to syslog and the
 `--syslog-facility` control which facility it uses.
 
-Zclone prefixes all log messages with their level in capitals, e.g. INFO
+zClone prefixes all log messages with their level in capitals, e.g. INFO
 which makes it easy to grep the log file for different kinds of
 information.
 
 ## Metrics
 
-Zclone can publish metrics in the OpenMetrics/Prometheus format.
+zClone can publish metrics in the OpenMetrics/Prometheus format.
 
 To enable the metrics endpoint, use the `--metrics-addr` flag. Metrics can
 also be published on the `--rc-addr` port if the `--rc` flag and
 `--rc-enable-metrics` flags are supplied or if using zclone rcd
 `--rc-enable-metrics`
 
-Zclone provides extensive configuration options for the metrics HTTP endpoint.
+zClone provides extensive configuration options for the metrics HTTP endpoint.
 These settings are grouped under the Metrics section and have a prefix
 `--metrics-*`.
 
@@ -3442,7 +3442,7 @@ it will log a high priority message if the retry was successful.
 
 ## Environment variables
 
-Zclone can be configured entirely using environment variables.  These
+zClone can be configured entirely using environment variables.  These
 can be used to set defaults for options or config file entries.
 
 ### Options

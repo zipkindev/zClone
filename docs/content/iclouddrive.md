@@ -1,6 +1,6 @@
 ---
 title: "iCloud Drive and Photos"
-description: "Zclone docs for iCloud Drive and Photos"
+description: "zClone docs for iCloud Drive and Photos"
 versionIntroduced: "v1.69"
 ---
 

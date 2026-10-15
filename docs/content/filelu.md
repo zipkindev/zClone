@@ -1,6 +1,6 @@
 ---
 title: "FileLu"
-description: "Zclone docs for FileLu"
+description: "zClone docs for FileLu"
 versionIntroduced: "v1.70"
 ---
 
@@ -41,7 +41,7 @@ xx / FileLu Cloud Storage
    \ "filelu"
 [snip]
 Storage> filelu
-Enter your FileLu Zclone Key:
+Enter your FileLu zClone Key:
 key> YOUR_FILELU_ZCLONE_KEY RC_xxxxxxxxxxxxxxxxxxxxxxxx
 Configuration complete.
 
@@ -54,10 +54,10 @@ y/e/d> y
 
 ### Paths
 
-A path without an initial `/` will operate in the `Zclone` directory.
+A path without an initial `/` will operate in the `zClone` directory.
 
 A path with an initial `/` will operate at the root where you can see
-the `Zclone` directory.
+the `zClone` directory.
 
 ```console
 $ zclone lsf TestFileLu:/
@@ -66,14 +66,14 @@ Camera/
 Documents/
 Music/
 Photos/
-Zclone/
+zClone/
 Vault/
 Videos/
 ```
 
 ### Example Commands
 
-Create a new folder named `foldername` in the `Zclone` directory:
+Create a new folder named `foldername` in the `zClone` directory:
 
 ```console
 zclone mkdir filelu:foldername
@@ -171,16 +171,16 @@ where a character is a Unicode character.
 
 ### Duplicated Files
 
-When uploading and syncing via Zclone, FileLu does not allow uploading
+When uploading and syncing via zClone, FileLu does not allow uploading
 duplicate files within the same directory. However, you can upload
 duplicate files, provided they are in different directories (folders).
 
 ### Failure to Log / Invalid Credentials or KEY
 
-Ensure that you have the correct Zclone key, which can be found in [My
-Account](https://filelu.com/account/). Every time you toggle Zclone
+Ensure that you have the correct zClone key, which can be found in [My
+Account](https://filelu.com/account/). Every time you toggle zClone
 OFF and ON in My Account, a new RC_xxxxxxxxxxxxxxxxxxxx key is
-generated. Be sure to update your Zclone configuration with the new
+generated. Be sure to update your zClone configuration with the new
 key.
 
 If you are connecting to your FileLu remote for the first time and
@@ -190,7 +190,7 @@ encounter an error such as:
 Failed to create file system for "my-filelu-remote:": couldn't login: Invalid credentials
 ```
 
-Ensure your Zclone Key is correct.
+Ensure your zClone Key is correct.
 
 ### Process `killed`
 
@@ -206,7 +206,7 @@ Here are the Standard options specific to filelu (FileLu Cloud Storage).
 
 #### --filelu-key
 
-Your FileLu Zclone key from My Account
+Your FileLu zClone key from My Account
 
 Properties:
 

@@ -75,7 +75,7 @@ var osarches = []string{
 	"plan9/386",
 	"plan9/amd64",
 	"solaris/amd64",
-	// "js/wasm", // Zclone is too big for js/wasm until https://github.com/golang/go/issues/64856 is fixed
+	// "js/wasm", // zClone is too big for js/wasm until https://github.com/golang/go/issues/64856 is fixed
 	"aix/ppc64",
 }
 
