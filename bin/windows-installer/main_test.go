@@ -246,3 +246,29 @@ func TestPublishedReleaseDownload(t *testing.T) {
 	}
 	t.Log("Published release discovery, streamed download, checksum, and extraction passed")
 }
+
+func TestDestinationPreferences(t *testing.T) {
+	root := t.TempDir()
+	settings := filepath.Join(root, "preferences", "settings.json")
+	fallback := filepath.Join(root, "default")
+	got, err := rememberedDirectory(settings, fallback)
+	if err != nil || got != fallback {
+		t.Fatal("default destination", got, err)
+	}
+	for _, name := range []string{"custom location", "new destination"} {
+		destination := filepath.Join(root, name)
+		if err = rememberDirectory(settings, destination); err != nil {
+			t.Fatal(err)
+		}
+		got, err = rememberedDirectory(settings, fallback)
+		if err != nil || got != destination {
+			t.Fatal("remembered destination", got, err)
+		}
+	}
+	if err = os.WriteFile(settings, []byte(`{"install_directory":"relative"}`), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err = rememberedDirectory(settings, fallback); err == nil {
+		t.Fatal("accepted malformed saved destination")
+	}
+}

@@ -27,12 +27,13 @@ def install_cases(updater, archive, previous, root):
     sentinel = root / 'rclone.conf'
     sentinel.write_text('# disposable configuration sentinel\n')
     records = []
+    environment = dict(os.environ, LOCALAPPDATA=str(root / 'updater-preferences'))
 
-    def apply(source, expected):
+    def apply(source, expected, explicit_destination=True):
         start = time.perf_counter()
-        result = subprocess.run([str(updater), '--install-dir', str(root), '--archive', str(source),
+        result = subprocess.run([str(updater), *(['--install-dir', str(root)] if explicit_destination else []), '--archive', str(source),
                                  '--sha256', hashlib.sha256(source.read_bytes()).hexdigest()],
-                                capture_output=True, text=True, timeout=180, check=True)
+                                capture_output=True, text=True, timeout=180, check=True, env=environment)
         entry = json.loads(result.stdout)
         assert hashlib.sha256(binary.read_bytes()).hexdigest() == expected == entry['sha256']
         allocation = allocated_bytes(binary)
@@ -50,11 +51,14 @@ def install_cases(updater, archive, previous, root):
     old, new = executable_hash(previous), executable_hash(archive)
     assert old != new, 'Update QA must replace different executable bytes'
     apply(previous, old)
-    apply(archive, new)
-    apply(archive, new)
+    apply(archive, new, explicit_destination=False)
+    apply(archive, new, explicit_destination=False)
+    preferences = root / 'updater-preferences/zclone-updater/settings.json'
+    saved_preferences = preferences.read_bytes()
     bad = subprocess.run([str(updater), '--install-dir', str(root), '--archive', str(previous),
-                          '--sha256', '0' * 64], capture_output=True, timeout=180)
+                          '--sha256', '0' * 64], capture_output=True, timeout=180, env=environment)
     assert bad.returncode != 0
+    assert preferences.read_bytes() == saved_preferences
     assert hashlib.sha256(binary.read_bytes()).hexdigest() == new
     # A live Windows image must remain running and unchanged if replacement is rejected.
     process = subprocess.Popen([str(binary), '--config', str(sentinel), 'rcd', '--rc-no-auth',
@@ -65,8 +69,9 @@ def install_cases(updater, archive, previous, root):
         assert process.poll() is None
         locked = subprocess.run([str(updater), '--install-dir', str(root), '--archive', str(previous),
                                  '--sha256', hashlib.sha256(previous.read_bytes()).hexdigest()],
-                                capture_output=True, timeout=180)
+                                capture_output=True, timeout=180, env=environment)
         assert locked.returncode != 0, 'Updater replaced a running executable'
+        assert preferences.read_bytes() == saved_preferences
         assert process.poll() is None
         assert hashlib.sha256(binary.read_bytes()).hexdigest() == new
     finally:
@@ -90,7 +95,7 @@ def install_cases(updater, archive, previous, root):
                     'tests': ['first install', 'different executable update', 'reinstall',
                               'bad checksum preserves install', 'running image preserves install',
                               'previous version reinstall', 'compression after every replacement',
-                              'configuration unchanged', 'staging cleanup']}
+                              'configuration unchanged', 'remembered destination', 'staging cleanup']}
 
 
 def main():

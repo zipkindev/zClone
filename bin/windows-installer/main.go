@@ -178,26 +178,43 @@ func install(archive, directory, algorithm string, compress func(string, string)
 
 func runUpdater() error {
 	defaultDirectory := filepath.Join(os.Getenv("LOCALAPPDATA"), "Programs", "zclone")
-	directory := flag.String("install-dir", defaultDirectory, "installation directory (configuration and PATH are unchanged)")
+	directory := flag.String("install-dir", "", "installation directory; default is remembered destination or "+defaultDirectory)
 	algorithm := flag.String("algorithm", "XPRESS4K", "native compression: XPRESS4K, XPRESS8K, or LZX")
 	if runtime.GOOS != "windows" {
 		return errors.New("this experimental updater requires Windows")
 	}
 	archive := flag.String("archive", "", "offline release ZIP (requires --sha256)")
 	digest := flag.String("sha256", "", "expected SHA-256 for an offline release ZIP")
-	tag := flag.String("release", "", "specific release tag; default is newest published release, including prereleases")
-	stable := flag.Bool("stable", false, "select only GitHub latest stable release")
+	tag := flag.String("release", "", "specific release tag; default is latest stable release")
+	stable := flag.Bool("stable", false, "select GitHub latest stable release (default)")
+	prerelease := flag.Bool("prerelease", false, "include published prereleases when selecting the newest release")
 	flag.Parse()
+	if *stable && *prerelease {
+		return errors.New("--stable and --prerelease cannot be combined")
+	}
 	if flag.NArg() != 0 {
 		return errors.New("unexpected positional arguments")
 	}
+	settings := filepath.Join(os.Getenv("LOCALAPPDATA"), "zclone-updater", "settings.json")
+	if *directory == "" {
+		saved, err := rememberedDirectory(settings, defaultDirectory)
+		if err != nil {
+			return fmt.Errorf("read updater destination: %w", err)
+		}
+		*directory = saved
+	}
+	absolute, err := filepath.Abs(*directory)
+	if err != nil {
+		return err
+	}
+	*directory = absolute
 	temporary, err := os.MkdirTemp("", "zclone-download-")
 	if err == nil {
 		defer os.RemoveAll(temporary)
 	}
 	source := *archive
 	if err == nil && source == "" {
-		source, err = downloadRelease(httpClient(), "https://api.github.com/repos/zipkindev/zClone/releases/", *tag, temporary, !*stable)
+		source, err = downloadRelease(httpClient(), "https://api.github.com/repos/zipkindev/zClone/releases/", *tag, temporary, *prerelease)
 	}
 	if err == nil && *archive != "" {
 		var actual string
@@ -210,6 +227,9 @@ func runUpdater() error {
 		var digest string
 		digest, err = install(source, *directory, *algorithm, nativeCompress)
 		if err == nil {
+			if saveErr := rememberDirectory(settings, *directory); saveErr != nil {
+				fmt.Fprintln(os.Stderr, "Installed successfully, but could not remember destination:", saveErr)
+			}
 			return json.NewEncoder(os.Stdout).Encode(map[string]string{"path": filepath.Join(*directory, "zclone.exe"), "sha256": digest, "algorithm": *algorithm, "status": "installed"})
 		}
 	}

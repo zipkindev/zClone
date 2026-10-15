@@ -50,7 +50,7 @@ runtime testing on QNAP or other target platforms.
 Archives include attribution, the recovery helper and instructions, the vendored
 source manifest, a CycloneDX SBOM and a build identity. `SHA256SUMS` accompanies
 the downloads. Executables are currently unsigned and macOS binaries are not
-notarized. Versions below 1.0 are marked as GitHub prereleases. Signing and
+notarized. Versioned releases are published as stable/latest, including v0 releases. Signing and
 notarization for trusted platform distribution remain operator steps below.
 
 Publication uses the workflow's scoped GitHub token, with write permission only
@@ -415,7 +415,7 @@ repository. Validate it with `make verify-local` before release.
 
 ### Experimental streaming Windows updater
 
-The Windows QA artifact includes `zclone-updater-experimental.exe`, a separate
+Windows releases and the separate Windows QA artifact include `zClone-Updater.exe`, a separate
 standalone downloader/installer built with the standard Go library. Running it
 fetches published release metadata from `zipkindev/zClone`, streams the ordinary
 Windows amd64 ZIP to temporary storage while computing SHA-256, checks the
@@ -424,15 +424,14 @@ filesystem, and applies XPRESS4K before replacing `zclone.exe`. The application
 bytes are unchanged. There is no runtime launcher or background update service.
 
 ```console
-zclone-updater-experimental.exe
-zclone-updater-experimental.exe --install-dir C:\Tools\zclone
-zclone-updater-experimental.exe --stable
-zclone-updater-experimental.exe --release v0.1.0
+zClone-Updater.exe
+zClone-Updater.exe --install-dir C:\Tools\zclone
+zClone-Updater.exe --prerelease
+zClone-Updater.exe --release v0.1.0
 ```
 
-The default selects the newest published entry in GitHub's release listing,
-including prereleases, because current v0 releases are published as prereleases.
-`--stable` uses GitHub's latest stable release; `--release` selects an explicit
+The default selects GitHub's latest stable release.
+`--prerelease` explicitly includes prereleases; `--release` selects an explicit
 tag. Only ordinary Windows amd64 archives are accepted. Missing assets, HTTP
 errors, checksum mismatches, unsafe archives, compression failures, and a locked
 running executable fail without replacing the active executable. Close running
@@ -440,7 +439,13 @@ Zclone processes and rerun the same updater to retry. Rerunning installs the
 selected release and reapplies compression, including when the version matches.
 Reinstalling an earlier release uses `--release` with that tag.
 
-The default directory is `%LOCALAPPDATA%\Programs\zclone`; there are no PATH,
+The first-install default is `%LOCALAPPDATA%\Programs\zclone`. `--install-dir`
+selects another directory, including paths containing spaces. After a successful
+install, the updater records the absolute destination in
+`%LOCALAPPDATA%\zclone-updater\settings.json`. Later runs use that directory;
+an explicit `--install-dir` overrides it. Failed installs do not change the saved
+destination. If the preferences file is malformed, choose a destination explicitly
+to replace it after a successful install. There are no PATH,
 configuration, service, registry, scheduled-task, or app update-policy changes.
 Licenses, SBOM, and release metadata are kept under `.zclone-releases/<exe-sha256>`
 inside that directory. Previous metadata is retained; previous executables are
@@ -453,8 +458,9 @@ on HTTP chunks; the download and extraction use bounded buffers.
 alternatives. `--archive <zip> --sha256 <digest>` installs an explicitly verified
 local ordinary release, supporting offline use and disposable CI fixtures.
 The updater itself is unsigned and experimental, with SHA-256 relying on the
-published release over HTTPS rather than a separate signing authority. Public
-release publishing remains unchanged. The updater reads proxy settings supported
+published release over HTTPS rather than a separate signing authority. The updater
+is included as a separate Windows x64 release asset. Other platform archives retain
+their existing packaging. The updater reads proxy settings supported
 by Go's HTTP client and uses Windows certificate trust; it requires outbound
 HTTPS and a destination filesystem supporting native executable compression.
 

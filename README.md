@@ -395,6 +395,45 @@ Download platform archives from [GitHub Releases](https://github.com/zipkindev/z
 Zclone has independent version numbers. See [RELEASE.md](RELEASE.md) for the
 version validation hook, explicit bumps, and tag-triggered releases.
 
+### Latest changes: v0.1.1
+
+v0.1.1 is the stable release for the Windows build and compression work:
+
+- Full backend SDK sources and authentication options are retained. The supported
+  Arrow standard-library JSON build tag and a focused Drive download-URL lookup
+  reduce the ordinary executable without removing application features.
+- Windows archives enable WinFsp mount support; using mounts requires WinFsp.
+- `zClone-Updater.exe` downloads the latest stable Windows x64 release, verifies
+  its published SHA-256, and applies native XPRESS4K compression before installing
+  or replacing the executable. No separate compression script is needed.
+- Windows QA measured 38.61 MiB executable disk allocation versus 77.77 MiB
+  ordinary, with about 1% warm-start difference and approximately unchanged
+  memory use. The compressed file has identical bytes and retains its 77.77 MiB
+  logical size. These measurements precede the version increment and vary by
+  system; installation metadata and the updater require additional storage.
+
+Download **[zClone-Updater.exe](https://github.com/zipkindev/zClone/releases/latest/download/zClone-Updater.exe)**
+once and rerun it for future updates:
+
+```powershell
+.\zClone-Updater.exe --install-dir "C:\Tools\zclone"
+```
+
+The first-install default is `%LOCALAPPDATA%\Programs\zclone`. Choose any writable
+destination with `--install-dir`; the updater remembers the last successful
+destination for later runs. An explicit path overrides it. The updater leaves
+configuration and PATH unchanged. It requires HTTPS access to GitHub and a
+filesystem supporting native executable compression. It stages and compresses the
+complete executable after streaming the ZIP to disk, so temporary disk space is
+required. Close running Zclone processes before updating. `--release <tag>` pins
+a release; `--prerelease` explicitly includes prereleases. The updater remains a
+prototype; the ordinary archives remain available for direct installation.
+
+Compatibility, local file operations, archives, encryption, HTTP, RC, GUI, mount
+read/write, update failures, and Defender are covered by Windows CI. Tests use
+disposable data; credentialed provider operations and cold-start performance are
+not part of this qualification. See [RELEASE.md](RELEASE.md) for details.
+
 ### Offline build profile
 
 `make zclone` builds `build/zclone` with version information, vendored modules,

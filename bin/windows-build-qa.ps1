@@ -84,7 +84,7 @@ if ($LASTEXITCODE -ne 0) { throw "Installer release archive build failed" }
 $archive = "$out/releases/zclone-$version-windows-amd64.zip"
 python bin/windows_installer_qa.py --archive $archive --previous-binary "$out/json-baseline.exe" --output "$out/previous-qa.zip"
 if ($LASTEXITCODE -ne 0) { throw "Installer update fixture preparation failed" }
-go build -buildvcs=false -trimpath -ldflags "-s -w" -o "$out/zclone-updater-experimental.exe" ./bin/windows-installer
+go build -buildvcs=false -trimpath -ldflags "-s -w" -o "$out/zClone-Updater.exe" ./bin/windows-installer
 if ($LASTEXITCODE -ne 0) { throw "Updater build failed" }
 @{
     artifact_kind = "experimental-updater"
@@ -93,9 +93,9 @@ if ($LASTEXITCODE -ne 0) { throw "Updater build failed" }
     os = "windows"
     arch = "amd64"
     default_algorithm = "XPRESS4K"
-    default_channel = "published-including-prereleases"
+    default_channel = "stable"
     repository = "zipkindev/zClone"
-    sha256 = (Get-FileHash -Algorithm SHA256 "$out/zclone-updater-experimental.exe").Hash.ToLowerInvariant()
+    sha256 = (Get-FileHash -Algorithm SHA256 "$out/zClone-Updater.exe").Hash.ToLowerInvariant()
 } | ConvertTo-Json | Set-Content "$out/updater-info.json"
 $env:ZCLONE_INSTALLER_QA_ARCHIVE = $archive
 go test -timeout 5m ./bin/windows-installer
@@ -116,7 +116,7 @@ if ($LASTEXITCODE -ne 0) { throw "UPX compression failed" }
 & $upx -t "$out/packed.exe"
 if ($LASTEXITCODE -ne 0) { throw "UPX integrity failed" }
 $packedVariants = @()
-$scanNames = @("candidate", "packed", "zclone-updater-experimental")
+$scanNames = @("candidate", "packed", "zClone-Updater")
 foreach ($level in @(1, 5, 9)) {
     $name = "upx-nrv-$level"
     $path = "$out/$name.exe"
@@ -130,7 +130,7 @@ foreach ($level in @(1, 5, 9)) {
     $packedVariants += @("--packed-variant", "$name=$path")
     $scanNames += $name
 }
-python bin/compare-executables.py --baseline "$out/baseline.exe" --candidate "$out/candidate.exe" --json-baseline "$out/json-baseline.exe" --packed "$out/packed.exe" @packedVariants --installer "$out/zclone-updater-experimental.exe" --installer-archive $archive --previous-archive "$out/previous-qa.zip" --compact --mount --output "$out/comparison.json"
+python bin/compare-executables.py --baseline "$out/baseline.exe" --candidate "$out/candidate.exe" --json-baseline "$out/json-baseline.exe" --packed "$out/packed.exe" @packedVariants --installer "$out/zClone-Updater.exe" --installer-archive $archive --previous-archive "$out/previous-qa.zip" --compact --mount --output "$out/comparison.json"
 if ($LASTEXITCODE -ne 0) { throw "Executable regression comparison failed" }
 
 # Scan only disposable build artifacts with the runner's installed Defender engine.

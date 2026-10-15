@@ -277,7 +277,7 @@ def main():
             binaries[name] = local
         if args.installer:
             installed, metrics = install_cases(args.installer.resolve(), args.installer_archive.resolve(),
-                                               args.previous_archive.resolve(), root / 'installation')
+                                               args.previous_archive.resolve(), root / 'installation with spaces')
             binaries['installed'] = installed
             report['installer'] = metrics
         config = root / 'inventory.conf'

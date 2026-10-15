@@ -138,7 +138,7 @@ jobs:
         with:
           name: windows-updater-experimental-${{ github.sha }}
           path: |
-            build/windows-qa/zclone-updater-experimental.exe
+            build/windows-qa/zClone-Updater.exe
             build/windows-qa/updater-info.json
             COPYING
             NOTICE
