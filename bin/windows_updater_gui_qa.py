@@ -28,6 +28,7 @@ def exercise_gui(updater, archive, root, screenshot=None):
     user.IsWindowVisible.argtypes = [wintypes.HWND]
     callback_type = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
     user.EnumWindows.argtypes = [callback_type, wintypes.LPARAM]
+    user.EnumChildWindows.argtypes = [wintypes.HWND, callback_type, wintypes.LPARAM]
     destination = root / 'chosen folder with spaces'
     destination.mkdir()
     env = dict(os.environ, LOCALAPPDATA=str(root / 'preferences'))
@@ -62,7 +63,7 @@ def exercise_gui(updater, archive, root, screenshot=None):
 
     def text(control):
         buffer = ctypes.create_unicode_buffer(4096)
-        user.GetWindowTextW(control, buffer, len(buffer))
+        user.SendMessageW(control, 0xD, len(buffer), ctypes.addressof(buffer))
         return buffer.value
 
     try:
@@ -74,11 +75,23 @@ def exercise_gui(updater, archive, root, screenshot=None):
         user.PostMessageW(window, 0x111, 102, 0)
         picker = wait(lambda: windows('#32770'))[0]
         path = ctypes.create_unicode_buffer(str(destination))
-        user.SendMessageW(picker, 0x467, 1, ctypes.addressof(path))
+        edits = []
+        @callback_type
+        def find_edit(control, parameter):
+            name = ctypes.create_unicode_buffer(256)
+            user.GetClassNameW(control, name, len(name))
+            if name.value == 'Edit':
+                edits.append(control)
+            return True
+        user.EnumChildWindows(picker, find_edit, 0)
+        assert edits, 'Folder picker has no path entry field'
+        # WM_SETTEXT/WM_GETTEXT are marshalled by Windows across processes.
+        # BFFM_SETSELECTION carries a raw process-local pointer and cannot be used here.
+        user.SendMessageW(edits[0], 0xC, 0, ctypes.addressof(path))
         wait(lambda: user.IsWindowEnabled(user.GetDlgItem(picker, 1)))
         user.PostMessageW(picker, 0x111, 1, 0)
         wait(lambda: not user.IsWindow(picker))
-        assert Path(text(folder)) == destination, 'Folder picker selection was not applied'
+        wait(lambda: Path(text(folder)) == destination)
         # Verify cancelling the picker retains the selection.
         user.PostMessageW(window, 0x111, 102, 0)
         picker = wait(lambda: windows('#32770'))[0]
@@ -88,7 +101,7 @@ def exercise_gui(updater, archive, root, screenshot=None):
         user.PostMessageW(window, 0x111, 103, 0)
         status = user.GetDlgItem(window, 105)
         wait(lambda: 'Installed successfully.' in text(status), timeout=180)
-        assert user.SendMessageW(user.GetDlgItem(window, 106), 0x408, 0, 0) == 100
+        wait(lambda: user.SendMessageW(user.GetDlgItem(window, 106), 0x408, 0, 0) == 100)
         if screenshot:
             capture_window(user, window, screenshot)
         with zipfile.ZipFile(archive) as package:

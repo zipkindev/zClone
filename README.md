@@ -77,7 +77,7 @@ in a QNAP → Google Drive → TNAS workflow. Its retained test records show:
 
 | Check | Verified result |
 | --- | --- |
-| QNAP process interruption | Four forced stops—during staging, preparation, upload, and verification—resumed after RAM staging was removed; each restored the same 8 MiB image. |
+| QNAP process interruption | Stops during staging and at prepared, uploaded, and verified checkpoints resumed after RAM staging was removed; each restored the same 8 MiB image. |
 | Drive → TNAS interruption | A downloader stopped after accepting the first chunk, restarted against its persistent journal, and restored the matching 8 MiB test image. |
 | Completed metadata transfer | All 128 chunks / 64 GiB completed. The acquisition, reconstructed TNAS image, and independent analysis copy had matching SHA-256. |
 
