@@ -31,7 +31,7 @@ def normalize_branding(value):
         return [normalize_branding(item) for item in value]
     if isinstance(value, dict):
         return {key: re.sub(r'\bZclone\b', 'zClone', item)
-                if key in {'Help', 'Description'} and isinstance(item, str)
+                if key in {'Help', 'Description', 'Short', 'Long'} and isinstance(item, str)
                 else normalize_branding(item) for key, item in value.items()}
     return value
 
