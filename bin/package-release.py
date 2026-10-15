@@ -33,7 +33,9 @@ def main():
     name = 'zclone-{}-{}-{}'.format(args.version, args.os, args.arch)
     if args.compression != 'none':
         name += '-' + args.compression
-    tags = ['cmount'] if args.os == 'windows' else []
+    tags = ['arrow_json_stdlib']
+    if args.os == 'windows':
+        tags.append('cmount')
     env = dict(os.environ, GOPROXY='off', GOSUMDB='off', GOFLAGS='-mod=vendor',
                GOTOOLCHAIN='local', CGO_ENABLED='0', GOOS=args.os, GOARCH=args.arch)
     env.setdefault('GOTMPDIR', str(scratch))

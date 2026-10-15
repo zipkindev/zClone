@@ -68,6 +68,74 @@ Build a single archive locally after `make sbom`:
 python3 bin/package-release.py v0.1.0 linux amd64
 ```
 
+## Standard Arrow JSON profile
+
+Release packaging, Make targets, cross-compilation defaults, and CI use
+`arrow_json_stdlib`. Windows packaging also uses `cmount`. Arrow's supported
+standard-library adapter replaces `github.com/goccy/go-json`; Arrow listing,
+archive formats, authentication, and provider registrations remain enabled.
+Raw Go commands must specify `-tags arrow_json_stdlib` (and `cmount` for Windows
+mount support); Go module resolution must still remain offline with vendor.
+
+Windows QA builds a same-source `cmount` executable without the JSON tag and
+compares it against `cmount,arrow_json_stdlib`. This isolates the JSON change
+from the PR's other size changes. Reports include executable/ZIP size, warm
+startup medians, RC/GUI peak working sets, compression variants, and function
+sizes read from the stripped executables' Go runtime tables.
+
+`bin/compare-arrow-json.py` runs all Arrow listing tests under both libraries,
+including JSON compatibility checks for Unicode, nulls, integer limits,
+malformed input, and checked allocator cleanup. It alternates seven benchmark
+samples per profile after warmup with GOMAXPROCS=2. Listing benchmarks cover
+1,000 and 10,000 blobs with timestamps, lengths, booleans, and other standard
+listing fields. Medians must stay within 20% for listing latency and 5% for
+allocated bytes and allocation counts; the report preserves sample ranges.
+Direct JSON encode/decode performance is reported separately: the Azure listing
+path uses binary Arrow IPC rather than these JSON helpers. The standard adapter
+can make those helpers slower and increase their allocation counts. A smaller
+executable does not imply faster operations or a smaller working set.
+
+Arrow pager tests cover pagination, XML fallback, authentication headers, and API
+errors using disposable loopback fixtures. Credentialed Azure preview-service
+integration still requires an approved disposable account.
+
+## Machine-code retention findings
+
+For the reviewed Windows x64 Go 1.27 profile, the Arrow JSON switch removes
+about 1.31 MiB overall, including about 0.74 MiB of function code and 559 runtime
+function entries. The remainder includes associated metadata and data. Code
+measurements include alignment and are not estimates of safely removable bytes.
+`bin/analyze-executable.py` records section sizes, package code, large functions,
+and retained S3 methods directly from the stripped executable's runtime tables.
+
+The linker dependency trace (`go build -ldflags "-dumpdep ..."`, with both stdout
+and stderr redirected to a file) shows two sources of extra code:
+
+- Arrow's default JSON dispatcher references regular, indented, colored, and
+  debug encoder implementations. The supported standard adapter removes that
+  separate dispatcher and encoder family.
+- `text/template.(*state).evalField` performs dynamic `MethodByName` lookup.
+  The linker conservatively retains exported methods of reachable types marked
+  as used in interfaces. Its trace propagates that mark from the S3 filesystem
+  type to its SDK client. The reviewed binary retains all 224 S3 API operations
+  declared by the vendored SDK, including `PutBucketAnalyticsConfiguration`,
+  which has no direct call in Zclone source. The trace records first-reach
+  parents, not a complete runtime call graph.
+
+SDK-generated serializers, endpoint rule dispatch, and other protocol support
+also contribute many specialized functions. The large S3 endpoint resolver
+supports runtime choices such as region, acceleration, and FIPS endpoints.
+Generic specialization contributes roughly 1 MiB, rather than explaining the
+whole approximately 35 MiB code section. Four retained YAML implementations
+contribute about 0.57 MiB of code combined, suggesting a separate dependency
+consolidation opportunity. Some SDK utility files import test helpers outside
+`_test.go`; their package initializers are retained, but the measured `testing`
+and assertion code is small. Dependency presence alone does not establish that
+an entire test suite or SDK is linked. Further SDK narrowing requires a
+separate design that preserves custom templates, authentication choices, and
+provider behavior; disabling reflection globally would invalidate those
+contracts. Debug symbols are already stripped from release executables.
+
 ## Windows size and runtime qualification
 
 Windows archives include the `cmount` build tag and use the vendored cgofuse

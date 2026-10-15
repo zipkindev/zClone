@@ -13,7 +13,8 @@ New-Item -ItemType Directory -Force $out | Out-Null
     candidate_commit = (git rev-parse HEAD)
     go = (go version)
     baseline_tags = @()
-    candidate_tags = @("cmount")
+    candidate_tags = @("arrow_json_stdlib", "cmount")
+    json_baseline_tags = @("cmount")
     upx = "5.1.1"
     winfsp = "2.1.25156"
 } | ConvertTo-Json | Set-Content (Join-Path $out "build-context.json")
@@ -56,16 +57,26 @@ try {
     git worktree remove $baseline
     if ($LASTEXITCODE -ne 0) { throw "Cannot remove baseline checkout" }
 }
-go build -buildvcs=false -trimpath -tags cmount -ldflags "-s -w -X zclone/fs.Version=$version" -o "$out/candidate.exe" .
+go build -buildvcs=false -trimpath -tags cmount -ldflags "-s -w -X zclone/fs.Version=$version" -o "$out/json-baseline.exe" .
+if ($LASTEXITCODE -ne 0) { throw "JSON baseline build failed" }
+go build -buildvcs=false -trimpath -tags arrow_json_stdlib,cmount -ldflags "-s -w -X zclone/fs.Version=$version" -o "$out/candidate.exe" .
 if ($LASTEXITCODE -ne 0) { throw "Candidate build failed" }
-go test -timeout 10m ./backend/drive ./backend/crypt ./backend/azureblob ./cmd/gui ./lib/http
+python bin/analyze-executable.py --baseline "$out/json-baseline.exe" --candidate "$out/candidate.exe" --output "$out/machine-code.json"
+if ($LASTEXITCODE -ne 0) { throw "Machine-code analysis failed" }
+go test -tags arrow_json_stdlib -timeout 10m ./backend/drive ./backend/crypt ./backend/azureblob/... ./cmd/gui ./lib/http
 if ($LASTEXITCODE -ne 0) { throw "Backend or GUI regression tests failed" }
+go test -c -o "$out/arrow-default.test.exe" ./backend/azureblob/arrowlist
+if ($LASTEXITCODE -ne 0) { throw "Arrow baseline test build failed" }
+go test -c -tags arrow_json_stdlib -o "$out/arrow-stdlib.test.exe" ./backend/azureblob/arrowlist
+if ($LASTEXITCODE -ne 0) { throw "Arrow candidate test build failed" }
+python bin/compare-arrow-json.py --baseline "$out/arrow-default.test.exe" --candidate "$out/arrow-stdlib.test.exe" --output "$out/arrow-performance.json"
+if ($LASTEXITCODE -ne 0) { throw "Arrow compatibility or listing performance regressed" }
 Copy-Item "$out/candidate.exe" "$out/packed.exe"
 & $upx -9 "$out/packed.exe"
 if ($LASTEXITCODE -ne 0) { throw "UPX compression failed" }
 & $upx -t "$out/packed.exe"
 if ($LASTEXITCODE -ne 0) { throw "UPX integrity failed" }
-python bin/compare-executables.py --baseline "$out/baseline.exe" --candidate "$out/candidate.exe" --packed "$out/packed.exe" --compact --mount --output "$out/comparison.json"
+python bin/compare-executables.py --baseline "$out/baseline.exe" --candidate "$out/candidate.exe" --json-baseline "$out/json-baseline.exe" --packed "$out/packed.exe" --compact --mount --output "$out/comparison.json"
 if ($LASTEXITCODE -ne 0) { throw "Executable regression comparison failed" }
 
 # Scan only disposable build artifacts with the runner's installed Defender engine.

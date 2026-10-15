@@ -212,11 +212,14 @@ def main():
     parser.add_argument('--baseline', required=True, type=Path)
     parser.add_argument('--candidate', required=True, type=Path)
     parser.add_argument('--packed', type=Path)
+    parser.add_argument('--json-baseline', type=Path, help='Same-source build using the previous JSON library')
     parser.add_argument('--mount', action='store_true', help='Require WinFsp mount read/write QA')
     parser.add_argument('--compact', action='store_true', help='Require native Windows compression QA')
     parser.add_argument('--output', type=Path, default=Path('build/executable-comparison.json'))
     args = parser.parse_args()
     binaries = {'baseline': args.baseline.resolve(), 'candidate': args.candidate.resolve()}
+    if args.json_baseline:
+        binaries['json_baseline'] = args.json_baseline.resolve()
     if args.packed:
         binaries['upx'] = args.packed.resolve()
     if args.compact and os.name != 'nt':
@@ -254,6 +257,13 @@ def main():
                     archive.write(binary, 'zclone.exe')
                 result['zip_bytes'] = compressed.tell()
             result['saved_bytes'] = binaries['baseline'].stat().st_size - binary.stat().st_size
+    if args.json_baseline:
+        old, new = report['binaries']['json_baseline'], report['binaries']['candidate']
+        report['arrow_json_change'] = {
+            'saved_bytes': old['bytes'] - new['bytes'],
+            'change_percent': {key: 100 * (new[key] / old[key] - 1) if old[key] else None
+                               for key in ['bytes', 'startup_median_seconds',
+                                           'rc_peak_working_set_bytes', 'gui_peak_working_set_bytes']}}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report, indent=2))

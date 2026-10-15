@@ -61,6 +61,7 @@ else:
                 info = json.loads(package.read(prefix + 'build-info.json'))
                 self.assertFalse(info['cgo'])
                 self.assertEqual(info['version'], 'v0.1.0')
+                self.assertEqual(info['tags'], ['arrow_json_stdlib'])
                 self.assertEqual(len(info['commit']), 40)
                 self.assertTrue((package.getinfo(prefix + 'zclone').external_attr >> 16) & 0o111)
 
@@ -71,9 +72,9 @@ else:
             with zipfile.ZipFile(root / 'build/releases/zclone-v0.1.0-windows-amd64.zip') as package:
                 prefix = 'zclone-v0.1.0-windows-amd64/'
                 binary = json.loads(package.read(prefix + 'zclone.exe'))
-                self.assertEqual(binary['tags'], 'cmount')
+                self.assertEqual(binary['tags'], 'arrow_json_stdlib,cmount')
                 info = json.loads(package.read(prefix + 'build-info.json'))
-                self.assertEqual(info['tags'], ['cmount'])
+                self.assertEqual(info['tags'], ['arrow_json_stdlib', 'cmount'])
                 self.assertEqual(info['compression'], 'none')
             upx = tools / 'upx'
             upx.write_text("#!/usr/bin/env python3\nimport sys\nprint('upx 5.1.1')\n")

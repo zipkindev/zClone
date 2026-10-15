@@ -18,7 +18,7 @@ concurrency:
 env:
   GOPROXY: "off"
   GOSUMDB: "off"
-  GOFLAGS: "-mod=vendor"
+  GOFLAGS: "-mod=vendor -tags=arrow_json_stdlib"
   ZCLONE_CONFIG: "/notfound"
 
 jobs:
@@ -69,7 +69,7 @@ jobs:
           cache: false
 
       - name: Test compatibility-sensitive packages
-        run: go test -timeout 10m ./backend/crypt ./backend/hidrive/hidrivehash ./lib/http
+        run: go test -timeout 10m ./backend/crypt ./backend/hidrive/hidrivehash ./lib/http ./backend/azureblob/...
 
   compile:
     name: Compile (${{ matrix.os }})
