@@ -412,3 +412,56 @@ Online dependency update commands are intentionally disabled. Review and stage
 new dependency source in a controlled environment, update `go.mod` and
 `go.sum`, regenerate `vendor/` there, then bring the reviewed result into this
 repository. Validate it with `make verify-local` before release.
+
+### Experimental streaming Windows updater
+
+The Windows QA artifact includes `zclone-updater-experimental.exe`, a separate
+standalone downloader/installer built with the standard Go library. Running it
+fetches published release metadata from `zipkindev/zClone`, streams the ordinary
+Windows amd64 ZIP to temporary storage while computing SHA-256, checks the
+published `SHA256SUMS`, extracts to a staging directory on the destination
+filesystem, and applies XPRESS4K before replacing `zclone.exe`. The application
+bytes are unchanged. There is no runtime launcher or background update service.
+
+```console
+zclone-updater-experimental.exe
+zclone-updater-experimental.exe --install-dir C:\Tools\zclone
+zclone-updater-experimental.exe --stable
+zclone-updater-experimental.exe --release v0.1.0
+```
+
+The default selects the newest published entry in GitHub's release listing,
+including prereleases, because current v0 releases are published as prereleases.
+`--stable` uses GitHub's latest stable release; `--release` selects an explicit
+tag. Only ordinary Windows amd64 archives are accepted. Missing assets, HTTP
+errors, checksum mismatches, unsafe archives, compression failures, and a locked
+running executable fail without replacing the active executable. Close running
+Zclone processes and rerun the same updater to retry. Rerunning installs the
+selected release and reapplies compression, including when the version matches.
+Reinstalling an earlier release uses `--release` with that tag.
+
+The default directory is `%LOCALAPPDATA%\Programs\zclone`; there are no PATH,
+configuration, service, registry, scheduled-task, or app update-policy changes.
+Licenses, SBOM, and release metadata are kept under `.zclone-releases/<exe-sha256>`
+inside that directory. Previous metadata is retained; previous executables are
+not retained. Staged files and temporary downloads are removed on normal success
+or failure. Temporary disk space is required for the ZIP and extracted executable
+before compression. Compression occurs on the complete staged file, rather than
+on HTTP chunks; the download and extraction use bounded buffers.
+
+`--algorithm XPRESS8K` and `--algorithm LZX` select the previously tested native
+alternatives. `--archive <zip> --sha256 <digest>` installs an explicitly verified
+local ordinary release, supporting offline use and disposable CI fixtures.
+The updater itself is unsigned and experimental, with SHA-256 relying on the
+published release over HTTPS rather than a separate signing authority. Public
+release publishing remains unchanged. The updater reads proxy settings supported
+by Go's HTTP client and uses Windows certificate trust; it requires outbound
+HTTPS and a destination filesystem supporting native executable compression.
+
+Windows CI tests a streamed HTTPS release fixture, native installation, updates
+between different executable hashes, reinstall, reinstalling the previous build,
+checksum failure, a running executable, cleanup, and configuration preservation.
+The installed image undergoes the same inventories, functionality, WinFsp mount,
+startup, and RC/GUI memory QA as the ordinary image. Qualification uses the same
+20% warm-start and 10% peak-working-set limits. The updater and installed image
+are scanned with Defender. Published cloud credentials are never used in QA.

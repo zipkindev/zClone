@@ -17,6 +17,8 @@ import urllib.error
 import urllib.request
 import zipfile
 
+from windows_installer_qa import install_cases
+
 
 def run(binary, config, *args):
     return subprocess.run([str(binary), '--config', str(config), *map(str, args)],
@@ -240,6 +242,9 @@ def main():
     parser.add_argument('--baseline', required=True, type=Path)
     parser.add_argument('--candidate', required=True, type=Path)
     parser.add_argument('--packed', type=Path)
+    parser.add_argument('--installer', type=Path)
+    parser.add_argument('--installer-archive', type=Path)
+    parser.add_argument('--previous-archive', type=Path)
     parser.add_argument('--packed-variant', action='append', default=[], metavar='NAME=PATH',
                         help='Additional experimental packed executable; may be repeated')
     parser.add_argument('--json-baseline', type=Path, help='Same-source build using the previous JSON library')
@@ -247,6 +252,8 @@ def main():
     parser.add_argument('--compact', action='store_true', help='Require native Windows compression QA')
     parser.add_argument('--output', type=Path, default=Path('build/executable-comparison.json'))
     args = parser.parse_args()
+    if args.installer and (os.name != 'nt' or not args.installer_archive or not args.previous_archive):
+        parser.error('--installer requires Windows and both archive arguments')
     binaries = {'baseline': args.baseline.resolve(), 'candidate': args.candidate.resolve()}
     if args.json_baseline:
         binaries['json_baseline'] = args.json_baseline.resolve()
@@ -268,6 +275,11 @@ def main():
             local = root / (name + ('.exe' if os.name == 'nt' else ''))
             shutil.copy2(binary, local)
             binaries[name] = local
+        if args.installer:
+            installed, metrics = install_cases(args.installer.resolve(), args.installer_archive.resolve(),
+                                               args.previous_archive.resolve(), root / 'installation')
+            binaries['installed'] = installed
+            report['installer'] = metrics
         config = root / 'inventory.conf'
         config.write_text('')
         inventories = {name: inventory(binary, config) for name, binary in binaries.items()}
@@ -282,6 +294,8 @@ def main():
         report['provider_inventory_equal'] = True
         report['existing_commands_and_flags_preserved'] = True
         report['added_commands'] = sorted(set(inventories['candidate']['commands']) - set(baseline['commands']))
+        if args.installer:
+            assert inventories['installed'] == inventories['candidate'], 'Installation changed inventory'
         if args.compact:
             for algorithm in ['XPRESS4K', 'XPRESS8K', 'LZX']:
                 binary, metrics = compact(binaries['candidate'], algorithm, root)
@@ -337,6 +351,14 @@ def main():
                     if changes[key] > limit:
                         failures.append(name + ' ' + key + ' regression')
         report['native_compression_performance']['regressions'] = failures
+    if args.installer:
+        changes = {key: 100 * (report['binaries']['installed'][key] / ordinary[key] - 1)
+                   for key in ['startup_median_seconds', 'rc_peak_working_set_bytes', 'gui_peak_working_set_bytes']}
+        report['installer']['change_percent'] = changes
+        for key, limit in [('startup_median_seconds', 20), ('rc_peak_working_set_bytes', 10),
+                           ('gui_peak_working_set_bytes', 10)]:
+            if changes[key] > limit:
+                failures.append('installed ' + key + ' regression')
     if args.json_baseline:
         old, new = report['binaries']['json_baseline'], report['binaries']['candidate']
         report['arrow_json_change'] = {
