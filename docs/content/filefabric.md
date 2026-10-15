@@ -1,6 +1,6 @@
 ---
 title: "Enterprise File Fabric"
-description: "Zclone docs for the Enterprise File Fabric backend"
+description: "zClone docs for the Enterprise File Fabric backend"
 versionIntroduced: "v1.54"
 ---
 
@@ -128,7 +128,7 @@ as they can't be used in JSON strings.
 
 ### Empty files
 
-Empty files aren't supported by the Enterprise File Fabric. Zclone will therefore
+Empty files aren't supported by the Enterprise File Fabric. zClone will therefore
 upload an empty file as a single space with a mime type of
 `application/vnd.zclone.empty.file` and files with that mime type are
 treated as empty.

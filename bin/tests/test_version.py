@@ -21,7 +21,7 @@ class VersionTests(unittest.TestCase):
 
     def write(self, version):
         (self.root / 'VERSION').write_text(version + '\n')
-        (self.root / 'fs/versiontag.go').write_text('package fs\n\n// VersionTag is the base Zclone version.\nvar VersionTag = "' + version + '"\n')
+        (self.root / 'fs/versiontag.go').write_text('package fs\n\n// VersionTag is the base zClone version.\nvar VersionTag = "' + version + '"\n')
         (self.root / 'docs/layouts/partials/version.html').write_text(version)
 
     def run_script(self, *args):

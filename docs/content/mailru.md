@@ -31,7 +31,7 @@ Here is an example of making a mailru configuration.
 
 First create a Mail.ru Cloud account and choose a tariff.
 
-You will need to log in and create an app password for zclone. Zclone
+You will need to log in and create an app password for zclone. zClone
 **will not work** with your normal username and password - it will
 give an error like `oauth2: server response missing access_token`.
 
@@ -40,7 +40,7 @@ give an error like `oauth2: server response missing access_token`.
 - Click password for apps / "Пароли для внешних приложений"
 - Add the password - give it a name - eg "zclone"
 - Select the permissions level. For some reason just "Full access to Cloud"
-  (WebDav) doesn't work for Zclone currently. You have to select "Full access
+  (WebDav) doesn't work for zClone currently. You have to select "Full access
   to Mail, Cloud and Calendar" (all protocols).
   ([thread on forum.zclone.org](/))
 - Copy the password and use this password below - your normal login password

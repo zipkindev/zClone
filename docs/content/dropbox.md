@@ -1,6 +1,6 @@
 ---
 title: "Dropbox"
-description: "Zclone docs for Dropbox"
+description: "zClone docs for Dropbox"
 versionIntroduced: "v1.02"
 ---
 
@@ -91,7 +91,7 @@ zclone copy /home/source remote:backup
 
 ### Dropbox for business
 
-Zclone supports Dropbox for business and Team Folders.
+zClone supports Dropbox for business and Team Folders.
 
 When using Dropbox for business `remote:` and `remote:path/to/file`
 will refer to your personal folder.
@@ -212,11 +212,11 @@ download based on the `--dropbox-export-formats` setting. By
 default, the export formats are `html,md`, which are sensible
 defaults for Dropbox Paper.
 
-Zclone chooses the first format ID in the export formats list that
+zClone chooses the first format ID in the export formats list that
 Dropbox supports for a given file. If no format in the list is
 usable, zclone will choose the default format that Dropbox suggests.
 
-Zclone will change the extension to correspond to the export format.
+zClone will change the extension to correspond to the export format.
 Here are some examples of how extensions are mapped:
 
 | File type      | Filename in Dropbox | Filename in zclone |
@@ -417,7 +417,7 @@ Instructs zclone to work on shared folders.
 
 When this flag is used with no path only the List operation is supported and
 all available shared folders will be listed. If you specify a path the first part
-will be interpreted as the name of shared folder. Zclone will then try to mount this
+will be interpreted as the name of shared folder. zClone will then try to mount this
 shared to the root namespace. On success shared folder zclone proceeds normally.
 The shared folder is now pretty much a normal folder and all normal operations
 are supported.
@@ -577,7 +577,7 @@ This has 3 possible values
 - sync - batch uploads and check completion (default)
 - async - batch upload and don't check completion
 
-Zclone will close any outstanding batches when it exits which may make
+zClone will close any outstanding batches when it exits which may make
 a delay on quit.
 
 
@@ -601,7 +601,7 @@ depending on the setting of batch_mode.
 - batch_mode: sync - default batch_size is the same as --transfers
 - batch_mode: off - not in use
 
-Zclone will close any outstanding batches when it exits which may make
+zClone will close any outstanding batches when it exits which may make
 a delay on quit.
 
 Setting this is a great idea if you are uploading lots of small files
@@ -658,7 +658,7 @@ Note that Dropbox is case insensitive so you can't have a file called
 
 There are some file names such as `thumbs.db` which Dropbox can't
 store.  There is a full list of them in the ["Ignored Files" section
-of this document](https://www.dropbox.com/en/help/145).  Zclone will
+of this document](https://www.dropbox.com/en/help/145).  zClone will
 issue an error message `File name disallowed - not uploading` if it
 attempts to upload one of those file names, but the sync won't fail.
 

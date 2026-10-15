@@ -2634,7 +2634,7 @@ func skipDestructiveChoose(ctx context.Context, subject any, action string) (ski
 //
 // action should be a descriptive word or short phrase
 //
-// Together they should make sense in this sentence: "Zclone is about
+// Together they should make sense in this sentence: "zClone is about
 // to action subject".
 func SkipDestructive(ctx context.Context, subject any, action string) (skip bool) {
 	var flag string

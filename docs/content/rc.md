@@ -50,7 +50,7 @@ Consequently:
   [`--rc-no-auth`](#--rc-no-auth).
 - **Use authentication and TLS** (`--rc-user`/`--rc-pass` or `--rc-htpasswd`,
   plus `--rc-cert`/`--rc-key`) whenever the port is reachable by anyone you do
-  not fully trust. Zclone defaults to TLS 1.2 when TLS is enabled.
+  not fully trust. zClone defaults to TLS 1.2 when TLS is enabled.
 
 ## Supported parameters
 
@@ -205,7 +205,7 @@ User-specified template.
 
 ## Accessing the remote control via the zclone rc command {#api-rc}
 
-Zclone itself implements the remote control protocol in its `zclone
+zClone itself implements the remote control protocol in its `zclone
 rc` command.
 
 You can use it like this:
@@ -1463,7 +1463,7 @@ Eg
 ### mount/mount: Create a new mount point {#mount-mount}
 
 zclone allows Linux, FreeBSD, macOS and Windows to mount any of
-Zclone's cloud storage systems as a file system with FUSE.
+zClone's cloud storage systems as a file system with FUSE.
 
 If no mountType is provided, the priority is given as follows: 1. mount 2.cmount 3.mount2
 
@@ -1525,7 +1525,7 @@ Eg
 ### mount/unmount: Unmount selected active mount {#mount-unmount}
 
 zclone allows Linux, FreeBSD, macOS and Windows to
-mount any of Zclone's cloud storage systems as a file system with
+mount any of zClone's cloud storage systems as a file system with
 FUSE.
 
 This takes the following parameters:
@@ -1539,7 +1539,7 @@ Example:
 ### mount/unmountall: Unmount all active mounts {#mount-unmountall}
 
 zclone allows Linux, FreeBSD, macOS and Windows to
-mount any of Zclone's cloud storage systems as a file system with
+mount any of zClone's cloud storage systems as a file system with
 FUSE.
 
 This takes no parameters and returns error if unmount does not succeed.
@@ -2515,7 +2515,7 @@ must be supplied.
 
 ## Accessing the remote control via HTTP {#api-http}
 
-Zclone implements a simple HTTP based protocol.
+zClone implements a simple HTTP based protocol.
 
 Each endpoint takes an JSON object and returns a JSON object or an
 error.  The JSON objects are essentially a map of string names to

@@ -1,6 +1,6 @@
 ---
 title: "Microsoft OneDrive"
-description: "Zclone docs for Microsoft OneDrive"
+description: "zClone docs for Microsoft OneDrive"
 versionIntroduced: "v1.24"
 ---
 
@@ -256,7 +256,7 @@ endpoint.
    ".driveAccessToken": "access_token={access_token}"
    ```
 
-#### Zclone configuration
+#### zClone configuration
 
 Use the extracted values to configure your remote:
 
@@ -769,7 +769,7 @@ Properties:
 - Default:     "auto"
 - Examples:
   - "auto"
-    - Zclone chooses the best hash
+    - zClone chooses the best hash
   - "quickxor"
     - QuickXor
   - "sha1"
@@ -1109,7 +1109,7 @@ file called "Hello.doc" and one called "hello.doc".
 
 There are quite a few characters that can't be in OneDrive file
 names.  These can't occur on Windows platforms, but on non-Windows
-platforms they are common.  Zclone will map these names to and from an
+platforms they are common.  zClone will map these names to and from an
 identical looking unicode equivalent.  For example if a file has a `?`
 in it will be mapped to `？` instead.
 
@@ -1204,7 +1204,7 @@ versioning on OneDrive
 OneDrive supports `zclone cleanup` which causes zclone to look through
 every file under the path supplied and delete all version but the
 current version. Because this involves traversing all the files, then
-querying each file for versions it can be quite slow. Zclone does
+querying each file for versions it can be quite slow. zClone does
 `--checkers` tests in parallel. The command also supports `--interactive`/`i`
 or `--dry-run` which is a great way to see what it would do.
 

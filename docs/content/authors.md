@@ -1,6 +1,6 @@
 ---
 title: "Authors"
-description: "Zclone Authors and Contributors"
+description: "zClone Authors and Contributors"
 ---
 <!-- markdownlint-disable no-bare-urls -->
 

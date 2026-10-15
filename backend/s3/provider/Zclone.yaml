@@ -1,5 +1,5 @@
 name: Zclone
-description: Zclone S3 Server
+description: zClone S3 Server
 endpoint: {}
 quirks:
   force_path_style: true

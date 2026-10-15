@@ -270,7 +270,7 @@ service, for the official service on https://www.jottacloud.com/web/secure.`)
 	case "legacy": // configure a jottacloud backend using legacy authentication
 		m.Set("configVersion", fmt.Sprint(legacyConfigVersion))
 		return fs.ConfigConfirm("legacy_api", false, "config_machine_specific", `Do you want to create a machine specific API key?
-Zclone has it's own Jottacloud API KEY which works fine as long as one
+zClone has it's own Jottacloud API KEY which works fine as long as one
 only uses zclone on a single machine. When you want to use zclone with
 this account on more than one machine it's recommended to create a
 machine specific API key. These keys can NOT be shared between

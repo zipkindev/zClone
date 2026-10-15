@@ -21,7 +21,7 @@ This sets the batch mode used by zclone.
 - sync - batch uploads and check completion (default)
 - async - batch upload and don't check completion
 
-Zclone will close any outstanding batches when it exits which may make
+zClone will close any outstanding batches when it exits which may make
 a delay on quit.
 `, extra),
 		Default:  "sync",
@@ -39,7 +39,7 @@ depending on the setting of batch_mode.
 - batch_mode: sync - default batch_size is the same as --transfers
 - batch_mode: off - not in use
 
-Zclone will close any outstanding batches when it exits which may make
+zClone will close any outstanding batches when it exits which may make
 a delay on quit.
 
 Setting this is a great idea if you are uploading lots of small files

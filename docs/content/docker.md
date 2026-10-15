@@ -28,7 +28,7 @@ volumes shared across containers and hosts. Unlike local volumes, your
 data will *not* be deleted when such volume is removed. Plugins can run
 managed by the docker daemon, as a native system service
 (under systemd, *sysv* or *upstart*) or as a standalone executable.
-Zclone can run as docker volume plugin in all these modes.
+zClone can run as docker volume plugin in all these modes.
 It interacts with the local docker daemon
 via [plugin API](https://docs.docker.com/engine/extend/plugin_api/) and
 handles mounting of remote file systems into docker containers so it must
@@ -193,7 +193,7 @@ docker volume inspect vol1
 
 ## Volume Configuration
 
-Zclone flags and volume options are set via the `-o` flag to the
+zClone flags and volume options are set via the `-o` flag to the
 `docker volume create` command. They include backend-specific parameters
 as well as mount and *VFS* options. Also there are a few
 special `-o` options:
@@ -329,7 +329,7 @@ We maintain the
 [docker-volume-zclone](https://hub.docker.com/p/zclone/docker-volume-zclone/)
 plugin image on [Docker Hub](https://hub.docker.com).
 
-Zclone volume plugin requires **Docker Engine >= 19.03.15**
+zClone volume plugin requires **Docker Engine >= 19.03.15**
 
 The plugin requires presence of two directories on the host before it can
 be installed. Note that plugin will **not** create them automatically.

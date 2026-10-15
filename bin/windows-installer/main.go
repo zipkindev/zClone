@@ -1,4 +1,4 @@
-// The experimental updater stages an ordinary release before native compression.
+// The updater stages an ordinary release before native compression.
 package main
 
 import (
@@ -103,6 +103,7 @@ func extractFile(f *zip.File, target string) error {
 
 func nativeCompress(binary, algorithm string) error {
 	command := exec.Command(filepath.Join(os.Getenv("SystemRoot"), "System32", "compact.exe"), "/C", "/F", "/EXE:"+algorithm, binary)
+	hideConsole(command)
 	output, err := command.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("native compression requires a supported destination filesystem: %w: %s", err, output)
@@ -122,6 +123,11 @@ func nativeCompress(binary, algorithm string) error {
 }
 
 func install(archive, directory, algorithm string, compress func(string, string) error) (string, error) {
+	return installProgress(archive, directory, algorithm, compress, nil)
+}
+
+func installProgress(archive, directory, algorithm string, compress func(string, string) error, progress progressFunc) (string, error) {
+	progress.send("Preparing installation…", 70)
 	if algorithm != "XPRESS4K" && algorithm != "XPRESS8K" && algorithm != "LZX" {
 		return "", errors.New("unsupported compression algorithm")
 	}
@@ -133,6 +139,7 @@ func install(archive, directory, algorithm string, compress func(string, string)
 		return "", err
 	}
 	defer os.RemoveAll(stage)
+	progress.send("Extracting files…", 72)
 	if err = extract(archive, stage); err != nil {
 		return "", err
 	}
@@ -141,9 +148,11 @@ func install(archive, directory, algorithm string, compress func(string, string)
 	if err != nil {
 		return "", err
 	}
+	progress.send("Compressing zClone…", 82)
 	if err = compress(binary, algorithm); err != nil {
 		return "", err
 	}
+	progress.send("Checking installed files…", 92)
 	after, err := fileHash(binary)
 	if err != nil {
 		return "", err
@@ -170,6 +179,7 @@ func install(archive, directory, algorithm string, compress func(string, string)
 		}
 	}
 	// Windows rejects replacement of a running image; the existing file stays in place.
+	progress.send("Installing zClone…", 97)
 	if err = os.Rename(binary, filepath.Join(directory, "zclone.exe")); err != nil {
 		return "", fmt.Errorf("replacement failed; close running zclone processes and retry: %w", err)
 	}
@@ -188,7 +198,12 @@ func runUpdater() error {
 	tag := flag.String("release", "", "specific release tag; default is latest stable release")
 	stable := flag.Bool("stable", false, "select GitHub latest stable release (default)")
 	prerelease := flag.Bool("prerelease", false, "include published prereleases when selecting the newest release")
+	graphical := flag.Bool("gui", false, "open the installer window")
+	commandLine := flag.Bool("cli", false, "install without opening a window")
 	flag.Parse()
+	if *graphical && *commandLine {
+		return errors.New("--gui and --cli cannot be combined")
+	}
 	if *stable && *prerelease {
 		return errors.New("--stable and --prerelease cannot be combined")
 	}
@@ -199,44 +214,29 @@ func runUpdater() error {
 	if *directory == "" {
 		saved, err := rememberedDirectory(settings, defaultDirectory)
 		if err != nil {
-			return fmt.Errorf("read updater destination: %w", err)
+			if !*graphical && len(os.Args) != 1 {
+				return fmt.Errorf("read updater destination: %w", err)
+			}
+			saved = defaultDirectory
 		}
 		*directory = saved
 	}
-	absolute, err := filepath.Abs(*directory)
+	options := updateOptions{Directory: *directory, Algorithm: *algorithm, Archive: *archive, Digest: *digest, Tag: *tag, Prerelease: *prerelease}
+	if *graphical || len(os.Args) == 1 {
+		return runGUI(options)
+	}
+	prepareCLI()
+	result, err := performUpdate(options, nil)
 	if err != nil {
 		return err
 	}
-	*directory = absolute
-	temporary, err := os.MkdirTemp("", "zclone-download-")
-	if err == nil {
-		defer os.RemoveAll(temporary)
-	}
-	source := *archive
-	if err == nil && source == "" {
-		source, err = downloadRelease(httpClient(), "https://api.github.com/repos/zipkindev/zClone/releases/", *tag, temporary, *prerelease)
-	}
-	if err == nil && *archive != "" {
-		var actual string
-		actual, err = fileHash(source)
-		if err == nil && (len(*digest) != 64 || !strings.EqualFold(actual, *digest)) {
-			err = errors.New("offline archive SHA-256 mismatch")
-		}
-	}
-	if err == nil {
-		var digest string
-		digest, err = install(source, *directory, *algorithm, nativeCompress)
-		if err == nil {
-			if saveErr := rememberDirectory(settings, *directory); saveErr != nil {
-				fmt.Fprintln(os.Stderr, "Installed successfully, but could not remember destination:", saveErr)
-			}
-			return json.NewEncoder(os.Stdout).Encode(map[string]string{"path": filepath.Join(*directory, "zclone.exe"), "sha256": digest, "algorithm": *algorithm, "status": "installed"})
-		}
-	}
-	return err
+	return json.NewEncoder(os.Stdout).Encode(result)
 }
 
 func main() {
+	if len(os.Args) > 1 {
+		prepareCLI()
+	}
 	if err := runUpdater(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

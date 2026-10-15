@@ -1,4 +1,4 @@
-// Zclone as a wasm library
+// zClone as a wasm library
 //
 // This library exports the core rc functionality
 

@@ -41,7 +41,7 @@ when needed. These are stored in memory. If the server is restarted
 the handle cache will be lost and connected NFS clients will get stale
 handle errors.
 
-`--nfs-cache-type disk` uses an on disk NFS handle cache. Zclone
+`--nfs-cache-type disk` uses an on disk NFS handle cache. zClone
 hashes the path of the object and stores it in a file named after the
 hash. These hashes are stored on disk the directory controlled by
 `--cache-dir` or the exact directory may be specified with
@@ -50,7 +50,7 @@ restarted at will without affecting the connected clients.
 
 `--nfs-cache-type symlink` is similar to `--nfs-cache-type disk` in
 that it uses an on disk cache, but the cache entries are held as
-symlinks. Zclone will use the handle of the underlying file as the NFS
+symlinks. zClone will use the handle of the underlying file as the NFS
 handle which improves performance. This sort of cache can't be backed
 up and restored as the underlying handles will change. This is Linux
 only. It requires running zclone as root or with `CAP_DAC_READ_SEARCH`.
@@ -299,7 +299,7 @@ When using this mode it is recommended that `--buffer-size` is not set
 too large and `--vfs-read-ahead` is set large if required.
 
 **IMPORTANT** not all file systems support sparse files. In particular
-FAT/exFAT do not. Zclone will perform very badly if the cache
+FAT/exFAT do not. zClone will perform very badly if the cache
 directory is on a filesystem which doesn't support sparse files and it
 will log an ERROR message if one is detected.
 
@@ -355,7 +355,7 @@ The chunking behaves differently depending on the `--vfs-read-chunk-streams` par
 
 ### `--vfs-read-chunk-streams` == 0
 
-Zclone will start reading a chunk of size `--vfs-read-chunk-size`,
+zClone will start reading a chunk of size `--vfs-read-chunk-size`,
 and then double the size for each read. When `--vfs-read-chunk-size-limit` is
 specified, and greater than `--vfs-read-chunk-size`, the chunk size for each
 open file will get doubled only until the specified value is reached. If the
@@ -373,7 +373,7 @@ The chunks will not be buffered in memory.
 
 ### `--vfs-read-chunk-streams` > 0
 
-Zclone reads `--vfs-read-chunk-streams` chunks of size
+zClone reads `--vfs-read-chunk-streams` chunks of size
 `--vfs-read-chunk-size` concurrently. The size for each read will stay
 constant.
 

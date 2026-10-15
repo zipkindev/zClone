@@ -1,6 +1,6 @@
 ---
 title: "Licence"
-description: "Zclone Licence"
+description: "zClone Licence"
 ---
 
 # License

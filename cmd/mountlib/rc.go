@@ -50,7 +50,7 @@ func init() {
 		Fn:    mountRc,
 		Title: "Create a new mount point",
 		Help: `zclone allows Linux, FreeBSD, macOS and Windows to mount any of
-Zclone's cloud storage systems as a file system with FUSE.
+zClone's cloud storage systems as a file system with FUSE.
 
 If no mountType is provided, the priority is given as follows: 1. mount 2.cmount 3.mount2
 
@@ -183,7 +183,7 @@ func init() {
 		Title: "Unmount selected active mount",
 		Help: `
 zclone allows Linux, FreeBSD, macOS and Windows to
-mount any of Zclone's cloud storage systems as a file system with
+mount any of zClone's cloud storage systems as a file system with
 FUSE.
 
 This takes the following parameters:
@@ -307,7 +307,7 @@ func init() {
 		Title: "Unmount all active mounts",
 		Help: `
 zclone allows Linux, FreeBSD, macOS and Windows to
-mount any of Zclone's cloud storage systems as a file system with
+mount any of zClone's cloud storage systems as a file system with
 FUSE.
 
 This takes no parameters and returns error if unmount does not succeed.

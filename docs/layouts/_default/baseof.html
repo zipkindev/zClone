@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="{{ .Description }}">
     <meta name="author" content="Nick Craig-Wood">
-    <meta property="og:site_name" content="Zclone" />
+    <meta property="og:site_name" content="zClone" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="{{ "/img/zclone-1200x630.png" | absURL }}">
     <meta property="og:image:width" content="1200">
@@ -36,7 +36,7 @@
             "beta" "This feature is currently in beta must be used with care."
           }}
 
-          {{ if .Params.versionIntroduced }}<span class="badge badge-pill badge-secondary float-right" style="margin-top: 30px; font-size: 100%" title="This feature needs Zclone {{ .Params.versionIntroduced }} or later.">added in {{ .Params.versionIntroduced }}</span>{{ end }}
+          {{ if .Params.versionIntroduced }}<span class="badge badge-pill badge-secondary float-right" style="margin-top: 30px; font-size: 100%" title="This feature needs zClone {{ .Params.versionIntroduced }} or later.">added in {{ .Params.versionIntroduced }}</span>{{ end }}
 
           {{ with .Params.status | lower }}
             {{ $statusCode := . }}

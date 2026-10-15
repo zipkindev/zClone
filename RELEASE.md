@@ -1,12 +1,12 @@
-# Releasing Zclone
+# Releasing zClone
 
-Zclone releases are assembled from the repository and its committed local
+zClone releases are assembled from the repository and its committed local
 dependencies. Go module resolution stays offline and uses `vendor/`. GitHub Actions may
 install the pinned actions and required Go toolchain.
 
 ## Independent versions and Git hook
 
-Zclone versions are independent of rclone versions and of GitHub's fork-network
+zClone versions are independent of rclone versions and of GitHub's fork-network
 classification. Upstream synchronization is not part of versioning or releases.
 `VERSION`, `fs/versiontag.go`, and `docs/layouts/partials/version.html` must match.
 Existing upstream history and attribution remain intact.
@@ -27,11 +27,14 @@ make bump-version PART=patch
 ```
 
 The bump changes all three files; it does not commit, tag, or push them. Review
-and commit the version change, run verification, and push it to main. Releases
+and commit the version change. Update `RELEASE-NOTES.md` with user-facing changes
+and installation instructions; its first line must be `# zClone vMAJOR.MINOR.PATCH`
+matching the release tag. The publishing job uses that file as the release body
+and refuses a mismatched heading. Run verification and push to main. Releases
 use immutable downstream tags matching `VERSION` exactly:
 
 ```console
-git tag -a v0.1.0 -m "Zclone v0.1.0"
+git tag -a v0.1.0 -m "zClone v0.1.0"
 git push origin v0.1.0
 ```
 
@@ -119,7 +122,7 @@ and stderr redirected to a file) shows two sources of extra code:
   as used in interfaces. Its trace propagates that mark from the S3 filesystem
   type to its SDK client. The reviewed binary retains all 224 S3 API operations
   declared by the vendored SDK, including `PutBucketAnalyticsConfiguration`,
-  which has no direct call in Zclone source. The trace records first-reach
+  which has no direct call in zClone source. The trace records first-reach
   parents, not a complete runtime call graph.
 
 SDK-generated serializers, endpoint rule dispatch, and other protocol support
@@ -269,7 +272,7 @@ Runtime tables support stack walking, garbage collection, reflection, and
 diagnostics; debug-symbol stripping does not remove these runtime requirements.
 
 Third-party libraries collectively account for approximately 21.9 MiB of
-function code, and Zclone packages for approximately 6.3 MiB. The remainder
+function code, and zClone packages for approximately 6.3 MiB. The remainder
 includes the Go runtime, standard library, and compiler helpers. S3 contributes
 about 2.9 MiB of code, or 3.7% of the executable, excluding its associated data,
 metadata, and shared dependencies. An S3-only code reduction cannot be assumed
@@ -281,7 +284,7 @@ The Arrow tag's 559-function reduction is a net count: 563 functions disappear
 and four appear. Of the removals, 541 belong to `github.com/goccy/go-json`, 13 are
 compiler-generated equality helpers, and nine are standard-library helpers.
 The four additions belong to Arrow's standard adapter and the standard JSON
-implementation. No Zclone application functions disappear in this controlled
+implementation. No zClone application functions disappear in this controlled
 comparison. `bin/analyze-executable.py` reports the exact removed and added
 identities and their package counts on every Windows qualification run.
 These identities explain the change; runtime tests remain necessary to assess
@@ -338,7 +341,7 @@ For each dependency or size-related update:
    including session/refresh behavior, roles, profiles, environment, web
    identity, SSO, container/instance credentials, and supported provider signers.
    Keep SDK-internal operations required for authentication, such as S3 Express
-   `CreateSession`, even when Zclone does not call them directly.
+   `CreateSession`, even when zClone does not call them directly.
 5. Apply the existing compatibility and listing-performance gates. Compare
    repeated startup, working-set, and allocation measurements and disclose
    regressions. Credentialed cloud cases require approved disposable accounts;
@@ -413,29 +416,33 @@ new dependency source in a controlled environment, update `go.mod` and
 `go.sum`, regenerate `vendor/` there, then bring the reviewed result into this
 repository. Validate it with `make verify-local` before release.
 
-### Experimental streaming Windows updater
+### Windows updater
 
-Windows releases and the separate Windows QA artifact include `zClone-Updater.exe`, a separate
-standalone downloader/installer built with the standard Go library. Running it
-fetches published release metadata from `zipkindev/zClone`, streams the ordinary
+Windows releases and the separate Windows QA artifact include `zClone-Updater.exe`, a standalone downloader/installer with a native Windows interface. Double-click it, select a folder with **Browse**, then click **Install / Update**.
+The window shows download progress and each installation stage. It fetches published release metadata from `zipkindev/zClone`, streams the ordinary
 Windows amd64 ZIP to temporary storage while computing SHA-256, checks the
 published `SHA256SUMS`, extracts to a staging directory on the destination
 filesystem, and applies XPRESS4K before replacing `zclone.exe`. The application
 bytes are unchanged. There is no runtime launcher or background update service.
 
+For scripts or troubleshooting, command-line options remain available:
+
 ```console
-zClone-Updater.exe
+zClone-Updater.exe --cli
 zClone-Updater.exe --install-dir C:\Tools\zclone
 zClone-Updater.exe --prerelease
 zClone-Updater.exe --release v0.1.0
 ```
 
+Starting without arguments opens the GUI and waits for confirmation. Passing
+installation options uses command-line mode; `--gui` explicitly opens the window
+with those options. `--cli` uses the remembered destination without a window.
 The default selects GitHub's latest stable release.
 `--prerelease` explicitly includes prereleases; `--release` selects an explicit
 tag. Only ordinary Windows amd64 archives are accepted. Missing assets, HTTP
 errors, checksum mismatches, unsafe archives, compression failures, and a locked
 running executable fail without replacing the active executable. Close running
-Zclone processes and rerun the same updater to retry. Rerunning installs the
+zClone processes and rerun the same updater to retry. Rerunning installs the
 selected release and reapplies compression, including when the version matches.
 Reinstalling an earlier release uses `--release` with that tag.
 

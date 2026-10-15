@@ -1,6 +1,6 @@
 ---
 title: "ImageKit"
-description: "Zclone docs for ImageKit backend."
+description: "zClone docs for ImageKit backend."
 versionIntroduced: "v1.63"
 ---
 

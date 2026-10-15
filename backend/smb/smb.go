@@ -69,7 +69,7 @@ func init() {
 			Name: "spn",
 			Help: `Service principal name.
 
-Zclone presents this name to the server. Some servers use this as further
+zClone presents this name to the server. Some servers use this as further
 authentication, and it often needs to be set for clusters. For example:
 
     cifs/remotehost:1020
@@ -891,14 +891,14 @@ func (o *Object) split() (shareName, filepath string) {
 }
 
 func (f *Fs) toSambaPath(path string) string {
-	// 1. encode via Zclone's escaping system
+	// 1. encode via zClone's escaping system
 	// 2. convert to backslash-separated path
 	return strings.ReplaceAll(f.opt.Enc.FromStandardPath(path), "/", "\\")
 }
 
 func (f *Fs) toNativePath(path string) string {
 	// 1. convert *back* to slash-separated path
-	// 2. encode via Zclone's escaping system
+	// 2. encode via zClone's escaping system
 	return f.opt.Enc.ToStandardPath(strings.ReplaceAll(path, "\\", "/"))
 }
 

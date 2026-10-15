@@ -65,7 +65,7 @@ jobs:
           go run bin/make_sbom.go
           python3 bin/package-release.py "$RELEASE_TAG" "$TARGET_OS" "$TARGET_ARCH"
           if [[ "$TARGET_OS" == windows && "$TARGET_ARCH" == amd64 ]]; then
-            GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -buildvcs=false -trimpath -ldflags '-s -w' -o build/releases/zClone-Updater.exe ./bin/windows-installer
+            GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -buildvcs=false -trimpath -ldflags '-s -w -H windowsgui' -o build/releases/zClone-Updater.exe ./bin/windows-installer
             (cd build/releases && sha256sum zClone-Updater.exe > zClone-Updater.exe.sha256)
           fi
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -97,11 +97,12 @@ jobs:
           cat ./*.sha256 > SHA256SUMS
           sha256sum --check SHA256SUMS
           test "$(find . -maxdepth 1 -name '*.zip' | wc -l)" -eq 6
-          printf 'Zclone %s\n\nIndependent downstream release built from vendored dependencies.\n\nIncludes Linux, macOS and Windows archives for amd64 and arm64, zClone-Updater.exe for Windows x64, the recovery helper, attribution, SBOM and SHA-256 checksums. Linux binaries use CGO_ENABLED=0 for restricted systems and QNAP compatibility.\n\nArchives are unsigned; macOS binaries are not notarized. Verification passed before publication. NAS recovery testing remains separate.\n' "$RELEASE_TAG" > notes.md
+          test "$(head -n 1 ../../RELEASE-NOTES.md)" = "# zClone $RELEASE_TAG"
+          cp ../../RELEASE-NOTES.md notes.md
           if gh release view "$RELEASE_TAG" --json isDraft > release.json 2>/dev/null; then
             python3 -c 'import json; assert json.load(open("release.json"))["isDraft"], "Release is already published; refusing to replace assets"'
           else
-            gh release create "$RELEASE_TAG" --verify-tag --draft --prerelease=false --title "Zclone $RELEASE_TAG" --notes-file notes.md
+            gh release create "$RELEASE_TAG" --verify-tag --draft --prerelease=false --title "zClone $RELEASE_TAG" --notes-file notes.md
           fi
           gh release upload "$RELEASE_TAG" ./*.zip zClone-Updater.exe SHA256SUMS --clobber
           gh release edit "$RELEASE_TAG" --draft=false --prerelease=false --latest

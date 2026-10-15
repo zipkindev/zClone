@@ -1,6 +1,6 @@
 ---
 title: "Microsoft Azure Files Storage"
-description: "Zclone docs for Microsoft Azure Files Storage"
+description: "zClone docs for Microsoft Azure Files Storage"
 versionIntroduced: "v1.65"
 ---
 
@@ -160,7 +160,7 @@ as these have to be uploaded with the file.
 ### Authentication {#authentication}
 
 There are a number of ways of supplying credentials for Azure Files
-Storage. Zclone tries them in the order of the sections below.
+Storage. zClone tries them in the order of the sections below.
 
 #### Env Auth
 

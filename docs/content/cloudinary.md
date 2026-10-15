@@ -1,6 +1,6 @@
 ---
 title: "Cloudinary"
-description: "Zclone docs for Cloudinary backend"
+description: "zClone docs for Cloudinary backend"
 versionIntroduced: "v1.69"
 
 ---

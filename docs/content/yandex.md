@@ -303,7 +303,7 @@ too soon causes these errors. Yandex support recommend waiting
 1.5s - 3s after each upload.
 
 Having a Yandex Mail account is mandatory to use the Yandex.Disk subscription.
-Token generation will work without a mail account, but Zclone won't be able to
+Token generation will work without a mail account, but zClone won't be able to
 complete any actions.
 
 ```text

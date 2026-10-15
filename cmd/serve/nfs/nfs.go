@@ -172,7 +172,7 @@ when needed. These are stored in memory. If the server is restarted
 the handle cache will be lost and connected NFS clients will get stale
 handle errors.
 
-|--nfs-cache-type disk| uses an on disk NFS handle cache. Zclone
+|--nfs-cache-type disk| uses an on disk NFS handle cache. zClone
 hashes the path of the object and stores it in a file named after the
 hash. These hashes are stored on disk the directory controlled by
 |--cache-dir| or the exact directory may be specified with
@@ -181,7 +181,7 @@ restarted at will without affecting the connected clients.
 
 |--nfs-cache-type symlink| is similar to |--nfs-cache-type disk| in
 that it uses an on disk cache, but the cache entries are held as
-symlinks. Zclone will use the handle of the underlying file as the NFS
+symlinks. zClone will use the handle of the underlying file as the NFS
 handle which improves performance. This sort of cache can't be backed
 up and restored as the underlying handles will change. This is Linux
 only. It requires running zclone as root or with |CAP_DAC_READ_SEARCH|.

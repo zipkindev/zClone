@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate or explicitly bump Zclone's independent release version."""
+"""Validate or explicitly bump zClone's independent release version."""
 import argparse
 from pathlib import Path
 import re

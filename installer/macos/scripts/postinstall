@@ -1,5 +1,5 @@
 #!/bin/sh
-# Install Zclone in a system-owned location and expose it to login shells.
+# Install zClone in a system-owned location and expose it to login shells.
 set -eu
 
 target=${3:-/}

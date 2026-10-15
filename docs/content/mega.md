@@ -1,6 +1,6 @@
 ---
 title: "Mega"
-description: "Zclone docs for Mega"
+description: "zClone docs for Mega"
 versionIntroduced: "v1.41"
 ---
 
@@ -174,7 +174,7 @@ mount`. This will log-in when mounting and a log-out when unmounting
 only. You can also run `zclone rcd` and then use `zclone rc` to run
 the commands over the API to avoid logging in each time.
 
-Zclone does not currently close mega sessions (you can see them in the
+zClone does not currently close mega sessions (you can see them in the
 web interface), however closing the sessions does not solve the issue.
 
 If you space zclone commands by 3 seconds it will avoid blocking the

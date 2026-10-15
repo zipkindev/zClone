@@ -1,6 +1,6 @@
 ---
 title: "QingStor"
-description: "Zclone docs for QingStor Object Storage"
+description: "zClone docs for QingStor Object Storage"
 versionIntroduced: "v1.38"
 ---
 

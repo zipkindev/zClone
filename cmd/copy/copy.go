@@ -93,7 +93,7 @@ recently very efficiently like this:
 zclone copy --max-age 24h --no-traverse /path/to/src remote:
 |||
 
-Zclone will sync the modification times of files and directories if
+zClone will sync the modification times of files and directories if
 the backend supports it. If metadata syncing is required then use the
 |--metadata| flag.
 

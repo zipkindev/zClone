@@ -95,7 +95,7 @@ is defined like this:
 ```ini
 [serves3]
 type = s3
-provider = Zclone
+provider = zClone
 endpoint = http://127.0.0.1:8080/
 access_key_id = ACCESS_KEY_ID
 secret_access_key = SECRET_ACCESS_KEY
@@ -463,7 +463,7 @@ headers. Use the format `Header-Name: value`.
 `--baseurl` controls the URL prefix that zclone serves from.  By default
 zclone will serve from the root.  If you used `--baseurl "/zclone"` then
 zclone would serve from a URL starting with "/zclone/".  This is
-useful if you wish to proxy zclone serve.  Zclone automatically
+useful if you wish to proxy zclone serve.  zClone automatically
 inserts leading and trailing "/" on `--baseurl`, so `--baseurl "zclone"`,
 `--baseurl "/zclone"` and `--baseurl "/zclone/"` are all treated
 identically.
@@ -711,7 +711,7 @@ When using this mode it is recommended that `--buffer-size` is not set
 too large and `--vfs-read-ahead` is set large if required.
 
 **IMPORTANT** not all file systems support sparse files. In particular
-FAT/exFAT do not. Zclone will perform very badly if the cache
+FAT/exFAT do not. zClone will perform very badly if the cache
 directory is on a filesystem which doesn't support sparse files and it
 will log an ERROR message if one is detected.
 
@@ -767,7 +767,7 @@ The chunking behaves differently depending on the `--vfs-read-chunk-streams` par
 
 ### `--vfs-read-chunk-streams` == 0
 
-Zclone will start reading a chunk of size `--vfs-read-chunk-size`,
+zClone will start reading a chunk of size `--vfs-read-chunk-size`,
 and then double the size for each read. When `--vfs-read-chunk-size-limit` is
 specified, and greater than `--vfs-read-chunk-size`, the chunk size for each
 open file will get doubled only until the specified value is reached. If the
@@ -785,7 +785,7 @@ The chunks will not be buffered in memory.
 
 ### `--vfs-read-chunk-streams` > 0
 
-Zclone reads `--vfs-read-chunk-streams` chunks of size
+zClone reads `--vfs-read-chunk-streams` chunks of size
 `--vfs-read-chunk-size` concurrently. The size for each read will stay
 constant.
 

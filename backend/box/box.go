@@ -127,10 +127,10 @@ func init() {
 			Default: "user",
 			Examples: []fs.OptionExample{{
 				Value: "user",
-				Help:  "Zclone should act on behalf of a user.",
+				Help:  "zClone should act on behalf of a user.",
 			}, {
 				Value: "enterprise",
-				Help:  "Zclone should act on behalf of a service account.",
+				Help:  "zClone should act on behalf of a service account.",
 			}},
 		}, {
 			Name:     "upload_cutoff",

@@ -8,7 +8,7 @@ import (
 
 var namespace = "zclone_"
 
-// ZcloneCollector is a Prometheus collector for Zclone
+// ZcloneCollector is a Prometheus collector for zClone
 type ZcloneCollector struct {
 	ctx              context.Context
 	bytesTransferred *prometheus.Desc
@@ -29,11 +29,11 @@ func NewZcloneCollector(ctx context.Context) *ZcloneCollector {
 	return &ZcloneCollector{
 		ctx: ctx,
 		bytesTransferred: prometheus.NewDesc(namespace+"bytes_transferred_total",
-			"Total transferred bytes since the start of the Zclone process",
+			"Total transferred bytes since the start of the zClone process",
 			nil, nil,
 		),
 		transferSpeed: prometheus.NewDesc(namespace+"speed",
-			"Average speed in bytes per second since the start of the Zclone process",
+			"Average speed in bytes per second since the start of the zClone process",
 			nil, nil,
 		),
 		numOfErrors: prometheus.NewDesc(namespace+"errors_total",

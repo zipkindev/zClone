@@ -82,7 +82,7 @@ y/e/d>
 See the [remote setup docs](/remote_setup/) for how to set it up on a
 machine without an internet-connected web browser available.
 
-Zclone runs a webserver on your local computer to collect the
+zClone runs a webserver on your local computer to collect the
 authorization token from Zoho Workdrive. This is only from the moment
 your browser is opened until the token is returned.
 The webserver runs on `http://127.0.0.1:53682/`.

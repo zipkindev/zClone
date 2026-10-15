@@ -1,6 +1,6 @@
 ---
 title: "put.io"
-description: "Zclone docs for put.io"
+description: "zClone docs for put.io"
 versionIntroduced: "v1.49"
 ---
 

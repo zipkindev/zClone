@@ -1,6 +1,6 @@
 ---
 title: "SugarSync"
-description: "Zclone docs for SugarSync"
+description: "zClone docs for SugarSync"
 versionIntroduced: "v1.51"
 ---
 

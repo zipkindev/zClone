@@ -694,7 +694,7 @@ Normally zclone will work around a bug in Google Drive when using
 parents)" returns nothing sometimes. See #3114, #4289 and
 https://issuetracker.google.com/issues/149522397
 
-Zclone detects this by finding no items in more than one directory
+zClone detects this by finding no items in more than one directory
 when listing and retries them as lists of individual directories.
 
 This means that if you have a lot of empty directories zclone will end

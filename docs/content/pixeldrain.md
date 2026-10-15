@@ -1,6 +1,6 @@
 ---
 title: "Pixeldrain"
-description: "Zclone docs for Pixeldrain"
+description: "zClone docs for Pixeldrain"
 versionIntroduced: "v1.68"
 ---
 

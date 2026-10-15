@@ -8,7 +8,7 @@ VERSION=$(sed -n '1p' "$ROOT/VERSION")
 PACKAGE_VERSION=${VERSION#v}
 PACKAGE_VERSION=${PACKAGE_VERSION%%-*}
 ARCH=$(uname -m)
-OUTPUT=${ZCLONE_INSTALLER_OUTPUT:-"$ROOT/build/Zclone-${VERSION}-${ARCH}.pkg"}
+OUTPUT=${ZCLONE_INSTALLER_OUTPUT:-"$ROOT/build/zClone-${VERSION}-${ARCH}.pkg"}
 STAGING=$(mktemp -d)
 
 cleanup() {

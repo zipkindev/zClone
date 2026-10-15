@@ -1,5 +1,5 @@
 name: Bug report
-description: Report a reproducible problem with Zclone
+description: Report a reproducible problem with zClone
 labels: ["bug"]
 body:
   - type: markdown
@@ -10,7 +10,7 @@ body:
   - type: textarea
     id: version
     attributes:
-      label: Zclone version
+      label: zClone version
       description: Paste the output of `zclone version`.
       render: text
     validations:

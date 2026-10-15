@@ -1,6 +1,6 @@
 ---
 title: "Documentation"
-description: "Zclone Changelog"
+description: "zClone Changelog"
 ---
 <!-- markdownlint-disable line-length -->
 
@@ -1251,10 +1251,10 @@ description: "Zclone Changelog"
     - [Selectel](/s3/#selectel) (Nick Craig-Wood)
 - Security fixes
   - serve sftp: Resolve CVE-2024-45337 - Misuse of ServerConfig.PublicKeyCallback may cause authorization bypass (dependabot)
-    - Zclone was **not** vulnerable to this.
+    - zClone was **not** vulnerable to this.
     - See <https://github.com/advisories/GHSA-v778-237x-gjrc>
   - build: Update golang.org/x/net to v0.33.0 to fix CVE-2024-45338 - Non-linear parsing of case-insensitive content (Nick Craig-Wood)
-    - Zclone was **not** vulnerable to this.
+    - zClone was **not** vulnerable to this.
     - See <https://github.com/advisories/GHSA-w32m-9786-jp63>
 - New Features
   - accounting: Write the current bwlimit to the log on SIGUSR2 (Nick Craig-Wood)
@@ -1701,10 +1701,10 @@ description: "Zclone Changelog"
 [See commits](/)
 
 - Major features
-  - Zclone will now sync directory modification times if the backend supports it.
+  - zClone will now sync directory modification times if the backend supports it.
     - This can be disabled with [--no-update-dir-modtime](/docs/#no-update-dir-modtime)
     - See [the overview](/overview/#features) and look for the `D` flags in the `ModTime` column to see which backends support it.
-  - Zclone will now sync directory metadata if the backend supports it when `-M`/`--metadata` is in use.
+  - zClone will now sync directory metadata if the backend supports it when `-M`/`--metadata` is in use.
     - See [the overview](/overview/#features) and look for the `D` flags in the `Metadata` column to see which backends support it.
   - Bisync has received many updates see below for more details or [bisync's changelog](/bisync/#changelog)
 - Removed backends
@@ -4886,7 +4886,7 @@ all the docs and Edward Barker for helping re-write the front page.
   - rc
     - Add ability to stop async jobs (Aleksandar Jankovic)
     - Return current settings if core/bwlimit called without parameters (Nick Craig-Wood)
-    - Zclone-WebUI integration with zclone (Chaitanya Bankanhal)
+    - zClone-WebUI integration with zclone (Chaitanya Bankanhal)
     - Added command line parameter to control the cross origin resource sharing (CORS) in the rcd. (Security Improvement) (Chaitanya Bankanhal)
     - Add anchor tags to the docs so links are consistent (Nick Craig-Wood)
     - Remove _async key from input parameters after parsing so later operations won't get confused (buengese)
@@ -5831,7 +5831,7 @@ Point release to fix hubic and azureblob backends.
   - Offline uploading
   - Remote control support for path flushing
 - Amazon cloud drive
-  - Zclone no longer has any working keys - disable integration tests
+  - zClone no longer has any working keys - disable integration tests
   - Implement DirChangeNotify to notify cache/vfs/mount of changes
 - Azureblob
   - Don't check for bucket/container presence if listing was OK

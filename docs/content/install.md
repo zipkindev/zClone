@@ -1,9 +1,9 @@
 ---
 title: "Install"
-description: "Build and install Zclone locally."
+description: "Build and install zClone locally."
 ---
 
-# Install Zclone locally
+# Install zClone locally
 
 This source distribution intentionally has no central installer, download
 service, or self-update endpoint. The complete Go dependency set for the
@@ -32,13 +32,13 @@ make macos-installer
 ```
 
 This signs the binary with the configured local signing identity (ad-hoc by
-default), creates `build/Zclone-<version>-<architecture>.pkg`, and installs the
+default), creates `build/zClone-<version>-<architecture>.pkg`, and installs the
 binary in `/usr/local/lib/zclone/zclone`. Its post-install script provides a
 `/usr/local/bin/zclone` symlink and `/etc/paths.d/zclone`, so it is available
 in newly opened Terminal sessions. Install it with:
 
 ```console
-sudo installer -pkg build/Zclone-<version>-<architecture>.pkg -target /
+sudo installer -pkg build/zClone-<version>-<architecture>.pkg -target /
 ```
 
 Set `INSTALLER_SIGN_IDENTITY` to a Developer ID Installer certificate when

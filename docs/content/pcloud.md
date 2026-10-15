@@ -1,6 +1,6 @@
 ---
 title: "pCloud"
-description: "Zclone docs for pCloud"
+description: "zClone docs for pCloud"
 versionIntroduced: "v1.39"
 ---
 

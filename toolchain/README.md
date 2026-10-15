@@ -1,6 +1,6 @@
 # Local toolchain profile
 
-The verified Zclone build requires Go 1.27.0 with the committed `vendor/` tree.
+The verified zClone build requires Go 1.27.0 with the committed `vendor/` tree.
 `make verify-local` checks the installed Go version before building. Set
 `GOPROXY=off`, `GOSUMDB=off`, and `GOFLAGS=-mod=vendor` for every build and
 test invocation.

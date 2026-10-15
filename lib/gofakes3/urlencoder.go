@@ -1,4 +1,4 @@
-// Package s3 implements a fake S3 server for Zclone.
+// Package s3 implements a fake S3 server for zClone.
 package gofakes3
 
 // From: minio/cmd/api-utils.go

@@ -254,7 +254,7 @@ All other operations will be disabled.`,
 
 When this flag is used with no path only the List operation is supported and
 all available shared folders will be listed. If you specify a path the first part
-will be interpreted as the name of shared folder. Zclone will then try to mount this
+will be interpreted as the name of shared folder. zClone will then try to mount this
 shared to the root namespace. On success shared folder zclone proceeds normally.
 The shared folder is now pretty much a normal folder and all normal operations
 are supported.

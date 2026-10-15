@@ -261,7 +261,7 @@ as they can't be used in JSON strings.
 
 ### Seafile and zclone link
 
-Zclone supports generating share links for non-encrypted libraries only.
+zClone supports generating share links for non-encrypted libraries only.
 They can either be for a file or a directory:
 
 ```console

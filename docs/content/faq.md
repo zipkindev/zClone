@@ -1,6 +1,6 @@
 ---
 title: "FAQ"
-description: "Zclone Frequently Asked Questions"
+description: "zClone Frequently Asked Questions"
 ---
 <!-- markdownlint-disable heading-increment -->
 
@@ -13,7 +13,7 @@ work on all the remote storage systems.
 
 ### Can I copy the config from one machine to another
 
-Sure!  Zclone stores all of its config in a single file.  If you want
+Sure!  zClone stores all of its config in a single file.  If you want
 to find this file, run `zclone config file` which will tell you where
 it is.
 
@@ -39,7 +39,7 @@ zclone config touch
 
 ### Can zclone sync directly from drive to s3
 
-Zclone can sync between two remote cloud storage systems just fine.
+zClone can sync between two remote cloud storage systems just fine.
 
 Note that it effectively downloads the file and uploads it again, so
 the node running zclone would need to have lots of bandwidth.
@@ -76,7 +76,7 @@ make duplicates.
 
 ### Why doesn't zclone support partial transfers / binary diffs like rsync?
 
-Zclone stores each file you transfer as a native object on the remote
+zClone stores each file you transfer as a native object on the remote
 cloud storage system.  This means that you can see the files you
 upload as expected using alternative access methods (e.g. using the
 Google Drive web interface).  There is a 1:1 mapping between files on
@@ -158,7 +158,7 @@ support an HTTP CONNECT proxy (
 [--ftp-http-proxy](//ftp/#ftp-http-proxy) and
 [--sftp-http-proxy](//ftp/#sftp-http-proxy) )
 
-### Zclone gives x509 SSL root certificates error
+### zClone gives x509 SSL root certificates error
 
 `x509: failed to load system roots and no roots provided` means that `zclone` can't
 find the SSL root certificates.  Likely you are running `zclone` on a NAS with
@@ -167,7 +167,7 @@ a cut-down Linux OS, or possibly on Solaris.
 `x509: certificate signed by unknown authority` error may occur on outdated systems,
 where `zclone` can't verify the server with the SSL root certificates.
 
-Zclone (via the Go runtime) tries to load the root certificates from
+zClone (via the Go runtime) tries to load the root certificates from
 these places on Linux.
 
 ```text
@@ -193,7 +193,7 @@ On macOS, install a reviewed CA bundle through your approved local software
 distribution process, then specify it with the [--ca-cert](/docs/#ca-cert-stringarray)
 flag when required.
 
-### Zclone gives Failed to load config file: function not implemented error
+### zClone gives Failed to load config file: function not implemented error
 
 Likely this means that you are running zclone on Linux version not
 supported by the go runtime, ie earlier than version 2.6.23.
@@ -257,9 +257,9 @@ synced. By default, zclone only gets 10,000 files ahead in a sync so as
 not to use up too much memory. You can change this default with the
 [--max-backlog](/docs/#max-backlog-int) flag.
 
-### Zclone is using too much memory or appears to have a memory leak
+### zClone is using too much memory or appears to have a memory leak
 
-Zclone is written in Go which uses a garbage collector.  The default
+zClone is written in Go which uses a garbage collector.  The default
 settings for the garbage collector mean that it runs when the heap
 size has doubled.
 
@@ -285,7 +285,7 @@ From v1.70 zclone also has the [--max-buffer-memory](/docs/#max-buffer-memory)
 flag which helps particularly when multi-thread transfers are using
 too much memory.
 
-### Zclone changes fullwidth Unicode punctuation marks in file names
+### zClone changes fullwidth Unicode punctuation marks in file names
 
 For example: On a Windows system, you have a file with name `Test：1.jpg`,
 where `：` is the Unicode fullwidth colon symbol. When using zclone

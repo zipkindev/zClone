@@ -1,6 +1,6 @@
 ---
 title: "Oracle Object Storage"
-description: "Zclone docs for Oracle Object Storage"
+description: "zClone docs for Oracle Object Storage"
 type: page
 versionIntroduced: "v1.60"
 ---
@@ -162,7 +162,7 @@ OCI has various authentication methods. To learn more about authentication metho
 please refer [oci authentication methods](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdk_authentication_methods.htm)
 These choices can be specified in the zclone config file.
 
-Zclone supports the following OCI authentication provider.
+zClone supports the following OCI authentication provider.
 
 ```text
 User Principal
@@ -239,7 +239,7 @@ Considerations:
 Resource principal auth is very similar to instance principal auth but used for
 resources that are not  compute instances such as
 [serverless functions](https://docs.oracle.com/en-us/iaas/Content/Functions/Concepts/functionsoverview.htm).
-To use resource principal ensure Zclone process is started with these environment
+To use resource principal ensure zClone process is started with these environment
 variables set in its process.
 
 ```console
@@ -262,10 +262,10 @@ provider = resource_principal_auth
 
 ### Workload Identity
 
-Workload Identity auth may be used when running Zclone from Kubernetes pod on
+Workload Identity auth may be used when running zClone from Kubernetes pod on
 a Container Engine for Kubernetes (OKE) cluster. For more details on configuring
 Workload Identity, see [Granting Workloads Access to OCI Resources](https://docs.oracle.com/en-us/iaas/Content/ContEng/Tasks/contenggrantingworkloadaccesstoresources.htm).
-To use workload identity, ensure Zclone is started with these environment
+To use workload identity, ensure zClone is started with these environment
 variables set in its process.
 
 ```console
@@ -495,7 +495,7 @@ in memory per transfer.
 If you are transferring large files over high-speed links and you have
 enough memory, then increasing this will speed up the transfers.
 
-Zclone will automatically increase the chunk size when uploading a
+zClone will automatically increase the chunk size when uploading a
 large file of known size to stay below the 10,000 chunks limit.
 
 Files of unknown size are uploaded with the configured
@@ -524,7 +524,7 @@ when doing a multipart upload.
 
 OCI has max parts limit of 10,000 chunks.
 
-Zclone will automatically increase the chunk size when uploading a
+zClone will automatically increase the chunk size when uploading a
 large file of a known size to stay below this number of chunks limit.
 
 

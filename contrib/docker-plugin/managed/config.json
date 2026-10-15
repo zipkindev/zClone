@@ -1,5 +1,5 @@
 {
-    "description": "Zclone volume plugin for Docker",
+    "description": "zClone volume plugin for Docker",
     "documentation": "//docker",
     "interface": {
         "socket": "zclone.sock",

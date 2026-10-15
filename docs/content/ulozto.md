@@ -1,6 +1,6 @@
 ---
 title: "Uloz.to"
-description: "Zclone docs for Uloz.to"
+description: "zClone docs for Uloz.to"
 versionIntroduced: "v1.66"
 ---
 
@@ -129,7 +129,7 @@ as they can't be used in JSON strings.
 ### Transfers
 
 All files are currently uploaded using a single HTTP request, so
-for uploading large files a stable connection is necessary.  Zclone will
+for uploading large files a stable connection is necessary.  zClone will
 upload up to `--transfers` chunks at the same time (shared among all
 uploads).
 

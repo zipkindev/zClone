@@ -76,7 +76,7 @@ func (protonDrive *ProtonDrive) SearchByNameInActiveFolder(
 
 	// use available hash to check if it exists
 	// more efficient than linear scan to just do existence check
-	// used in Zclone when Put(), it will try to see if the object exists or not
+	// used in zClone when Put(), it will try to see if the object exists or not
 	res, err := protonDrive.c.CheckAvailableHashes(ctx, protonDrive.MainShare.ShareID, folderLink.LinkID, proton.CheckAvailableHashesReq{
 		Hashes: []string{targetNameHash},
 	})

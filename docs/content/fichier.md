@@ -1,6 +1,6 @@
 ---
 title: "1Fichier"
-description: "Zclone docs for 1Fichier"
+description: "zClone docs for 1Fichier"
 versionIntroduced: "v1.49"
 ---
 

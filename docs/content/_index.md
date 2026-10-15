@@ -1,11 +1,11 @@
 ---
-title: "Zclone"
-description: "Zclone syncs your files to cloud storage: Google Drive, S3, Swift, Dropbox, Google Cloud Storage, Azure, Box and many more."
+title: "zClone"
+description: "zClone syncs your files to cloud storage: Google Drive, S3, Swift, Dropbox, Google Cloud Storage, Azure, Box and many more."
 type: page
 notoc: true
 ---
 
-# Zclone syncs your files to cloud storage
+# zClone syncs your files to cloud storage
 
 <!-- markdownlint-disable-next-line line-length -->
 {{< img width="50%" src="/img/logo_on_light__horizontal_color.svg" dark-src="/img/logo_on_dark__horizontal_color.svg" alt="zclone logo" style="float:right; padding: 5px;" class="hide-mobile" >}}
@@ -20,21 +20,21 @@ notoc: true
 
 ## About zclone {#about}
 
-Zclone is a command-line program to manage files on cloud storage. It
+zClone is a command-line program to manage files on cloud storage. It
 is a feature-rich alternative to cloud vendors' web storage
 interfaces. [Over 70 cloud storage products](#providers) support
 zclone including S3 object stores, business & consumer file storage
 services, as well as standard transfer protocols.
 
-Zclone has powerful cloud equivalents to the unix commands rsync, cp,
-mv, mount, ls, ncdu, tree, rm, and cat. Zclone's familiar syntax
+zClone has powerful cloud equivalents to the unix commands rsync, cp,
+mv, mount, ls, ncdu, tree, rm, and cat. zClone's familiar syntax
 includes shell pipeline support, and `--dry-run` protection. It is
 used at the command line, in scripts or via its [API](/rc).
 
 Users call zclone *"The Swiss army knife of cloud storage"*, and
 *"Technology indistinguishable from magic"*.
 
-Zclone really looks after your data. It preserves timestamps and
+zClone really looks after your data. It preserves timestamps and
 verifies checksums at all times. Transfers over limited bandwidth;
 intermittent connections, or subject to quota can be restarted, from
 the last good file transferred. You can
@@ -50,7 +50,7 @@ Virtual backends wrap local and cloud file systems to apply
 [hashing](/hasher/) and
 [joining](/union/).
 
-Zclone [mounts](/commands/zclone_mount/) any local, cloud or
+zClone [mounts](/commands/zclone_mount/) any local, cloud or
 virtual filesystem as a disk on Windows,
 macOS, linux and FreeBSD, and also serves these over
 [SFTP](/commands/zclone_serve_sftp/),
@@ -59,21 +59,21 @@ macOS, linux and FreeBSD, and also serves these over
 [FTP](/commands/zclone_serve_ftp/) and
 [DLNA](/commands/zclone_serve_dlna/).
 
-Zclone is mature, open-source software originally inspired by rsync
+zClone is mature, open-source software originally inspired by rsync
 and written in [Go](https://golang.org). The friendly support
 community is familiar with varied use cases. Official Ubuntu, Debian,
 Fedora, Brew and Chocolatey repos. include zclone. For the latest
 version [downloading from zclone.org](/downloads/) is recommended.
 
-Zclone is widely used on Linux, Windows and Mac. Third-party
+zClone is widely used on Linux, Windows and Mac. Third-party
 developers create innovative backup, restore, GUI and business
 process solutions using the zclone command line or API.
 
-Zclone does the heavy lifting of communicating with cloud storage.
+zClone does the heavy lifting of communicating with cloud storage.
 
 ## What can zclone do for you? {#what}
 
-Zclone helps you:
+zClone helps you:
 
 - Backup (and encrypt) files to cloud storage
 - Restore (and decrypt) files from cloud storage
@@ -201,7 +201,7 @@ WebDAV or S3, that work out of the box.)
 {{< provider name="Rabata Cloud Storage" home="https://rabata.io" config="/s3/#Rabata" >}}
 {{< provider name="RackCorp Object Storage" home="https://www.rackcorp.com/" config="/s3/#RackCorp" >}}
 {{< provider name="Rackspace Cloud Files" home="https://www.rackspace.com/cloud/files" config="/swift/" >}}
-{{< provider name="Zclone Serve S3" home="/commands/zclone_serve_s3/" config="/s3/#zclone" >}}
+{{< provider name="zClone Serve S3" home="/commands/zclone_serve_s3/" config="/s3/#zclone" >}}
 {{< provider name="rsync.net" home="https://rsync.net/products/zclone.html" config="/sftp/#rsync-net" >}}
 {{< provider name="Scaleway" home="https://www.scaleway.com/object-storage/" config="/s3/#scaleway" >}}
 {{< provider name="Scality (RING / ARTESCA)" home="https://www.scality.com/" config="/s3/#scality" >}}
@@ -256,5 +256,5 @@ These backends adapt or modify other storage providers:
 
 - [Home page](//)
 - [GitHub project page for source and bug tracker](/)
-- [Zclone Forum](/)
+- [zClone Forum](/)
 - [Downloads](/downloads/)

@@ -18,11 +18,22 @@ import urllib.request
 import zipfile
 
 from windows_installer_qa import install_cases
+from windows_updater_gui_qa import exercise_gui
 
 
 def run(binary, config, *args):
     return subprocess.run([str(binary), '--config', str(config), *map(str, args)],
                           check=True, capture_output=True, timeout=120).stdout
+
+
+def normalize_branding(value):
+    if isinstance(value, list):
+        return [normalize_branding(item) for item in value]
+    if isinstance(value, dict):
+        return {key: re.sub(r'\bZclone\b', 'zClone', item)
+                if key in {'Help', 'Description', 'Short', 'Long'} and isinstance(item, str)
+                else normalize_branding(item) for key, item in value.items()}
+    return value
 
 
 def inventory(binary, config):
@@ -33,11 +44,13 @@ def inventory(binary, config):
         command = pending.pop()
         help_text = run(binary, config, *command, '--help').decode()
         commands[' '.join(command)] = sorted(re.findall(r'^\s+(?:-\w,\s+)?(--[\w-]+)', help_text, re.M))
-        section = help_text.split('Available Commands:', 1)
+        section = re.split(r'Available commands:', help_text, maxsplit=1, flags=re.I)
         if len(section) == 2:
             listing = section[1].split('Flags:', 1)[0].split('Global Flags:', 1)[0]
             pending += [(*command, name) for name in re.findall(r'^  ([\w-]+)\s+', listing, re.M)
                         if name != 'help']
+    global_help = run(binary, config, 'help', 'flags').decode()
+    commands['help flags'] = sorted(re.findall(r'^\s+(?:-\w,\s+)?(--[\w-]+)', global_help, re.M))
     return {'providers': providers, 'commands': commands}
 
 
@@ -280,12 +293,14 @@ def main():
                                                args.previous_archive.resolve(), root / 'installation with spaces')
             binaries['installed'] = installed
             report['installer'] = metrics
+            report['updater_gui'] = exercise_gui(args.installer.resolve(), args.installer_archive.resolve(), root / 'gui-qa', args.output.resolve().parent / 'updater-gui.bmp')
         config = root / 'inventory.conf'
         config.write_text('')
         inventories = {name: inventory(binary, config) for name, binary in binaries.items()}
         baseline = inventories['baseline']
+        report['inventory_command_counts'] = {name: len(value['commands']) for name, value in inventories.items()}
         for name, value in inventories.items():
-            assert value['providers'] == baseline['providers'], 'Provider options changed: ' + name
+            assert normalize_branding(value['providers']) == normalize_branding(baseline['providers']), 'Provider options changed: ' + name
             for command, flags in baseline['commands'].items():
                 assert command in value['commands'], 'Missing command: ' + command
                 assert set(flags) <= set(value['commands'][command]), 'Missing flags: ' + command

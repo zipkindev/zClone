@@ -35,7 +35,7 @@ which will show more logging output from the rc server.
 The bundled local control page submits RC API commands. Enter the RC username
 and password locally in the page, choose an RC command such as `core/version`,
 and run it. Credentials are used only for that browser request: they are not
-written to the URL, persistent browser storage, or Zclone logs.
+written to the URL, persistent browser storage, or zClone logs.
 
 The bundled page is intentionally local and minimal. It does not check for
 updates, collect telemetry, fetch external assets, or contact a central web
@@ -45,10 +45,10 @@ service.
 
 When you run `zclone gui` this is what happens
 
-- Zclone starts the remote control API ("rc").
-- Zclone starts a second server to serve the Web GUI.
+- zClone starts the remote control API ("rc").
+- zClone starts a second server to serve the Web GUI.
 - Authentication requires `--pass` unless `--no-auth` is explicitly set.
-- If a username is not specified, Zclone uses `gui`.
+- If a username is not specified, zClone uses `gui`.
 - Unless `--no-open-browser` is passed, a browser window will open.
 - The URL contains no credentials.
 
@@ -81,5 +81,5 @@ A few good measures:
       --user string            User name for RC authentication
 ```
 
-The GUI bundle ships as a compressed zip embedded in the Zclone binary and is
+The GUI bundle ships as a compressed zip embedded in the zClone binary and is
 served from the zip at runtime.

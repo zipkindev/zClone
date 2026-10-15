@@ -1,6 +1,6 @@
 ---
 title: "Project contact"
-description: "Local Zclone distribution support information."
+description: "Local zClone distribution support information."
 ---
 
 # Project contact

@@ -1,6 +1,6 @@
 ---
 title: "Internxt Drive"
-description: "Zclone docs for Internxt Drive"
+description: "zClone docs for Internxt Drive"
 versionIntroduced: "v1.73"
 ---
 

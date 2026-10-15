@@ -56,7 +56,7 @@ func init() {
 					ReadOnly: true,
 				},
 				"mtime": {
-					Help:     "Time of last modification, managed by Zclone",
+					Help:     "Time of last modification, managed by zClone",
 					Type:     "RFC 3339",
 					Example:  "2006-01-02T15:04:05.999999999Z",
 					ReadOnly: true,
@@ -116,19 +116,19 @@ func init() {
 					Example: "2006-01-02T15:04:05.999999999Z",
 				},
 				"zclone-mtime": {
-					Help:    "Time of last modification, managed by Zclone",
+					Help:    "Time of last modification, managed by zClone",
 					Type:    "RFC 3339",
 					Example: "2006-01-02T15:04:05.999999999Z",
 				},
 				"zclone-update-track": {
-					Help:    "Random value used by Zclone for tracking changes inside Internet Archive",
+					Help:    "Random value used by zClone for tracking changes inside Internet Archive",
 					Type:    "string",
 					Example: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
 				},
 			},
 			Help: `Metadata fields provided by Internet Archive.
 If there are multiple values for a key, only the first one is returned.
-This is a limitation of Zclone, that supports one value per one key.
+This is a limitation of zClone, that supports one value per one key.
 
 Owner is able to add custom keys. Metadata feature grabs all the keys including them.
 `,

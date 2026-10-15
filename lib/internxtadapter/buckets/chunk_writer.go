@@ -16,7 +16,7 @@ import (
 )
 
 // ChunkUploadSession holds the state for a chunked upload session
-// where the caller (Zclone) controls concurrency and buffer management
+// where the caller (zClone) controls concurrency and buffer management
 type ChunkUploadSession struct {
 	cfg        *config.Config
 	encIndex   string

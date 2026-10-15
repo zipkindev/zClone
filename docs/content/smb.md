@@ -1,6 +1,6 @@
 ---
 title: "SMB / CIFS"
-description: "Zclone docs for SMB backend"
+description: "zClone docs for SMB backend"
 versionIntroduced: "v1.60"
 ---
 
@@ -183,7 +183,7 @@ Properties:
 
 Service principal name.
 
-Zclone presents this name to the server. Some servers use this as further
+zClone presents this name to the server. Some servers use this as further
 authentication, and it often needs to be set for clusters. For example:
 
     cifs/remotehost:1020

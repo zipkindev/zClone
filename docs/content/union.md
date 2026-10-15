@@ -229,7 +229,7 @@ When files are written, they will be written to both `remote:dir` and `/local`.
 As many remotes as desired can be added to `upstreams` but there should only be
 one `:writeback` tag.
 
-Zclone does not manage the `:writeback` remote in any way other than writing
+zClone does not manage the `:writeback` remote in any way other than writing
 files back to it. So if you need to expire old files or manage the size then you
 will have to do this yourself.
 

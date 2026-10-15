@@ -1,6 +1,6 @@
 ---
 title: "Citrix ShareFile"
-description: "Zclone docs for Citrix ShareFile"
+description: "zClone docs for Citrix ShareFile"
 versionIntroduced: "v1.50"
 ---
 
@@ -126,7 +126,7 @@ flag.
 
 ### Transfers
 
-For files above 128 MiB zclone will use a chunked transfer.  Zclone will
+For files above 128 MiB zclone will use a chunked transfer.  zClone will
 upload up to `--transfers` chunks at the same time (shared among all
 the multipart uploads).  Chunks are buffered in memory and are
 normally 64 MiB so increasing `--transfers` will increase memory use.

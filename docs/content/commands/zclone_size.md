@@ -24,7 +24,7 @@ recursion.
 Some backends do not always provide file sizes, see for example
 [Google Photos](/googlephotos/#size) and
 [Google Docs](/drive/#limitations-of-google-docs).
-Zclone will then show a notice in the log indicating how many such
+zClone will then show a notice in the log indicating how many such
 files were encountered, and count them in as empty files in the output
 of the size command.
 

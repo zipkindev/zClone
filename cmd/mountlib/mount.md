@@ -1,5 +1,5 @@
-Zclone @ allows Linux, FreeBSD, macOS and Windows to
-mount any of Zclone's cloud storage systems as a file system with FUSE.
+zClone @ allows Linux, FreeBSD, macOS and Windows to
+mount any of zClone's cloud storage systems as a file system with FUSE.
 
 First set up your remote using `zclone config`. Check it works with `zclone ls`
 etc.
@@ -298,7 +298,7 @@ but consider lowering this limit if the server's system resource usage causes pr
 #### macFUSE Notes
 
 Install macFUSE or FUSE-T from an approved local package source before using
-this command. Zclone locates the macFUSE libraries without further intervention.
+this command. zClone locates the macFUSE libraries without further intervention.
 If the approved package is installed under `/opt/local`, the following addition
 steps are required.
 
@@ -485,7 +485,7 @@ Since mounting requires the `fusermount` or `fusermount3` program,
 zclone will use the fallback PATH of `/bin:/usr/bin` in this scenario.
 Please ensure that `fusermount`/`fusermount3` is present on this PATH.
 
-### Zclone as Unix mount helper
+### zClone as Unix mount helper
 
 The core Unix program `/bin/mount` normally takes the `-t FSTYPE` argument
 then runs the `/sbin/mount.FSTYPE` helper program passing it mount options
@@ -539,7 +539,7 @@ or use classic Automountd.
 Remember to provide explicit `config=...,cache-dir=...` as a workaround for
 mount units being run without `HOME`.
 
-Zclone in the mount helper mode will split `-o` argument(s) by comma, replace `_`
+zClone in the mount helper mode will split `-o` argument(s) by comma, replace `_`
 by `-` and prepend `--` to get the command-line flags. Options containing commas
 or spaces can be wrapped in single or double quotes. Any inner quotes inside outer
 quotes of the same type should be doubled.

@@ -1,6 +1,6 @@
 ---
 title: "Storj"
-description: "Zclone docs for Storj"
+description: "zClone docs for Storj"
 aliases:
   - tardigrade
 versionIntroduced: "v1.52"

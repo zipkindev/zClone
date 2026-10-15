@@ -22,6 +22,41 @@ env:
   ZCLONE_CONFIG: "/notfound"
 
 jobs:
+  windows-updater-gui:
+    name: Windows updater GUI
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: 1.27.0
+          cache: false
+      - name: Build updater and exercise native controls
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force build/windows-gui | Out-Null
+          Invoke-WebRequest 'https://github.com/zipkindev/zClone/releases/download/v0.1.1/zclone-v0.1.1-windows-amd64.zip' -OutFile build/windows-gui/fixture.zip
+          if ((Get-FileHash build/windows-gui/fixture.zip -Algorithm SHA256).Hash.ToLowerInvariant() -ne '795a2411189ebdd38a4cd8508d1f6ffd4e27de2735a47be338318fa5eb6d5436') { throw 'GUI fixture checksum mismatch' }
+          $env:CGO_ENABLED = '0'
+          go build -buildvcs=false -trimpath -ldflags '-s -w -H windowsgui' -o build/windows-gui/zClone-Updater.exe ./bin/windows-installer
+          if ($LASTEXITCODE -ne 0) { throw 'GUI build failed' }
+          python -c "import sys,json,tempfile; from pathlib import Path; sys.path.insert(0,'bin'); from windows_updater_gui_qa import exercise_gui; out=Path('build/windows-gui').resolve(); scratch=Path(tempfile.mkdtemp(prefix='zclone-gui-')); result=exercise_gui(out/'zClone-Updater.exe',out/'fixture.zip',scratch/'gui',out/'updater-gui.bmp'); (out/'gui.json').write_text(json.dumps(result,indent=2))"
+          if ($LASTEXITCODE -ne 0) { throw 'Native GUI QA failed' }
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always()
+        with:
+          name: windows-updater-gui-${{ github.sha }}
+          path: |
+            build/windows-gui/*.exe
+            build/windows-gui/*.json
+            build/windows-gui/*.bmp
+            COPYING
+            NOTICE
+          if-no-files-found: error
+          retention-days: 14
+
   verify:
     name: Linux verification
     runs-on: ubuntu-latest
@@ -127,6 +162,7 @@ jobs:
             build/windows-qa/*.json
             build/windows-qa/*.exe
             build/windows-qa/*.ps1
+            build/windows-qa/*.bmp
             build/windows-qa/releases/*.zip
             build/windows-qa/releases/*.sha256
             COPYING

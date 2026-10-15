@@ -1,6 +1,6 @@
 ---
 title: "Akamai Netstorage"
-description: "Zclone docs for Akamai NetStorage"
+description: "zClone docs for Akamai NetStorage"
 versionIntroduced: "v1.58"
 ---
 
@@ -198,10 +198,10 @@ With NetStorage, directories can exist in one of two forms:
   as "implicit." While the directories aren't physically created, they exist
   implicitly and the noted path is connected with the uploaded file.
 
-Zclone will intercept all file uploads and mkdir commands for the NetStorage
+zClone will intercept all file uploads and mkdir commands for the NetStorage
 remote and will explicitly issue the mkdir command for each directory in the
 uploading path. This will help with the interoperability with the other Akamai
-services such as SFTP and the Content Management Shell (CMShell). Zclone will
+services such as SFTP and the Content Management Shell (CMShell). zClone will
 not guarantee correctness of operations with implicit directories which might
 have been created as a result of using an upload API directly.
 
@@ -211,11 +211,11 @@ NetStorage remote supports the ListR feature by using the "list" NetStorage API
 action to return a lexicographical list of all objects within the specified CP
 code, recursing into subdirectories as they're encountered.
 
-- **Zclone will use the ListR method for some commands by default**. Commands
+- **zClone will use the ListR method for some commands by default**. Commands
 such as `lsf -R` will use ListR by default. To disable this, include the
 `--disable listR` option to use the non-recursive method of listing objects.
 
-- **Zclone will not use the ListR method for some commands**. Commands such as
+- **zClone will not use the ListR method for some commands**. Commands such as
 `sync` don't use ListR by default. To force using the ListR method, include the
 `--fast-list` option.
 
@@ -233,7 +233,7 @@ is to pass "--disable listR" flag if these numbers are important in the output.
 
 NetStorage remote supports the purge feature by using the "quick-delete"
 NetStorage API action. The quick-delete action is disabled by default for security
-reasons and can be enabled for the account through the Akamai portal. Zclone
+reasons and can be enabled for the account through the Akamai portal. zClone
 will first try to use quick-delete action for the purge command and if this
 functionality is disabled then will fall back to a standard delete method.
 

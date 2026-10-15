@@ -161,7 +161,7 @@ transmission. It typically uses compression (most commonly the DEFLATE
 algorithm) to reduce the overall size of the archived content. Zip
 files are supported natively by most modern operating systems.
 
-Zclone does not support the following advanced features of Zip files:
+zClone does not support the following advanced features of Zip files:
 
 - Splitting large archives into smaller parts
 - Password protection
@@ -178,7 +178,7 @@ compressed, Squashfs is ideal for live CDs/USBs, embedded devices with
 limited storage, and software package distribution, as it saves space
 and ensures the integrity of the original files.
 
-Zclone supports the following squashfs compression formats:
+zClone supports the following squashfs compression formats:
 
 - `Gzip`
 - `Lzma`
@@ -190,7 +190,7 @@ These are not yet working:
 - `Lzo` - Not yet supported
 - `Lz4` - Broken with "error decompressing: lz4: bad magic number"
 
-Zclone works fastest with large squashfs block sizes. For example:
+zClone works fastest with large squashfs block sizes. For example:
 
 ```
 mksquashfs 100files 100files.sqfs -comp zstd -b 1M

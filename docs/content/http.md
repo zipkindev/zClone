@@ -116,7 +116,7 @@ This remote is read only - you can't upload files to an HTTP server.
 
 ### Servers without directory listings
 
-Zclone normally needs the HTTP server to return a parseable directory
+zClone normally needs the HTTP server to return a parseable directory
 listing in order to discover files. However if the path points
 directly at a single file (i.e. it does not end with `/` and the
 initial HEAD request reports it as a file), zclone will skip the

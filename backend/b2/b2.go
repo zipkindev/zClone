@@ -186,7 +186,7 @@ to start uploading.`,
 
 This is usually set to a Cloudflare CDN URL as Backblaze offers
 free egress for data downloaded through the Cloudflare network.
-Zclone works with private buckets by sending an "Authorization" header.
+zClone works with private buckets by sending an "Authorization" header.
 If the custom endpoint rewrites the requests for authentication,
 e.g., in Cloudflare Workers, this header needs to be handled properly.
 Leave blank if you want to use the endpoint provided by Backblaze.
@@ -2444,7 +2444,7 @@ zclone backend lifecycle b2:bucket -o daysFromUploadingToHiding=5 -o daysFromHid
 
 This will run and then print the new lifecycle rules as above.
 
-Zclone only lets you set lifecycles for the whole bucket with the
+zClone only lets you set lifecycles for the whole bucket with the
 fileNamePrefix = "".
 
 You can't disable versioning with B2. The best you can do is to set

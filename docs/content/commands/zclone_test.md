@@ -10,7 +10,7 @@ Run a test command
 
 ## Synopsis
 
-Zclone test is used to run test commands.
+zClone test is used to run test commands.
 
 Select which test command you want with the subcommand, eg
 

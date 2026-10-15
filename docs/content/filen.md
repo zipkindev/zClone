@@ -1,6 +1,6 @@
 ---
 title: "Filen"
-description: "Zclone docs for Filen"
+description: "zClone docs for Filen"
 versionIntroduced: "1.73"
 ---
 

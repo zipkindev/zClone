@@ -1,6 +1,6 @@
 ---
 title: "Cache"
-description: "Zclone docs for cache remote"
+description: "zClone docs for cache remote"
 versionIntroduced: "v1.39"
 ---
 
@@ -183,7 +183,7 @@ cloud provider for smaller file chunks and combines them together locally
 where they can be available almost immediately before the reader usually
 needs them.
 
-This is similar to buffering when media files are played online. Zclone
+This is similar to buffering when media files are played online. zClone
 will stay around the current marker but always try its best to stay ahead
 and prepare the data before.
 

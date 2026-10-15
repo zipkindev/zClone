@@ -71,7 +71,7 @@ const (
 )
 
 // Storage defines an interface for loading and saving config to
-// persistent storage. Zclone provides a default implementation to
+// persistent storage. zClone provides a default implementation to
 // load and save to a config file when this is imported
 //
 // import "zclone/fs/config/configfile"

@@ -1,6 +1,6 @@
 ---
 title: "Microsoft Azure Blob Storage"
-description: "Zclone docs for Microsoft Azure Blob Storage"
+description: "zClone docs for Microsoft Azure Blob Storage"
 versionIntroduced: "v1.38"
 ---
 
@@ -105,7 +105,7 @@ hashes, e.g. the local disk.
 
 ### Metadata and tags
 
-Zclone can map arbitrary metadata to Azure Blob headers, user metadata, and tags
+zClone can map arbitrary metadata to Azure Blob headers, user metadata, and tags
 when `--metadata` is enabled (or when using `--metadata-set` / `--metadata-mapper`).
 
 - Headers: Set these keys in metadata to map to the corresponding blob headers:
@@ -121,7 +121,7 @@ when `--metadata` is enabled (or when using `--metadata-set` / `--metadata-mappe
   logs a debug message and ignores the override.
 
 Notes:
-- Zclone ignores reserved `x-ms-*` keys (except `x-ms-tags`) for user metadata.
+- zClone ignores reserved `x-ms-*` keys (except `x-ms-tags`) for user metadata.
 
 ### Performance
 
@@ -154,7 +154,7 @@ as they can't be used in JSON strings.
 ### Authentication {#authentication}
 
 There are a number of ways of supplying credentials for Azure Blob
-Storage. Zclone tries them in the order of the sections below.
+Storage. zClone tries them in the order of the sections below.
 
 #### Env Auth
 
@@ -869,7 +869,7 @@ If true (the default) then zclone will use the Copy Blob API for
 copies to the same storage account even when the size is above the
 copy_cutoff.
 
-Zclone assumes that the same storage account means the same config
+zClone assumes that the same storage account means the same config
 and does not check for the same storage account in different configs.
 
 There should be no need to change this value.

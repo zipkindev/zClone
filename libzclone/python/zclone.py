@@ -56,7 +56,7 @@ class ZcloneException(Exception):
 
 class Zclone():
     """
-    Interface to Zclone via libzclone.so
+    Interface to zClone via libzclone.so
 
     Initialise with shared_object as the file path of libzclone.so
     """

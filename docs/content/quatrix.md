@@ -1,6 +1,6 @@
 ---
 title: "Quatrix"
-description: "Zclone docs for Quatrix"
+description: "zClone docs for Quatrix"
 versionIntroduced: "v1.63.2"
 ---
 
@@ -148,7 +148,7 @@ equal to `.` or `..` nor contain `/` , `\` or non-printable ascii.
 
 ### Transfers
 
-For files above 50 MiB zclone will use a chunked transfer. Zclone will upload
+For files above 50 MiB zclone will use a chunked transfer. zClone will upload
 up to `--transfers` chunks at the same time (shared among all multipart uploads).
 Chunks are buffered in memory, and the minimal chunk size is 10_000_000 bytes by
 default, and it can be changed in the advanced configuration, so increasing `--transfers`

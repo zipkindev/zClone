@@ -1,6 +1,6 @@
 ---
 title: "Google Cloud Storage"
-description: "Zclone docs for Google Cloud Storage"
+description: "zClone docs for Google Cloud Storage"
 versionIntroduced: "v1.02"
 ---
 

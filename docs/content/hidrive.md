@@ -1,6 +1,6 @@
 ---
 title: "HiDrive"
-description: "Zclone docs for HiDrive"
+description: "zClone docs for HiDrive"
 versionIntroduced: "v1.59"
 ---
 
@@ -164,7 +164,7 @@ with a length of 255 characters or less.
 HiDrive limits file sizes per single request to a maximum of 2 GiB.
 To allow storage of larger files and allow for better upload performance,
 the hidrive backend will use a chunked transfer for files larger than 96 MiB.
-Zclone will upload multiple parts/chunks of the file at the same time.
+zClone will upload multiple parts/chunks of the file at the same time.
 Chunks in the process of being uploaded are buffered in memory,
 so you may want to restrict this behaviour on systems with limited resources.
 

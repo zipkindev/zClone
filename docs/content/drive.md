@@ -1,6 +1,6 @@
 ---
 title: "Google drive"
-description: "Zclone docs for Google drive"
+description: "zClone docs for Google drive"
 versionIntroduced: "v0.91"
 ---
 
@@ -144,7 +144,7 @@ zclone copy /home/source remote:backup
 
 ### Scopes
 
-Zclone allows you to select which scope you would like for zclone to
+zClone allows you to select which scope you would like for zclone to
 use.  This changes what type of token is granted to zclone.  [The
 scopes are defined
 here](https://developers.google.com/drive/v3/web/about-auth).
@@ -180,7 +180,7 @@ Files created with this scope are visible in the web interface.
 
 #### drive.appfolder
 
-This gives zclone its own private area to store files.  Zclone will
+This gives zclone its own private area to store files.  zClone will
 not be able to see any other files on your drive and you won't be able
 to see zclone's files from the web interface either.
 
@@ -349,11 +349,11 @@ n) No
 y/n> y
 Fetching Shared Drive list...
 Choose a number from below, or type in your own value
- 1 / Zclone Test
+ 1 / zClone Test
    \ "xxxxxxxxxxxxxxxxxxxx"
- 2 / Zclone Test 2
+ 2 / zClone Test 2
    \ "yyyyyyyyyyyyyyyyyyyy"
- 3 / Zclone Test 3
+ 3 / zClone Test 3
    \ "zzzzzzzzzzzzzzzzzzzz"
 Enter a Shared Drive ID> 1
 Configuration complete.
@@ -504,7 +504,7 @@ target file ID followed by the shortcut ID, separated by a tab. This internal
 tab is not changed by `--separator`.
 
 If you have a folder shortcut that points at one of its own parent folders it
-would lead to an infinite recursion. Zclone detects this, leaves the offending
+would lead to an infinite recursion. zClone detects this, leaves the offending
 shortcut out of the listing and logs an ERROR, so the rest of the drive can
 still be copied.
 
@@ -1322,7 +1322,7 @@ Normally zclone will work around a bug in Google Drive when using
 parents)" returns nothing sometimes. See #3114, #4289 and
 https://issuetracker.google.com/issues/149522397
 
-Zclone detects this by finding no items in more than one directory
+zClone detects this by finding no items in more than one directory
 when listing and retries them as lists of individual directories.
 
 This means that if you have a lot of empty directories zclone will end
@@ -1931,7 +1931,7 @@ Use `zclone dedupe` to fix duplicated files.
 Note that this isn't just a problem with zclone, even Google Photos on
 Android duplicates files on drive sometimes.
 
-### Zclone appears to be re-copying files it shouldn't
+### zClone appears to be re-copying files it shouldn't
 
 The most likely cause of this is the duplicated file issue above - run
 `zclone dedupe` and check your logs for duplicate object or directory
@@ -2003,7 +2003,7 @@ users in your organisation).
 including
     - `https://www.googleapis.com/auth/docs`
     - `https://www.googleapis.com/auth/drive` in order to be able to edit,
-        create and delete files with Zclone.
+        create and delete files with zClone.
     - `https://www.googleapis.com/auth/drive.metadata.readonly` which you may
       also want to add.
 

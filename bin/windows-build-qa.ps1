@@ -84,7 +84,7 @@ if ($LASTEXITCODE -ne 0) { throw "Installer release archive build failed" }
 $archive = "$out/releases/zclone-$version-windows-amd64.zip"
 python bin/windows_installer_qa.py --archive $archive --previous-binary "$out/json-baseline.exe" --output "$out/previous-qa.zip"
 if ($LASTEXITCODE -ne 0) { throw "Installer update fixture preparation failed" }
-go build -buildvcs=false -trimpath -ldflags "-s -w" -o "$out/zClone-Updater.exe" ./bin/windows-installer
+go build -buildvcs=false -trimpath -ldflags "-s -w -H windowsgui" -o "$out/zClone-Updater.exe" ./bin/windows-installer
 if ($LASTEXITCODE -ne 0) { throw "Updater build failed" }
 @{
     artifact_kind = "experimental-updater"

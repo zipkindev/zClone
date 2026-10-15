@@ -272,3 +272,23 @@ func TestDestinationPreferences(t *testing.T) {
 		t.Fatal("accepted malformed saved destination")
 	}
 }
+
+func TestDownloadProgress(t *testing.T) {
+	var statuses []string
+	var percentages []int
+	writer := downloadProgress{total: 8, progress: func(status string, percent int) {
+		statuses = append(statuses, status)
+		percentages = append(percentages, percent)
+	}}
+	writer.Write([]byte("1234"))
+	writer.Write([]byte("5678"))
+	if len(statuses) != 2 || !strings.Contains(statuses[0], "Downloading") || percentages[0] != 35 || percentages[1] != 65 {
+		t.Fatal("incorrect download progress", statuses, percentages)
+	}
+	writer = downloadProgress{progress: func(status string, percent int) {
+		if percent != -1 {
+			t.Fatal("unknown download size must be indeterminate")
+		}
+	}}
+	writer.Write([]byte("stream"))
+}

@@ -10,8 +10,8 @@ Mount the remote as file system on a mountpoint.
 
 ## Synopsis
 
-Zclone mount allows Linux, FreeBSD, macOS and Windows to
-mount any of Zclone's cloud storage systems as a file system with FUSE.
+zClone mount allows Linux, FreeBSD, macOS and Windows to
+mount any of zClone's cloud storage systems as a file system with FUSE.
 
 First set up your remote using `zclone config`. Check it works with `zclone ls`
 etc.
@@ -305,7 +305,7 @@ but consider lowering this limit if the server's system resource usage causes pr
 ### macFUSE Notes
 
 Install macFUSE or FUSE-T from an approved local package source before using
-this command. Zclone locates the macFUSE libraries without further intervention.
+this command. zClone locates the macFUSE libraries without further intervention.
 If the approved package is installed under `/opt/local`, the following addition
 steps are required.
 
@@ -492,7 +492,7 @@ Since mounting requires the `fusermount` or `fusermount3` program,
 zclone will use the fallback PATH of `/bin:/usr/bin` in this scenario.
 Please ensure that `fusermount`/`fusermount3` is present on this PATH.
 
-## Zclone as Unix mount helper
+## zClone as Unix mount helper
 
 The core Unix program `/bin/mount` normally takes the `-t FSTYPE` argument
 then runs the `/sbin/mount.FSTYPE` helper program passing it mount options
@@ -546,7 +546,7 @@ or use classic Automountd.
 Remember to provide explicit `config=...,cache-dir=...` as a workaround for
 mount units being run without `HOME`.
 
-Zclone in the mount helper mode will split `-o` argument(s) by comma, replace `_`
+zClone in the mount helper mode will split `-o` argument(s) by comma, replace `_`
 by `-` and prepend `--` to get the command-line flags. Options containing commas
 or spaces can be wrapped in single or double quotes. Any inner quotes inside outer
 quotes of the same type should be doubled.
@@ -760,7 +760,7 @@ When using this mode it is recommended that `--buffer-size` is not set
 too large and `--vfs-read-ahead` is set large if required.
 
 **IMPORTANT** not all file systems support sparse files. In particular
-FAT/exFAT do not. Zclone will perform very badly if the cache
+FAT/exFAT do not. zClone will perform very badly if the cache
 directory is on a filesystem which doesn't support sparse files and it
 will log an ERROR message if one is detected.
 
@@ -816,7 +816,7 @@ The chunking behaves differently depending on the `--vfs-read-chunk-streams` par
 
 ### `--vfs-read-chunk-streams` == 0
 
-Zclone will start reading a chunk of size `--vfs-read-chunk-size`,
+zClone will start reading a chunk of size `--vfs-read-chunk-size`,
 and then double the size for each read. When `--vfs-read-chunk-size-limit` is
 specified, and greater than `--vfs-read-chunk-size`, the chunk size for each
 open file will get doubled only until the specified value is reached. If the
@@ -834,7 +834,7 @@ The chunks will not be buffered in memory.
 
 ### `--vfs-read-chunk-streams` > 0
 
-Zclone reads `--vfs-read-chunk-streams` chunks of size
+zClone reads `--vfs-read-chunk-streams` chunks of size
 `--vfs-read-chunk-size` concurrently. The size for each read will stay
 constant.
 

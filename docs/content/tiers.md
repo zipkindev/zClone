@@ -5,7 +5,7 @@ description: "A complete list of supported backends and their stability tiers."
 
 # Tiers
 
-Zclone backends are divided into tiers to give users an idea of the stability of each backend.
+zClone backends are divided into tiers to give users an idea of the stability of each backend.
 
 | Tier   | Label         | Intended meaning |
 |--------|---------------|------------------|

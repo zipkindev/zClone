@@ -5,7 +5,7 @@
 [![GoDoc](https://pkg.go.dev/badge/zclone/lib/gofakes3.svg)](https://pkg.go.dev/zclone/lib/gofakes3)
 
 This is a fork of [johannesboyne/gofakes3](https://github.com/johannesboyne/gofakes3)
-mainly for use implementing the Zclone S3 server command.
+mainly for use implementing the zClone S3 server command.
 
 Notable differences:
 
