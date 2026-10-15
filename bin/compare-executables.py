@@ -240,6 +240,8 @@ def main():
     parser.add_argument('--baseline', required=True, type=Path)
     parser.add_argument('--candidate', required=True, type=Path)
     parser.add_argument('--packed', type=Path)
+    parser.add_argument('--packed-variant', action='append', default=[], metavar='NAME=PATH',
+                        help='Additional experimental packed executable; may be repeated')
     parser.add_argument('--json-baseline', type=Path, help='Same-source build using the previous JSON library')
     parser.add_argument('--mount', action='store_true', help='Require WinFsp mount read/write QA')
     parser.add_argument('--compact', action='store_true', help='Require native Windows compression QA')
@@ -250,6 +252,13 @@ def main():
         binaries['json_baseline'] = args.json_baseline.resolve()
     if args.packed:
         binaries['upx'] = args.packed.resolve()
+    packed_names = ['upx'] if args.packed else []
+    for variant in args.packed_variant:
+        name, separator, path = variant.partition('=')
+        if not separator or not path or not re.fullmatch(r'upx-[a-z0-9-]+', name) or name in binaries:
+            parser.error('Packed variants require a unique upx-NAME=PATH')
+        binaries[name] = Path(path).resolve()
+        packed_names.append(name)
     if args.compact and os.name != 'nt':
         parser.error('--compact requires Windows')
     report = {'binaries': {}, 'provider_inventory_equal': False, 'existing_commands_and_flags_preserved': False}
@@ -268,8 +277,8 @@ def main():
             for command, flags in baseline['commands'].items():
                 assert command in value['commands'], 'Missing command: ' + command
                 assert set(flags) <= set(value['commands'][command]), 'Missing flags: ' + command
-        if 'upx' in inventories:
-            assert inventories['upx'] == inventories['candidate'], 'Packing changed inventory'
+        for name in packed_names:
+            assert inventories[name] == inventories['candidate'], 'Packing changed inventory: ' + name
         report['provider_inventory_equal'] = True
         report['existing_commands_and_flags_preserved'] = True
         report['added_commands'] = sorted(set(inventories['candidate']['commands']) - set(baseline['commands']))
@@ -291,6 +300,26 @@ def main():
             result['saved_bytes'] = binaries['baseline'].stat().st_size - binary.stat().st_size
         startup_comparison(binaries, config, report)
     failures = []
+    ordinary = report['binaries']['candidate']
+    report['experimental_packing'] = {
+        'minimum_size_saving_percent': 30, 'startup_limit_percent': 20,
+        'working_set_limit_percent': 10, 'variants': {}}
+    for name in packed_names:
+        values = report['binaries'][name]
+        savings = 100 * (1 - values['bytes'] / ordinary['bytes'])
+        changes = {key: 100 * (values[key] / ordinary[key] - 1) if ordinary[key] else None
+                   for key in ['startup_median_seconds', 'rc_peak_working_set_bytes',
+                               'gui_peak_working_set_bytes']}
+        reasons = []
+        if savings < 30:
+            reasons.append('less than 30% executable size saving')
+        for key, limit in [('startup_median_seconds', 20), ('rc_peak_working_set_bytes', 10),
+                           ('gui_peak_working_set_bytes', 10)]:
+            if changes[key] is None or changes[key] > limit:
+                reasons.append(key + ' unavailable or exceeds performance limit')
+        report['experimental_packing']['variants'][name] = {
+            'experimental': True, 'size_saving_percent': savings, 'change_percent': changes,
+            'meets_screening_limits': not reasons, 'rejection_reasons': reasons}
     if args.compact:
         ordinary = report['binaries']['candidate']
         report['native_compression_performance'] = {

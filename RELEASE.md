@@ -165,6 +165,14 @@ platform has separate tool and runtime qualification. The publishing workflow
 continues to publish the six ordinary archives; packed candidates are QA
 artifacts rather than an automatic replacement for the default executable.
 
+CI also compares experimental UPX levels 1, 5, and 9 with LZMA disabled against
+the ordinary executable and the existing level-9 packed build. Each variant
+undergoes the same inventory, functionality, mount, and Defender checks. Reports
+screen for at least 30% executable size savings, no more than 20% higher median
+warm startup, and no more than 10% higher RC or GUI peak working set. Performance
+screening failures are reported without failing CI; functionality failures fail
+CI. Passing screening does not promote an experimental build into releases.
+
 The required Windows CI job runs `bin/windows-build-qa.ps1`. It downloads official
 UPX 5.1.1 and WinFsp 2.1.25156 installers with pinned SHA-256 checksums, builds the
 base revision and candidate with identical release linker settings, and uses

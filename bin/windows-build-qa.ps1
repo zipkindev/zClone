@@ -29,6 +29,7 @@ try {
     candidate_tags = @("arrow_json_stdlib", "cmount")
     json_baseline_tags = @("cmount")
     upx = "5.1.1"
+    experimental_upx = @("-1 --no-lzma", "-5 --no-lzma", "-9 --no-lzma")
     winfsp = "2.1.25156"
     native_compression = @("XPRESS4K", "XPRESS8K", "LZX")
     preferred_native_compression = "XPRESS4K"
@@ -91,14 +92,29 @@ Copy-Item "$out/candidate.exe" "$out/packed.exe"
 if ($LASTEXITCODE -ne 0) { throw "UPX compression failed" }
 & $upx -t "$out/packed.exe"
 if ($LASTEXITCODE -ne 0) { throw "UPX integrity failed" }
-python bin/compare-executables.py --baseline "$out/baseline.exe" --candidate "$out/candidate.exe" --json-baseline "$out/json-baseline.exe" --packed "$out/packed.exe" --compact --mount --output "$out/comparison.json"
+$packedVariants = @()
+$scanNames = @("candidate", "packed")
+foreach ($level in @(1, 5, 9)) {
+    $name = "upx-nrv-$level"
+    $path = "$out/$name.exe"
+    Copy-Item "$out/candidate.exe" $path
+    & $upx --no-env "-$level" --no-lzma $path
+    if ($LASTEXITCODE -ne 0) { throw "UPX compression failed for $name" }
+    & $upx -t $path
+    if ($LASTEXITCODE -ne 0) { throw "UPX integrity failed for $name" }
+    & $upx --fileinfo $path | Set-Content "$out/$name.log"
+    if ($LASTEXITCODE -ne 0) { throw "UPX method inspection failed for $name" }
+    $packedVariants += @("--packed-variant", "$name=$path")
+    $scanNames += $name
+}
+python bin/compare-executables.py --baseline "$out/baseline.exe" --candidate "$out/candidate.exe" --json-baseline "$out/json-baseline.exe" --packed "$out/packed.exe" @packedVariants --compact --mount --output "$out/comparison.json"
 if ($LASTEXITCODE -ne 0) { throw "Executable regression comparison failed" }
 
 # Scan only disposable build artifacts with the runner's installed Defender engine.
 $scanner = Get-ChildItem "$env:ProgramData/Microsoft/Windows Defender/Platform/*/MpCmdRun.exe" | Sort-Object FullName -Descending | Select-Object -First 1
 if (-not $scanner) { throw "Defender scanner is unavailable" }
 $defender = @{}
-foreach ($name in @("candidate", "packed")) {
+foreach ($name in $scanNames) {
     & $scanner.FullName -Scan -ScanType 3 -File "$out/$name.exe" -DisableRemediation
     if ($LASTEXITCODE -ne 0) { throw "Defender scan failed for $name.exe" }
     $defender[$name] = "passed"
