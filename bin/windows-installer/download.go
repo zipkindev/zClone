@@ -30,7 +30,7 @@ func get(client *http.Client, address string) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	request.Header.Set("User-Agent", "zclone-experimental-updater")
+	request.Header.Set("User-Agent", "zClone-Updater")
 	request.Header.Set("Accept", "application/vnd.github+json")
 	response, err := client.Do(request)
 	if err != nil {

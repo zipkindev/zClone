@@ -1,4 +1,4 @@
-// The experimental updater stages an ordinary release before native compression.
+// The updater stages an ordinary release before native compression.
 package main
 
 import (
@@ -103,6 +103,7 @@ func extractFile(f *zip.File, target string) error {
 
 func nativeCompress(binary, algorithm string) error {
 	command := exec.Command(filepath.Join(os.Getenv("SystemRoot"), "System32", "compact.exe"), "/C", "/F", "/EXE:"+algorithm, binary)
+	hideConsole(command)
 	output, err := command.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("native compression requires a supported destination filesystem: %w: %s", err, output)

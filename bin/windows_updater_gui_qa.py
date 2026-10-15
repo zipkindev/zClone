@@ -157,7 +157,19 @@ def exercise_gui(updater, archive, root, screenshot=None):
         user.PostMessageW(window, 0x111, 103, 0)
         wait(lambda: 'Installation failed:' in text(user.GetDlgItem(window, 105)))
         dialog = wait(lambda: windows('#32770'))[0]
-        user.PostMessageW(user.GetDlgItem(dialog, 1), 0xF5, 0, 0)
+        buttons = []
+        @callback_type
+        def find_button(control, parameter):
+            name = ctypes.create_unicode_buffer(256)
+            user.GetClassNameW(control, name, len(name))
+            if name.value == 'Button':
+                buttons.append(control)
+            return True
+        user.EnumChildWindows(dialog, find_button, 0)
+        assert len(buttons) == 1, 'Expected one acknowledgment button in checksum error dialog'
+        if screenshot:
+            capture_window(user, dialog, screenshot.with_name('updater-error.bmp'))
+        user.PostMessageW(buttons[0], 0xF5, 0, 0)
         wait(lambda: not user.IsWindow(dialog))
         assert hashlib.sha256(binary.read_bytes()).digest() == hashlib.sha256(original).digest()
         assert user.IsWindowEnabled(user.GetDlgItem(window, 103))

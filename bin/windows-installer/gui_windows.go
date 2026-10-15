@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"runtime"
 	"strings"
 	"sync"
@@ -302,4 +303,8 @@ func prepareCLI() {
 	if handle, err := syscall.GetStdHandle(syscall.STD_ERROR_HANDLE); err == nil {
 		os.Stderr = os.NewFile(uintptr(handle), "stderr")
 	}
+}
+
+func hideConsole(command *exec.Cmd) {
+	command.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 }
