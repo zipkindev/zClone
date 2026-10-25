@@ -73,7 +73,7 @@ jobs:
           name: release-${{ matrix.os }}-${{ matrix.arch }}
           path: build/releases/*
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 7
 
   publish:
     needs: package

@@ -1,0 +1,805 @@
+name: Remove archived Actions artifacts
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/artifact-cleanup.yml
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: verified-artifact-cleanup
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # Every listed artifact was saved privately and checked against its upstream
+      # SHA-256 and ZIP/gzip integrity before this manifest was committed.
+      # The explicit list supports safe retries without selecting new artifacts.
+      - name: Remove only the verified archived copies
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERIFIED_ARCHIVE_MANIFEST: |
+            {
+              "repository": "zipkindev/zClone",
+              "cutoff": "2026-10-18T05:42:46.000Z",
+              "artifacts": [
+                {
+                  "id": 11981261193,
+                  "digest": "sha256:d131a5b9dd27d9249d5df9254cf41a2c1c5bc92940feb9a229eadbe5aca9a221",
+                  "size_in_bytes": 25151753,
+                  "run_id": 38748637012,
+                  "verified": true
+                },
+                {
+                  "id": 11980947082,
+                  "digest": "sha256:6b622b396965e6f8f4cf951c4fc639e1514e4720fb53e0e3523cb3a3439daf99",
+                  "size_in_bytes": 246499330,
+                  "run_id": 38748637012,
+                  "verified": true
+                },
+                {
+                  "id": 11980920448,
+                  "digest": "sha256:4e4603026d5f8f02a2d114084753d3bb25a8a5e5aa6849431586331298ca2b35",
+                  "size_in_bytes": 37300749,
+                  "run_id": 38748637012,
+                  "verified": true
+                },
+                {
+                  "id": 11980907418,
+                  "digest": "sha256:c553794a9c545f15c4c1530a4a2e57b2a95fa774207963a6d03ef0ffb4572387",
+                  "size_in_bytes": 31395194,
+                  "run_id": 38748637012,
+                  "verified": true
+                },
+                {
+                  "id": 11980877251,
+                  "digest": "sha256:24a1761a3cf0db384c43d531fa9705083fa4317623f048b5e90b6886f4e9db85",
+                  "size_in_bytes": 28578464,
+                  "run_id": 38748637012,
+                  "verified": true
+                },
+                {
+                  "id": 11980847020,
+                  "digest": "sha256:b8a222499ed0be2d2d50fea5debf3c61d5e4e68a3547dde117f2508f3ec17829",
+                  "size_in_bytes": 3120673,
+                  "run_id": 38748637012,
+                  "verified": true
+                },
+                {
+                  "id": 11980787346,
+                  "digest": "sha256:f65c4046c67da4438dc79e1a3a75e5ae6d446e6dccc0fff6bc0a89da488d64d9",
+                  "size_in_bytes": 25370340,
+                  "run_id": 38748637012,
+                  "verified": true
+                },
+                {
+                  "id": 11980439604,
+                  "digest": "sha256:7e47033f75230dfc220d748ca119010c08469cd3b463e82af350a59cc670099f",
+                  "size_in_bytes": 28217379,
+                  "run_id": 38748637012,
+                  "verified": true
+                },
+                {
+                  "id": 11979859899,
+                  "digest": "sha256:1b79f3fecb6096075bcd2a53d2efaa8e6e3f21bcee2763aee817310992668bd3",
+                  "size_in_bytes": 26184891,
+                  "run_id": 38748637012,
+                  "verified": true
+                },
+                {
+                  "id": 11979778733,
+                  "digest": "sha256:a0ce3dcac14c1afd5d1a630112456f4278757d0990dd3bf79323728186638d5a",
+                  "size_in_bytes": 3140651,
+                  "run_id": 38748637012,
+                  "verified": true
+                },
+                {
+                  "id": 11982315356,
+                  "digest": "sha256:32ed65241d80f01a9c33e132bb2ba34686d409a337c4bf287f9b81c902a1642a",
+                  "size_in_bytes": 246500396,
+                  "run_id": 38748631038,
+                  "verified": true
+                },
+                {
+                  "id": 11980528403,
+                  "digest": "sha256:808282d7a26e12456c3e2c2cedb7d0ae6a500c24a4a1bddfb9bcc8259a20cf5f",
+                  "size_in_bytes": 3120673,
+                  "run_id": 38748631038,
+                  "verified": true
+                },
+                {
+                  "id": 11980157872,
+                  "digest": "sha256:93bee2ca6943453e3c2c6fa66232bb48e5f5cf40c3d06bf91df90eccaac5045d",
+                  "size_in_bytes": 3140512,
+                  "run_id": 38748631038,
+                  "verified": true
+                },
+                {
+                  "id": 11979044565,
+                  "digest": "sha256:b5071a48a87bc4b9c40cd85d9c9007179dee5bd12a7294c4a3ec267174ccfe00",
+                  "size_in_bytes": 37300749,
+                  "run_id": 38748631038,
+                  "verified": true
+                },
+                {
+                  "id": 11970736739,
+                  "digest": "sha256:02822bf1fce90d5c21b257f868fd8921cd8b8e480b5b58245b0884f2aa94b447",
+                  "size_in_bytes": 3120673,
+                  "run_id": 38730065996,
+                  "verified": true
+                },
+                {
+                  "id": 11970616765,
+                  "digest": "sha256:85355c3ba3cebbbf987791d1bf4cf55e1adbc437e26cc49a5e89681b7df11062",
+                  "size_in_bytes": 246495885,
+                  "run_id": 38730065996,
+                  "verified": true
+                },
+                {
+                  "id": 11969503815,
+                  "digest": "sha256:c2e14fe8435e23bf166511af93c083924bfdf219bd324130758f8808a94209b6",
+                  "size_in_bytes": 3144459,
+                  "run_id": 38730065996,
+                  "verified": true
+                },
+                {
+                  "id": 11969459561,
+                  "digest": "sha256:e0fcf6aea37dcf2a3151139d699686a4585d6f3f9b06a7550f953ac42e481faa",
+                  "size_in_bytes": 37300615,
+                  "run_id": 38730065996,
+                  "verified": true
+                },
+                {
+                  "id": 11970043055,
+                  "digest": "sha256:3eb8bfe2be3b18a9f0eb73fc7b6e5d44a878a7effd694b86f7203fd0141743cb",
+                  "size_in_bytes": 3120671,
+                  "run_id": 38728172323,
+                  "verified": true
+                },
+                {
+                  "id": 11969861507,
+                  "digest": "sha256:337218a46b51eb390647f592445dd2c7be99e68a300054aaa7324981ad1da0d4",
+                  "size_in_bytes": 37300620,
+                  "run_id": 38728172323,
+                  "verified": true
+                },
+                {
+                  "id": 11969638370,
+                  "digest": "sha256:02e9430ae37d043ab334c90b7a5c59890b45fb26598d0531dad80365c493b854",
+                  "size_in_bytes": 246500180,
+                  "run_id": 38728172323,
+                  "verified": true
+                },
+                {
+                  "id": 11969600814,
+                  "digest": "sha256:92be74d3dc5f2fad092f080815862fe3afd049977a6ccb48b28833215465f8d9",
+                  "size_in_bytes": 3144666,
+                  "run_id": 38728172323,
+                  "verified": true
+                },
+                {
+                  "id": 11968825114,
+                  "digest": "sha256:33e7ffedd6404e0eec3bedfc8781c3376a63f9cee1a5ea965c6c1e9f8d2cb141",
+                  "size_in_bytes": 37300619,
+                  "run_id": 38726615490,
+                  "verified": true
+                },
+                {
+                  "id": 11968399873,
+                  "digest": "sha256:21f2c19319bbc83da1329eab5e294276bb7cb3acfd4442643f92cb65dcbc9ec4",
+                  "size_in_bytes": 246495541,
+                  "run_id": 38726615490,
+                  "verified": true
+                },
+                {
+                  "id": 11967644072,
+                  "digest": "sha256:5f64843ebce994022193e3271d799b1ed723702eb3abcd42e2fc86cd6554d711",
+                  "size_in_bytes": 3144736,
+                  "run_id": 38726615490,
+                  "verified": true
+                },
+                {
+                  "id": 11968283157,
+                  "digest": "sha256:849fdcf606cccf0af3d1556bb2cfa1eabe4f965fac47fa8cc53a6770b7d197bd",
+                  "size_in_bytes": 118220478,
+                  "run_id": 38726211047,
+                  "verified": true
+                },
+                {
+                  "id": 11968077850,
+                  "digest": "sha256:31d37873068f8b2ffe3fe31912d8e9fb78449e110c3a257da4072c7640736d97",
+                  "size_in_bytes": 3140044,
+                  "run_id": 38726211047,
+                  "verified": true
+                },
+                {
+                  "id": 11968212628,
+                  "digest": "sha256:8877067043204f10790291a47b58f00c954a4bd28fd900f848185913030675f1",
+                  "size_in_bytes": 1402,
+                  "run_id": 38726136456,
+                  "verified": true
+                },
+                {
+                  "id": 11968037728,
+                  "digest": "sha256:f648cc4c74cff2c5b61951a50b0ee86bada6d5697f2a067486f4e29a287eab6b",
+                  "size_in_bytes": 1402,
+                  "run_id": 38726136456,
+                  "verified": true
+                },
+                {
+                  "id": 11968412359,
+                  "digest": "sha256:e1eb5acb8e6368cd3322a091ae7b42793b491a84961335e566fbe65331ff8812",
+                  "size_in_bytes": 1402,
+                  "run_id": 38726004266,
+                  "verified": true
+                },
+                {
+                  "id": 11967403314,
+                  "digest": "sha256:a74111fa684a2d0070d671aefdeb82a8ac90c24fddbbb15c72ef1e3e995075aa",
+                  "size_in_bytes": 1402,
+                  "run_id": 38726004266,
+                  "verified": true
+                },
+                {
+                  "id": 11967982212,
+                  "digest": "sha256:f823aa932456dcea10b97ea0a31ca088d475c068346e1b191f8065d2d813dd0d",
+                  "size_in_bytes": 32388,
+                  "run_id": 38725702027,
+                  "verified": true
+                },
+                {
+                  "id": 11967577832,
+                  "digest": "sha256:829fc16fe0fecd76479516686582f7e6f364d57814fc0bacfd6594d4021bfb8a",
+                  "size_in_bytes": 3127465,
+                  "run_id": 38725702027,
+                  "verified": true
+                },
+                {
+                  "id": 11968036900,
+                  "digest": "sha256:777bb5f87de30dffe471c83758b081ca6af09262f92514d12c4f6a574add1e3d",
+                  "size_in_bytes": 32513,
+                  "run_id": 38725317232,
+                  "verified": true
+                },
+                {
+                  "id": 11967602451,
+                  "digest": "sha256:cc8a545177fc99d248e972df46fa23b1364f8bed5e02188837fa8e59f6ef1f5d",
+                  "size_in_bytes": 3109149,
+                  "run_id": 38725317232,
+                  "verified": true
+                },
+                {
+                  "id": 11967825920,
+                  "digest": "sha256:787d23fc49fe300fb07638773b224f4171a51a5f7eb76f999beb09eee112b784",
+                  "size_in_bytes": 3109149,
+                  "run_id": 38724834731,
+                  "verified": true
+                },
+                {
+                  "id": 11967791497,
+                  "digest": "sha256:8c1d640346b05ac62c6fe3f7c51c23691bd37ae00ea5474591cf25f4df5db267",
+                  "size_in_bytes": 86824770,
+                  "run_id": 38724834731,
+                  "verified": true
+                },
+                {
+                  "id": 11968215354,
+                  "digest": "sha256:6245a8537954798d306701490a7eef1918db432b42fbabfdaaca8fede7f5820c",
+                  "size_in_bytes": 32217,
+                  "run_id": 38724597452,
+                  "verified": true
+                },
+                {
+                  "id": 11967311336,
+                  "digest": "sha256:d931c8ff75efff50a6532f4f91db56d5ff09c8b5e9c235e2b87c648a8aef1f0b",
+                  "size_in_bytes": 251343291,
+                  "run_id": 38723685553,
+                  "verified": true
+                },
+                {
+                  "id": 11966729626,
+                  "digest": "sha256:21b0cd206580994152bf29d0c784550598b5cc9a146c57d2af49512670d27be1",
+                  "size_in_bytes": 37300619,
+                  "run_id": 38723685553,
+                  "verified": true
+                },
+                {
+                  "id": 11965941026,
+                  "digest": "sha256:538b6db97beda42596a3ad400dc7c26a00afd11a658d3f085d4e28b3daa29dfa",
+                  "size_in_bytes": 26183318,
+                  "run_id": 38719351387,
+                  "verified": true
+                },
+                {
+                  "id": 11965541132,
+                  "digest": "sha256:9b9cf9d1b486db7dfa9981f867c65c2f944ff4ed965262b808b2422f42bcceff",
+                  "size_in_bytes": 25148713,
+                  "run_id": 38719351387,
+                  "verified": true
+                },
+                {
+                  "id": 11965400022,
+                  "digest": "sha256:e25add39081a258571dd26aeac0ed056c701e12edbf39cffbe04e5e11370fcd3",
+                  "size_in_bytes": 3106819,
+                  "run_id": 38719351387,
+                  "verified": true
+                },
+                {
+                  "id": 11965325385,
+                  "digest": "sha256:1f0c25594f724fa2d9ef050b0efe84e04d60ec85e54688dc2f57cb5132be1b80",
+                  "size_in_bytes": 25368031,
+                  "run_id": 38719351387,
+                  "verified": true
+                },
+                {
+                  "id": 11965020850,
+                  "digest": "sha256:261bfdcacccc8c05d9f1ac43f7bbe84248e765e92c24f47383e152e3997099ae",
+                  "size_in_bytes": 28575974,
+                  "run_id": 38719351387,
+                  "verified": true
+                },
+                {
+                  "id": 11964807643,
+                  "digest": "sha256:8725bf59cc09e743d837b66ed3bd5f7e308575a9c09360ede80a609f1c37b7e3",
+                  "size_in_bytes": 31378552,
+                  "run_id": 38719351387,
+                  "verified": true
+                },
+                {
+                  "id": 11964682449,
+                  "digest": "sha256:e979dc5dd1fc0d0dc6f6f923770ac17206d295b81311df04044ba79f801df912",
+                  "size_in_bytes": 28215559,
+                  "run_id": 38719351387,
+                  "verified": true
+                },
+                {
+                  "id": 11964637562,
+                  "digest": "sha256:9aa7f867a4374c36ddc0a90ea77d45182ff37181e34075ed3bbe5864de405b0f",
+                  "size_in_bytes": 246448763,
+                  "run_id": 38719351387,
+                  "verified": true
+                },
+                {
+                  "id": 11964068881,
+                  "digest": "sha256:1f315dec3dd158770bac38bf9ccf5e54825fff4a078257e575ef17dc9d16d3f2",
+                  "size_in_bytes": 37300715,
+                  "run_id": 38719351387,
+                  "verified": true
+                },
+                {
+                  "id": 11964831245,
+                  "digest": "sha256:f7f85a4a37008e9998248947100136470f315d7cd434e17608d28453724f6a85",
+                  "size_in_bytes": 3106817,
+                  "run_id": 38719306434,
+                  "verified": true
+                },
+                {
+                  "id": 11964756535,
+                  "digest": "sha256:76f0fe506f0960e8d36b97171caf93c694009df9ef9ddbb1a93c49dbdcb99728",
+                  "size_in_bytes": 246604070,
+                  "run_id": 38719306434,
+                  "verified": true
+                },
+                {
+                  "id": 11963678626,
+                  "digest": "sha256:0b5cc16e593fab461fab6257dbbae775597a0685a85a3ae3528cc4841d5670b0",
+                  "size_in_bytes": 37300779,
+                  "run_id": 38719306434,
+                  "verified": true
+                },
+                {
+                  "id": 11963967079,
+                  "digest": "sha256:770646fa9d595240b108d904b957f595d00b3ad856cd6bde7c524d539e573ef6",
+                  "size_in_bytes": 3106818,
+                  "run_id": 38717661965,
+                  "verified": true
+                },
+                {
+                  "id": 11963945729,
+                  "digest": "sha256:3bfdbc37194e423bc695613b458702b2bb4ee443196a74262d239fc306d15166",
+                  "size_in_bytes": 37300606,
+                  "run_id": 38717661965,
+                  "verified": true
+                },
+                {
+                  "id": 11963832094,
+                  "digest": "sha256:92152a846ca32df2de52a934f92818bd59d2f9d9992db366d88fc00b71005899",
+                  "size_in_bytes": 246603926,
+                  "run_id": 38717661965,
+                  "verified": true
+                },
+                {
+                  "id": 11959653337,
+                  "digest": "sha256:8b325378a8d751efcb39ff260859b46eec6f0625bebf4f46bb39d66a2005adc8",
+                  "size_in_bytes": 3103314,
+                  "run_id": 38708029003,
+                  "verified": true
+                },
+                {
+                  "id": 11959573559,
+                  "digest": "sha256:aa24f52e06061dade5fbac8a47bddd94155166743b702ace9e99873173ba0558",
+                  "size_in_bytes": 246599032,
+                  "run_id": 38708029003,
+                  "verified": true
+                },
+                {
+                  "id": 11959472300,
+                  "digest": "sha256:e6bf44de51b95e7905ddb2777c1f1c05af329d5f581d3082d1e2803c60cb6365",
+                  "size_in_bytes": 37300607,
+                  "run_id": 38708029003,
+                  "verified": true
+                },
+                {
+                  "id": 11958902391,
+                  "digest": "sha256:89db0ac435a4c442dd61466df11932fae35e301b52da38af4e9e1b4fd18f61e9",
+                  "size_in_bytes": 32427,
+                  "run_id": 38707753164,
+                  "verified": true
+                },
+                {
+                  "id": 11958669536,
+                  "digest": "sha256:74eddd7832db207879e68f857a7cd3c9a3429944a040a2c60318c3556d660f0f",
+                  "size_in_bytes": 246594339,
+                  "run_id": 38706863055,
+                  "verified": true
+                },
+                {
+                  "id": 11958309252,
+                  "digest": "sha256:106fa48b96132e6b6392bc70d4951a0e8492db693b3442c676718ccd7159c161",
+                  "size_in_bytes": 37300607,
+                  "run_id": 38706863055,
+                  "verified": true
+                },
+                {
+                  "id": 11957925593,
+                  "digest": "sha256:2641c4a046f7c241194af3385a2b458ee33271f4935b4c5b6123cb491af3fd44",
+                  "size_in_bytes": 215222775,
+                  "run_id": 38702376650,
+                  "verified": true
+                },
+                {
+                  "id": 11956744203,
+                  "digest": "sha256:5dfe434704bc6f7c0dcbc717b39e02045c5df191daf0ef4c8c7b317d7859ef8e",
+                  "size_in_bytes": 37300609,
+                  "run_id": 38702376650,
+                  "verified": true
+                },
+                {
+                  "id": 11955081987,
+                  "digest": "sha256:63133dd647117926a768a2f1ecd4662e5e2c2cc6e39ea4a394d663c34a760685",
+                  "size_in_bytes": 37300607,
+                  "run_id": 38696966873,
+                  "verified": true
+                },
+                {
+                  "id": 11954887678,
+                  "digest": "sha256:0824f9e7587c8e183c5febf274075817dc2c117ce4ece13e69e341755a121948",
+                  "size_in_bytes": 131051157,
+                  "run_id": 38696966873,
+                  "verified": true
+                },
+                {
+                  "id": 11955160402,
+                  "digest": "sha256:8bc8a3c823180914d957052cf1636e371aaf8d47004125b4745b07e57bd3027a",
+                  "size_in_bytes": 131051235,
+                  "run_id": 38695770524,
+                  "verified": true
+                },
+                {
+                  "id": 11954545056,
+                  "digest": "sha256:cc8a34f153f26757bcace19e5488f2df0aeb4a2fafb4db9a20f35b1a9d7f42e3",
+                  "size_in_bytes": 37300602,
+                  "run_id": 38695770524,
+                  "verified": true
+                },
+                {
+                  "id": 11953733425,
+                  "digest": "sha256:fad52a5c4982968f068a6596f7ec0cb7abfb0eecc8d69d813d545d4357ab8700",
+                  "size_in_bytes": 2480,
+                  "run_id": 38695546039,
+                  "verified": true
+                },
+                {
+                  "id": 11954142203,
+                  "digest": "sha256:cc08dae7acf120b9077e7059721cdde8fc0042d85a56d7a3ee5d45e743c478bc",
+                  "size_in_bytes": 131048430,
+                  "run_id": 38694698237,
+                  "verified": true
+                },
+                {
+                  "id": 11954102330,
+                  "digest": "sha256:2be5ecc8f94446cd5496c8d80c6e3f5287b5b831e4b2c9023d8475c759fa0480",
+                  "size_in_bytes": 37300610,
+                  "run_id": 38694698237,
+                  "verified": true
+                },
+                {
+                  "id": 11952640728,
+                  "digest": "sha256:47ecfd72330bd206eb9ca9ec38e90c6165d66449a12d6589e6dfb6da12aeb93b",
+                  "size_in_bytes": 37300606,
+                  "run_id": 38691111510,
+                  "verified": true
+                },
+                {
+                  "id": 11952054118,
+                  "digest": "sha256:58826b7217a230ef851fa12fbacec39cac3eb68226207b32c9fa453792a36711",
+                  "size_in_bytes": 131049184,
+                  "run_id": 38691111510,
+                  "verified": true
+                },
+                {
+                  "id": 11951385473,
+                  "digest": "sha256:a9f8b3503b903114837eb1892ef6ffff3f59af41fcbbbc6a53b5461858f53077",
+                  "size_in_bytes": 131043426,
+                  "run_id": 38686753705,
+                  "verified": true
+                },
+                {
+                  "id": 11950674378,
+                  "digest": "sha256:4e8453e02b1747f7c9b94cefd61bdcd768b52832b5675069d580cf6662549f1e",
+                  "size_in_bytes": 131043086,
+                  "run_id": 38686753705,
+                  "verified": true
+                },
+                {
+                  "id": 11950643595,
+                  "digest": "sha256:f3e2e232923c087ce05e5eb7e5ead0b4e0e6e62b5f8038818a0eec4a06544a5f",
+                  "size_in_bytes": 37300609,
+                  "run_id": 38686753705,
+                  "verified": true
+                },
+                {
+                  "id": 11950820633,
+                  "digest": "sha256:7f23605d5ed2cee5ffcd45fadebb07507709f0ce7916a7af144d95ec2791af6c",
+                  "size_in_bytes": 37300607,
+                  "run_id": 38685881725,
+                  "verified": true
+                },
+                {
+                  "id": 11950092127,
+                  "digest": "sha256:011853473bf17e732dc1e8ab073e4708a4dededa8fd434361c6d7ce7a406954a",
+                  "size_in_bytes": 131043500,
+                  "run_id": 38685881725,
+                  "verified": true
+                },
+                {
+                  "id": 11927706063,
+                  "digest": "sha256:146926ddf13b6430148473bd166cd4aec57cb15d056d027bd002628101c6e9f8",
+                  "size_in_bytes": 37820422,
+                  "run_id": 38632461379,
+                  "verified": true
+                },
+                {
+                  "id": 11926921709,
+                  "digest": "sha256:c2f27f939c7b799b6356df1b1cfbf2215530ebb767326a5fd41e9a3860a16ca0",
+                  "size_in_bytes": 82494075,
+                  "run_id": 38632461379,
+                  "verified": true
+                },
+                {
+                  "id": 11926123793,
+                  "digest": "sha256:6e9ddf36cf7dab9f01da8e387ecb135c1ed21cc73f57d7cbda932616a891f68b",
+                  "size_in_bytes": 37820427,
+                  "run_id": 38630663897,
+                  "verified": true
+                },
+                {
+                  "id": 11925384711,
+                  "digest": "sha256:fb634bf1925f470793f085835d26d0608e50a26b08dd3e0168c73037114929ea",
+                  "size_in_bytes": 82492433,
+                  "run_id": 38630663897,
+                  "verified": true
+                },
+                {
+                  "id": 11926460205,
+                  "digest": "sha256:6445a7ef7214b1d81097fcc744a82283480f988cb6cc1f90e7d09bb59069d8ed",
+                  "size_in_bytes": 58336682,
+                  "run_id": 38630219488,
+                  "verified": true
+                },
+                {
+                  "id": 11925237931,
+                  "digest": "sha256:aeeaa484cce3bf83e34d4d212c9bfccbcba5b9e43081a3b1eb2a4ec79535d93c",
+                  "size_in_bytes": 37820560,
+                  "run_id": 38629507956,
+                  "verified": true
+                },
+                {
+                  "id": 11925218142,
+                  "digest": "sha256:8537577c47d090128866170b6d7757675a11bf11314aaadf9e5b50814c6fa5e5",
+                  "size_in_bytes": 82491095,
+                  "run_id": 38629507956,
+                  "verified": true
+                },
+                {
+                  "id": 11925607075,
+                  "digest": "sha256:6fe4fe96ef0c0debc0033955d6ad3c29abc260ac0b0da317ccb0948cf36c3b48",
+                  "size_in_bytes": 37820341,
+                  "run_id": 38629098945,
+                  "verified": true
+                },
+                {
+                  "id": 11925547580,
+                  "digest": "sha256:be6e752f7b32c878fed9c02ceb5c582357ab2ca018af62c3358b55cc200f0bba",
+                  "size_in_bytes": 82492125,
+                  "run_id": 38629098945,
+                  "verified": true
+                },
+                {
+                  "id": 11841716949,
+                  "digest": "sha256:fd8f43f62f432d8387fd1e5e7f43c7bd6706d72de7e948c58bd28fc41b7acffe",
+                  "size_in_bytes": 38021929,
+                  "run_id": 38452311764,
+                  "verified": true
+                },
+                {
+                  "id": 11840219740,
+                  "digest": "sha256:02c6ed1e51a5a76a495494422cd051ff0f161ca99bc9236f4f8fe52c2559f138",
+                  "size_in_bytes": 38022297,
+                  "run_id": 38450961733,
+                  "verified": true
+                },
+                {
+                  "id": 11840970689,
+                  "digest": "sha256:8ca783f630e69073c532baf8e27e017f197f401f155fa062c2e3ae48de984add",
+                  "size_in_bytes": 38021932,
+                  "run_id": 38450887854,
+                  "verified": true
+                },
+                {
+                  "id": 11840430965,
+                  "digest": "sha256:9a5da44681ad8d94159e894eba635ff5ad1d696fd19040431108170db6fe9fa3",
+                  "size_in_bytes": 38022301,
+                  "run_id": 38449616732,
+                  "verified": true
+                },
+                {
+                  "id": 11839234381,
+                  "digest": "sha256:6aaf5094dd9bca3e423be9cbdb1507079c9ebcabe7ad7268debb3e7e76a27be6",
+                  "size_in_bytes": 38022300,
+                  "run_id": 38449564821,
+                  "verified": true
+                },
+                {
+                  "id": 11839908155,
+                  "digest": "sha256:4b3c2d6174adbb4578f0fc87ae0c4b9a455950ce5a633fb53489bf77ac81825e",
+                  "size_in_bytes": 26774738,
+                  "run_id": 38449204787,
+                  "verified": true
+                },
+                {
+                  "id": 11839808423,
+                  "digest": "sha256:37f703e1bbee324e02c940cd7f08c1a7c425b4c56f490104facba64860d3bdf5",
+                  "size_in_bytes": 28812159,
+                  "run_id": 38449204787,
+                  "verified": true
+                },
+                {
+                  "id": 11839559443,
+                  "digest": "sha256:537b692b1e725851b3ec91f750ab8e4d4db3c67a5836d4e625a249ff6114071b",
+                  "size_in_bytes": 29187603,
+                  "run_id": 38449204787,
+                  "verified": true
+                },
+                {
+                  "id": 11839393862,
+                  "digest": "sha256:f55ca6d13ca38a7b61579e57175539b3cfdab05f9b0723d6536bfaa5a4bd4155",
+                  "size_in_bytes": 38021939,
+                  "run_id": 38449204787,
+                  "verified": true
+                },
+                {
+                  "id": 11839294601,
+                  "digest": "sha256:ec9048c96bc94048f7de4f9c38a5e433537d89a02afdffef966121371fb25ed5",
+                  "size_in_bytes": 25928732,
+                  "run_id": 38449204787,
+                  "verified": true
+                },
+                {
+                  "id": 11839079555,
+                  "digest": "sha256:6b8eae09da40503cd432c3136030e2ceab752b89154f57551badb02e1c19dac4",
+                  "size_in_bytes": 28828796,
+                  "run_id": 38449204787,
+                  "verified": true
+                },
+                {
+                  "id": 11838879667,
+                  "digest": "sha256:94a1fe4440008f461783f7397d0b9d357f88e958e389cb6de79ae7406087bdb8",
+                  "size_in_bytes": 25626938,
+                  "run_id": 38449204787,
+                  "verified": true
+                },
+                {
+                  "id": 11838929077,
+                  "digest": "sha256:3a1439b3591680c827725329b92fb62f73865fbda7853cdd28111a5977238085",
+                  "size_in_bytes": 38021931,
+                  "run_id": 38449154239,
+                  "verified": true
+                },
+                {
+                  "id": 11839600559,
+                  "digest": "sha256:fc3a6753fba01480e9b4e5637fbf6b2bd74563ebd91727704a29d101358da908",
+                  "size_in_bytes": 38021927,
+                  "run_id": 38446406228,
+                  "verified": true
+                }
+              ]
+            }
+        run: |
+          python3 - <<'PY'
+          """Delete only the explicit artifact IDs in a previously verified archive manifest."""
+          import datetime
+          import json
+          import os
+          import urllib.error
+          import urllib.request
+          
+          
+          def delete_archived(snapshot, repository, request):
+              if repository != snapshot['repository']:
+                  raise ValueError('Repository does not match the verified archive')
+              cutoff = datetime.datetime.fromisoformat(snapshot['cutoff'])
+              completed = set()
+              deleted = 0
+              for expected in snapshot['artifacts']:
+                  artifact_id = int(expected['id'])
+                  endpoint = f'/actions/artifacts/{artifact_id}'
+                  try:
+                      current = request(endpoint)
+                  except urllib.error.HTTPError as error:
+                      if error.code == 404:
+                          print(f'Already absent: {artifact_id}', flush=True)
+                          continue
+                      raise
+                  created = datetime.datetime.fromisoformat(current['created_at'].replace('Z', '+00:00'))
+                  if (not expected['verified'] or not expected['digest'].startswith('sha256:')
+                          or current['id'] != artifact_id
+                          or current.get('digest') != expected['digest']
+                          or current['size_in_bytes'] != expected['size_in_bytes']
+                          or current['workflow_run']['id'] != expected['run_id']
+                          or created >= cutoff):
+                      raise ValueError(f'Artifact {artifact_id} differs from the verified archive; keeping hosted copy')
+                  run_id = expected['run_id']
+                  if run_id not in completed:
+                      if request(f'/actions/runs/{run_id}')['status'] != 'completed':
+                          raise ValueError(f'Run {run_id} is still active; keeping hosted artifact')
+                      completed.add(run_id)
+                  request(endpoint, 'DELETE')
+                  deleted += 1
+                  print(f'Removed archived artifact {artifact_id}', flush=True)
+              return deleted
+          
+          
+          def main():
+              repository = os.environ['GITHUB_REPOSITORY']
+              snapshot = json.loads(os.environ['VERIFIED_ARCHIVE_MANIFEST'])
+              token = os.environ['GH_TOKEN']
+          
+              def request(endpoint, method='GET'):
+                  url = f'https://api.github.com/repos/{repository}' + endpoint
+                  with urllib.request.urlopen(urllib.request.Request(url, method=method, headers={
+                      'Authorization': 'Bearer ' + token,
+                      'Accept': 'application/vnd.github+json',
+                      'X-GitHub-Api-Version': '2022-11-28',
+                      'User-Agent': 'verified-artifact-cleanup',
+                  }), timeout=120) as response:
+                      return json.load(response) if method == 'GET' else None
+          
+              deleted = delete_archived(snapshot, repository, request)
+              summary = f'Removed {deleted} artifacts from the verified archive manifest; evidence remains in the private local archive.\n'
+              print(summary)
+              with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as stream:
+                  stream.write(summary)
+          
+          
+          if __name__ == '__main__':
+              main()
+          PY
