@@ -44,7 +44,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'GUI build failed' }
           python -c "import sys,json,tempfile; from pathlib import Path; sys.path.insert(0,'bin'); from windows_updater_gui_qa import exercise_gui; out=Path('build/windows-gui').resolve(); scratch=Path(tempfile.mkdtemp(prefix='zclone-gui-')); result=exercise_gui(out/'zClone-Updater.exe',out/'fixture.zip',scratch/'gui',out/'updater-gui.bmp'); (out/'gui.json').write_text(json.dumps(result,indent=2))"
           if ($LASTEXITCODE -ne 0) { throw 'Native GUI QA failed' }
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: windows-updater-gui-${{ github.sha }}
@@ -77,7 +77,7 @@ jobs:
         run: make verify-local
 
       - name: Upload verification artifacts
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: linux-verification-${{ github.sha }}
           path: |
@@ -153,7 +153,7 @@ jobs:
         run: |
           if ($env:BASELINE_REF -match '^0+$') { $env:BASELINE_REF = 'origin/main' }
           ./bin/windows-build-qa.ps1 -BaselineRef $env:BASELINE_REF
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: windows-size-and-regression-${{ github.sha }}
@@ -170,7 +170,7 @@ jobs:
           if-no-files-found: error
           retention-days: 7
       - name: Upload experimental standalone Windows updater
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: windows-updater-experimental-${{ github.sha }}
           path: |
